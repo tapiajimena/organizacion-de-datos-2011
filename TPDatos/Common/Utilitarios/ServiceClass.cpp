@@ -108,8 +108,20 @@ unsigned int ServiceClass::getMaxLargoLinea(std::string cadena) {
 	return largo_linea;
 }
 
-static string ServiceClass::toUppercase(string s) {
-	;
+string ServiceClass::toUppercase(string s) {
+    for (size_t i = 0; i < s.length(); ++i) {
+		s[i] = toupper(s[i]);
+	};
+
+    return s;
+}
+
+string ServiceClass::toDowncase(string s) {
+    for (size_t i = 0; i < s.length(); ++i) {
+		s[i] = tolower(s[i]);
+	};
+
+    return s;
 }
 
 ServiceClass::~ServiceClass() {
