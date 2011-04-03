@@ -14,6 +14,7 @@
 #define LOGGER_H_
 
 #include <iostream>
+#include "ServiceClass.h"
 
 using namespace std;
 
@@ -29,7 +30,7 @@ public:
 	 * @params	metodo
 	 * @params	mensaje
 	 */
-	void log(string clase, string metodo, string mensaje);
+	static void log(string clase, string metodo, string mensaje);
 
 	virtual ~Logger();
 };
