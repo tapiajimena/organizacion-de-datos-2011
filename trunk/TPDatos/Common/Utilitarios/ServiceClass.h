@@ -18,6 +18,8 @@
 #include <iostream>
 #include <sstream>
 
+using namespace std;
+
 class ServiceClass {
 public:
 	ServiceClass();
@@ -51,6 +53,7 @@ public:
 
 	/* Metodos de formato */
 	static string toUppercase(string s);
+	static string toDowncase(string s);
 
 	virtual ~ServiceClass();
 };
