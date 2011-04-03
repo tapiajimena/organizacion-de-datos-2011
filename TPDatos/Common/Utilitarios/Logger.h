@@ -19,8 +19,6 @@
 using namespace std;
 
 class Logger {
-private:
-	string mensaje;
 public:
 	Logger();
 

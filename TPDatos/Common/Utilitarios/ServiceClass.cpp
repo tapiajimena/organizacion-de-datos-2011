@@ -109,19 +109,28 @@ unsigned int ServiceClass::getMaxLargoLinea(std::string cadena) {
 }
 
 string ServiceClass::toUppercase(string s) {
-    for (size_t i = 0; i < s.length(); ++i) {
+	for (size_t i = 0; i < s.length(); ++i) {
 		s[i] = toupper(s[i]);
 	};
 
-    return s;
+	return s;
 }
 
 string ServiceClass::toDowncase(string s) {
-    for (size_t i = 0; i < s.length(); ++i) {
+	for (size_t i = 0; i < s.length(); ++i) {
 		s[i] = tolower(s[i]);
 	};
 
-    return s;
+	return s;
+}
+
+string ServiceClass::getFechaHora() {
+    time_t rawtime;
+    time ( &rawtime );
+
+    string aux = ctime(&rawtime);
+
+    return string (aux.substr(0,aux.size() - 1));
 }
 
 ServiceClass::~ServiceClass() {
