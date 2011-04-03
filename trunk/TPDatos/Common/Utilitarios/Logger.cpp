@@ -5,9 +5,9 @@ Logger::Logger() {
 
 void Logger::log(string clase, string metodo, string mensaje) {
 
-	string nombreClase = clase.
+	string nombreClase = ServiceClass::toUppercase(clase);
 
-	cout<<;
+	cout << nombreClase << " [" << metodo << "]: " << mensaje << endl;
 }
 
 Logger::~Logger() {
