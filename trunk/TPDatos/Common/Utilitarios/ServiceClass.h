@@ -17,6 +17,8 @@
 
 #include <iostream>
 #include <sstream>
+#include <stdio.h>
+#include <time.h>
 
 using namespace std;
 
@@ -50,6 +52,9 @@ public:
 	 * mas larga en el texto
 	 */
 	static unsigned int getMaxLargoLinea(string texto);
+
+	/* Metodo que devuelve la fecha y la hora local */
+	static string getFechaHora();
 
 	/* Metodos de formato */
 	static string toUppercase(string s);

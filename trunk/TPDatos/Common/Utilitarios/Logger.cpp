@@ -7,7 +7,7 @@ void Logger::log(string clase, string metodo, string mensaje) {
 
 	string nombreClase = ServiceClass::toUppercase(clase);
 
-	cout << nombreClase << " [" << metodo << "]: " << mensaje << endl;
+	cout << ServiceClass::getFechaHora() << " - " << nombreClase << " [" << metodo << "]: " << mensaje << endl;
 }
 
 Logger::~Logger() {
