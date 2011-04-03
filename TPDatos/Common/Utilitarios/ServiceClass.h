@@ -17,8 +17,11 @@
 
 #include <iostream>
 #include <sstream>
+#include <string.h>
+#include <vector>
 #include <stdio.h>
 #include <time.h>
+
 
 using namespace std;
 
@@ -59,6 +62,14 @@ public:
 	/* Metodos de formato */
 	static string toUppercase(string s);
 	static string toDowncase(string s);
+
+	/* Devuelve las palabras de una línea en un vector de palabras.
+	 * Se toman como separadores de palabra los caracteres incluidos en
+	 * el segundo parámetro.
+	 *
+	 * Separadores sugeridos: " ,.-"
+	 */
+	static vector<string> obtenerListaPalabras(string linea, string separadores);
 
 	virtual ~ServiceClass();
 };

@@ -124,6 +124,32 @@ string ServiceClass::toDowncase(string s) {
 	return s;
 }
 
+std::vector<std::string> ServiceClass::obtenerListaPalabras(std::string linea, std::string separadores)
+{
+	//retorno
+	std::vector<std::string> listaPalabras;
+
+	//Pasamos el string linea a un char[]
+	char *a=new char[linea.size()+1];
+	a[linea.size()]=0;
+	memcpy(a,linea.c_str(),linea.size());
+
+	//http://www.cplusplus.com/reference/clibrary/cstring/strtok/
+	char* pch = strtok (a, separadores.c_str() );
+	while ( pch != NULL )
+	{
+		std::string stopWord (pch);
+
+		listaPalabras.push_back(stopWord);
+
+		pch = strtok (NULL, " ,.-");
+	}
+
+	delete a; //liberamos memoria...
+
+	return listaPalabras;
+}
+
 string ServiceClass::getFechaHora() {
     time_t rawtime;
     time ( &rawtime );
