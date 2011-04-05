@@ -10,11 +10,11 @@
  *
  */
 
-#include "RegistroVariable.h"
-#include <stdio.h>
-#include <stdlib.h>
+#define LONGITUD_CANT_DATOS 32
 
-RegistroVariable::RegistroVariable(const Datos& dato): Registro(dato) {
+#include "RegistroVariable.h"
+
+RegistroVariable::RegistroVariable(const Datos& dato) :Registro(dato) {
 	this->dato = dato;
 	this->eliminado = false;
 }
@@ -22,78 +22,65 @@ RegistroVariable::RegistroVariable(const Datos& dato): Registro(dato) {
 RegistroVariable::~RegistroVariable() {
 }
 
-void RegistroVariable::setDato(const Datos& dato) {
-	this->dato = dato;
-}
-
-Datos RegistroVariable::getDato() const {
-	return this->dato;
-}
-
 void RegistroVariable::eliminar() {
 	this->eliminado = true;
 }
 
 Datos RegistroVariable::serializarse() {
-	/*
+
 	string serializacion;
 	stringstream streamTamanio;
-	stringstream streamUID;
 
-	uint32_t tamanio = dato.getTamanio();
+	uint32_t tamanio = dato.getSize();
 	streamTamanio << tamanio;
-	streamUID << nRegistro;
 
 	unsigned int tamanioDatos = streamTamanio.str().size();
-	unsigned int tamanioUID = streamUID.str().size();
 
-	//UID
-	while (tamanioUID < LONGITUD_CANT_BYTES)
-	{
-		serializacion += "0";
-		tamanioUID++;
-	}
-	serializacion += streamUID.str();
-/*
-	cout << "1)))):" << endl;
-	cout << serializacion << endl;
-*/
-/*
 	//Tamaño
-	while (tamanioDatos < LONGITUD_CANT_BYTES)
-	{
+	while (tamanioDatos < LONGITUD_CANT_DATOS) {
 		serializacion += "0";
 		tamanioDatos++;
 	}
 	serializacion += streamTamanio.str();
-/*
-	cout << "2)))):" << endl;
-	cout << serializacion << endl;
-*/
+
+	 cout << "2)))):" << endl;
+	 cout << serializacion << endl;
+
 	//DATO
-	//serializacion += dato.toString();
-/*
+	serializacion += dato.toString();
 	cout << "3)))):" << endl;
 	cout << serializacion << endl;
-*/
-	//return Datos(serializacion);
+
+	return Datos(serializacion);
 	return NULL;
 }
 
 void RegistroVariable::hidratarse(const Datos& cadena) {
+
 	/*
-	if (cadena.getTamanio() <= 1)
+	if (cadena.getSize() <= 1)
 		return;
 
-	this->numeroRegistro = atoi(cadena.getSubBytes(0,LONGITUD_CANT_BYTES).toString().c_str());
-	int tamanioRegistro = atoi(cadena.getSubBytes(LONGITUD_CANT_BYTES, 2 * LONGITUD_CANT_BYTES).toString().c_str());
-	this->setDato(cadena.getSubBytes(2 * LONGITUD_CANT_BYTES,tamanioRegistro));
-	//this->tamanioDato = tamanioRegistro;
-	 *
+	/*
+	 this->numeroRegistro = atoi(cadena.getSubBytes(0,LONGITUD_CANT_DATOS).toString().c_str());
+	 int tamanioRegistro = atoi(cadena.getSubBytes(LONGITUD_CANT_DATOS, 2 * LONGITUD_CANT_DATOS).toString().c_str());
+	 this->setDato(cadena.getSubBytes(2 * LONGITUD_CANT_DATOS,tamanioRegistro));
 	 */
+	//this->tamanioDato = tamanioRegistro;
+
+
 }
 
+void RegistroVariable::setDato(const Datos& dato) {
+	this->dato = dato;
+}
+
+Datos RegistroVariable::getDato() {
+	return this->dato;
+}
+
+
 uint32_t RegistroVariable::getTamanioSerializado() {
-	//return 2 * LONGITUD_CANT_BYTES + this->dato.getTamanio();
-	return 0;
+	return 2 * LONGITUD_CANT_DATOS + this->dato.getSize();
+
 }

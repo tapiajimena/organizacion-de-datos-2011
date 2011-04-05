@@ -14,26 +14,28 @@
 #ifndef REGISTROVARIABLE_H_
 #define REGISTROVARIABLE_H_
 
-#include <stdlib.h>
 #include "Registro.h"
 
 
 
-class RegistroVariable : public Registro{
+class RegistroVariable : public Registro
+{
 
 
 public:
+	RegistroVariable();
 	RegistroVariable(const Datos& dato);
+
+	virtual void eliminar();
+	virtual Datos serializarse();
+	virtual void hidratarse(const Datos& cadena);
+
+	virtual void setDato(const Datos& dato);
+	virtual Datos getDato();
+	virtual uint32_t getTamanioSerializado();
+
+
 	virtual ~RegistroVariable();
-
-	void eliminar();
-	Datos serializarse();
-	void hidratarse(const Datos& cadena);
-
-	void setDato(const Datos& dato);
-	Datos getDato() const;
-	uint32_t getTamanioSerializado();
-
 };
 
 #endif /* REGISTROVARIABLE_H_ */

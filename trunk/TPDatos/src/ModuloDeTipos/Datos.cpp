@@ -30,6 +30,11 @@ Datos::Datos(const Datos & d)
 
 }
 
+Datos::Datos(string s)
+{
+	this->datos = s;
+}
+
 
 bool Datos::agregar(const Datos & d,unsigned int posicion)
 {
@@ -82,6 +87,11 @@ void Datos::setDatos(string datos)
     this->datos = datos;
 }
 
+
+long int Datos::getSize()
+{
+	return this->datos.length();
+}
 
 Datos::~Datos() {
 	// TODO Auto-generated destructor stub

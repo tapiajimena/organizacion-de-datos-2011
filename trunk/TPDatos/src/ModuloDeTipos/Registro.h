@@ -14,18 +14,20 @@
 #define REGISTRO_H_
 
 #include <stdint.h>
+#include <iostream>
+#include <sstream>
 #include "Datos.h"
 #include "../Common/Constantes.h"
 
-
+using namespace std;
 class Registro {
 
 protected:
 	uint32_t id;
 	Datos dato;
+	bool eliminado;
 
 public:
-	bool eliminado;
 	Registro();
 	Registro(const Datos& dato);
 

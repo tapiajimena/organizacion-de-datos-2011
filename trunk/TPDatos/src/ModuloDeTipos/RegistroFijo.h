@@ -15,9 +15,8 @@
 
 #include "Registro.h"
 
-/*
- *
- */
+
+
 class RegistroFijo: public Registro {
 public:
 	RegistroFijo();
