@@ -10,6 +10,7 @@
  *      
  */
 
+
 #include "RegistroFijo.h"
 
 RegistroFijo::RegistroFijo(const Datos &dato):Registro(dato) {
@@ -51,3 +52,4 @@ uint32_t RegistroFijo::getTamanioSerializado() {
 RegistroFijo::~RegistroFijo() {
 	// TODO Auto-generated destructor stub
 }
+

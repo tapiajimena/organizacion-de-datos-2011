@@ -58,6 +58,8 @@ public:
 	string getDatos();
     void setDatos(string datos);
 
+    long int getSize();
+
 
 
 	virtual ~Datos();
