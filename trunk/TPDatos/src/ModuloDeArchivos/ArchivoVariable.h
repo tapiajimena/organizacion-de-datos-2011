@@ -14,7 +14,10 @@
 #define ARCHIVOVARIABLE_H_
 
 #include <fstream>
+#include <stdio.h>
+#include <stdlib.h>
 #include"../ModuloDeTipos/RegistroVariable.h"
+
 
 class ArchivoVariable {
 
@@ -37,8 +40,17 @@ public:
 	 */
 	void abrir();
 
-	RegistroVariable* leer();
+	/**
+	 *posciona el puntero del archivo en el inicio.
+	 */
+	void irAInicio();
+
+	bool finArchivo();
+	char* leer();
 	void escribir(RegistroVariable & rv, uint32_t offset);
+	void escribirAlFinal(RegistroVariable & rv);
+	uint32_t getSizeArchivo();
+
 
 	virtual ~ArchivoVariable();
 };
