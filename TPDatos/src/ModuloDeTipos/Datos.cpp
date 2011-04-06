@@ -87,6 +87,10 @@ void Datos::setDatos(string datos)
     this->datos = datos;
 }
 
+void Datos::setDatos(char* datos)
+{
+    this->datos = datos;
+}
 
 long int Datos::getSize()
 {

@@ -57,6 +57,7 @@ public:
 
 	string getDatos();
     void setDatos(string datos);
+    void setDatos(char* datos);
 
     long int getSize();
 
