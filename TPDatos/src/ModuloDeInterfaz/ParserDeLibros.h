@@ -14,6 +14,12 @@
 
 #include "Libro.h"
 #include "../Common/Utilitarios/ServiceClass.h"
+#include <map>
+
+//typedef std::vector<std::string> EstructuraStopWords;
+
+//Se ignora el dato entero, pero se aprovecha la eficiencia de map para insertar y buscar elementos
+typedef std::map<std::string, int> EstructuraStopWords;
 
 class ParserDeLibros {
 
@@ -30,10 +36,12 @@ private:
 	std::string nombreArchivoStopWords;
 
 	//Estructura para almacenar las stopwords
-	//TODO habria que implementar algo mas eficiente que un string para esto?
-	std::vector<std::string> listaStopWords;
+	EstructuraStopWords listaStopWords;
 
 public:
+	/* Builder de la clase. Abre el archivo de stopwords pasado por par
+	 *  En caso de
+	 */
 	ParserDeLibros(std::string nombreArchivoStopWords);
 	~ParserDeLibros();
 

@@ -8,6 +8,9 @@
 
 #include <string>
 #include <vector>
+#include <map>
+
+typedef std::map<std::string, int> EstructuraPalabrasClave;
 
 class Libro
 {
@@ -19,7 +22,8 @@ private:
 
 	std::string _ISBN;
 
-	std::vector<std::string> _listaPalabras;
+	//Estructura que guarda las palabras clave del libro y asociadas al número de veces que aparece cada palabra en el libro
+	EstructuraPalabrasClave _palabrasClave;
 
 public:
 
@@ -39,9 +43,9 @@ public:
 
 	void setISBN(std::string ISBN);
 
-	std::vector<std::string> getListaPalabras();
+	EstructuraPalabrasClave getPalabrasClave();
 
-	void agregarPalabra(std::string palabra);
+	void agregarPalabraClave(std::string palabra);
 };
 
 #endif /* LIBRO_H_ */
