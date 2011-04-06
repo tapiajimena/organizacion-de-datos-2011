@@ -34,7 +34,6 @@ public:
 	virtual Datos getDato();
 	virtual uint32_t getTamanioSerializado();
 
-
 	virtual ~RegistroVariable();
 };
 

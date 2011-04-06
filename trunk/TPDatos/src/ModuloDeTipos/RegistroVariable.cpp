@@ -36,6 +36,7 @@ Datos RegistroVariable::serializarse() {
 
 	unsigned int tamanioDatos = streamTamanio.str().size();
 
+	/*
 	//Tamaño
 	while (tamanioDatos < LONGITUD_CANT_DATOS) {
 		serializacion += "0";
@@ -46,10 +47,11 @@ Datos RegistroVariable::serializarse() {
 	 cout << "2)))):" << endl;
 	 cout << serializacion << endl;
 
+	 */
 	//DATO
 	serializacion += dato.toString();
-	cout << "3)))):" << endl;
-	cout << serializacion << endl;
+	//cout << "3)))):" << endl;
+	//cout << serializacion << endl;
 
 	return Datos(serializacion);
 	return NULL;
