@@ -43,12 +43,20 @@ void Libro::setISBN(std::string ISBN)
 	this->_ISBN = ISBN;
 };
 
-std::vector<std::string> Libro::getListaPalabras()
+EstructuraPalabrasClave Libro::getPalabrasClave()
 {
-	return this->_listaPalabras;
+	return this->_palabrasClave;
 };
 
-void Libro::agregarPalabra(std::string palabra)
+void Libro::agregarPalabraClave(std::string palabra)
 {
-	this->_listaPalabras.push_back(palabra);
+	EstructuraPalabrasClave::iterator it_mapaPalabras = this->_palabrasClave.find(palabra);
+	if( it_mapaPalabras == this->_palabrasClave.end())
+	{
+		this->_palabrasClave[palabra] = 1; //Se agrega la palabra y se pone el contador en uno
+	}
+	else
+	{
+		this->_palabrasClave[palabra]++; // Se incrementa en uno el contador de apariciones de la palabra
+	}
 };

@@ -43,7 +43,22 @@ ParserDeLibros::~ParserDeLibros()
 void ParserDeLibros::procesarLineaLibro(std::string linea, Libro* libro)
 {
 	//Definir si la cadena tiene el formato especial de alguno de los campos especiales...
+	std::string separadoresPalabras = " .-;:¿?¡!'<@>)(";
+	std::vector<std::string> palabrasDeLinea = ServiceClass::obtenerListaPalabras(linea, separadoresPalabras);
 
+	std::vector<std::string>::iterator it_PalabrasDeLinea;
+
+	for(it_PalabrasDeLinea = palabrasDeLinea.begin(); it_PalabrasDeLinea != palabrasDeLinea.end(); it_PalabrasDeLinea++)
+	{
+		std::string palabra = *it_PalabrasDeLinea;
+
+		EstructuraStopWords::iterator it_StopWords = this->listaStopWords.find(palabra);
+		if( it_StopWords == this->listaStopWords.end() )
+		{
+			libro->agregarPalabraClave(palabra);
+		}
+
+	}
 
 	//Si tiene alguno de esos formatos, levantar el atributo correspondiente y cargarlo en el libro.
 
@@ -59,8 +74,13 @@ void ParserDeLibros::procesarLineaStopWords(std::string linea)
 
 	std::vector<std::string> listaPalabras = ServiceClass::obtenerListaPalabras(linea, separadoresStopWords);
 
-	//Incorporamos la nueva lista de palabras a la estructura del parser que las agrupa
-	this->listaStopWords.insert(this->listaStopWords.end(), listaPalabras.begin(), listaPalabras.end());
+	for (std::vector<std::string>::iterator it_ListaPalabras = listaPalabras.begin(); it_ListaPalabras != listaPalabras.end(); it_ListaPalabras++)
+	{
+		std::string palabra = *it_ListaPalabras;
+		//Incorporamos la nueva lista de palabras a la estructura del parser que las agrupa
+		this->listaStopWords.insert( std::pair<std::string, int>(palabra, 0) ); //Si se repiten el map ignora la nueva entrada, y el segundo valor del map no interesa.
+
+	}
 }
 
 Libro* ParserDeLibros::parsearLibro(std::string nombreArchivo)
