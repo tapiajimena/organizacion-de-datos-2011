@@ -1,10 +1,14 @@
-//============================================================================
-// Nombre		: ManejadorArchivo.cpp
-// Materia		: Organizacion de Datos (75.06) - FIUBA
-// Catedra		: AZCURRA-GUTIERREZ-SANTOS
-// Autor		: Tkaczyszyn, Muszalski, Gallinal, Fernandez
-// Descripcion	: TPDatos , Ansi-style
-//============================================================================
+/*
+ * ManejadorArchivo.cpp
+ *
+ *	Autor	: GRUPO 1 - Fernandez, Gallinal, Maraggi, Tapia
+ *	Catedra	: SERVETTO-FERRER-FERNANDEZ
+ *	Materia	: Organizacion de Datos (75.06) - FIUBA
+ *
+ *
+ *
+ *
+ */
 
 #include "ManejadorArchivo.h"
 
