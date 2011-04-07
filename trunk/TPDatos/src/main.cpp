@@ -11,12 +11,12 @@
 #include "ModuloDeArchivos/ArchivoVariable.h"
 
 
-
-using namespace std;
-int main()
+/**
+ * hacer el test con el CUTE
+ */
+void testEscrituraLectura()
 {
 	Datos* datos = new Datos();
-	//RegistroFijo* reg = new RegistroFijo(*datos);
 	RegistroVariable* rv = new RegistroVariable(*datos);
 	ArchivoVariable* arcReg = new ArchivoVariable("prueba.dat");
 
@@ -29,6 +29,7 @@ int main()
 	}
 
 	/*
+	//test agregarAlFinal
 	datos->setDatos("PIRULO EN EL BOSQUE Ññ áÁ Éé íÍ óÓ úÚÜ &!");
 	rv->setDato(*datos);
 	arcReg->escribirAlFinal(*rv);
@@ -37,11 +38,26 @@ int main()
 	//se lee
 	uint32_t sizeAux = 0;
 	arcReg->irAInicio();
-	string rdo = arcReg->leer();
+	string rdo = arcReg->leerRegistroVariable();
 	while(!arcReg->finArchivo())
-		cout<< sizeAux<<";"<<arcReg->leer()<<";"<<endl;
+		cout<< sizeAux<<";"<<arcReg->leerRegistroVariable()<<";"<<endl;
+}
 
 
+using namespace std;
+int main()
+{
+	Datos* datos = new Datos();
+	RegistroVariable* rv = new RegistroVariable(*datos);
+	ArchivoVariable* arcReg = new ArchivoVariable("prueba.dat");
+
+
+	arcReg->agregarLibro("Arthur Conan Doyle - El signo de los cuatro.txt");
+	arcReg->agregarLibro("Arthur Conan Doyle - Estudio en Escarlata.txt");
+
+	arcReg->irAInicio();
+	while(!arcReg->finArchivo())
+		cout<< arcReg->leerRegistroVariable()<<";"<<endl;
 
 	delete(rv);
     delete(datos);
