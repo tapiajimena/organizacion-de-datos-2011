@@ -56,7 +56,7 @@ bool ManejadorArchivo::Abrir(char *pathArchivo, fstream *arc)
 }
 
 
-bool ManejadorArchivo::EscribirBytes(fstream *arc, char* contenido)
+bool ManejadorArchivo::EscribirDato(fstream *arc, char* contenido)
 {
 	//return escribirBuffer(arc,contenido, strlen(contenido));
 }

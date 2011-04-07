@@ -43,7 +43,7 @@ public:
 	 * se escriben los bytes contenido al final del archivo arc
 	 * arc debe estar abierto
 	 */
-	static bool EscribirBytes(fstream *arc, char* contenido);
+	static bool EscribirDato(fstream *arc, char* contenido);
 
 	/*
 	 * se escriben los bytes contenido en arc con un corrimiento offset
