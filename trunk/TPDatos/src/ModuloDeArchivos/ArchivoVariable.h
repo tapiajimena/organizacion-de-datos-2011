@@ -99,7 +99,7 @@ public:
 	 *devuelve el tamanio del archivo arc.
 	 *deja posicionado el puntero del archivo en el final
 	 */
-	uint32_t getSizeArchivo(fstream arc);
+	uint32_t getSizeArchivo(fstream & arc);
 
 	/**
 	 * cierra el archivo de biblioteca

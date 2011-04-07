@@ -114,7 +114,7 @@ char* ArchivoVariable::leerRegistroVariable()
 }
 
 
-uint32_t ArchivoVariable::getSizeArchivo(fstream arc)
+uint32_t ArchivoVariable::getSizeArchivo(fstream & arc)
 {
     arc.seekp(0, ios_base::end);
 	return arc.tellg();//pide cual es el tamanio del archivo
