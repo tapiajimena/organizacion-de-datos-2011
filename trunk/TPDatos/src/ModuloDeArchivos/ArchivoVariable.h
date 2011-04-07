@@ -91,13 +91,13 @@ public:
 
 	/**
 	 * devuelve el tamanio del archivo biblioteca.
-	 *deja posicionado el puntero del archivo en el final
+	 *deja posicionado el puntero del archivo de biblioteca en el final
 	 */
 	uint32_t getSizeArchivoVariable();
 
 	/*
 	 *devuelve el tamanio del archivo arc.
-	 *deja posicionado el puntero del archivo en el final
+	 *deja posicionado el puntero del archivo arc en el final
 	 */
 	uint32_t getSizeArchivo(fstream & arc);
 
