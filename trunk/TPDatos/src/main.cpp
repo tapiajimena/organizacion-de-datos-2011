@@ -51,9 +51,10 @@ int main()
 	RegistroVariable* rv = new RegistroVariable(*datos);
 	ArchivoVariable* arcReg = new ArchivoVariable("prueba.dat");
 
+	cout<<"HOLA MUNDO!!";
 
-	arcReg->agregarLibro("Arthur Conan Doyle - El signo de los cuatro.txt");
 	arcReg->agregarLibro("Arthur Conan Doyle - Estudio en Escarlata.txt");
+	arcReg->agregarLibro("Arthur Conan Doyle - El signo de los cuatro.txt");
 
 	arcReg->irAInicio();
 	while(!arcReg->finArchivo())
