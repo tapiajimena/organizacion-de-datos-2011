@@ -6,7 +6,7 @@
 *	Materia	: Organizacion de Datos (75.06) - FIUBA
 *      
 *  
-*      
+*  Contenedor de las constantes utilizadas en la aplicacion.
 *      
 */   
 
@@ -14,6 +14,13 @@
 #define CONSTANTES_H_
 
 
+/* CONSTANTES DEFINIDAS PARA ARCHIVO DE STOPWORDS */
+
+/* Define el caracter utilizado como separador */
+#define STOPWORDS_TOKEN ""
+
+/* Define la cantidad de caracteres de cada stopword */
+#define STOPWORDS_LENGTH 30
 
 
 
