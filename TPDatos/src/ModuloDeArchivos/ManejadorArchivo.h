@@ -70,9 +70,12 @@ namespace ManejadorArchivo
 
 	 string LeerDato(fstream &arc);
 
-
 	//lee un archivo abierto
 	 string LeerCaracteres(fstream &arc, int tamanio);
+
+
+	 uint32_t GetSizeArchivo(fstream & arc);
+
 
 	/**
 	 * Lee la estructura (de tamano tamanioEstructura) de un archivo ubicada en una posicion posEst

@@ -75,7 +75,7 @@ char* ArchivoVariable::leer(fstream & arcLibro, uint32_t & size)
 {
 	char* contenidoLibro = (char*)(malloc(0));
 
-	size  = getSizeArchivo(arcLibro);
+	size  = GetSizeArchivo(arcLibro);
     arcLibro.seekp(0, ios_base::beg);
 
     //se lee
@@ -118,16 +118,9 @@ string ArchivoVariable::leerRegistroVariable()
 }
 
 
-uint32_t ArchivoVariable::getSizeArchivo(fstream & arc)
+uint32_t ArchivoVariable::getSizeArchivo()
 {
-    arc.seekp(0, ios_base::end);
-	return arc.tellg();//pide cual es el tamanio del archivo
-}
-
-uint32_t ArchivoVariable::getSizeArchivoVariable()
-{
-    archivoVariable.seekp(0, ios_base::end);
-	return archivoVariable.tellg();//pide cual es el tamanio del archivo
+	return GetSizeArchivo(archivoVariable);
 }
 
 bool ArchivoVariable::finArchivo()

@@ -102,6 +102,13 @@ string ManejadorArchivo::LeerCaracteres(fstream &arc, int tamanio)
 }
 
 
+uint32_t ManejadorArchivo::GetSizeArchivo(fstream & arc)
+{
+    arc.seekp(0, ios_base::end);
+	return arc.tellg();//pide cual es el tamanio del archivo
+}
+
+
 bool ManejadorArchivo::RecuperarEstructura(fstream &arc, iostream* ios,long offset, long cantidadALeer)
 {
 	arc.seekg(offset, ios_base::beg);
