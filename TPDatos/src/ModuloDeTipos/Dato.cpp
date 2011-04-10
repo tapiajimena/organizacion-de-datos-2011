@@ -76,7 +76,6 @@ char* Dato::toCharPointer()
 }
 
 
-
 string Dato::getDatos()
 {
 	return this->dato.str();
