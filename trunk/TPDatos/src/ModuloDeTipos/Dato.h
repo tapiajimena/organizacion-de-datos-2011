@@ -1,55 +1,69 @@
 /*
  * Dato.h
- *
+ *  
  *	Autor	: GRUPO 1 - Fernandez, Gallinal, Maraggi, Tapia
  *	Catedra	: SERVETTO-FERRER-FERNANDEZ
- *	Materia	: Organizacion de Datos (75.06) - FIUBA
- *
- * Clase abstracta que generaliza aquellos tipos de datos que
- * seran persistidos.
- *
+ *	Materia	: Organizacion de Dato (75.06) - FIUBA
+ *      
+ *  
+ *      
+ *      
  */
 
 #ifndef DATO_H_
 #define DATO_H_
 
-#include <iostream>
 #include <string>
+#include <sstream>
+#include <iostream>
 
 using namespace std;
+class Dato
+{
 
-class Dato {
-protected:
-	string dato;
+private:
+	stringstream dato;
 
 public:
 	Dato();
+	Dato(char* d);
+	Dato(string dato);
+	Dato(const Dato & d);
 
 	/**
-	 * Indica si el dato esta vacio
+	 * agrega Dato d en una posicion.
+	 * Si la posicion es mayor al lenght devuelve false
+	 */
+	bool agregar(const Dato & d,unsigned int posicion);
+
+	/**
+	 *
+	 */
+	bool agregarAlFinal(const Dato & d);
+
+	/**
+	 *indica si el dato esta vacio
 	 */
 	bool vacio();
 
+
 	/**
-	 * Vacia los datos
+	 *vacia los dato
 	 */
 	void vaciar();
 
-	virtual string toString() const = 0;
+	string toString() const;
 	char* toCharPointer();
 
-	/**
-	 * Agrega un String s en una posicion.
-	 * Si la posicion es mayor al length devuelve false.
-	 */
-	bool agregar(const Dato & d, unsigned int posicion);
-	bool agregarAlFinal(const Dato & d);
 
-	string getDato();
-	long int getSize();
-	void setDato(string s);
+	string getDatos();
+    void setDatos(stringstream dato);
+    void setDatos(char* dato);
+
+    long int getSize();
+
+
 
 	virtual ~Dato();
 };
-
 #endif /* DATO_H_ */
