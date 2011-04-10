@@ -11,22 +11,30 @@
  */
 
 #include "ArchivoVariable.h"
+#include <iostream>
 
-ArchivoVariable::ArchivoVariable() {
+using namespace ManejadorArchivo;
 
+ArchivoVariable::ArchivoVariable()
+{
+	//esto hace maravillas...
 }
 
 
 ArchivoVariable::ArchivoVariable(string pathArchivo)
 {
 	this->path = pathArchivo;
-	abrir();
+	this->abrir();
 }
 
 void ArchivoVariable::abrir()
 {
-	//se abre el archivo de forma binaria, si no existe lo crea si existe lo borra...
-	this->archivoVariable.open(this->path.c_str(), ios::in | ios::out | ios::trunc| ios::binary);//es "la linea"
+		//se abre el archivo de forma binaria, si no existe lo crea si existe lo borra...
+
+		if (Existe(path.c_str(), archivoVariable))
+			Abrir(path.c_str(), archivoVariable, true);
+		else
+			Crear(path.c_str(), archivoVariable, true);
 }
 
 
@@ -49,16 +57,25 @@ void ArchivoVariable::escribir(RegistroVariable & rv, uint32_t offset)
 void ArchivoVariable::escribirAlFinal(RegistroVariable &rv)
 {
 	uint32_t size 		= rv.getDato().getSize();
-
+/*
 	archivoVariable.write(reinterpret_cast<char *> (&size), sizeof(size));
 	archivoVariable.write(rv.getDato().toCharPointer(), size);
 	archivoVariable.flush();
+*/
+
+	stringstream auxStream;
+	auxStream.write(reinterpret_cast<char *> (&size), sizeof(size));
+	auxStream.write(rv.getDato().toCharPointer(), size);
+
+	archivoVariable<< auxStream.str();
+	archivoVariable.flush();
+
 }
 
 
 void ArchivoVariable::irAInicio()
 {
-	this->archivoVariable.seekp(0, ios_base::beg);
+	IrAlInicio(archivoVariable);
 }
 
 
@@ -98,19 +115,34 @@ void ArchivoVariable::agregarLibro(char* pathLibro)
 }
 
 
-char* ArchivoVariable::leerRegistroVariable()
+uint32_t ArchivoVariable::leerRegistroVariable()
 {
 	string rdo ="";
 	uint32_t size = 0;
 	char* contenido	= (char*)malloc(0);
+	//stringstream auxStream = archivoVariable.read(reinterpret_cast<char *>(&size), sizeof(size));;
 
-	archivoVariable.read(reinterpret_cast<char *>(&size), sizeof(size));
-	contenido = (char*)realloc(contenido, size);
-	archivoVariable.read(contenido, size);
+	if (!this->finArchivo())
+	{
+		archivoVariable.read(reinterpret_cast<char *>(&size), sizeof(size));
+		contenido = (char*)realloc(contenido, size);
+		archivoVariable.read(contenido, size);
 
-	rdo = contenido;
-	rdo = rdo.substr(0,size);
-	return contenido;
+
+		rdo = contenido;
+		rdo = rdo.substr(0,size);
+
+		cout<<size<<"; "<<contenido;
+
+		archivoVariable.read(reinterpret_cast<char *>(&size), sizeof(size));
+		contenido = (char*)realloc(contenido, size);
+		archivoVariable.read(contenido, size);
+
+		cout<<size<<"; "<<contenido;
+
+		return 0;
+	}
+	return 0;
 }
 
 
@@ -131,8 +163,9 @@ bool ArchivoVariable::finArchivo()
 	return this->archivoVariable.eof();
 }
 
-ArchivoVariable::~ArchivoVariable() {
-	this->archivoVariable.close();
+ArchivoVariable::~ArchivoVariable()
+{
+	Cerrar(archivoVariable);
 }
 
 

@@ -16,6 +16,7 @@
 #include <fstream>
 #include <stdio.h>
 #include <stdlib.h>
+#include"ManejadorArchivo.h"
 #include"../ModuloDeTipos/RegistroVariable.h"
 
 
@@ -42,8 +43,9 @@ public:
 
 	/**
 	 *lee un dato del archivo de biblioteca en la posicion que se encuentre el cursor del archivo.
+	 *para recorrer toda la libreria habría que ir al inicio de la libreria.
 	 */
-	char* leerRegistroVariable();
+	uint32_t leerRegistroVariable();
 
 	/**
 	 * TODO deberia ser private? la posta es que deberia usarse una clase estatica ManejadorArchivo que me provea de esto
@@ -53,6 +55,7 @@ public:
 
 	/**
 	 * ingresa el libro de path pathLibro a la libreria (archivoVariable).
+	 * almacena el archivo al final de la libreria.
 	 * pathLibro: ruta+nombre del archivo que se quiere agregar a la biblioteca
 	 */
 	void agregarLibro(char* pathLibro);

@@ -6,7 +6,7 @@
  *	Materia	: Organizacion de Datos (75.06) - FIUBA
  *
  *
- *
+ *	Clase ea que nos provee los servicios para acceder a disco
  *
  */
 
@@ -24,60 +24,67 @@
 
 using namespace std;
 
-class ManejadorArchivo
+namespace ManejadorArchivo
 {
 
-
-public:
 	/**
 	 * Crea un archivo y lo deja abierto
 	 */
-	static bool Crear(const char* pathArchivo, fstream* arc);
+	 bool Crear(const char* pathArchivo, fstream &arc, bool binario);
 
 	/*
 	 * Solamente abre un archivo existente
+	 * binario: si es true lo abre como binario
 	 */
-	static bool Abrir(char* pathArchivo, fstream* arc);
+	 bool Abrir(const char* pathArchivo, fstream &arc, bool binario);
+
+	/*
+	 * devuelve si existe o no el archivo.
+	 */
+	 bool Existe(const char* pathArchivo, fstream &arc);
 
 	/**
 	 * se escriben los bytes contenido al final del archivo arc
 	 * arc debe estar abierto
 	 */
-	static bool EscribirDato(fstream *arc, char* contenido);
+	 bool EscribirDato(fstream &arc, char* contenido);
 
 	/*
 	 * se escriben los bytes contenido en arc con un corrimiento offset
 	 * arc debe estar abierto
 	 */
-	static bool RecuperarEstructura(fstream *arc, iostream* ios,long offset, long cantidadALeer);
+	 bool RecuperarEstructura(fstream &arc, iostream* ios,long offset, long cantidadALeer);
 
 	/**
 	 * Escribe en el archivo arc un registro estructura al final
 	 * arc debe estar abierto
 	 */
-	static bool EscribirEstructura(fstream *arc, iostream* ios, long tamanio);
+	 bool EscribirEstructura(fstream &arc, iostream* ios, long tamanio);
 
 	/**
 	 * Escribe en el archivo arc un registro estructura con un corrimiento offset.
 	 * arc debe estar abierto
 	 */
-	static bool EscribirEstructura(fstream *arc, iostream* ios, long offset, long tamanio);
+	 bool EscribirEstructura(fstream &arc, iostream* ios, long offset, long tamanio);
 
 
 	//lee un archivo abierto
-	static string LeerCaracteres(fstream *arc, int tamanio);
+	 string LeerCaracteres(fstream &arc, int tamanio);
 
 	/**
 	 * Lee la estructura (de tamano tamanioEstructura) de un archivo ubicada en una posicion posEst
 	 * Devuelve un void*
 	 * arc debe estar abierto
 	 */
-	static void* RecuperarEstructura(fstream *arc, long posEscructura, long tamanioEsctructura);
+	 void* RecuperarEstructura(fstream &arc, long posEscructura, long tamanioEsctructura);
 
+	/**
+	 *posiciona el puntero del archivo en el inicio.
+	 */
+	 void IrAlInicio(fstream &arc);
 
 	//cierra el archivo arc
-	static bool Cerrar(fstream* arc);
-
+	 bool Cerrar(fstream &arc);
 
 };
 

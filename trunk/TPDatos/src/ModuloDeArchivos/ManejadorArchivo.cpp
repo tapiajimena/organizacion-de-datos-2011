@@ -17,14 +17,14 @@
 /**
  * Vacia el buffer en el archivo, es decir escribe en arc sin necesidad de cerrarlo.
  */
-bool escribirBuffer(fstream *arc, iostream* ios, long tamanio)
+bool escribirBuffer(fstream &arc, iostream* ios, long tamanio)
 {
 	char* buffer = new char[tamanio];
 
 	ios->read(buffer, tamanio);
-	arc->write(buffer, tamanio);
+	arc.write(buffer, tamanio);
 
-	if (arc->good() && ios->good())
+	if (arc.good() && ios->good())
 	{
 		delete [] buffer;
 		return true;
@@ -37,59 +37,72 @@ bool escribirBuffer(fstream *arc, iostream* ios, long tamanio)
 }
 
 
-bool ManejadorArchivo::Crear(const char *pathArchivo, fstream *arc)
+bool ManejadorArchivo::Crear(const char *pathArchivo, fstream &arc, bool binario)
 {
-	arc->open(pathArchivo, ios::in | ios::out | ios::binary | ios::trunc );
-	if (arc->is_open())
+	if (binario)
+		arc.open(pathArchivo, ios::in | ios::out | ios::trunc| ios::binary);//es "la linea"
+	else
+		arc.open(pathArchivo, ios::in | ios::out | ios::trunc);//es "la linea"
+	if (arc.is_open())
 		return true;
 	return false;
 }
 
 
-bool ManejadorArchivo::Abrir(char *pathArchivo, fstream *arc)
+bool ManejadorArchivo::Abrir(const char *pathArchivo, fstream &arc, bool binario)
 {
-	arc->open(pathArchivo, fstream::in | fstream::out | fstream::binary);
+	if (binario)
+		arc.open(pathArchivo, fstream::in | fstream::out | fstream::binary);
+	else
+		arc.open(pathArchivo, fstream::in | fstream::out);
 
-	if (arc->is_open())
+	if (arc.is_open())
 		return true;
 	return false;
 }
 
+bool ManejadorArchivo::Existe(const char* pathArchivo, fstream & arc)
+{
+	bool aux = Abrir(pathArchivo, arc, true);
+	Cerrar(arc);
 
-bool ManejadorArchivo::EscribirDato(fstream *arc, char* contenido)
+	return aux;
+}
+
+bool ManejadorArchivo::EscribirDato(fstream &arc, char* contenido)
 {
 	//return escribirBuffer(arc,contenido, strlen(contenido));
 }
 
 /*
-bool ManejadorArchivo::EscribirBytes(fstream *arc, iostream* ios, long offset, long tamanio)
+bool ManejadorArchivo::EscribirBytes(fstream &arc, iostream* ios, long offset, long tamanio)
 {
 
 }
 */
 
-bool ManejadorArchivo::EscribirEstructura(fstream *arc, iostream* ios, long tamanio)
+bool ManejadorArchivo::EscribirEstructura(fstream &arc, iostream* ios, long tamanio)
 {
 	escribirBuffer(arc, ios, tamanio);
 }
 
 
-bool ManejadorArchivo::EscribirEstructura(fstream *arc, iostream* ios, long offset, long tamanio)
+bool ManejadorArchivo::EscribirEstructura(fstream &arc, iostream* ios, long offset, long tamanio)
 {
-	arc->seekp(offset, ios_base::beg);
+	arc.seekp(offset, ios_base::beg);
 	escribirBuffer(arc, ios, tamanio);
 }
 
 
-string ManejadorArchivo::LeerCaracteres(fstream *arc, int tamanio)
+string ManejadorArchivo::LeerCaracteres(fstream &arc, int tamanio)
 {
-	if (arc->eof())
+	if (arc.eof())
 		return "";
 	else
 	{
 		char* buffer = new char[tamanio+1];
 		stringstream sin;
-		arc->get(buffer,tamanio+1);
+		arc.get(buffer,tamanio+1);
 		sin << buffer;
 		delete[] buffer;
 
@@ -98,26 +111,31 @@ string ManejadorArchivo::LeerCaracteres(fstream *arc, int tamanio)
 }
 
 
-bool ManejadorArchivo::RecuperarEstructura(fstream *arc, iostream* ios,long offset, long cantidadALeer)
+bool ManejadorArchivo::RecuperarEstructura(fstream &arc, iostream* ios,long offset, long cantidadALeer)
 {
-	arc->seekg(offset, ios_base::beg);
+	arc.seekg(offset, ios_base::beg);
 	char * buffer = new char[cantidadALeer];
 	memset(buffer, 0, cantidadALeer);
-	arc->read(buffer, cantidadALeer);
+	arc.read(buffer, cantidadALeer);
 
 	ios->write(buffer, cantidadALeer);
 	delete[] buffer;
-	if (arc->good() && ios->good()) {
+	if (arc.good() && ios->good()) {
 		return true;
 	} else {
 		return false;
 	}
 }
 
-
-bool ManejadorArchivo::Cerrar(fstream *arc)
+void ManejadorArchivo::IrAlInicio(fstream &arc)
 {
-	arc->close();
+	arc.seekp(0, ios_base::beg);
+}
+
+
+bool ManejadorArchivo::Cerrar(fstream &arc)
+{
+	arc.close();
 	return true;
 }
 
