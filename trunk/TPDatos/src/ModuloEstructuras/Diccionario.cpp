@@ -15,7 +15,7 @@ Diccionario::Diccionario(string nombreArchivo) {
 	this->parser = new ParserArchivoTexto(STOPWORDS_TOKEN);
 	cargarDiccionario();
 
-	Logger::log("Diccionario","diccionario","se crea el diccionario.");
+	Logger::log("Diccionario", "diccionario", "se crea el diccionario.");
 }
 
 void Diccionario::cargarDiccionario() {
@@ -24,8 +24,11 @@ void Diccionario::cargarDiccionario() {
 	archivoStopWords.open(this->nombreArchivo.c_str());
 
 	parser->leerArchivo(&archivoStopWords);
-	Logger::log("Diccionario","cargarDiccionario","carga de palabras dentro del diccionario.");
+	Logger::log("Diccionario", "cargarDiccionario",
+			"carga de palabras dentro del diccionario.");
 	this->diccionario = parser->getLista();
+
+	archivoStopWords.close();
 }
 
 void Diccionario::mostrar() {
@@ -38,15 +41,18 @@ void Diccionario::mostrar() {
 
 bool Diccionario::existePalabra(string palabra) {
 	set<string>::iterator it = this->diccionario->find(palabra);
-	Logger::log("Diccionario","existePalabra","se chequea la existencia de la palabra en el diccionario.");
+	Logger::log("Diccionario", "existePalabra",
+			"se chequea la existencia de la palabra en el diccionario.");
 
 	/* Si recorrio el diccionario y encontro la palabra buscada
 	 * entonces no llego al final de la estructura.
 	 */
-	if (it != this->diccionario->end()) return true;
+	if (it != this->diccionario->end())
+		return true;
 	return false;
 }
 
 Diccionario::~Diccionario() {
-	// TODO Auto-generated destructor stub
+	this->diccionario->clear();
+	delete (this->parser);
 }
