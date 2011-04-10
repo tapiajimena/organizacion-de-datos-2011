@@ -16,6 +16,7 @@
 #include <fstream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 #include"ManejadorArchivo.h"
 #include"../ModuloDeTipos/RegistroVariable.h"
 
@@ -43,9 +44,9 @@ public:
 
 	/**
 	 *lee un dato del archivo de biblioteca en la posicion que se encuentre el cursor del archivo.
-	 *para recorrer toda la libreria habría que ir al inicio de la libreria.
+	 *para recorrer toda la biblioteca habrï¿½a que ir al inicio de la misma.
 	 */
-	uint32_t leerRegistroVariable();
+	string leerRegistroVariable();
 
 	/**
 	 * TODO deberia ser private? la posta es que deberia usarse una clase estatica ManejadorArchivo que me provea de esto
