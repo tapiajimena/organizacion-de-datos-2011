@@ -18,6 +18,7 @@
 
 #include "../../Common/Constantes.h"
 #include "../ModuloParser/ParserArchivoTexto.h"
+#include "../../Common/Utilitarios/Logger.h"
 
 using namespace std;
 
@@ -32,6 +33,7 @@ public:
 	//usar el manejador de archivo para levantar un archivo en .txt
 	void cargarDiccionario();
 
+	/* Muestra los strings contenidos */
 	void mostrar();
 
 	/**
