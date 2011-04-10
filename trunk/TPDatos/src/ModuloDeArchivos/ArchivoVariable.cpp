@@ -11,7 +11,7 @@
  */
 
 #include "ArchivoVariable.h"
-#include <iostream>
+
 
 using namespace ManejadorArchivo;
 
@@ -56,20 +56,12 @@ void ArchivoVariable::escribir(RegistroVariable & rv, uint32_t offset)
 
 void ArchivoVariable::escribirAlFinal(RegistroVariable &rv)
 {
-	uint32_t size 		= rv.getDato().getSize();
-/*
-	archivoVariable.write(reinterpret_cast<char *> (&size), sizeof(size));
-	archivoVariable.write(rv.getDato().toCharPointer(), size);
-	archivoVariable.flush();
-*/
-
 	stringstream auxStream;
+	uint32_t size 		= rv.getDato().getSize();
+
 	auxStream.write(reinterpret_cast<char *> (&size), sizeof(size));
 	auxStream.write(rv.getDato().toCharPointer(), size);
-
-	archivoVariable<< auxStream.str();
-	archivoVariable.flush();
-
+	Escribir(archivoVariable, &auxStream);
 }
 
 
@@ -115,34 +107,14 @@ void ArchivoVariable::agregarLibro(char* pathLibro)
 }
 
 
-uint32_t ArchivoVariable::leerRegistroVariable()
+string ArchivoVariable::leerRegistroVariable()
 {
 	string rdo ="";
 	uint32_t size = 0;
 	char* contenido	= (char*)malloc(0);
-	//stringstream auxStream = archivoVariable.read(reinterpret_cast<char *>(&size), sizeof(size));;
 
 	if (!this->finArchivo())
-	{
-		archivoVariable.read(reinterpret_cast<char *>(&size), sizeof(size));
-		contenido = (char*)realloc(contenido, size);
-		archivoVariable.read(contenido, size);
-
-
-		rdo = contenido;
-		rdo = rdo.substr(0,size);
-
-		cout<<size<<"; "<<contenido;
-
-		archivoVariable.read(reinterpret_cast<char *>(&size), sizeof(size));
-		contenido = (char*)realloc(contenido, size);
-		archivoVariable.read(contenido, size);
-
-		cout<<size<<"; "<<contenido;
-
-		return 0;
-	}
-	return 0;
+		return LeerDato(archivoVariable);
 }
 
 
