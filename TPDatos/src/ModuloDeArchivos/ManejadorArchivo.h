@@ -16,9 +16,9 @@
 #include <sstream>
 #include <fstream>
 #include <iostream>
-#include <cstring>
 #include "stdio.h"
 #include "stdlib.h"
+#include "stdint.h"
 #include "string.h"
 
 
@@ -56,16 +56,19 @@ namespace ManejadorArchivo
 	 bool RecuperarEstructura(fstream &arc, iostream* ios,long offset, long cantidadALeer);
 
 	/**
-	 * Escribe en el archivo arc un registro estructura al final
+	 * Escribe en el archivo arc un flujo de datos (ss).
 	 * arc debe estar abierto
 	 */
-	 bool EscribirEstructura(fstream &arc, iostream* ios, long tamanio);
+	 bool Escribir(fstream &arc, stringstream* ss);
 
 	/**
-	 * Escribe en el archivo arc un registro estructura con un corrimiento offset.
+	 * Escribe en el archivo arc un flujo de datos (ss).
 	 * arc debe estar abierto
 	 */
-	 bool EscribirEstructura(fstream &arc, iostream* ios, long offset, long tamanio);
+	 bool Escribir(fstream &arc, stringstream* ss, long offset);
+
+
+	 string LeerDato(fstream &arc);
 
 
 	//lee un archivo abierto
