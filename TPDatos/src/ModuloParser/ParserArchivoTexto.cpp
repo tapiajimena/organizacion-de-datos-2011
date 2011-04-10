@@ -1,15 +1,17 @@
 /*
  * ParserArchivoTexto.cpp
  *
- *  Created on: Apr 9, 2011
- *      Author: jimena
+ *	Autor	: GRUPO 1 - Fernandez, Gallinal, Maraggi, Tapia
+ *	Catedra	: SERVETTO-FERRER-FERNANDEZ
+ *	Materia	: Organizacion de Datos (75.06) - FIUBA
+ *
  */
 
 #include "ParserArchivoTexto.h"
 
 ParserArchivoTexto::ParserArchivoTexto(string token) {
 	this->separador = token;
-	this->listaPalabras = new set<string>();
+	this->listaPalabras = new set<string> ();
 	this->it = listaPalabras->begin();
 }
 
@@ -19,7 +21,7 @@ void ParserArchivoTexto::leerArchivo(fstream* archivo) {
 	if (archivo->is_open()) {
 		//METER LOGGER(parserArchivoTexto,leerArchivo,"Se comienza a leer el archivo de stopwords");
 		do {
-			archivo->getline(buffer,STOPWORDS_LENGTH);
+			archivo->getline(buffer, STOPWORDS_LENGTH);
 			cargarEstructura(getDato(buffer));
 		} while (!archivo->eof());
 	} else {
@@ -29,17 +31,19 @@ void ParserArchivoTexto::leerArchivo(fstream* archivo) {
 }
 
 string ParserArchivoTexto::getDato(string buffer) {
-	return string (buffer.substr(0,buffer.size()));
+	return string(buffer.substr(0, buffer.size()));
 }
 
 set<string>* ParserArchivoTexto::getLista() {
 	return this->listaPalabras;
 }
 
-void ParserArchivoTexto::cargarEstructura(string palabra){
-	if (palabra != STOPWORDS_TOKEN) this->listaPalabras->insert(palabra);
+void ParserArchivoTexto::cargarEstructura(string palabra) {
+	if (palabra != STOPWORDS_TOKEN)
+		this->listaPalabras->insert(palabra);
 }
 
 ParserArchivoTexto::~ParserArchivoTexto() {
-	// TODO Auto-generated destructor stub
+	this->listaPalabras->clear();
+	delete (this->listaPalabras);
 }
