@@ -38,9 +38,11 @@ void testEscrituraLectura()
 	//se lee
 	uint32_t sizeAux = 0;
 	arcReg->irAInicio();
+	/*
 	string rdo = arcReg->leerRegistroVariable();
 	while(!arcReg->finArchivo())
 		cout<< sizeAux<<";"<<arcReg->leerRegistroVariable()<<";"<<endl;
+		*/
 }
 
 
@@ -51,14 +53,12 @@ int main()
 	RegistroVariable* rv = new RegistroVariable(*datos);
 	ArchivoVariable* arcReg = new ArchivoVariable("prueba.dat");
 
-	cout<<"HOLA MUNDO!!";
 
-	arcReg->agregarLibro("Arthur Conan Doyle - Estudio en Escarlata.txt");
-	arcReg->agregarLibro("Arthur Conan Doyle - El signo de los cuatro.txt");
+	arcReg->agregarLibro("doc/libros/Arthur Conan Doyle - El signo de los cuatro.txt");
+	arcReg->agregarLibro("doc/libros/Arthur Conan Doyle - Estudio en Escarlata.txt");
 
 	arcReg->irAInicio();
-	while(!arcReg->finArchivo())
-		cout<< arcReg->leerRegistroVariable()<<";"<<endl;
+	cout<< arcReg->leerRegistroVariable()<<";"<<endl;
 
 	delete(rv);
     delete(datos);
