@@ -22,6 +22,7 @@ ArchivoControlLibro::ArchivoControlLibro() {
 
 
 ArchivoControlLibro::ArchivoControlLibro(string path) {
+	//TODO usar el manejador y si existe el archivo que llame a Abrir y no a Crear
 	Crear(path.c_str(),archivoControlLibro, false);
 
 }
@@ -46,14 +47,14 @@ void ArchivoControlLibro::registrarLibro(uint32_t idLibro)
 	stringstream ssAux;
 	char aux[11]; // 11 bytes: 10 for the digits, 1 for the null character
 
-	snprintf(aux, sizeof aux, "%lu", (unsigned long)idLibro); /* Method 1 */
+	snprintf(aux, sizeof aux, "%lu", (uint32_t)idLibro);
 
 	if (idLibro>0)//si no es el primer archivo se le inserta un enter adelante
 		str = "\n";
 
 	//se arma el string:
 	//offset|sizeLibre|TagAutor|TagEditorial|TagTitulo|TagPalabras (se inicializan en 0 los tags)
-	str= str + aux +"|0|0|0|0|0";
+	str= str + aux + INICIALIZACION_ARCHIVO_LIBRO_CONTROL;
 
 	ssAux.write(str.c_str(), str.length());
 	Escribir(archivoControlLibro, &ssAux);

@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ManejadorArchivo.h"
+#include "./Common/Constantes.h"
 #include "../ModuloDeTipos/DatoControlLibro.h"
 
 
