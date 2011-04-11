@@ -4,65 +4,99 @@
 
 */
 #include <iostream>
-#include "ModuloDeTipos/Datos.h"
-#include "ModuloDeTipos/Registro.h"
-#include "ModuloDeTipos/RegistroFijo.h"
-#include "ModuloDeTipos/RegistroVariable.h"
-#include "ModuloDeArchivos/ArchivoVariable.h"
+#include "ModuloDeInterfaz/ParserDeLibros.h"
+#include "ModuloDeInterfaz/Libro.h"
+#include "ModuloDeTipos/DatoLibro.h"
+#include "ModuloDeArchivos/ArchivoLibro.h"
+#include "ModuloDeArchivos/ArchivoControlLibro.h"
+#include "ModuloDeArchivos/ManejadorArchivo.h"
 
 
-/**
- * hacer el test con el CUTE
- */
-void testEscrituraLectura()
+//testeo de clase Dato y DatoLibro
+void testDato()
 {
-	Datos* datos = new Datos();
-	RegistroVariable* rv = new RegistroVariable(*datos);
-	ArchivoVariable* arcReg = new ArchivoVariable("prueba.dat");
+	DatoLibro* dato = new DatoLibro("PIRULO EL DEL BOSQUE!!!");
 
-	//se escribe. abre y se cierra el archivo n veces
-	for (int i = 65; i < 512; i++)
-	{
-		datos->setDatos(datos->getDatos()+(char)i);
-		rv->setDato(*datos);
-		arcReg->escribirAlFinal(*rv);
-	}
+	cout<<dato->toCharPointer()<<endl;
+	dato->vaciar();
+	if (dato->estaVacio())
+		cout<<"NO ESTA MAS!!";
+	cout<<dato->toCharPointer();
 
-	/*
-	//test agregarAlFinal
-	datos->setDatos("PIRULO EN EL BOSQUE Ññ áÁ Éé íÍ óÓ úÚÜ &!");
-	rv->setDato(*datos);
-	arcReg->escribirAlFinal(*rv);
-	*/
-
-	//se lee
-	uint32_t sizeAux = 0;
-	arcReg->irAInicio();
-	/*
-	string rdo = arcReg->leerRegistroVariable();
-	while(!arcReg->finArchivo())
-		cout<< sizeAux<<";"<<arcReg->leerRegistroVariable()<<";"<<endl;
-		*/
+	delete(dato);
 }
 
+void cargarLibros(ArchivoLibro* arcReg, ArchivoControlLibro* arcControl)
+{
+	arcControl->registrarLibro(arcReg->getPosicionActual());
+	arcReg->agregarLibro("doc/libros/Arthur Conan Doyle - El signo de los cuatro.txt");
+
+	arcControl->registrarLibro(arcReg->getPosicionActual());
+	arcReg->agregarLibro("doc/libros/Arthur Conan Doyle - Estudio en Escarlata.txt");
+
+	arcControl->registrarLibro(arcReg->getPosicionActual());
+	arcReg->agregarLibro("doc/libros/Stephen King - Cell.txt");
+
+	arcControl->registrarLibro(arcReg->getPosicionActual());
+	arcReg->agregarLibro("doc/libros/Stephen King - Historias fantásticas.txt");
+
+	arcControl->registrarLibro(arcReg->getPosicionActual());
+	arcReg->agregarLibro("doc/libros/Stephen King - La Expedición.txt");
+
+	arcControl->registrarLibro(arcReg->getPosicionActual());
+	arcReg->agregarLibro("doc/libros/Stephen King - La torre Oscura I.txt");
+
+	arcControl->registrarLibro(arcReg->getPosicionActual());
+	arcReg->agregarLibro("doc/libros/Stephen King - The Dead Zone.txt");
+
+	arcControl->registrarLibro(arcReg->getPosicionActual());
+	arcReg->agregarLibro("doc/libros/Umberto Eco - El Nombre de la Rosa.txt");
+
+
+	arcControl->registrarLibro(arcReg->getPosicionActual());
+	arcReg->agregarLibro("doc/libros/Arthur Conan Doyle - El signo de los cuatro.txt");
+
+	arcControl->registrarLibro(arcReg->getPosicionActual());
+	arcReg->agregarLibro("doc/libros/Arthur Conan Doyle - Estudio en Escarlata.txt");
+}
 
 using namespace std;
 int main()
 {
-	Datos* datos = new Datos();
-	RegistroVariable* rv = new RegistroVariable(*datos);
-	ArchivoVariable* arcReg = new ArchivoVariable("prueba.dat");
+
+	DatoLibro* dato = new DatoLibro();
+	ArchivoLibro* arcReg = new ArchivoLibro("prueba.dat");
+	ArchivoControlLibro* arcControl = new ArchivoControlLibro("pruebaControl.crt");
 
 
-	arcReg->agregarLibro("doc/libros/Arthur Conan Doyle - El signo de los cuatro.txt");
-	arcReg->agregarLibro("doc/libros/Arthur Conan Doyle - Estudio en Escarlata.txt");
+	fstream fs;
+	Libro* libro = new Libro();
+	ParserDeLibros* parserLibros = new ParserDeLibros("../Common/stopwordstest.txt");
+	ManejadorArchivo::Crear("pruebaParser.par", fs, false);
+	libro = parserLibros->parsearLibro("doc/libros/Arthur Conan Doyle - El signo de los cuatro.txt");
 
-	arcReg->irAInicio();
+	//Se imprimen por archivo primeras 100 Palabras Clave
+	EstructuraPalabrasClave* palabrasClave = libro->getPalabrasClave();
+	int x = 0;
+	for (EstructuraPalabrasClave::iterator it_palabrasClave = palabrasClave->begin();
+			it_palabrasClave != palabrasClave->end() && x < 100;
+			it_palabrasClave++)
+		fs<<it_palabrasClave->first<<std::endl;
+
+
+	cargarLibros(arcReg, arcControl);
+	/*
+	//se recorre toda la biblioteca
+	arcReg->irAlInicio();
 	cout<< arcReg->leerRegistroVariable()<<";"<<endl;
+ 	 */
 
-	delete(rv);
-    delete(datos);
+
+	delete(dato);
+	delete(libro);
     delete(arcReg);
+    delete(arcControl);
+    delete(parserLibros);
 
     return 0;
 }
