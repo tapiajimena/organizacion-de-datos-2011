@@ -16,12 +16,13 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <stdint.h>
 
 using namespace std;
 class Dato
 {
 
-private:
+public:
 	stringstream dato;
 
 public:
@@ -31,20 +32,9 @@ public:
 	Dato(const Dato & d);
 
 	/**
-	 * agrega Dato d en una posicion.
-	 * Si la posicion es mayor al lenght devuelve false
-	 */
-	bool agregar(const Dato & d,unsigned int posicion);
-
-	/**
-	 *
-	 */
-	bool agregarAlFinal(const Dato & d);
-
-	/**
 	 *indica si el dato esta vacio
 	 */
-	bool vacio();
+	bool estaVacio();
 
 
 	/**
@@ -56,11 +46,12 @@ public:
 	char* toCharPointer();
 
 
-	string getDatos();
-    void setDatos(stringstream dato);
-    void setDatos(char* dato);
+	string getDato();
+	void setDato(stringstream dato);
+	void setDato(char* dato);
+	void setDato(string dato);
 
-    long int getSize();
+	long int getSize();
 
 
 
