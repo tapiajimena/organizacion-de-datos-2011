@@ -59,7 +59,6 @@ void ArchivoLibro::escribirAlFinal(DatoLibro &d)
 	string aux = d.toString();
 	uint32_t size = d.getSize();
 
-
 	auxStream.write(reinterpret_cast<char *> (&size), sizeof(size));
 	auxStream.write(aux.c_str(), size);
 	Escribir(archivoVariable, &auxStream);
@@ -118,6 +117,11 @@ string ArchivoLibro::leerRegistroVariable()
 uint32_t ArchivoLibro::getSizeArchivo()
 {
 	return GetSizeArchivo(archivoVariable);
+}
+
+uint32_t ArchivoLibro::getPosicionActual()
+{
+	return archivoVariable.tellg();
 }
 
 bool ArchivoLibro::finArchivo()
