@@ -10,7 +10,7 @@
  *      
  */
 
-#include "ArchivoVariable.h"
+#include "ArchivoLibro.h"
 
 
 using namespace ManejadorArchivo;
