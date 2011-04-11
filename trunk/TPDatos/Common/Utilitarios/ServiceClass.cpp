@@ -142,7 +142,8 @@ std::vector<std::string> ServiceClass::obtenerListaPalabras(std::string linea, s
 
 		listaPalabras.push_back(stopWord);
 
-		pch = strtok (NULL, " ,.-");
+		//pch = strtok (NULL, " ,.-");
+		pch = strtok (NULL, separadores.c_str());
 	}
 
 	delete a; //liberamos memoria...
