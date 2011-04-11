@@ -14,29 +14,42 @@
 
 #include "Libro.h"
 #include "../Common/Utilitarios/ServiceClass.h"
-#include <map>
+#include "../ModuloEstructuras/Diccionario.h"
+#include <iostream>
+//#include <map>
 
 //typedef std::vector<std::string> EstructuraStopWords;
-
 //Se ignora el dato entero, pero se aprovecha la eficiencia de map para insertar y buscar elementos
-typedef std::map<std::string, int> EstructuraStopWords;
+//typedef std::map<std::string, int> EstructuraStopWords;
+
+//Constantes que se esperan en el libro para reconocer la definición de los atributos.
+#define FLAG_AUTOR "#AUTOR_LIBRO"
+#define FLAG_TITULO "#TITULO_LIBRO"
+#define FLAG_EDITORIAL "#EDITORIAL_LIBRO"
 
 class ParserDeLibros {
 
 private:
 
+
 	//Procesa la línea de caracteres y carga los datos obtenidos en la estructura del libro
 	void procesarLineaLibro(std::string linea, Libro* libro);
 
+	//Procesa la línea de caracteres cuando se espera que se defina un atributo del encabezado, autor, título o editorial.
+	void procesarLineaLibroAtributos(std::string lineaLibro, bool &hayAutor, bool &hayTitulo, bool &hayEditorial);
+
+	/*
 	//Obtiene las stopwords de la línea y las carga en la estructura del parser, para que las tenga en cuenta
 	void procesarLineaStopWords(std::string linea);
+	*/
 
 	//Nombre archivo de texto que contiene las stopwords
 	//Stopwords son las palabras que se ignoran en los libros para el listado de palabras.
-	std::string nombreArchivoStopWords;
+	//std::string nombreArchivoStopWords;
 
 	//Estructura para almacenar las stopwords
-	EstructuraStopWords listaStopWords;
+
+	Diccionario* diccionarioStopWords;
 
 public:
 	/* Builder de la clase. Abre el archivo de stopwords pasado por par
@@ -47,7 +60,6 @@ public:
 
 	//Parsea el archivo de libro pasado por parametro
 	Libro* parsearLibro(std::string nombreArchivo);
-
 };
 
 #endif /* PARSERDELIBROS_H_ */
