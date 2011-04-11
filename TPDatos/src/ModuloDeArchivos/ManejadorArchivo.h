@@ -20,6 +20,7 @@
 #include "stdlib.h"
 #include "stdint.h"
 #include "string.h"
+#include "../ModuloDeTipos/Dato.h"
 
 
 using namespace std;
@@ -44,13 +45,20 @@ namespace ManejadorArchivo
 	 bool Existe(const char* pathArchivo, fstream &arc);
 
 	/**
-	 * se escriben los bytes contenido al final del archivo arc
+	 * se escriben los datos contenido al final del archivo arc
 	 * arc debe estar abierto
 	 */
-	 bool EscribirDato(fstream &arc, char* contenido);
+	 bool EscribirDato(fstream &arc, Dato *d);
+
+	 /*
+	 * se escriben los datos contenido con un corrimiento offset
+	 * arc debe estar abierto
+	  */
+	 bool EscribirDato(fstream &arc, Dato* d, uint32_t offset);
+
 
 	/*
-	 * se escriben los bytes contenido en arc con un corrimiento offset
+	 * se escriben los datos en arc con un corrimiento offset
 	 * arc debe estar abierto
 	 */
 	 bool RecuperarEstructura(fstream &arc, iostream* ios,long offset, long cantidadALeer);

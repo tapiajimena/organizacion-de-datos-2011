@@ -46,11 +46,20 @@ bool ManejadorArchivo::Existe(const char* pathArchivo, fstream & arc)
 	return aux;
 }
 
-bool ManejadorArchivo::EscribirDato(fstream &arc, char* contenido)
+bool ManejadorArchivo::EscribirDato(fstream &arc, Dato* d)
 {
-	//return escribirBuffer(arc,contenido, strlen(contenido));
+	stringstream aux;
+	aux << d->getDato();
+	Escribir(arc, &aux);
 }
 
+bool ManejadorArchivo::EscribirDato(fstream &arc, Dato* d, uint32_t offset)
+{
+	arc.seekg(offset, ios_base::beg);
+	stringstream aux;
+	aux << d->getDato();
+	Escribir(arc, &aux);
+}
 
 bool ManejadorArchivo::Escribir(fstream &arc, stringstream * ss)
 {
