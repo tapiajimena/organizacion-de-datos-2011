@@ -100,6 +100,11 @@ public:
 	uint32_t getSizeArchivo();
 
 	/**
+	 * devuelve la posicion actual del puntero del archivo
+	 */
+	uint32_t getPosicionActual();
+
+	/**
 	 * cierra el archivo de biblioteca
 	 */
 	virtual ~ArchivoLibro();
