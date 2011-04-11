@@ -3,7 +3,7 @@
  *  
  *	Autor	: GRUPO 1 - Fernandez, Gallinal, Maraggi, Tapia
  *	Catedra	: SERVETTO-FERRER-FERNANDEZ
- *	Materia	: Organizacion de Datos (75.06) - FIUBA
+ *	Materia	: Organizacion de DatoLibro (75.06) - FIUBA
  *      
  *  
  *      
@@ -38,11 +38,10 @@ void ArchivoVariable::abrir()
 }
 
 
-void ArchivoVariable::escribir(RegistroVariable & rv, uint32_t offset)
+void ArchivoVariable::escribir(DatoLibro & d, uint32_t offset)
 {
-	Datos 	aux 		= rv.getDato();
-	string 	buffer 		= aux.toString();
-	uint32_t size 		= buffer.size();
+	string 			buffer 	= d.toString();
+	uint32_t 		size 	= buffer.size();
 
 
 	this->archivoVariable.seekp(offset, ios_base::beg);
@@ -54,18 +53,20 @@ void ArchivoVariable::escribir(RegistroVariable & rv, uint32_t offset)
 
 
 
-void ArchivoVariable::escribirAlFinal(RegistroVariable &rv)
+void ArchivoVariable::escribirAlFinal(DatoLibro &d)
 {
 	stringstream auxStream;
-	uint32_t size 		= rv.getDato().getSize();
+	string aux = d.toString();
+	uint32_t size = d.getSize();
+
 
 	auxStream.write(reinterpret_cast<char *> (&size), sizeof(size));
-	auxStream.write(rv.getDato().toCharPointer(), size);
+	auxStream.write(aux.c_str(), size);
 	Escribir(archivoVariable, &auxStream);
 }
 
 
-void ArchivoVariable::irAInicio()
+void ArchivoVariable::irAlInicio()
 {
 	IrAlInicio(archivoVariable);
 }
@@ -87,7 +88,7 @@ char* ArchivoVariable::leer(fstream & arcLibro, uint32_t & size)
 void ArchivoVariable::agregarLibro(char* pathLibro)
 {
 	string rdo;
-	Datos dato;
+	DatoLibro dato;
 	uint32_t sizeAux;
 	fstream arcLibro(pathLibro, ios::in | ios::binary);
 
@@ -97,22 +98,18 @@ void ArchivoVariable::agregarLibro(char* pathLibro)
 	//se procesa
 	rdo = contenidoLibro;
 	rdo = rdo.substr(0,sizeAux);
-	dato.setDatos(rdo);
-	RegistroVariable* rv = new RegistroVariable(dato);
+	dato.setDato(rdo);
+
 
 	arcLibro.close();//se cierra el arcLibro
-	escribirAlFinal(*rv);//se escribe en la biblioteca
-	delete (rv);
+	escribirAlFinal(dato);//se escribe en la biblioteca
+
 	arcLibro.close();
 }
 
 
 string ArchivoVariable::leerRegistroVariable()
 {
-	string rdo ="";
-	uint32_t size = 0;
-	char* contenido	= (char*)malloc(0);
-
 	if (!this->finArchivo())
 		return LeerDato(archivoVariable);
 }

@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include"ManejadorArchivo.h"
-#include"../ModuloDeTipos/RegistroVariable.h"
+#include"../ModuloDeTipos/DatoLibro.h"
 
 
 class ArchivoVariable {
@@ -64,12 +64,12 @@ public:
 	/**
 	 *escribe el dato de rv en la posicion offset
 	 */
-	void escribir(RegistroVariable & rv, uint32_t offset);
+	void escribir(DatoLibro & d, uint32_t offset);
 
 	/**
 	 * escribe el contenido al final del archivo prueba.dat abriendo y cerrando el archivo
 	 */
-	void escribirAlFinal(RegistroVariable & rv);
+	void escribirAlFinal(DatoLibro & d);
 
 	/**
 	 * TODO implementar
@@ -86,7 +86,7 @@ public:
 	/**
 	 *posiciona el puntero del archivo en el inicio.
 	 */
-	void irAInicio();
+	void irAlInicio();
 
 	/**
 	 * devuelve true si se llego al final del archivo
