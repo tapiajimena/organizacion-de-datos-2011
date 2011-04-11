@@ -34,35 +34,18 @@ Dato::Dato(string s)
 }
 
 
-bool Dato::agregar(const Dato & d,unsigned int posicion)
-{
-	//si el offset (corrimiento) supera el tamano de los dato => false
-	if (posicion > this->dato.str().length())
-		return false;
-	else
-	{
-		//TODO revisar bien que solo serviria para char* o string
-		this->dato.str().insert(posicion,d.toString());
-		return true;
-	}
-
-}
-
 void Dato::vaciar()
 {
 	this->dato.clear();
+	this->dato.str( "" );
 }
 
-bool Dato::vacio()
+bool Dato::estaVacio()
 {
 	return this->dato.str().empty();//devuelve tipo bool
 }
 
-bool Dato::agregarAlFinal(const Dato & d)
-{
-	this->agregar(d, this->dato.str().length());
-	return  true;
-}
+
 
 string Dato::toString() const
 {
@@ -72,29 +55,38 @@ string Dato::toString() const
 
 char* Dato::toCharPointer()
 {
-	return (char*) this->dato.str().c_str();
+	string aux = this->dato.str();
+	return (char*) aux.c_str();
 }
 
-
-string Dato::getDatos()
+string Dato::getDato()
 {
 	return this->dato.str();
 }
 
-void Dato::setDatos(stringstream dato)
+
+void Dato::setDato(stringstream dato)
 {
 	this->vaciar();
     this->dato << dato;
 }
 
-void Dato::setDatos(char* dato)
+void Dato::setDato(char* dato)
 {
-    this->dato.str() = (string)dato;
+	this->vaciar();
+	this->dato << (string)dato;
+}
+
+void Dato::setDato(string dato)
+{
+	this->vaciar();
+	this->dato << dato;
 }
 
 long int Dato::getSize()
 {
-	return this->dato.str().length();
+	string aux = dato.str();
+	return aux.length();
 }
 
 Dato::~Dato() {
