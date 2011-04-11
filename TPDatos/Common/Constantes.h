@@ -22,6 +22,7 @@
 /* Define la cantidad de caracteres de cada stopword */
 #define STOPWORDS_LENGTH 30
 
+/*Usado para el ArchivoControlLibros al momento de guardar el archivo de control*/
 #define INICIALIZACION_ARCHIVO_LIBRO_CONTROL "|0|-|-|-|-"
 
 
