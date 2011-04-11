@@ -22,6 +22,8 @@
 /* Define la cantidad de caracteres de cada stopword */
 #define STOPWORDS_LENGTH 30
 
+#define INICIALIZACION_ARCHIVO_LIBRO_CONTROL "|0|-|-|-|-"
+
 
 
 #endif /* CONSTANTES_H_ */
