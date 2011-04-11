@@ -22,8 +22,10 @@ private:
 
 	std::string _ISBN;
 
+	std::string _editorial;
+
 	//Estructura que guarda las palabras clave del libro y asociadas al número de veces que aparece cada palabra en el libro
-	EstructuraPalabrasClave _palabrasClave;
+	EstructuraPalabrasClave* _palabrasClave;
 
 public:
 
@@ -39,11 +41,15 @@ public:
 
 	void setAutor(std::string autor);
 
+	void setEditorial(std::string);
+
+	void getEditorial(std::string);
+
 	std::string getISBN();
 
 	void setISBN(std::string ISBN);
 
-	EstructuraPalabrasClave getPalabrasClave();
+	EstructuraPalabrasClave* getPalabrasClave();
 
 	void agregarPalabraClave(std::string palabra);
 };

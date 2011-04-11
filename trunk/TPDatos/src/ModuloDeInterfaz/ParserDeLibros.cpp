@@ -12,7 +12,7 @@ ParserDeLibros::ParserDeLibros(std::string nombreArchivoStopWords)
 {
 
 	//Cargamos lista de stopwords
-
+	/*
 	std::ifstream archivoStopWords;
 	archivoStopWords.open( nombreArchivoStopWords.c_str() );
 
@@ -33,17 +33,25 @@ ParserDeLibros::ParserDeLibros(std::string nombreArchivoStopWords)
 	{
 		throw "No se pudo abrir el archivo de stopwords";
 	}
+	*/
+
+	//this->nombreArchivoStopWords = nombreArchivoStopWords;//por si acaso... no va a hacer falta.
+
+	this->diccionarioStopWords = new Diccionario(nombreArchivoStopWords);
+
+	this->diccionarioStopWords->cargarDiccionario();
 };
 
 ParserDeLibros::~ParserDeLibros()
 {
-
+	delete this->diccionarioStopWords;
 };
 
 void ParserDeLibros::procesarLineaLibro(std::string linea, Libro* libro)
 {
 	//Definir si la cadena tiene el formato especial de alguno de los campos especiales...
-	std::string separadoresPalabras = " .-;:¿?¡!'<@>)(";
+	std::string separadoresPalabras = " .,-;:¿?¡!'<@>)(";
+
 	std::vector<std::string> palabrasDeLinea = ServiceClass::obtenerListaPalabras(linea, separadoresPalabras);
 
 	std::vector<std::string>::iterator it_PalabrasDeLinea;
@@ -52,8 +60,13 @@ void ParserDeLibros::procesarLineaLibro(std::string linea, Libro* libro)
 	{
 		std::string palabra = *it_PalabrasDeLinea;
 
-		EstructuraStopWords::iterator it_StopWords = this->listaStopWords.find(palabra);
-		if( it_StopWords == this->listaStopWords.end() )
+		//Trabajamos todo en minúsculas.
+		palabra = ServiceClass::toDowncase(palabra);
+
+		//EstructuraStopWords::iterator it_StopWords = this->listaStopWords.find(palabra);
+		bool esStopWord = this->diccionarioStopWords->existePalabra(palabra);
+		//if( it_StopWords == this->listaStopWords.end() )
+		if (!esStopWord)
 		{
 			libro->agregarPalabraClave(palabra);
 		}
@@ -66,6 +79,29 @@ void ParserDeLibros::procesarLineaLibro(std::string linea, Libro* libro)
 	//Se ignoran las stopwords y se pasan los filtros downcase y
 }
 
+
+void ParserDeLibros::procesarLineaLibroAtributos(std::string lineaLibro, bool &hayAutor, bool &hayTitulo, bool &hayEditorial)
+{
+	/* Terminar esto...
+	std::vector<std::string> listaPalabras = ServiceClass::obtenerListaPalabras(lineaLibro, " ");
+
+	if (listaPalabras.at(0) == FLAG_AUTOR)
+	{
+		hayAutor = true;
+	}
+	else if (listaPalabras.at(0) == FLAG_TITULO)
+	{
+		hayTitulo = true;
+	}
+	else if (listaPalabras.at(0) == FLAG_EDITORIAL)
+	{
+		hayEditorial = true;
+	}
+	*/
+}
+
+
+/*
 void ParserDeLibros::procesarLineaStopWords(std::string linea)
 {
 
@@ -82,6 +118,7 @@ void ParserDeLibros::procesarLineaStopWords(std::string linea)
 
 	}
 }
+*/
 
 Libro* ParserDeLibros::parsearLibro(std::string nombreArchivo)
 {
@@ -93,20 +130,37 @@ Libro* ParserDeLibros::parsearLibro(std::string nombreArchivo)
 
 	std::string lineaLibro;
 
+
+	bool hayAutor = false;
+	bool hayTitulo = false;
+	bool hayEditorial = false;
+
 	if (archivoLibro.is_open())
 	{
-	    while ( archivoLibro.good() )
+		//Primero se procesa el encabezado del libro y se buscan los atributos 'primarios'.
+		/*
+		while ( archivoLibro.good() && (!hayAutor || !hayTitulo || !hayEditorial))
+		{
+			getline (archivoLibro, lineaLibro);
+			//Como se especificó en la estrategia de resolución del parser, no se empieza a formar
+			//la lista de palbras del texto hasta haber encontrado los atributos 'autor', 'titulo' y editorial'
+			procesarLineaLibroAtributos(lineaLibro, hayAutor, hayTitulo, hayEditorial);
+		}
+		*/
+
+		//Luego se considera que empieza el libro propiamente dicho, y se inicia el listado de palabras.
+	    while ( archivoLibro.good())
 	    {
 	      getline (archivoLibro, lineaLibro);
 
 	      procesarLineaLibro(lineaLibro, libro);
-	      //cout << line << endl; //salida al log
 	    }
 	    archivoLibro.close();
 	}
 	else
 	{
 		throw "No se pudo abrir el archivo de libro";
+		//std::sstream mensaje<<"asdf";
 	}
 
 	return libro;

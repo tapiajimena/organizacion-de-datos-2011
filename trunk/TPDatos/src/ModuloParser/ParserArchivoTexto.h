@@ -17,8 +17,9 @@
 #include <fstream>
 #include <set>
 #include <iostream>
+#include <../Common/Utilitarios/ServiceClass.h> //Para pasar a minúsculas las palabras que se cargan.
 
-#include "Constantes.h"
+#include "../../Common/Constantes.h"
 
 using namespace std;
 

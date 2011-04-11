@@ -40,7 +40,11 @@ set<string>* ParserArchivoTexto::getLista() {
 
 void ParserArchivoTexto::cargarEstructura(string palabra) {
 	if (palabra != STOPWORDS_TOKEN)
+	{
+		//Se pasa todo a minúsculas
+		palabra = ServiceClass::toDowncase(palabra);
 		this->listaPalabras->insert(palabra);
+	}
 }
 
 ParserArchivoTexto::~ParserArchivoTexto() {
