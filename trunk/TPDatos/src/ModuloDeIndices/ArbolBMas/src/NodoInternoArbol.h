@@ -18,19 +18,22 @@
 
 using namespace std;
 
-class NodoInternoArbol: NodoArbol {
+class NodoInternoArbol: public NodoArbol {
 private:
-	list<int> claves;
+	list<string> claves;
 	list<int> hijos;
 
 public:
 	NodoInternoArbol();
 
 	/* Getters y Setters */
-    list<int> getClaves() const;
-    list<int> getHijos() const;
-    void setClaves(list<int> claves);
+
+    void setClaves(list<string> claves);
     void setHijos(list<int> hijos);
+
+    virtual bool isOverflowded(int blockSize);
+    virtual list<string> getClaves() const;
+    virtual list<int> getHijos() const;
 
 	virtual ~NodoInternoArbol();
 };

@@ -13,6 +13,8 @@
 #ifndef NODOARBOL_H_
 #define NODOARBOL_H_
 
+#include <list>
+
 class NodoArbol {
 protected:
 	int id;
@@ -25,6 +27,9 @@ public:
 	/* Setters y Getters */
     void setId(int id);
     int getId() const;
+
+    virtual list<int> getHijos() const=0;
+    virtual list<string> getClaves() const=0;
 
 	virtual ~NodoArbol();
 
