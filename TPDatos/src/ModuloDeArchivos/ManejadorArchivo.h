@@ -57,13 +57,7 @@ namespace ManejadorArchivo
 	 bool EscribirDato(fstream &arc, Dato* d, uint32_t offset);
 
 
-	/*
-	 * se escriben los datos en arc con un corrimiento offset
-	 * arc debe estar abierto
-	 */
-	 bool RecuperarEstructura(fstream &arc, iostream* ios,long offset, long cantidadALeer);
-
-	/**
+	 /**
 	 * Escribe en el archivo arc un flujo de datos (ss).
 	 * arc debe estar abierto
 	 */
@@ -76,6 +70,22 @@ namespace ManejadorArchivo
 	 bool Escribir(fstream &arc, stringstream* ss, long offset);
 
 
+	/*
+	 * se leen los datos de arc con un corrimiento offset en ss
+	 * arc debe estar abierto
+	 * ss se almacena la estructura recuperada
+	 * offset lugar a posicionarse al leer
+	 */
+	 bool RecuperarEstructura(fstream &arc, stringstream &ss,uint32_t offset);
+
+
+	/**
+	 * Lee la estructura (de tamano tamanioEstructura) de un archivo ubicada en una posicion posEst
+	 * Devuelve un void*
+	 * arc debe estar abierto
+	 */
+	 bool RecuperarEstructura(fstream &arc, stringstream &ss,uint32_t posEstructura, long tamanioEstructura);
+
 	 string LeerDato(fstream &arc);
 
 	//lee un archivo abierto
@@ -84,13 +94,6 @@ namespace ManejadorArchivo
 
 	 uint32_t GetSizeArchivo(fstream & arc);
 
-
-	/**
-	 * Lee la estructura (de tamano tamanioEstructura) de un archivo ubicada en una posicion posEst
-	 * Devuelve un void*
-	 * arc debe estar abierto
-	 */
-	 void* RecuperarEstructura(fstream &arc, long posEscructura, long tamanioEsctructura);
 
 	/**
 	 *posiciona el puntero del archivo en el inicio.

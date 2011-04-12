@@ -43,39 +43,20 @@ public:
 	void abrir();
 
 	/**
-	 *lee un dato del archivo de biblioteca en la posicion que se encuentre el cursor del archivo.
-	 *para recorrer toda la biblioteca habr�a que ir al inicio de la misma.
-	 */
-	string leerRegistroVariable();
-
-	/**
-	 * TODO deberia ser private? la posta es que deberia usarse una clase estatica ManejadorArchivo que me provea de esto
-	 * lee el archivo (arcLibro) de texto completo y lo devuelve como char*
-	 */
-	char* leer(fstream & arcLibro, uint32_t & sizeALeer);
-
-	/**
 	 * ingresa el libro de path pathLibro a la libreria (archivoVariable).
 	 * almacena el archivo al final de la libreria.
 	 * pathLibro: ruta+nombre del archivo que se quiere agregar a la biblioteca
 	 */
 	void agregarLibro(char* pathLibro);
 
-	/**
-	 *escribe el dato de rv en la posicion offset
-	 */
-	void escribir(DatoLibro & d, uint32_t offset);
+
+	DatoLibro recuperarLibro(uint32_t idLibro);
 
 	/**
-	 * escribe el contenido al final del archivo prueba.dat abriendo y cerrando el archivo
+	 *lee un dato del archivo de biblioteca en la posicion que se encuentre el cursor del archivo.
+	 *para recorrer toda la biblioteca habr�a que ir al inicio de la misma.
 	 */
-	void escribirAlFinal(DatoLibro & d);
-
-	/**
-	 * TODO implementar
-	 * eliminar el numero de registro nroRegistro de la biblioteca
-	 */
-	void eliminar(int nroRegistro);
+	string recuperarBiblioteca();
 
 	/**
 	 * TODO implementar
@@ -103,6 +84,31 @@ public:
 	 * devuelve la posicion actual del puntero del archivo
 	 */
 	uint32_t getPosicionActual();
+
+
+private:
+	/**
+	 * lee cierta cantidad de caracteres (sizeAleer)
+	 * lee el archivo (arcLibro) de texto completo y lo devuelve como char*
+	 */
+	char* leer(fstream & arcLibro, uint32_t & sizeALeer);
+
+
+	/**
+	 *escribe el dato de rv en la posicion offset
+	 */
+	void escribir(DatoLibro & d, uint32_t offset);
+
+	/**
+	 * escribe el contenido al final del archivo prueba.dat abriendo y cerrando el archivo
+	 */
+	void escribirAlFinal(DatoLibro & d);
+
+	/**
+	 * TODO implementar
+	 * eliminar el numero de registro nroRegistro de la biblioteca
+	 */
+	void eliminar(int nroRegistro);
 
 	/**
 	 * cierra el archivo de biblioteca
