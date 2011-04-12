@@ -13,9 +13,12 @@
 #ifndef NODOHOJAARBOL_H_
 #define NODOHOJAARBOL_H_
 
-class NodoHojaArbol {
+#include "NodoArbol.h"
+
+class NodoHojaArbol : public NodoArbol{
 public:
 	NodoHojaArbol();
+
 	virtual ~NodoHojaArbol();
 };
 

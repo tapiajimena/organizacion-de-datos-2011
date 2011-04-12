@@ -5,14 +5,6 @@ NodoHojaArbol::NodoHojaArbol() {
 
 }
 
-list<string> NodoHojaArbol::getClaves() const {
-	return list<string>;
-}
-
-list<int> NodoHojaArbol::getHijos() const {
-	return list<int>;
-}
-
 
 NodoHojaArbol::~NodoHojaArbol() {
 	// TODO Auto-generated destructor stub
