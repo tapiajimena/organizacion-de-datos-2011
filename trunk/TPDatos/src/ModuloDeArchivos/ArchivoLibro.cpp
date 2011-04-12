@@ -89,7 +89,9 @@ void ArchivoLibro::agregarLibro(char* pathLibro)
 	string rdo;
 	DatoLibro dato;
 	uint32_t sizeAux;
-	fstream arcLibro(pathLibro, ios::in | ios::binary);
+	fstream arcLibro;
+
+	Abrir(pathLibro, arcLibro, true);//se abre el libro a insertar
 
 	//se lee en contenidoLibro el libro completo
     char* contenidoLibro = leer(arcLibro, sizeAux);
@@ -99,11 +101,8 @@ void ArchivoLibro::agregarLibro(char* pathLibro)
 	rdo = rdo.substr(0,sizeAux);
 	dato.setDato(rdo);
 
-
-	arcLibro.close();//se cierra el arcLibro
+	Cerrar(arcLibro);//se cierra el arcLibro
 	escribirAlFinal(dato);//se escribe en la biblioteca
-
-	arcLibro.close();
 }
 
 
