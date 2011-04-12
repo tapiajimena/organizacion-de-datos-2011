@@ -118,20 +118,45 @@ uint32_t ManejadorArchivo::GetSizeArchivo(fstream & arc)
 }
 
 
-bool ManejadorArchivo::RecuperarEstructura(fstream &arc, iostream* ios,long offset, long cantidadALeer)
+bool ManejadorArchivo::RecuperarEstructura(fstream &arc, stringstream &ss,uint32_t offset)
 {
-	arc.seekg(offset, ios_base::beg);
-	char * buffer = new char[cantidadALeer];
-	memset(buffer, 0, cantidadALeer);
-	arc.read(buffer, cantidadALeer);
+	string 		rdo;
+	uint32_t 	size;
+	char* 		contenido	= (char*)malloc(0);
 
-	ios->write(buffer, cantidadALeer);
-	delete[] buffer;
-	if (arc.good() && ios->good()) {
+	arc.seekg(offset, ios_base::beg);//se posiciona el ptro en offset
+	arc.read(reinterpret_cast<char *>(&size), sizeof(size));//se lee el size del dato
+	contenido = (char*)realloc(contenido, size);
+	arc.read(contenido, size);
+	rdo = contenido;
+	rdo = rdo.substr(0,size);
+
+	ss.write(rdo.c_str(), rdo.length());
+
+	if (arc.good() && ss.good())
 		return true;
-	} else {
+	else
 		return false;
-	}
+
+}
+
+bool ManejadorArchivo::RecuperarEstructura(fstream &arc, stringstream &ss,uint32_t posEstructura, long tamanioEstructura)
+{
+	string 		rdo;
+	char* 		contenido	= (char*)malloc(0);
+
+	arc.seekg(posEstructura, ios_base::beg);//se posiciona el ptro en offset
+	contenido = (char*)realloc(contenido, tamanioEstructura);
+	arc.read(contenido, tamanioEstructura);
+	rdo = contenido;
+	rdo = rdo.substr(0,tamanioEstructura);
+
+	ss.write(rdo.c_str(), rdo.length());
+
+	if (arc.good() && ss.good())
+		return true;
+	else
+		return false;
 }
 
 void ManejadorArchivo::IrAlInicio(fstream &arc)
