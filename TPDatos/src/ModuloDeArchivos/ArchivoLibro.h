@@ -86,6 +86,11 @@ public:
 	uint32_t getPosicionActual();
 
 
+	/**
+	 * cierra el archivo de biblioteca
+	 */
+	virtual ~ArchivoLibro();
+
 private:
 	/**
 	 * lee cierta cantidad de caracteres (sizeAleer)
@@ -110,10 +115,6 @@ private:
 	 */
 	void eliminar(int nroRegistro);
 
-	/**
-	 * cierra el archivo de biblioteca
-	 */
-	virtual ~ArchivoLibro();
 };
 
 
