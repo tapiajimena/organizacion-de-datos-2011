@@ -14,22 +14,27 @@
 #define NODOARBOL_H_
 
 #include <list>
+#include "../ModuloDeTipos/Dato.h"
 
+using namespace std;
 class NodoArbol {
 protected:
 	int id;
 	long int nodoPadre;
+
 public:
 	NodoArbol();
 
-	virtual bool isOverflowded(int blockSize)=0;
+	virtual int insertar(Dato* dato)=0;
+	virtual void partir(NodoArbol* hermano, int sizeBloque, Dato* keyPromovida, int* idPromovido)=0;
+	virtual int remover(Dato* dato, uint32_t offset, fstream* fs, unsigned int* nodeCounter, fstream* freefs, unsigned int* freeNodeCounter)=0;
+
+	virtual bool isOverflowded(int sizeBloque)=0;
+	virtual bool isUnderflowded(int sizeBloque)=0;
 
 	/* Setters y Getters */
     void setId(int id);
     int getId() const;
-
-    virtual list<int> getHijos() const=0;
-    virtual list<string> getClaves() const=0;
 
 	virtual ~NodoArbol();
 

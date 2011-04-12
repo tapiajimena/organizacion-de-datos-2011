@@ -4,12 +4,20 @@ NodoInternoArbol::NodoInternoArbol() {
 	// TODO Auto-generated constructor stub
 }
 
-list<string> NodoInternoArbol::getClaves() const {
-	return this->claves;
+
+int NodoInternoArbol::insertar(Dato* dato)
+{
+
 }
 
-list<int> NodoInternoArbol::getHijos() const {
-	return this->hijos;
+void NodoInternoArbol::partir(NodoArbol* hermano, int sizeBloque, Dato* keyPromovida, int* idPromovido)
+{
+
+}
+
+int NodoInternoArbol::remover(Dato* dato, uint32_t offset, fstream* fs, unsigned int* nodeCounter, fstream* freefs, unsigned int* freeNodeCounter)
+{
+
 }
 
 void NodoInternoArbol::setClaves(list<string> claves) {
@@ -21,6 +29,12 @@ void NodoInternoArbol::setHijos(list<int> hijos) {
 }
 
 bool NodoInternoArbol::isOverflowded(int blockSize){
+	cout<<" redefinido";
+	return true;
+}
+
+bool NodoInternoArbol::isUnderflowded(int blockSize){
+	cout<<" redefinido";
 	return true;
 }
 

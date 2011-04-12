@@ -18,7 +18,7 @@
 
 using namespace std;
 
-class NodoInternoArbol: public NodoArbol {
+class NodoInternoArbol : public NodoArbol {
 private:
 	list<string> claves;
 	list<int> hijos;
@@ -26,14 +26,19 @@ private:
 public:
 	NodoInternoArbol();
 
-	/* Getters y Setters */
+	virtual int insertar(Dato* dato);
+	virtual void partir(NodoArbol* hermano, int sizeBloque, Dato* keyPromovida, int* idPromovido);
+	virtual int remover(Dato* dato, uint32_t offset, fstream* fs, unsigned int* nodeCounter, fstream* freefs, unsigned int* freeNodeCounter);
 
+	virtual bool isOverflowded(int blockSize);
+    virtual bool isUnderflowded(int blockSize);
+
+
+	/* Getters y Setters */
     void setClaves(list<string> claves);
     void setHijos(list<int> hijos);
 
-    virtual bool isOverflowded(int blockSize);
-    virtual list<string> getClaves() const;
-    virtual list<int> getHijos() const;
+
 
 	virtual ~NodoInternoArbol();
 };
