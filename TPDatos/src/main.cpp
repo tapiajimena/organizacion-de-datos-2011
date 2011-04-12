@@ -12,6 +12,8 @@
 #include "ModuloDeArchivos/ManejadorArchivo.h"
 
 
+using namespace std;
+
 //testeo de clase Dato y DatoLibro
 void testDato()
 {
@@ -60,43 +62,51 @@ void cargarLibros(ArchivoLibro* arcReg, ArchivoControlLibro* arcControl)
 	arcReg->agregarLibro("doc/libros/Arthur Conan Doyle - Estudio en Escarlata.txt");
 }
 
-using namespace std;
+
+void testParser()
+{
+    fstream fs;
+    Libro *libro = new Libro();
+    ParserDeLibros *parserLibros = new ParserDeLibros("../Common/stopwordstest.txt");
+    ManejadorArchivo::Crear("pruebaParser.par", fs, false);
+    libro = parserLibros->parsearLibro("doc/libros/Arthur Conan Doyle - El signo de los cuatro.txt");
+
+    //Se imprimen por archivo primeras 100 Palabras Clave
+    EstructuraPalabrasClave *palabrasClave = libro->getPalabrasClave();
+    EstructuraPalabrasClave::iterator it_palabrasClave;
+    int x = 0;
+    //se escribe en un archivo
+    for(it_palabrasClave = palabrasClave->begin();it_palabrasClave != palabrasClave->end() && x < 100;it_palabrasClave++)
+        fs << it_palabrasClave->first << std::endl;
+
+    delete(libro);
+    delete(parserLibros);
+}
+
+
+void testBiblioteca()
+{
+    DatoLibro *dato = new DatoLibro();
+    ArchivoLibro *arcReg = new ArchivoLibro("prueba.dat");
+    ArchivoControlLibro *arcControl = new ArchivoControlLibro("pruebaControl.crt");
+
+    cargarLibros(arcReg, arcControl);
+
+    //se recorre toda la biblioteca
+    arcReg->irAlInicio();
+    DatoLibro libroRecuperado = arcReg->recuperarLibro(265090);
+    cout << libroRecuperado.toString() << ";" << endl;
+
+    delete (dato);
+    delete (arcReg);
+    delete (arcControl);
+}
+
 int main()
 {
-
-	DatoLibro* dato = new DatoLibro();
-	ArchivoLibro* arcReg = new ArchivoLibro("prueba.dat");
-	ArchivoControlLibro* arcControl = new ArchivoControlLibro("pruebaControl.crt");
-
-
-	fstream fs;
-	Libro* libro = new Libro();
-	ParserDeLibros* parserLibros = new ParserDeLibros("../Common/stopwordstest.txt");
-	ManejadorArchivo::Crear("pruebaParser.par", fs, false);
-	libro = parserLibros->parsearLibro("doc/libros/Arthur Conan Doyle - El signo de los cuatro.txt");
-
-	//Se imprimen por archivo primeras 100 Palabras Clave
-	EstructuraPalabrasClave* palabrasClave = libro->getPalabrasClave();
-	int x = 0;
-	for (EstructuraPalabrasClave::iterator it_palabrasClave = palabrasClave->begin();
-			it_palabrasClave != palabrasClave->end() && x < 100;
-			it_palabrasClave++)
-		fs<<it_palabrasClave->first<<std::endl;
-
-
-	cargarLibros(arcReg, arcControl);
-	/*
-	//se recorre toda la biblioteca
-	arcReg->irAlInicio();
-	cout<< arcReg->leerRegistroVariable()<<";"<<endl;
- 	 */
-
-
-	delete(dato);
-	delete(libro);
-    delete(arcReg);
-    delete(arcControl);
-    delete(parserLibros);
+	testDato();
+	testParser();
+    testBiblioteca();
 
     return 0;
 }
