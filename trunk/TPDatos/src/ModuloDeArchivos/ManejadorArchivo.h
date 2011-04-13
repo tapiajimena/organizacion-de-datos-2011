@@ -67,7 +67,7 @@ namespace ManejadorArchivo
 	 * Escribe en el archivo arc un flujo de datos (ss).
 	 * arc debe estar abierto
 	 */
-	 bool Escribir(fstream &arc, stringstream* ss, long offset);
+	 bool Escribir(fstream &arc, stringstream* ss, uint32_t offset);
 
 
 	/*
