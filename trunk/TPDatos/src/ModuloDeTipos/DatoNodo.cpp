@@ -17,23 +17,23 @@ DatoNodo::DatoNodo() {
 
 }
 
-DatoNodo::DatoNodo(NodoInternoArbol* nodo){
+DatoNodo::DatoNodo(const NodoInternoArbol* nodo){
 
-	this->cantidad_hijos = nodo->getHijos().size();
+	this->cantidad_hijos = nodo->getHijos()->size();
 	this->hijos = nodo->getHijos();
 
-	const list<string> claves = nodo->getClaves();
-	for (list<string>::const_iterator ci = claves.begin(); ci != claves.end(); ++ci)
+	list<string>* claves = nodo->getClaves();
+	for (list<string>::const_iterator ci = claves->begin(); ci != claves->end(); ++ci)
 	{
 		this->claves += *ci+"|";
 	}
 
 	//size()-1 es para no guardar el último separador
-	this->size_claves = claves.size()-1;
+	this->size_claves = this->claves.size()-1;
 
 	this->dato.write(reinterpret_cast<char *>(&this->offset_continuacion), sizeof(this->offset_continuacion));
 	this->dato.write(reinterpret_cast<char *>(&this->cantidad_hijos), sizeof(this->cantidad_hijos));
-	for(list<int>::const_iterator it = hijos.begin(); it!=hijos.end(); ++it)
+	for(list<int>::const_iterator it = hijos->begin(); it!=hijos->end(); ++it)
 	{
 		this->dato.write(reinterpret_cast<const char *>(&(*it)),sizeof(*it));
 	}
