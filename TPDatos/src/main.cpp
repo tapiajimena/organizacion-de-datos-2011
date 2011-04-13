@@ -7,9 +7,11 @@
 #include "ModuloDeInterfaz/ParserDeLibros.h"
 #include "ModuloDeInterfaz/Libro.h"
 #include "ModuloDeTipos/DatoLibro.h"
+#include "ModuloDeTipos/DatoNodo.h"
 #include "ModuloDeArchivos/ArchivoLibro.h"
 #include "ModuloDeArchivos/ArchivoControlLibro.h"
 #include "ModuloDeArchivos/ManejadorArchivo.h"
+#include "ModuloDeIndices/ArbolBMas/src/NodoInternoArbol.h"
 
 
 using namespace std;
@@ -102,11 +104,44 @@ void testBiblioteca()
     delete (arcControl);
 }
 
+void testPersistenciaNodoInterno()
+{
+	NodoInternoArbol* nodito = new NodoInternoArbol();
+
+	list<string>* claves = new list<string>();
+	claves->push_back("hola");
+	claves->push_back("mundo");
+	claves->push_back("cruel");
+
+	nodito->setClaves(claves);
+
+	list<int>* hijos = new list<int>();
+	hijos->push_back(1);
+	hijos->push_back(21);
+	hijos->push_back(5);
+	hijos->push_back(51);
+
+	nodito->setHijos(hijos);
+
+
+
+	DatoNodo* dato = new DatoNodo(nodito);
+
+	string s = dato->getDato();
+	cout <<s << endl;
+
+	delete(hijos);
+	delete(claves);
+	delete(nodito);
+	delete(dato);
+
+}
+
 int main()
 {
-	testDato();
-	testParser();
-    testBiblioteca();
-
+	//testDato();
+	//testParser();
+    //testBiblioteca();
+	testPersistenciaNodoInterno();
     return 0;
 }
