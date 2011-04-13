@@ -17,14 +17,19 @@
 /* CONSTANTES DEFINIDAS PARA ARCHIVO DE STOPWORDS */
 
 /* Define el caracter utilizado como separador */
-#define STOPWORDS_TOKEN ""
+#define STOPWORDS_TOKEN "\n"
 
 /* Define la cantidad de caracteres de cada stopword */
 #define STOPWORDS_LENGTH 30
 
+
+
+/* CONSTANTES DEFINIDAS PARA ARCHIVO DE CONTROL */
+
+/* Define el caracter utilizado como separador */
+#define CONTROL_TOKEN "|"
+
 /*Usado para el ArchivoControlLibros al momento de guardar el archivo de control*/
 #define INICIALIZACION_ARCHIVO_LIBRO_CONTROL "|0|-|-|-|-"
-
-
 
 #endif /* CONSTANTES_H_ */
