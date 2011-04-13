@@ -20,13 +20,22 @@ int NodoInternoArbol::remover(Dato* dato, uint32_t offset, fstream* fs, unsigned
 
 }
 
-void NodoInternoArbol::setClaves(list<string> claves) {
+void NodoInternoArbol::setClaves(list<string>* claves) {
 	this->claves = claves;
 }
 
-void NodoInternoArbol::setHijos(list<int> hijos) {
+void NodoInternoArbol::setHijos(list<int>* hijos) {
 	this->hijos = hijos;
 }
+
+list<string>* NodoInternoArbol::getClaves() const{
+	return this->claves;
+}
+
+list<int>* NodoInternoArbol::getHijos() const{
+	return hijos;
+}
+
 
 bool NodoInternoArbol::isOverflowded(int blockSize){
 	cout<<" redefinido";

@@ -20,8 +20,8 @@ using namespace std;
 
 class NodoInternoArbol : public NodoArbol {
 private:
-	list<string> claves;
-	list<int> hijos;
+	list<string>* claves;
+	list<int>* hijos;
 
 public:
 	NodoInternoArbol();
@@ -35,9 +35,11 @@ public:
 
 
 	/* Getters y Setters */
-    void setClaves(list<string> claves);
-    void setHijos(list<int> hijos);
+    void setClaves(list<string>* claves);
+    void setHijos(list<int>* hijos);
 
+    list<string>* getClaves() const;
+    list<int>* getHijos() const;
 
 
 	virtual ~NodoInternoArbol();

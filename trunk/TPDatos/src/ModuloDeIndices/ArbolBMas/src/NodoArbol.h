@@ -14,7 +14,7 @@
 #define NODOARBOL_H_
 
 #include <list>
-#include "../ModuloDeTipos/Dato.h"
+#include "../../../ModuloDeTipos/Dato.h"
 
 using namespace std;
 class NodoArbol {
