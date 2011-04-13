@@ -73,7 +73,7 @@ bool ManejadorArchivo::Escribir(fstream &arc, stringstream * ss)
 }
 
 
-bool ManejadorArchivo::Escribir(fstream &arc, stringstream * ss, long offset)
+bool ManejadorArchivo::Escribir(fstream &arc, stringstream * ss, uint32_t offset)
 {
 	arc.seekg(offset, ios_base::beg);
 	Escribir(arc, ss);
