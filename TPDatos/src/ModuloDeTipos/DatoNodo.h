@@ -29,7 +29,7 @@ private:
 	uint32_t offset_continuacion;
 
 	int cantidad_hijos;
-	list<int> hijos;
+	list<int>* hijos;
 	int size_claves;
 	string claves;
 
@@ -38,7 +38,7 @@ public:
 
 	DatoNodo();
 
-	DatoNodo(NodoInternoArbol* nodo);
+	DatoNodo(const NodoInternoArbol* nodo);
 
 	virtual ~DatoNodo();
 };
