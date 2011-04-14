@@ -106,6 +106,25 @@ void ArchivoLibro::escribir(DatoLibro & d, uint32_t offset)
 }
 
 
+void ArchivoLibro::eliminar(uint32_t offset)
+{
+	stringstream ss;
+	uint32_t vacio = 0;
+
+	ss.write(reinterpret_cast<char *> (&vacio), sizeof(vacio));
+	Escribir(archivoVariable,&ss,offset);
+}
+
+string ArchivoLibro::getPath() const
+{
+    return path;
+}
+
+void ArchivoLibro::setPath(string path)
+{
+    this->path = path;
+}
+
 void ArchivoLibro::escribirAlFinal(DatoLibro &d)
 {
 	stringstream auxStream;
