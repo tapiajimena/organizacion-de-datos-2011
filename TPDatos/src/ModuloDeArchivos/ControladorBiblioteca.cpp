@@ -35,8 +35,14 @@ bool ControladorBiblioteca::ingresarLibro(string pathLibro)
 bool ControladorBiblioteca::eliminarLibro(uint32_t offset)
 {
 	//TODO actualizar el estado del control del archivo
-	arcLibro->eliminar(offset);
+	arcLibro->eliminar((uint32_t)offset);
 }
+
+DatoLibro ControladorBiblioteca::recuperarLibro(uint32_t offset)
+{
+	return arcLibro->recuperarLibro(offset);
+}
+
 
 string ControladorBiblioteca::getPathControlBiblioteca()
 {

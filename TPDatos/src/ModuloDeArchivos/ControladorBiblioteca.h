@@ -13,6 +13,7 @@
 #ifndef CONTROLADORBIBLIOTECA_H_
 #define CONTROLADORBIBLIOTECA_H_
 
+#include <list>
 #include "ArchivoLibro.h"
 #include "ArchivoControlLibro.h"
 
@@ -37,6 +38,29 @@ public:
 	 * @param pathLibro ruta del libro a agregar
 	 */
 	bool ingresarLibro(string pathLibro);
+
+
+	/*
+	 *Devuelve un dato libro con el libro que se pidio.
+	 * @param offset id del libro a recuperar
+	 */
+	DatoLibro recuperarLibro(uint32_t offset);
+
+
+	/*
+	 *TODO implementar
+	 *TODO devuelve los libros no indexados por ese indice
+	 *TODO ojo no lo implementemos demas.
+	 * @param tipoIndice A E T P
+	 */
+	list<DatoLibro> recuperarLibrosNoIndexadosPor(char tipoIndice);
+
+
+	/*
+	 * TODO implementar
+	 * deberia recorrer a lista e ir insertando el tag en el archvio de control
+	 */
+	void registrarIndexado(list<DatoLibro>);
 
 
 	/*
