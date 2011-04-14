@@ -12,6 +12,8 @@ int ArbolBMas::getMaxCantidadHijos() const {
 }
 
 int ArbolBMas::getMinCantidadClaves() const {
+	NodoInternoArbol nI;
+	int a =nI.getId();
 	return minCantidadClaves;
 }
 
