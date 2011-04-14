@@ -36,7 +36,7 @@ public:
 	 * agrega un libro a la biblioteca y su data de control en el archivo de control
 	 * @param pathLibro ruta del libro a agregar
 	 */
-	bool agregarLibro(string pathLibro);
+	bool ingresarLibro(string pathLibro);
 
 
 	/*
