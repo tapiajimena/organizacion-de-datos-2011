@@ -10,9 +10,9 @@
 #include "ModuloDeTipos/DatoNodo.h"
 #include "ModuloDeArchivos/ArchivoLibro.h"
 #include "ModuloDeArchivos/ArchivoControlLibro.h"
+#include "ModuloDeArchivos/ControladorBiblioteca.h"
 #include "ModuloDeArchivos/ManejadorArchivo.h"
 #include "ModuloDeIndices/ArbolBMas/src/NodoInternoArbol.h"
-
 
 using namespace std;
 
@@ -106,6 +106,7 @@ void testBiblioteca()
 
 void testPersistenciaNodoInterno()
 {
+	/*
 	NodoInternoArbol* nodito = new NodoInternoArbol();
 
 	list<string>* claves = new list<string>();
@@ -135,6 +136,37 @@ void testPersistenciaNodoInterno()
 	delete(nodito);
 	delete(dato);
 
+
+    //Prueba de NodoInterno persistiendolo mediante DatoNodo
+    //NodoInternoArbol* nodito = new NodoInternoArbol();
+    list<int> hijos;
+    hijos.push_front(2);
+    hijos.push_front(3);
+    hijos.push_front(5);
+
+    list<string> claves;
+    claves.push_front("casa");
+    claves.push_front("travesti");
+    claves.push_front("servetto");
+
+   // nodito->setClaves(claves);
+   // nodito->setHijos(hijos);
+
+    //DatoNodo* datoNodo = new DatoNodo((NodoInternoArbol*)nodito);
+     * */
+
+}
+
+
+void testControladorBiblioteca()
+{
+	//TODO falta testear el eliminar y el tema de los indices
+	ControladorBiblioteca* control = new ControladorBiblioteca("prueba.dat","pruebaControl.crt");
+
+	control->ingresarLibro("doc/libros/Arthur Conan Doyle - El signo de los cuatro.txt");
+	DatoLibro libro = control->recuperarLibro(0);
+
+	Logger::log("ControlBiblioteca","recuperarLibro",libro.getDato());
 }
 
 int main()
@@ -142,6 +174,8 @@ int main()
 	//testDato();
 	//testParser();
     //testBiblioteca();
+	testControladorBiblioteca();
 	testPersistenciaNodoInterno();
+
     return 0;
 }
