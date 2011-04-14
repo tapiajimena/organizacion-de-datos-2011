@@ -25,7 +25,7 @@ ControladorBiblioteca::ControladorBiblioteca(string pathBiblioteca, string pathC
     arcControl = new ArchivoControlLibro(pathControlBiblioteca);
 }
 
-bool ControladorBiblioteca::agregarLibro(string pathLibro)
+bool ControladorBiblioteca::ingresarLibro(string pathLibro)
 {
 	arcControl->registrarLibro(arcLibro->getPosicionActual());
 	arcLibro->agregarLibro((char*)pathLibro.c_str());
