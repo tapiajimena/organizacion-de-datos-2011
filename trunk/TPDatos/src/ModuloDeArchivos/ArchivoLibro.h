@@ -85,11 +85,15 @@ public:
 	 */
 	uint32_t getPosicionActual();
 
+    string getPath() const;
+    void setPath(string path);
+
 
 	/**
 	 * cierra el archivo de biblioteca
 	 */
 	virtual ~ArchivoLibro();
+
 
 private:
 	/**
@@ -116,9 +120,6 @@ private:
 	void eliminar(int nroRegistro);
 
 };
-
-
-
 
 
 #endif /* ARCHIVOVARIABLE_H_ */
