@@ -1,8 +1,15 @@
 /*
- date: 14/03/11
+ * main.cpp
+ *
+ *	Autor	: GRUPO 1 - Fernandez, Gallinal, Maraggi, Tapia
+ *	Catedra	: SERVETTO-FERRER-FERNANDEZ
+ *	Materia	: Organizacion de Datos (75.06) - FIUBA
+ *
+ *
+ *
+ *
+ */
 
-
-*/
 #include <iostream>
 #include "ModuloDeInterfaz/ParserDeLibros.h"
 #include "ModuloDeInterfaz/Libro.h"
