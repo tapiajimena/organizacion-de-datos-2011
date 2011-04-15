@@ -193,6 +193,16 @@ string ServiceClass::getFechaHora() {
     return string (aux.substr(0,aux.size() - 1));
 }
 
+string ServiceClass::convertirUint32(uint32_t numero)
+{
+	char aux[11]; // 11 bytes: 10 for the digits, 1 for the null character
+
+	snprintf(aux, sizeof aux, "%lu", (uint32_t)numero);
+
+	return (string)aux;
+}
+
+
 ServiceClass::~ServiceClass() {
 
 }
