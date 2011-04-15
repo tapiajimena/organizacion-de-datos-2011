@@ -71,6 +71,11 @@ public:
 	 */
 	static vector<string> obtenerListaPalabras(string linea, string separadores);
 
+	/* Separa el texo pasado por parámetro en renglones y los devuelve enlistados en
+	 * un vector.
+	 */
+	vector<string> obtenerListaRenglones(string texto, char caracterFinDeLinea);
+
 	virtual ~ServiceClass();
 };
 
