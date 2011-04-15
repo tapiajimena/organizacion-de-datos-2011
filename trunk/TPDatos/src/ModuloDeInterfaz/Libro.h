@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <stdint.h>
 
 typedef std::map<std::string, int> EstructuraPalabrasClave;
 
@@ -20,9 +21,12 @@ private:
 
 	std::string _autor;
 
-	std::string _ISBN;
+	//std::string _ISBN;
 
 	std::string _editorial;
+
+	//Offset en disco del inicio del registro de archivo respecto del inicio de archivo.
+	uint32_t offset;
 
 	//Estructura que guarda las palabras clave del libro y asociadas al número de veces que aparece cada palabra en el libro
 	EstructuraPalabrasClave* _palabrasClave;
@@ -43,7 +47,7 @@ public:
 
 	void setEditorial(std::string);
 
-	void getEditorial(std::string);
+	std::string getEditorial();
 
 	std::string getISBN();
 

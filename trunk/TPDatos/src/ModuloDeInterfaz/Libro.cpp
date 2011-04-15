@@ -35,7 +35,17 @@ void Libro::setAutor(std::string autor)
 	this->_autor = autor;
 };
 
+void Libro::setEditorial(std::string editorial)
+{
+	this->_editorial = editorial;
+}
 
+std::string Libro::getEditorial()
+{
+	return this->_editorial;
+}
+
+/*
 std::string Libro::getISBN()
 {
 	return this->_ISBN;
@@ -45,6 +55,7 @@ void Libro::setISBN(std::string ISBN)
 {
 	this->_ISBN = ISBN;
 };
+*/
 
 EstructuraPalabrasClave* Libro::getPalabrasClave()
 {
