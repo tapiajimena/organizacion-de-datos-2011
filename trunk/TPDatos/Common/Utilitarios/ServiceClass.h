@@ -71,10 +71,18 @@ public:
 	 */
 	static vector<string> obtenerListaPalabras(string linea, string separadores);
 
+
 	/* Separa el texo pasado por parámetro en renglones y los devuelve enlistados en
 	 * un vector.
 	 */
 	vector<string> obtenerListaRenglones(string texto, char caracterFinDeLinea);
+
+	/*
+	 * Convierte a numero en un string
+	 * @param numero nro a convertir
+	 */
+	static string convertirUint32(uint32_t numero);
+
 
 	virtual ~ServiceClass();
 };
