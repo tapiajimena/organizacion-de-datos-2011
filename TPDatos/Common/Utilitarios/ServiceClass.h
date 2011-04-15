@@ -21,6 +21,7 @@
 #include <vector>
 #include <stdio.h>
 #include <time.h>
+#include <stdint.h>
 
 
 using namespace std;
