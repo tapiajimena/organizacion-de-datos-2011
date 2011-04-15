@@ -151,6 +151,39 @@ std::vector<std::string> ServiceClass::obtenerListaPalabras(std::string linea, s
 	return listaPalabras;
 }
 
+std::vector<std::string> ServiceClass::obtenerListaRenglones(string texto, char caracterFinDeLinea)
+{
+	std::string renglon;
+	std::vector<std::string> listaRenglones;
+
+	size_t posicionFin = 0;
+	size_t posicionInicio = 0;
+
+	if (!texto.empty())
+	{
+		while(posicionFin != string::npos)
+		{
+			//posicionFin = texto.find("\n", posicionInicio);
+			posicionFin = texto.find(string(&caracterFinDeLinea), posicionInicio);
+			if (posicionFin != string::npos)
+			{
+				//subcadena desde posición inicio hasta (posiciónFin-1 -posicionInicio). Equivale a un renglón.
+				renglon = texto.substr(posicionInicio, (posicionFin - 1)-posicionInicio);
+			}
+			else
+			{
+				renglon = "";
+			}
+
+			listaRenglones.push_back(renglon);
+
+			//posición siguiente al último fin de línea; en caso de fin de cadena, no se usa.
+			posicionInicio = posicionFin+1;
+		}
+	}
+	return listaRenglones;
+}
+
 string ServiceClass::getFechaHora() {
     time_t rawtime;
     time ( &rawtime );

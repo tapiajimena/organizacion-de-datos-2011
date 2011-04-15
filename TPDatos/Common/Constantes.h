@@ -22,6 +22,23 @@
 /* Define la cantidad de caracteres de cada stopword */
 #define STOPWORDS_LENGTH 30
 
+/* Define fin de línea en una cadena*/
+#define CARACTER_FIN_DE_LINEA "\n"
+
+/* Define los caracteres que separan una palabra de otra */
+#define SEPARADORES_DE_PALABRAS " .,-;:¿?¡!'<@>)("
+
+/* Define los caracteres que separan palabras pero no son signos de puntuación
+ * Se usa para obtener títulos de libros o nombres de editoriales con la puntuación original
+ */
+#define SEPARADORES_DE_PALABRAS_CON_PUNTUACION " <>"
+
+/* Cadenas de caracteres clave que identifican un atributo de un libro */
+#define IDENTIFICADOR_TITULO "#TITULO_LIBRO"
+
+#define IDENTIFICADOR_AUTOR "#AUTOR_LIBRO"
+
+#define IDENTIFICADOR_EDITORIAL "#EDITORIAL_LIBRO"
 
 
 /* CONSTANTES DEFINIDAS PARA ARCHIVO DE CONTROL */
