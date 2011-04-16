@@ -21,7 +21,12 @@
 #include <vector>
 #include <stdio.h>
 #include <time.h>
+#include <math.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+
 
 
 using namespace std;
@@ -82,8 +87,9 @@ public:
 	 * Convierte a numero en un string
 	 * @param numero nro a convertir
 	 */
-	static string convertirUint32(uint32_t numero);
+	static string toString(uint32_t numero);
 
+	static uint32_t convertirAUint32(string aux);
 
 	virtual ~ServiceClass();
 };
