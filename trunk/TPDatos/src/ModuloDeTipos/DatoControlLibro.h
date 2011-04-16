@@ -17,6 +17,7 @@
 #include <stdint.h>
 
 #include "Dato.h"
+#include "../../Common/Utilitarios/Logger.h"
 
 using namespace std;
 
@@ -25,23 +26,21 @@ private:
 	uint32_t id_Libro;
 	uint32_t espacioLibre;
 	list<char>* indexado;
-	bool modificado;
 	uint32_t offset;
 public:
 	DatoControlLibro();
+	DatoControlLibro(DatoControlLibro* d);
 	DatoControlLibro(uint32_t id_Libro, uint32_t espacioLibre,
-			list<char>* indexado, bool modificado, uint32_t offset);
+			list<char>* indexado, uint32_t offset);
 
 	/* Getters y Setters */
 	uint32_t getEspacioLibre() const;
 	uint32_t getId_Libro() const;
 	list<char> * getIndexado() const;
-	bool getModificado() const;
 	uint32_t getOffset() const;
 	void setEspacioLibre(uint32_t espacioLibre);
 	void setId_Libro(uint32_t id_Libro);
 	void setIndexado(list<char> *indexado);
-	void setModificado(bool modificado);
 	void setOffset(uint32_t offset);
 
 	virtual ~DatoControlLibro();
