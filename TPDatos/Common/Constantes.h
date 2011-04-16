@@ -49,9 +49,11 @@
 /*Usado para el ArchivoControlLibros al momento de guardar el archivo de control*/
 #define INICIALIZACION_ARCHIVO_LIBRO_CONTROL "|0|-|-|-|-"
 
+/* Define la cantidad de caracteres de cada stopword */
+#define CONTROL_LENGTH 100
 
 
-//Constantes del Arbol
+/* CONSTANTES DEFINIDAS PARA EL ARBOL */
 #define SIZE_BLOQUE 32678
 
 #endif /* CONSTANTES_H_ */
