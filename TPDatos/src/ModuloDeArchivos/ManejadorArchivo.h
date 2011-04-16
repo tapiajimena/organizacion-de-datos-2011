@@ -100,6 +100,11 @@ namespace ManejadorArchivo
 	 */
 	 void IrAlInicio(fstream &arc);
 
+	/**
+	 *posiciona el puntero del archivo en el inicio.
+	 */
+	 void IrAlFinal(fstream &arc);
+
 	//cierra el archivo arc
 	 bool Cerrar(fstream &arc);
 
