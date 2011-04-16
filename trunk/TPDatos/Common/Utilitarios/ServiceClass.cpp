@@ -146,8 +146,6 @@ std::vector<std::string> ServiceClass::obtenerListaPalabras(std::string linea, s
 		pch = strtok (NULL, separadores.c_str());
 	}
 
-	delete a; //liberamos memoria...
-
 	return listaPalabras;
 }
 
