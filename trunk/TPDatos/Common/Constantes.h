@@ -49,4 +49,9 @@
 /*Usado para el ArchivoControlLibros al momento de guardar el archivo de control*/
 #define INICIALIZACION_ARCHIVO_LIBRO_CONTROL "|0|-|-|-|-"
 
+
+
+//Constantes del Arbol
+#define SIZE_BLOQUE 32678
+
 #endif /* CONSTANTES_H_ */
