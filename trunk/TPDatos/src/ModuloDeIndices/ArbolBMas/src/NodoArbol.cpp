@@ -10,17 +10,17 @@ int NodoArbol::insertar(Dato* dato)
 
 }
 
-void NodoArbol::partir(NodoArbol* hermano, int sizeBloque, Dato* keyPromovida, int* idPromovido)
+void NodoArbol::partir(NodoArbol* hermano, int sizeBloque, Dato* keyPromovida, int idPromovido)
 {
 
 }
 
-
-int NodoArbol::remover(Dato* dato, uint32_t offset, fstream* fs, unsigned int* nodeCounter, fstream* freefs, unsigned int* freeNodeCounter)
+/*
+int NodoArbol::remover(Dato* dato, uint32_t offset, fstream fs, unsigned int cantidadNodos, fstream arcLibros, unsigned int cantidadNodosLibres)
 {
 
 }
-
+*/
 
 bool isOverflowded(int sizeBloque)
 {

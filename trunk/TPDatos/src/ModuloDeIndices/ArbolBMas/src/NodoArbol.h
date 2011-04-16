@@ -26,8 +26,8 @@ public:
 	NodoArbol();
 
 	virtual int insertar(Dato* dato)=0;
-	virtual void partir(NodoArbol* hermano, int sizeBloque, Dato* keyPromovida, int* idPromovido)=0;
-	virtual int remover(Dato* dato, uint32_t offset, fstream* fs, unsigned int* nodeCounter, fstream* freefs, unsigned int* freeNodeCounter)=0;
+	virtual void partir(NodoArbol* hermano, int sizeBloque, Dato* keyPromovida, int idPromovido)=0;
+	virtual int eliminar(Dato* dato, uint32_t offset, fstream fs, unsigned int cantidadNodos, fstream arcLibros, unsigned int cantidadNodosLibres)=0;
 
 	virtual bool isOverflowded(int sizeBloque)=0;
 	virtual bool isUnderflowded(int sizeBloque)=0;
