@@ -193,7 +193,7 @@ string ServiceClass::getFechaHora() {
     return string (aux.substr(0,aux.size() - 1));
 }
 
-string ServiceClass::convertirUint32(uint32_t numero)
+string ServiceClass::toString(uint32_t numero)
 {
 	char aux[11]; // 11 bytes: 10 for the digits, 1 for the null character
 
@@ -202,7 +202,32 @@ string ServiceClass::convertirUint32(uint32_t numero)
 	return (string)aux;
 }
 
+uint32_t ServiceClass::convertirAUint32(string aux)
+{
+	string s;
+	uint32_t rdo = 0;
+	int tamanioString = aux.length();
+
+	for(int i = 0; i < tamanioString; i++)
+	{
+		s=aux[i];
+		int iAux=atoi((const char*)s.c_str());
+		rdo+= iAux*(pow(10,tamanioString-1-i));
+	}
+
+	return rdo;
+}
+
 
 ServiceClass::~ServiceClass() {
 
 }
+
+
+
+
+
+
+
+
+
