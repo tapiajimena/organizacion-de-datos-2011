@@ -17,13 +17,22 @@
 
 class ArbolBMas {
 private:
-	NodoArbol* raiz;
-	int maxCantidadHijos;
-	int minCantidadClaves;
-	/* Maxima cantidad de claves por nodo */
-	int orden;
+	NodoArbol* 	raiz;
+	uint32_t	offsetRaiz;
+	fstream 	arcIndice;
+	string		pathArcIndice;
+	int 		orden;//Maxima cantidad de claves por nodo
+	int 		maxCantidadHijos;
+	int 		minCantidadClaves;
+	int			sizeBloque;
+
+
 public:
 	ArbolBMas();
+
+	ArbolBMas(string pathIndice, int sizeBloque);
+
+	int insertar(Dato* dato);
 
 	/* Getters y Setters */
     int getMaxCantidadHijos() const;
@@ -32,8 +41,17 @@ public:
     void setMaxCantidadHijos();
     void setMinCantidadClaves();
     void setOrden(int orden);
+    uint32_t getOffsetRaiz() const;
+    string getPathArcIndice() const;
+    NodoArbol *getRaiz() const;
+    int getSizeBloque() const;
+    void setOffsetRaiz(uint32_t offsetRaiz);
+    void setPathArcIndice(string pathArcIndice);
+    void setRaiz(NodoArbol *raiz);
+    void setSizeBloque(int sizeBloque);
 
 	virtual ~ArbolBMas();
+
 
 };
 
