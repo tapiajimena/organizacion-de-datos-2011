@@ -16,13 +16,21 @@ DatoControlLibro::DatoControlLibro() {
 	// TODO Auto-generated constructor stub
 }
 
+DatoControlLibro::DatoControlLibro(DatoControlLibro* d) {
+	this->espacioLibre = d->espacioLibre;
+	this->id_Libro = d->id_Libro;
+	this->indexado = d->indexado;
+	this->offset = d->offset;
+}
+
 DatoControlLibro::DatoControlLibro(uint32_t id_Libro, uint32_t espacioLibre,
-			list<char>* indexado, bool modificado, uint32_t offset){
+		list<char>* indexado, uint32_t offset) {
 	this->espacioLibre = espacioLibre;
 	this->id_Libro = id_Libro;
 	this->indexado = indexado;
-	this->modificado = modificado;
 	this->offset = offset;
+	Logger::log("datoControlLibro", "DatoControlLibro",
+			"Se crea un nuevo dato de control libro.");
 }
 
 uint32_t DatoControlLibro::getEspacioLibre() const {
@@ -35,10 +43,6 @@ uint32_t DatoControlLibro::getId_Libro() const {
 
 list<char> * DatoControlLibro::getIndexado() const {
 	return indexado;
-}
-
-bool DatoControlLibro::getModificado() const {
-	return modificado;
 }
 
 uint32_t DatoControlLibro::getOffset() const {
@@ -55,10 +59,6 @@ void DatoControlLibro::setId_Libro(uint32_t id_Libro) {
 
 void DatoControlLibro::setIndexado(list<char> *indexado) {
 	this->indexado = indexado;
-}
-
-void DatoControlLibro::setModificado(bool modificado) {
-	this->modificado = modificado;
 }
 
 void DatoControlLibro::setOffset(uint32_t offset) {
