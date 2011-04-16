@@ -29,7 +29,8 @@ ArchivoLibro::ArchivoLibro(string pathArchivo)
 
 void ArchivoLibro::abrir()
 {
-	//se abre el archivo de forma binaria, si no existe lo crea si existe lo borra...
+	//se abre el archivo de forma binaria, si no existe lo crea
+	//si existe lo borra...
 	if (Existe(path.c_str(), archivoVariable))
 		Abrir(path.c_str(), archivoVariable, true);
 	else

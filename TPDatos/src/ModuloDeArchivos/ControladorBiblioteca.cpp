@@ -46,7 +46,7 @@ DatoLibro ControladorBiblioteca::recuperarLibro(uint32_t offset)
 
 string ControladorBiblioteca::getPathControlBiblioteca()
 {
-	return arcControl->getPathArchivoControlLibro();
+	//return arcControl->getPathArchivoControlLibro();
 }
 
 string ControladorBiblioteca::getPathBiblioteca()
