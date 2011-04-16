@@ -37,11 +37,13 @@ private:
 	ParserArchivoControl* parser;
 	string pathArchivoControlLibro;
 	fstream archivoControlLibro;
-	map<uint32_t,DatoControlLibro>::iterator it;
-	map<uint32_t,DatoControlLibro>* libros;
+	map<uint32_t,DatoControlLibro*>* libros;
+	map<uint32_t,DatoControlLibro*>::iterator it;
 public:
 	ArchivoControlLibro();
 	ArchivoControlLibro(string path);
+
+	DatoControlLibro* buscarEnMap(uint32_t idLIbro);
 
 	/**
 	 * Se encarga de generar el map con los datos de control.
@@ -52,8 +54,9 @@ public:
 	 * Se fija en el archivo si ese libro esta indexado bajo algun
 	 * tipo de indice.
 	 * @param idLibro: libro que se quiere saber su indexacion.
+	 * @return la lista con los tipos de indexamiento.
 	 */
-	bool chequearIndexado(uint32_t idLIbro);
+	list<char>* chequearIndexado(uint32_t idLIbro);
 
 	/**
 	 * Devuelve el offset en el cual se puede continuar con la escritura.
