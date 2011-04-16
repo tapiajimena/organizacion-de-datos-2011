@@ -164,6 +164,11 @@ void ManejadorArchivo::IrAlInicio(fstream &arc)
 	arc.seekp(0, ios_base::beg);
 }
 
+void ManejadorArchivo::IrAlFinal(fstream &arc)
+{
+	arc.seekp(0, ios_base::end);
+}
+
 
 bool ManejadorArchivo::Cerrar(fstream &arc)
 {
