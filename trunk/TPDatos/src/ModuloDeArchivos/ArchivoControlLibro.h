@@ -18,47 +18,71 @@
 #ifndef ARCHIVOCONTROLLIBRO_H_
 #define ARCHIVOCONTROLLIBRO_H_
 
-#include <map>
 #include <fstream>
 #include <iostream>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "ManejadorArchivo.h"
-#include "./Common/Constantes.h"
+#include "../../Common/Constantes.h"
 #include "../ModuloDeTipos/DatoControlLibro.h"
+#include "../ModuloParser/ParserArchivoControl.h"
+#include "../../Common/Utilitarios/Logger.h"
 
+using namespace ManejadorArchivo;
+using namespace std;
 
 class ArchivoControlLibro {
 private:
+	ParserArchivoControl* parser;
+	string pathArchivoControlLibro;
 	fstream archivoControlLibro;
-	map<uint32_t, DatoControlLibro> controlLibros;
-
+	map<uint32_t,DatoControlLibro>::iterator it;
+	map<uint32_t,DatoControlLibro>* libros;
 public:
 	ArchivoControlLibro();
 	ArchivoControlLibro(string path);
 
 	/**
-	 *
+	 * Se encarga de generar el map con los datos de control.
+	 */
+	void cargarLibros();
+
+	/**
+	 * Se fija en el archivo si ese libro esta indexado bajo algun
+	 * tipo de indice.
+	 * @param idLibro: libro que se quiere saber su indexacion.
 	 */
 	bool chequearIndexado(uint32_t idLIbro);
 
-	/*
-	 *
+	/**
+	 * Devuelve el offset en el cual se puede continuar con la escritura.
+	 * @param sizeAlmacenar: tamaño del dato a ser almacenado.
 	 */
 	uint32_t dondeEscribo(uint32_t sizeAlmacenar);
 
-	/*
-	 *Escribe en el registro de control que un libro agregarse en la biblioteca.
+	/**
+	 * Escribe en el registro de control que un libro se agregar en la
+	 * biblioteca.
+	 * @param idLibro: id del libro a ser registrado.
 	 */
 	void registrarLibro(uint32_t idLibro);
 
-	/*
-	 *
+	/**
+	 * Coloca el tipo de indexacion al libro correspondiente.
+	 * @param idLibro: id del libro que se indexa.
+	 * @param tipoClave: char que representa el tipo de indice.
 	 */
 	void registrarIndexado(uint32_t idLibro, char tipoClave);
 
+	/**
+	 * Coloca el size del libro como el tamaño del espacio libre de un offset.
+	 * @param idLibro: id del libro que se esta eliminando.
+	 */
+    void eliminarLibro(uint32_t idLibro);
 
+    string getPathArchivoControlLibro() const;
+    void setPathArchivoControlLibro(string pathArchivoControlLibro);
 
 	virtual ~ArchivoControlLibro();
 };
