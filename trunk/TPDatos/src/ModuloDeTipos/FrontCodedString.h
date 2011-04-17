@@ -15,7 +15,7 @@
 
 #include <list>
 #include <string>
-
+#include <iostream>
 
 using namespace std;
 class FrontCodedString
@@ -25,13 +25,24 @@ private:
 	short int	cantidadLetrasPalabraActual;
 	short int	cantidadLetrasPalabraAnterior;
 
+	FrontCodedString* frontCode(string* palabraAnterior, string* palabraAEncodear);
+
 public:
 	FrontCodedString();
-	FrontCodedString* frontCode(FrontCodedString* anterior, string* palabra);
+
+	list<FrontCodedString*>* frontCode(list<string*>* listaDePalabras);
+
 	list<string*>* frontDecode(list<FrontCodedString*>* palabrasFrontCodeadas);
 
+	//getters y setters
+    short int getCantidadLetrasPalabraActual() const;
+    short int getCantidadLetrasPalabraAnterior() const;
+    string getPalabraEncodeada() const;
+    void setCantidadLetrasPalabraActual(short int cantidadLetrasPalabraActual);
+    void setCantidadLetrasPalabraAnterior(short int cantidadLetrasPalabraAnterior);
+    void setPalabraEncodeada(string palabraEncodeada);
 
-	virtual ~FrontCodedString();
+    virtual ~FrontCodedString();
 };
 
 #endif /* FRONTCODEDSTRING_H_ */
