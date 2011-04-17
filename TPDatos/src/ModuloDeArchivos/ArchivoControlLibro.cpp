@@ -79,6 +79,7 @@ void ArchivoControlLibro::setPathArchivoControlLibro(
 
 uint32_t ArchivoControlLibro::dondeEscribo(uint32_t sizeAlmacenar) {
 	cargarLibros();
+	//TODO
 	return 0;
 }
 
@@ -91,9 +92,12 @@ void ArchivoControlLibro::registrarIndexado(uint32_t idLibro, char tipoClave) {
 
 	list<char>::iterator it;
 	for(it = d->getIndexado()->begin(); it != (d->getIndexado()->end()); it++){
-		if((*it) == '-'){
+		if(((*it) == '-')){
 			(*it) = tipoClave;
 			it = d->getIndexado()->end();
+		} else {
+			Logger::log("ArchivoControlLibro", "registrarIndexado",
+						"Ya esta indexado.");
 		}
 	}
 	Logger::log("ArchivoControlLibro", "registrarIndexado",
