@@ -27,7 +27,7 @@ public:
 	NodoInternoArbol();
 
 	virtual int insertar(Dato* dato);
-	virtual void partir(NodoArbol* hermano, int sizeBloque, Dato* keyPromovida, int* idPromovido);
+	virtual void partir(NodoArbol* hermano, int sizeBloque, string clavePromovida, int idNodoPromovido);
 	virtual int remover(Dato* dato, uint32_t offset, fstream* fs, unsigned int* nodeCounter, fstream* freefs, unsigned int* freeNodeCounter);
 
 	virtual bool isOverflowded(int blockSize);

@@ -13,8 +13,16 @@
 #ifndef ARBOLBMAS_H_
 #define ARBOLBMAS_H_
 
+#include <fstream>
+#include <stdint.h>
+#include "./src/ModuloDeArchivos/ManejadorArchivo.h"
+#include "./src/ModuloDeTipos/DatoNodo.h"
+#include "./Common/Constantes.h"
 #include "NodoArbol.h"
+#include "NodoHojaArbol.h"
+#include "NodoInternoArbol.h"
 
+using namespace ManejadorArchivo;
 class ArbolBMas {
 private:
 	NodoArbol* 	raiz;
@@ -35,6 +43,13 @@ public:
 	int insertar(Dato* dato);
 
 	/* Getters y Setters */
+
+	/*
+	 * se prepara Dato para insertar en el arc con la informacion de Nodo.
+	 */
+	void setDatoNodo(NodoHojaArbol* nodo);
+
+
     int getMaxCantidadHijos() const;
     int getMinCantidadClaves() const;
     int getOrden() const;
@@ -52,6 +67,8 @@ public:
 
 	virtual ~ArbolBMas();
 
+private:
+	int insertarDatoRecursivo(Dato* dato, NodoArbol* nodoActual, string clavePromovida, int idNodoPromovido);
 
 };
 

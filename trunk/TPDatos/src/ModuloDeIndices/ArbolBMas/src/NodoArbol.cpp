@@ -5,34 +5,6 @@ NodoArbol::NodoArbol() {
 
 }
 
-int NodoArbol::insertar(Dato* dato)
-{
-
-}
-
-void NodoArbol::partir(NodoArbol* hermano, int sizeBloque, Dato* keyPromovida, int idPromovido)
-{
-
-}
-
-/*
-int NodoArbol::remover(Dato* dato, uint32_t offset, fstream fs, unsigned int cantidadNodos, fstream arcLibros, unsigned int cantidadNodosLibres)
-{
-
-}
-*/
-
-bool isOverflowded(int sizeBloque)
-{
-	cout<<"Pirulo ";
-	return false;
-}
-
-bool NodoArbol::isUnderflowded(int sizeBloque)
-{
-	return false;
-}
-
 
 int NodoArbol::getId() const {
 	return id;
@@ -42,6 +14,16 @@ void NodoArbol::setId(int id) {
 	this->id = id;
 }
 
+
+char NodoArbol::getTipoNodo() const
+{
+    return tipoNodo;
+}
+
+void NodoArbol::setTipoNodo(char tipoNodo)
+{
+    this->tipoNodo = tipoNodo;
+}
 
 NodoArbol::~NodoArbol()
 {
