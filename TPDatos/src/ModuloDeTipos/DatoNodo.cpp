@@ -42,6 +42,24 @@ DatoNodo::DatoNodo(const NodoInternoArbol* nodo){
 
 }
 
+DatoNodo::DatoNodo(const NodoHojaArbol* nodo)
+{
+	/*
+	 * <IdNodo><TipoNodo><CantidadLibros><Libro1>....<LibroN><SiguienteHoja>
+	 */
+	cantidad_libros = nodo->getIdLibros()->size();
+
+	this->dato.write(reinterpret_cast<char *>(nodo->getId()), sizeof(nodo->getId()));//idNodo
+	this->dato.write(reinterpret_cast<char *>(nodo->getTipoNodo()), sizeof(nodo->getTipoNodo()));//tipoNodo
+	this->dato.write(reinterpret_cast<char *>(&cantidad_libros), sizeof(cantidad_libros));//cantidadLibros
+
+	idLibros = nodo->getIdLibros();
+	for (list<uint32_t>::const_iterator ci = idLibros->begin(); ci != idLibros->end(); ++ci)
+	{
+		this->dato.write(reinterpret_cast<char *>(*ci), sizeof(*ci));//cantidadLibros
+	}
+}
+
 
 DatoNodo::~DatoNodo() {
 	// TODO Auto-generated destructor stub
