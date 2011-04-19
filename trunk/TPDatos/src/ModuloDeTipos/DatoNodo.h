@@ -17,6 +17,7 @@
  *
  */
 #include "Dato.h"
+#include "../ModuloDeIndices/ArbolBMas/src/NodoHojaArbol.h"
 #include "../ModuloDeIndices/ArbolBMas/src/NodoInternoArbol.h"
 #include <list>
 
@@ -26,12 +27,14 @@ class DatoNodo: public Dato {
 
 private:
 	//TODO Implementar cuando un nodo no entra en un bloque.
-	uint32_t offset_continuacion;
+	uint32_t 		offset_continuacion;
 
-	int cantidad_hijos;
-	list<int>* hijos;
-	int size_claves;
-	string claves;
+	string 			claves;
+	int 			size_claves;
+	list<int>* 		hijos;
+	int 			cantidad_hijos;
+	int 			cantidad_libros;
+	list<uint32_t>* idLibros;
 
 
 public:
@@ -39,6 +42,8 @@ public:
 	DatoNodo();
 
 	DatoNodo(const NodoInternoArbol* nodo);
+
+	DatoNodo(const NodoHojaArbol* nodo);
 
 	virtual ~DatoNodo();
 };
