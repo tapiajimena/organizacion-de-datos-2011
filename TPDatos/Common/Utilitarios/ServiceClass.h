@@ -89,6 +89,9 @@ public:
 	 */
 	static string toString(uint32_t numero);
 
+	/**
+	 *
+	 */
 	static uint32_t convertirAUint32(string aux);
 
 	virtual ~ServiceClass();
