@@ -10,7 +10,7 @@ int NodoInternoArbol::insertar(Dato* dato)
 
 }
 
-void NodoInternoArbol::partir(NodoArbol* hermano, int sizeBloque, Dato* keyPromovida, int* idPromovido)
+void NodoInternoArbol::partir(NodoArbol* hermano, int sizeBloque, string clavePromovida, int idNodoPromovido)
 {
 
 }
