@@ -10,20 +10,21 @@
  *
  */
 
-
 #ifndef PARSERDICCIONARIO_H_
 #define PARSERDICCIONARIO_H_
 
 #include <fstream>
 #include <set>
 #include <iostream>
-#include <../Common/Utilitarios/ServiceClass.h> //Para pasar a minúsculas las palabras que se cargan.
 
+#include "../Common/Utilitarios/ServiceClass.h" //Para pasar a minúsculas las palabras que se cargan.
+#include "../Common/Utilitarios/Logger.h"
 #include "../../Common/Constantes.h"
+#include "../ModuloParser/ParserAuxiliar.h"
 
 using namespace std;
 
-class ParserDiccionario {
+class ParserDiccionario: ParserAuxiliar {
 private:
 	string separador;
 	set<string>* listaPalabras;
@@ -31,10 +32,10 @@ private:
 public:
 	ParserDiccionario(string token);
 
-	void leerArchivo(fstream* archivo);
+	virtual void leerArchivo(fstream* archivo);
 	string getDato(string linea);
 	set<string>* getLista();
-	void cargarEstructura(string palabra);
+	virtual void cargarEstructura(string palabra);
 
 	virtual ~ParserDiccionario();
 };
