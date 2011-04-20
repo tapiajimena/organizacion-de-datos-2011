@@ -47,10 +47,12 @@ DatoNodo::DatoNodo(const NodoHojaArbol* nodo)
 	/*
 	 * <IdNodo><TipoNodo><CantidadLibros><Libro1>....<LibroN><SiguienteHoja>
 	 */
+	int id 			= nodo->getId();
+	char tipo		= nodo->getTipoNodo();
 	cantidad_libros = nodo->getIdLibros()->size();
 
-	this->dato.write(reinterpret_cast<char *>(nodo->getId()), sizeof(nodo->getId()));//idNodo
-	this->dato.write(reinterpret_cast<char *>(nodo->getTipoNodo()), sizeof(nodo->getTipoNodo()));//tipoNodo
+	this->dato.write(reinterpret_cast<char *>(&id), sizeof(id));//idNodo
+	this->dato.write(reinterpret_cast<char *>(&tipo), sizeof(tipo));//tipoNodo
 	this->dato.write(reinterpret_cast<char *>(&cantidad_libros), sizeof(cantidad_libros));//cantidadLibros
 
 	idLibros = nodo->getIdLibros();
@@ -58,6 +60,11 @@ DatoNodo::DatoNodo(const NodoHojaArbol* nodo)
 	{
 		this->dato.write(reinterpret_cast<char *>(*ci), sizeof(*ci));//cantidadLibros
 	}
+}
+
+long int DatoNodo::getSize()
+{
+	return Dato::getSize();
 }
 
 
