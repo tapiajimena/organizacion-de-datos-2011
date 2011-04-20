@@ -17,7 +17,7 @@
 #include <iostream>
 
 #include "../../Common/Constantes.h"
-#include "../ModuloParser/ParserArchivoTexto.h"
+#include "../ModuloParser/ParserDiccionario.h"
 #include "../../Common/Utilitarios/Logger.h"
 
 using namespace std;
@@ -26,7 +26,7 @@ class Diccionario {
 private:
 	set<string>* diccionario;
 	string nombreArchivo;
-	ParserArchivoTexto* parser;
+	ParserDiccionario* parser;
 public:
 	Diccionario(string nombreArchivo);
 

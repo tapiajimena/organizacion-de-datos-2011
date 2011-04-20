@@ -12,7 +12,7 @@
 
 Diccionario::Diccionario(string nombreArchivo) {
 	this->nombreArchivo = nombreArchivo;
-	this->parser = new ParserArchivoTexto(STOPWORDS_TOKEN);
+	this->parser = new ParserDiccionario(STOPWORDS_TOKEN);
 	cargarDiccionario();
 
 	Logger::log("Diccionario", "diccionario", "se crea el diccionario.");
@@ -24,6 +24,7 @@ void Diccionario::cargarDiccionario() {
 	archivoStopWords.open(this->nombreArchivo.c_str());
 
 	parser->leerArchivo(&archivoStopWords);
+
 	Logger::log("Diccionario", "cargarDiccionario",
 			"carga de palabras dentro del diccionario.");
 	this->diccionario = parser->getLista();
