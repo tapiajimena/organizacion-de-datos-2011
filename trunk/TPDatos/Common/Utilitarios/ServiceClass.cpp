@@ -134,6 +134,9 @@ std::vector<std::string> ServiceClass::obtenerListaPalabras(std::string linea, s
 	a[linea.size()]=0;
 	memcpy(a,linea.c_str(),linea.size());
 
+	//char* a = NULL;
+	//strcpy(a, linea.c_str());
+
 	//http://www.cplusplus.com/reference/clibrary/cstring/strtok/
 	char* pch = strtok (a, separadores.c_str() );
 	while ( pch != NULL )
@@ -145,6 +148,8 @@ std::vector<std::string> ServiceClass::obtenerListaPalabras(std::string linea, s
 		//pch = strtok (NULL, " ,.-");
 		pch = strtok (NULL, separadores.c_str());
 	}
+
+	//delete a;
 
 	return listaPalabras;
 }
@@ -198,6 +203,42 @@ string ServiceClass::toString(uint32_t numero)
 	snprintf(aux, sizeof aux, "%lu", (uint32_t)numero);
 
 	return (string)aux;
+}
+
+
+string ServiceClass::normalizarString(string cadena)
+{
+	std::string cadenaRetorno = ServiceClass::toDowncase(cadena);
+
+	for (unsigned int x = 0; x < cadenaRetorno.size(); x++)
+	{
+		char letra = cadenaRetorno.at(x);
+		switch(letra)
+		{
+		case 'á':
+			cadenaRetorno.replace(x,1,"a");
+			break;
+		case 'é':
+			cadenaRetorno.replace(x,1,"e");
+			break;
+		case 'í':
+			cadenaRetorno.replace(x,1,"i");
+			break;
+		case 'ó':
+			cadenaRetorno.replace(x,1,"o");
+			break;
+		case 'ú':
+			cadenaRetorno.replace(x,1,"u");
+			break;
+		case 'ü':
+			cadenaRetorno.replace(x,1,"u");
+			break;
+		case 'ñ':
+			cadenaRetorno.replace(x,1,"n");
+			break;
+		}
+	}
+	return cadenaRetorno;
 }
 
 uint32_t ServiceClass::convertirAUint32(string aux)
