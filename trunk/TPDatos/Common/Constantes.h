@@ -40,7 +40,6 @@
 
 #define IDENTIFICADOR_EDITORIAL "#EDITORIAL_LIBRO"
 
-
 /* CONSTANTES DEFINIDAS PARA ARCHIVO DE CONTROL */
 
 /* Define el caracter utilizado como separador */
@@ -51,7 +50,6 @@
 
 /* Define la cantidad de caracteres de cada stopword */
 #define CONTROL_LENGTH 100
-
 
 /* CONSTANTES DEFINIDAS PARA EL ARBOL */
 #define SIZE_BLOQUE 32678
