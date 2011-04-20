@@ -156,21 +156,20 @@ bool ManejadorArchivo::RecuperarEstructura(fstream &arc, stringstream &ss,uint32
 
 bool ManejadorArchivo::RecuperarEstructura(fstream &arc, stringstream &ss,uint32_t posEstructura, long tamanioEstructura)
 {
-	string 		rdo;
-	char* 		contenido	= (char*)malloc(0);
+	char* buffer = new char[tamanioEstructura];
 
-	arc.seekg(posEstructura, ios_base::beg);//se posiciona el ptro en offset
-	contenido = (char*)realloc(contenido, tamanioEstructura);
-	arc.read(contenido, tamanioEstructura);
-	rdo = contenido;
-	rdo = rdo.substr(0,tamanioEstructura);
+	arc.seekg(posEstructura, ios_base::beg);//se posicione en posEstructura
+	memset(buffer, 0, tamanioEstructura);//se reserva la cantidad sizeEstructura
+	arc.read(buffer, tamanioEstructura);//se lee
 
-	ss.write(rdo.c_str(), rdo.length());
+	ss.write(buffer, tamanioEstructura);
+	delete[] buffer;
+
 
 	if (arc.good() && ss.good())
-		return true;
+		return true;//esta todon bien
 	else
-		return false;
+		return false;//o esta todon mal
 }
 
 void ManejadorArchivo::IrAlInicio(fstream &arc)
