@@ -11,9 +11,13 @@
  */
 
 #include <iostream>
+#include "ArbolBMas.h"
+#include "./Common/Constantes.h"
 
 using namespace std;
 void testArbol()
 {
+
+	ArbolBMas* arb = new ArbolBMas("IndiceArbol", SIZE_BLOQUE);
 	cout<<"PIRULO!";
 }

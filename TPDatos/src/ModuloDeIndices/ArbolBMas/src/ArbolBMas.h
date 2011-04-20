@@ -28,28 +28,21 @@ private:
 	NodoArbol* 	raiz;
 	uint32_t	offsetRaiz;
 	fstream 	arcIndice;
+	fstream 	arcNodosLibres;
 	string		pathArcIndice;
-	int 		orden;//Maxima cantidad de claves por nodo
-	int 		maxCantidadHijos;
-	int 		minCantidadClaves;
-	int			sizeBloque;
-
+	uint32_t	cantidadBloques;
+	uint32_t	cantidadBloquesLibres;
+	int 		orden;
+	int 		sizeBloque;
+	int 		sizeMetaDataControl;
+    int 		maxCantidadHijos;
+    int 		minCantidadClaves;
 
 public:
-	ArbolBMas();
-
-	ArbolBMas(string pathIndice, int sizeBloque);
-
-	int insertar(Dato* dato);
-
-	/* Getters y Setters */
-
-	/*
-	 * se prepara Dato para insertar en el arc con la informacion de Nodo.
-	 */
-	void setDatoNodo(NodoHojaArbol* nodo);
-
-
+    ArbolBMas();
+    ArbolBMas(string pathIndice, int sizeBloque);
+    int insertar(Dato *dato);
+    void setDatoNodo(NodoHojaArbol *nodo);
     int getMaxCantidadHijos() const;
     int getMinCantidadClaves() const;
     int getOrden() const;
@@ -60,12 +53,14 @@ public:
     string getPathArcIndice() const;
     NodoArbol *getRaiz() const;
     int getSizeBloque() const;
+    int setMetaDataControl();
     void setOffsetRaiz(uint32_t offsetRaiz);
     void setPathArcIndice(string pathArcIndice);
     void setRaiz(NodoArbol *raiz);
     void setSizeBloque(int sizeBloque);
-
-	virtual ~ArbolBMas();
+    virtual ~ArbolBMas();
+    int getSizeMetaDataControl() const;
+    void setSizeMetaDataControl(int metaDataControl);
 
 private:
 	int insertarDatoRecursivo(Dato* dato, NodoArbol* nodoActual, string clavePromovida, int idNodoPromovido);
