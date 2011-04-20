@@ -56,4 +56,8 @@
 /* CONSTANTES DEFINIDAS PARA EL ARBOL */
 #define SIZE_BLOQUE 32678
 
+#define MAX_SIZE_DATO 32600
+
+#define ERROR -1
+
 #endif /* CONSTANTES_H_ */
