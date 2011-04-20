@@ -22,11 +22,12 @@
 #include <list>
 
 
+class Dato;
 
 class DatoNodo: public Dato {
 
 private:
-	//TODO Implementar cuando un nodo no entra en un bloque.
+	//TODO REPLANTEAR ATRIBUTOS DE CLASE DELEGAR A NODO
 	uint32_t 		offset_continuacion;
 
 	string 			claves;
@@ -44,6 +45,8 @@ public:
 	DatoNodo(const NodoInternoArbol* nodo);
 
 	DatoNodo(const NodoHojaArbol* nodo);
+
+	long int getSize();
 
 	virtual ~DatoNodo();
 };
