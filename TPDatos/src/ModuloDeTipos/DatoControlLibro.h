@@ -33,6 +33,8 @@ public:
 	DatoControlLibro(uint32_t id_Libro, uint32_t espacioLibre,
 			list<char>* indexado, uint32_t offset);
 
+	friend bool operator< (const DatoControlLibro  &primero, const DatoControlLibro &segundo);
+
 	/* Getters y Setters */
 	uint32_t getEspacioLibre() const;
 	uint32_t getId_Libro() const;
@@ -47,3 +49,4 @@ public:
 };
 
 #endif /* DATOCONTROLLIBRO_H_ */
+

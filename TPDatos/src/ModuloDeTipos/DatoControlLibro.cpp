@@ -33,6 +33,10 @@ DatoControlLibro::DatoControlLibro(uint32_t id_Libro, uint32_t espacioLibre,
 			"Se crea un nuevo dato de control libro.");
 }
 
+bool operator< (const DatoControlLibro &primero, const DatoControlLibro &segundo) {
+	return (primero.getEspacioLibre() < segundo.getEspacioLibre());
+}
+
 uint32_t DatoControlLibro::getEspacioLibre() const {
 	return espacioLibre;
 }
