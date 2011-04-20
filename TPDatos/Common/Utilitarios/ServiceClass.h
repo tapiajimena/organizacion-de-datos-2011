@@ -89,10 +89,18 @@ public:
 	 */
 	static string toString(uint32_t numero);
 
+
+	/*
+	 * Normaliza todos los caracteres de la cadena de caracteres
+	 * Quita las tildes y pone todos los caracteres en minúsculas.
+	 */
+	static string normalizarString(string cadena);
+
 	/**
 	 *
 	 */
 	static uint32_t convertirAUint32(string aux);
+
 
 	virtual ~ServiceClass();
 };
