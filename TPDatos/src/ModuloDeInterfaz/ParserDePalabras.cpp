@@ -22,7 +22,8 @@ void ParserDePalabras::procesarLineaLibro(std::string linea, Libro* libro)
 {
 	//Definir si la cadena tiene el formato especial de alguno de los campos especiales...
 	std::vector<std::string> palabrasDeLinea = ServiceClass::obtenerListaPalabras(linea, SEPARADORES_DE_PALABRAS);	std::vector<std::string>::iterator it_PalabrasDeLinea;	for(it_PalabrasDeLinea = palabrasDeLinea.begin(); it_PalabrasDeLinea != palabrasDeLinea.end(); it_PalabrasDeLinea++)
-	{		std::string palabra = *it_PalabrasDeLinea;		//Trabajamos las palabras en minúsculas.		palabra = ServiceClass::toDowncase(palabra);		//EstructuraStopWords::iterator it_StopWords = this->listaStopWords.find(palabra);		bool esStopWord = this->diccionarioStopWords->existePalabra(palabra);
+	{		std::string palabra = *it_PalabrasDeLinea;		//Trabajamos las palabras en minúsculas.		//palabra = ServiceClass::toDowncase(palabra);
+		palabra = ServiceClass::normalizarString(palabra);		//EstructuraStopWords::iterator it_StopWords = this->listaStopWords.find(palabra);		bool esStopWord = this->diccionarioStopWords->existePalabra(palabra);
 		if (!esStopWord)		{			libro->agregarPalabraClave(palabra);		}	}}
 Libro* ParserDePalabras::parsear(DatoLibro* datoLibro)
 {
