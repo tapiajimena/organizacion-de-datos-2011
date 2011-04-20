@@ -1,7 +1,8 @@
 #include "NodoHojaArbol.h"
 
 NodoHojaArbol::NodoHojaArbol() {
-	// TODO Auto-generated constructor stub
+	this->idLibros = new list<uint32_t>();
+	this->tipoNodo = 'H';
 
 }
 
@@ -54,19 +55,22 @@ int NodoHojaArbol::modificar(Dato *dato)
 
 char NodoHojaArbol::getTipoNodo() const
 {
+	return this->tipoNodo;
 }
-
 
 void NodoHojaArbol::setTipoNodo(char tipoNodo)
 {
+	this->tipoNodo = tipoNodo;
 }
 
 void NodoHojaArbol::setId(int id)
 {
+	this->id  = id;
 }
 
 int NodoHojaArbol::getId() const
 {
+	return this->id;
 }
 
 
@@ -92,5 +96,7 @@ void NodoHojaArbol::setIdSiguienteHoja(uint32_t idSiguienteHoja)
 }
 
 NodoHojaArbol::~NodoHojaArbol() {
-	// TODO Auto-generated destructor stub
+
+	// TODO ELIMINAR LO QUE ESTA DENTRO DE LA LISTA
+	delete (this->idLibros);
 }

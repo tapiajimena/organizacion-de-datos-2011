@@ -33,7 +33,7 @@ private:
 	uint32_t	cantidadBloques;
 	uint32_t	cantidadBloquesLibres;
 	int 		orden;
-	int 		sizeBloque;
+	uint32_t	sizeBloque;
 	int 		sizeMetaDataControl;
     int 		maxCantidadHijos;
     int 		minCantidadClaves;
@@ -54,6 +54,7 @@ public:
     NodoArbol *getRaiz() const;
     int getSizeBloque() const;
     int setMetaDataControl();
+    bool getMetaDataControl();
     void setOffsetRaiz(uint32_t offsetRaiz);
     void setPathArcIndice(string pathArcIndice);
     void setRaiz(NodoArbol *raiz);

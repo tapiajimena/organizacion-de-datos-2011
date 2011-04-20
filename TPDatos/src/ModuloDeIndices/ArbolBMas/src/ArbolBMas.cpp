@@ -28,18 +28,21 @@ ArbolBMas::ArbolBMas(string pathIndice, int sizeBloque)
 {
 	setSizeBloque(sizeBloque);
 	setPathArcIndice(pathIndice);
-	setSizeMetaDataControl(2*sizeof(long int) );//sizeBloque, cantidadBloques
+	setSizeMetaDataControl(2*sizeof(uint32_t));//sizeBloque, cantidadBloques
 
 	if (CrearSiNoExiste(pathIndice.c_str(),this->arcIndice))
 	{
 		string pathAux =getPathArcIndice()+"NodosLibres";
 		Crear(pathAux.c_str(), arcNodosLibres, true);
+
 		this->cantidadBloques = 1;
 		this->cantidadBloquesLibres = 0;
+		this->setMetaDataControl();
 
 		this->raiz = new NodoHojaArbol();
 		this->raiz->setId(0);
-		this->setMetaDataControl();
+		this->setDatoNodo((NodoHojaArbol*)raiz);
+
 	}
 
 
@@ -93,7 +96,7 @@ int ArbolBMas::insertarDatoRecursivo(Dato* dato, NodoArbol* nodoActual, string c
 			inner->insertKeyChild(*promotedKey, *promotedNodeId);
 			if (inner->isOverFlowded(BLOCKSIZE))
 			{
-				// Si luego de insertar el "registrito" quedo en overflow
+				// Si luego de inserwriteControlDatatar el "registrito" quedo en overflow
 				newNode = new InternalNode();
 				newNode->setLevel(inner->getLevel());
 				NodeFactory::assignNodeId(newNode,&nodeCounter,&freeNodeCounter,&freeNodesFile);
@@ -122,32 +125,27 @@ int ArbolBMas::insertarDatoRecursivo(Dato* dato, NodoArbol* nodoActual, string c
 
 void ArbolBMas::setDatoNodo(NodoHojaArbol* nodo)
 {
-	stringstream* ssAux;
+	stringstream ssAux;
 
 	//TODO definir la metadata
-	int sizeMetaData = 20;
-	uint32_t offset = sizeMetaData  + (nodo->getId() * SIZE_BLOQUE);
-
+	uint32_t offset = sizeMetaDataControl + (nodo->getId() * SIZE_BLOQUE);
 
 	//TODO
 	DatoNodo* datoNodo = new DatoNodo(nodo);
-	ssAux->write(datoNodo->getDato().c_str(), datoNodo->getSize());
-
-
-	//FileManager::writeData(&file, offset, blockSize, &ios);
-	Escribir(this->arcIndice,ssAux, offset);
+	string aux = datoNodo->getDato().c_str();
+	ssAux.write(aux.c_str(), datoNodo->getSize());
+	Escribir(arcIndice,&ssAux, offset);
 
 	delete(datoNodo);
 }
 
 int ArbolBMas::setMetaDataControl()
 {
+	//TODO Definirla correctamente
 	/* Meta data de control del arbol:
-	 * <SizeBloque><CantidadBloques>¿<CantidadBloquesLibres>? Va o no? Serviria?
+	 * <SizeBloque><CantidadBloques><CantidadBloquesLibres>? Va o no? Serviria?
 	 *
 	 */
-
-	cout<<"HOLA MUDNO!"<<sizeof(cantidadBloques);
 	stringstream ss;
 	ss.write(reinterpret_cast<char *>(&sizeBloque),sizeof(sizeBloque));
 	ss.write(reinterpret_cast<char *>(&cantidadBloques),sizeof(cantidadBloques));
@@ -157,6 +155,35 @@ int ArbolBMas::setMetaDataControl()
 		return 1;
 	else
 		return -1;
+}
+
+
+bool ArbolBMas::getMetaDataControl()
+{
+
+	/* Meta data de control del arbol:
+	 * <SizeBloque><CantidadBloques><CantidadBloquesLibres>? Va o no? Serviria?
+	 *
+	 */
+	stringstream ss(ios_base::in| ios_base::out| ios_base::binary);;
+	uint32_t sizeBloque;
+	int cantidadBloques;
+	int idNodo;
+	char* c;
+	RecuperarEstructura(arcIndice,ss,0,this->sizeMetaDataControl+5);
+
+	ss.seekp(0, ios_base::beg);
+	ss.read(reinterpret_cast<char *>(&sizeBloque), sizeof(sizeBloque));
+	ss.read(reinterpret_cast<char *>(&cantidadBloques), sizeof(cantidadBloques));
+
+	ss.read(reinterpret_cast<char *>(&idNodo), sizeof(idNodo));
+	ss.read(reinterpret_cast<char *>(&c), sizeof(c));
+
+	cout<<"size metadata: "<<this->sizeMetaDataControl<<endl;
+	cout<<"Size Bloques: "<<sizeBloque<<endl;
+	cout<<"Cant. Bloques: "<<cantidadBloques<<endl;
+	cout<<"Id Nodo: "<<idNodo<<endl;
+	cout<<"Tipo Nodo: "<<c<<endl;
 }
 
 
@@ -174,7 +201,7 @@ int ArbolBMas::insertar(Dato* dato)
 /*
 	if(rdo == OVERFLOWDED)
 	{
-		// Si se desborda la raíz...
+		// Si se desborda la raiz...
 		InternalNode* newRoot = new InternalNode();
 		newRoot->setLevel(root->getLevel()+1);
 		newRoot->setNodeId(0);
@@ -271,4 +298,5 @@ void ArbolBMas::setSizeMetaDataControl(int sizeMetaDataControl)
 
 ArbolBMas::~ArbolBMas() {
 	// TODO Auto-generated destructor stub
+	delete(this->raiz);
 }

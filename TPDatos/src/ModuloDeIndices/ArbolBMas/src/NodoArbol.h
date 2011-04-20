@@ -35,10 +35,10 @@ public:
 	virtual bool isUnderflowded(int sizeBloque)=0;
 
 	/* Setters y Getters */
-    char getTipoNodo() const;
-    void setTipoNodo(char tipoNodo);
-	void setId(int id);
-    int getId() const;
+    virtual char getTipoNodo() const=0;
+    virtual void setTipoNodo(char tipoNodo)=0;
+	virtual void setId(int id)=0;
+    virtual int getId() const=0;
 
 	virtual ~NodoArbol();
 
