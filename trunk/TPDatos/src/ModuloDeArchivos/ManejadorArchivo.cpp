@@ -46,6 +46,20 @@ bool ManejadorArchivo::Existe(const char* pathArchivo, fstream & arc)
 	return aux;
 }
 
+bool ManejadorArchivo::CrearSiNoExiste(const char* pathArchivo, fstream &arc)
+{
+	if (!Existe(pathArchivo, arc))
+	{
+		Crear(pathArchivo, arc,true);
+		return true;
+	}
+	else
+	{
+		Abrir(pathArchivo, arc,true);
+		return false;
+	}
+}
+
 bool ManejadorArchivo::EscribirDato(fstream &arc, Dato* d)
 {
 	stringstream aux;

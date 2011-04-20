@@ -44,6 +44,15 @@ namespace ManejadorArchivo
 	 */
 	 bool Existe(const char* pathArchivo, fstream &arc);
 
+	/*
+	 * si no existe crea el archivo y lo deja abierto, si existe lo abre.
+	 * Lo abre siempre como binario
+	 * @param pathArchivo ruta+nombre del archivo a crear/abrir
+	 * @param arc referncia al archivo
+	 * @return true si tuvo que crearlo, false si ya exitia
+	 */
+	 bool CrearSiNoExiste(const char* pathArchivo, fstream &arc);
+
 	/**
 	 * se escriben los datos contenido al final del archivo arc
 	 * arc debe estar abierto
