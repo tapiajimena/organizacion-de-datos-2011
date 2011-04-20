@@ -11,7 +11,6 @@
  */
 
 #include <iostream>
-#include "ModuloDeInterfaz/ParserDeLibros.h"
 #include "ModuloDeInterfaz/Libro.h"
 #include "ModuloDeTipos/DatoLibro.h"
 #include "ModuloDeTipos/DatoNodo.h"
@@ -20,6 +19,8 @@
 #include "ModuloDeArchivos/ControladorBiblioteca.h"
 #include "ModuloDeArchivos/ManejadorArchivo.h"
 #include "ModuloDeIndices/ArbolBMas/src/NodoInternoArbol.h"
+#include "ModuloEstructuras/Diccionario.h"
+#include "ModuloDeInterfaz/ManejadorInstrucciones.h"
 
 using namespace std;
 
@@ -74,22 +75,22 @@ void cargarLibros(ArchivoLibro* arcReg, ArchivoControlLibro* arcControl)
 
 void testParser()
 {
-    fstream fs;
-    Libro *libro = new Libro();
-    ParserDeLibros *parserLibros = new ParserDeLibros("../Common/stopwordstest.txt");
-    ManejadorArchivo::Crear("pruebaParser.par", fs, false);
-    libro = parserLibros->parsearLibro("doc/libros/Arthur Conan Doyle - El signo de los cuatro.txt");
-
-    //Se imprimen por archivo primeras 100 Palabras Clave
-    EstructuraPalabrasClave *palabrasClave = libro->getPalabrasClave();
-    EstructuraPalabrasClave::iterator it_palabrasClave;
-    int x = 0;
-    //se escribe en un archivo
-    for(it_palabrasClave = palabrasClave->begin();it_palabrasClave != palabrasClave->end() && x < 100;it_palabrasClave++)
-        fs << it_palabrasClave->first << std::endl;
-
-    delete(libro);
-    delete(parserLibros);
+//    fstream fs;
+//    Libro *libro = new Libro();
+//    ParserDeLibros *parserLibros = new ParserDeLibros("../Common/stopwordstest.txt");
+//    ManejadorArchivo::Crear("pruebaParser.par", fs, false);
+//    libro = parserLibros->parsearLibro("doc/libros/Arthur Conan Doyle - El signo de los cuatro.txt");
+//
+//    //Se imprimen por archivo primeras 100 Palabras Clave
+//    EstructuraPalabrasClave *palabrasClave = libro->getPalabrasClave();
+//    EstructuraPalabrasClave::iterator it_palabrasClave;
+//    int x = 0;
+//    //se escribe en un archivo
+//    for(it_palabrasClave = palabrasClave->begin();it_palabrasClave != palabrasClave->end() && x < 100;it_palabrasClave++)
+//        fs << it_palabrasClave->first << std::endl;
+//
+//    delete(libro);
+//    delete(parserLibros);
 }
 
 
@@ -174,6 +175,24 @@ void testControladorBiblioteca()
 	DatoLibro libro = control->recuperarLibro(0);
 
 	Logger::log("ControlBiblioteca","recuperarLibro",libro.getDato());
+}
+
+void testDiccionario(){
+	Diccionario* d = new Diccionario("stopWords.txt");
+	d->cargarDiccionario();
+	d->mostrar();
+
+	if (d->existePalabra("jime")) cout << "existe" << endl;
+	if (d->existePalabra("tapia")) cout << "existe" << endl;
+	if (!d->existePalabra("jajaja")) cout << "no existe" << endl;
+
+	delete(d);
+}
+
+void testInstrucciones(){
+
+	ManejadorInstrucciones* mi = new ManejadorInstrucciones();
+	mi->armarInstruccion();
 }
 
 int main()
