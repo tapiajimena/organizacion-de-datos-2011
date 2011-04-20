@@ -130,8 +130,10 @@ void ArchivoControlLibro::registrarLibro(uint32_t idLibro) {
 
 ArchivoControlLibro::~ArchivoControlLibro() {
 	// TODO Auto-generated destructor stub
-	//liberar el parser.
 	Logger::log("ArchivoControlLibro", "~ArchivoControlLibro",
 			"Se cierra el archivo de control.");
 	Cerrar(this->archivoControlLibro);
+	this->libros->clear();
+	delete(this->libros);
+	delete(this->parser);
 }
