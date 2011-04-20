@@ -7,31 +7,34 @@
  *
  */
 
-#include "ParserArchivoTexto.h"
+#include "ParserDiccionario.h"
 
-ParserDiccionario::ParserDiccionario(string token) {
+ParserDiccionario::ParserDiccionario(string token) :
+	ParserAuxiliar(token) {
 	this->separador = token;
 	this->listaPalabras = new set<string> ();
 	this->it = listaPalabras->begin();
+}
+
+string ParserDiccionario::getDato(string buffer) {
+	return string(buffer.substr(0, buffer.size()));
 }
 
 void ParserDiccionario::leerArchivo(fstream* archivo) {
 	char buffer[STOPWORDS_LENGTH];
 
 	if (archivo->is_open()) {
-		//METER LOGGER(parserArchivoTexto,leerArchivo,"Se comienza a leer el archivo de stopwords");
+		Logger::log("parserDiccionario", "leerArchivo",
+				"Se comienza a leer el archivo de stopwords");
 		do {
 			archivo->getline(buffer, STOPWORDS_LENGTH);
 			cargarEstructura(getDato(buffer));
 		} while (!archivo->eof());
 	} else {
-		//METER LOGGER(parserArchivoTexto,leerArchivo,"No se pudo abrir el archivo de stopworkds");
+		Logger::log("parserDiccionario", "leerArchivo",
+				"No se pudo abrir el archivo de stopworkds");
 	}
 
-}
-
-string ParserDiccionario::getDato(string buffer) {
-	return string(buffer.substr(0, buffer.size()));
 }
 
 set<string>* ParserDiccionario::getLista() {
@@ -39,9 +42,8 @@ set<string>* ParserDiccionario::getLista() {
 }
 
 void ParserDiccionario::cargarEstructura(string palabra) {
-	if (palabra != STOPWORDS_TOKEN)
-	{
-		//Se pasa todo a minúsculas
+	if (palabra != STOPWORDS_TOKEN) {
+		//Se pasa la palabra a minúsculas
 		palabra = ServiceClass::toDowncase(palabra);
 		this->listaPalabras->insert(palabra);
 	}
