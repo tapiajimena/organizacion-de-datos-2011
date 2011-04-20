@@ -40,7 +40,16 @@
 
 #define IDENTIFICADOR_EDITORIAL "#EDITORIAL_LIBRO"
 
+/* CONSTANTES DEFINIDAS PARA ARCHIVO DE LIBROS */
+
+/* Define la cantidad de bytes utilizada para la metadata del tamanio del libro */
+#define METADATA_SIZE_BOOK 4
+
 /* CONSTANTES DEFINIDAS PARA ARCHIVO DE CONTROL */
+
+/* En caso que no se haya podido encontrar un offset con tamanio libre suficiente
+ * para albergar un nuevo libro, devuelve que se debe ingresar al fin del archivo de libros */
+#define FIN_DE_ARCHIVO -1
 
 /* Define el caracter utilizado como separador */
 #define CONTROL_TOKEN "|"

@@ -33,12 +33,29 @@ using namespace ManejadorArchivo;
 using namespace std;
 
 class ArchivoControlLibro {
+
 private:
 	ParserArchivoControl* parser;
 	string pathArchivoControlLibro;
 	fstream archivoControlLibro;
+	bool archivoFragmentado;
 	map<uint32_t,DatoControlLibro*>* libros;
 	map<uint32_t,DatoControlLibro*>::iterator it;
+
+	/**
+	 * Devuelve el mejor offset para almacenar un libro desperdiciando la menor cantidad
+	 * de espacio posible. Si no hay lugar, devuelve FIN_DE_ARCHIVO.
+	 * @param espaciosLibres: lugares donde puede llegar a entrar el libro
+	 * @param sizeAlmacenar: tamanio del libro
+	 */
+	uint32_t getMejorAjuste(list<DatoControlLibro*>* espaciosLibres, uint32_t sizeAlmacenar);
+
+	list<DatoControlLibro*>* getEspaciosLibres();
+
+	list<DatoControlLibro*>* fusionarEspaciosLibres(list<DatoControlLibro*>* espaciosLibres);
+
+	void actualizarEspaciosLibres(list<DatoControlLibro*>* espaciosLibres);
+
 public:
 	ArchivoControlLibro();
 	ArchivoControlLibro(string path);
