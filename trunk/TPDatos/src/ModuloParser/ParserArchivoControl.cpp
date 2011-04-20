@@ -77,12 +77,11 @@ list<char>* ParserArchivoControl::getTipoIndice(vector<string> datos) const {
 		indices->push_back(c_aux);
 	}
 
-	return indices;
 	Logger::log("parserArchivoControl", "getTipoIndice",
 				"Se obtiene el tipo de Indice.");
+	return indices;
 }
 
 ParserArchivoControl::~ParserArchivoControl() {
 	//TODO
-	delete (this->libros);
 }
