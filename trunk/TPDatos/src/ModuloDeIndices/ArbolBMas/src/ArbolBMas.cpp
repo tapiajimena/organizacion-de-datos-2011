@@ -13,14 +13,38 @@
 
 #include "ArbolBMas.h"
 
-ArbolBMas::ArbolBMas() {
-	// TODO Auto-generated constructor stub
+ArbolBMas::ArbolBMas()
+{
+
+
+// TODO Auto-generated constructor stub
 	setMinCantidadClaves();
 	setMaxCantidadHijos();
 	//setOrden();
 }
 
 
+ArbolBMas::ArbolBMas(string pathIndice, int sizeBloque)
+{
+	setSizeBloque(sizeBloque);
+	setPathArcIndice(pathIndice);
+	setSizeMetaDataControl(2*sizeof(long int) );//sizeBloque, cantidadBloques
+
+	if (CrearSiNoExiste(pathIndice.c_str(),this->arcIndice))
+	{
+		string pathAux =getPathArcIndice()+"NodosLibres";
+		Crear(pathAux.c_str(), arcNodosLibres, true);
+		this->cantidadBloques = 1;
+		this->cantidadBloquesLibres = 0;
+
+		this->raiz = new NodoHojaArbol();
+		this->raiz->setId(0);
+		this->setMetaDataControl();
+	}
+
+
+
+}
 
 int ArbolBMas::insertarDatoRecursivo(Dato* dato, NodoArbol* nodoActual, string clavePromovida, int idNodoPromovido)
 {
@@ -116,6 +140,24 @@ void ArbolBMas::setDatoNodo(NodoHojaArbol* nodo)
 	delete(datoNodo);
 }
 
+int ArbolBMas::setMetaDataControl()
+{
+	/* Meta data de control del arbol:
+	 * <SizeBloque><CantidadBloques>¿<CantidadBloquesLibres>? Va o no? Serviria?
+	 *
+	 */
+
+	cout<<"HOLA MUDNO!"<<sizeof(cantidadBloques);
+	stringstream ss;
+	ss.write(reinterpret_cast<char *>(&sizeBloque),sizeof(sizeBloque));
+	ss.write(reinterpret_cast<char *>(&cantidadBloques),sizeof(cantidadBloques));
+
+	IrAlInicio(arcIndice);
+	if (Escribir(arcIndice,&ss))
+		return 1;
+	else
+		return -1;
+}
 
 
 int ArbolBMas::insertar(Dato* dato)
@@ -186,7 +228,7 @@ string ArbolBMas::getPathArcIndice() const
     return pathArcIndice;
 }
 
-NodoArbol *ArbolBMas::getRaiz() const
+NodoArbol* ArbolBMas::getRaiz() const
 {
     return raiz;
 }
@@ -215,6 +257,17 @@ void ArbolBMas::setSizeBloque(int sizeBloque)
 {
     this->sizeBloque = sizeBloque;
 }
+
+int ArbolBMas::getSizeMetaDataControl() const
+{
+	return sizeMetaDataControl;
+}
+
+void ArbolBMas::setSizeMetaDataControl(int sizeMetaDataControl)
+{
+	this->sizeMetaDataControl = sizeMetaDataControl;
+}
+
 
 ArbolBMas::~ArbolBMas() {
 	// TODO Auto-generated destructor stub
