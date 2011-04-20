@@ -30,15 +30,6 @@ public:
 	 */
 	static void log(string clase, string metodo, string mensaje);
 
-	/**
-	 * Metodo que se encarga imprimir por pantalla el mensaje de log.
-	 * @params	clase
-	 * @params	metodo
-	 * @params	mensaje
-	 * @params	aux: utilizado para un valor que se quiera mostrar.
-	 */
-	static void log(string clase, string metodo, string mensaje, string aux);
-
 	virtual ~Logger();
 };
 
