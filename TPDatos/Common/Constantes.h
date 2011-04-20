@@ -58,4 +58,9 @@
 
 #define ERROR -1
 
+/* CONSTANTES DEFINIDAS PARA VALORES DE RETORNO */
+#define EXITO 0
+
+#define ERROR_ARCHIVO 1
+
 #endif /* CONSTANTES_H_ */
