@@ -15,10 +15,22 @@ void NodoInternoArbol::partir(NodoArbol* hermano, int sizeBloque, string clavePr
 
 }
 
-int NodoInternoArbol::remover(Dato* dato, uint32_t offset, fstream* fs, unsigned int* nodeCounter, fstream* freefs, unsigned int* freeNodeCounter)
+int NodoInternoArbol::eliminar(Dato* dato, uint32_t offset, fstream fs, unsigned int cantidadNodos, fstream arcLibros, unsigned int cantidadNodosLibres)
 {
 
 }
+
+
+bool NodoInternoArbol::isOverflowded(int blockSize){
+	cout<<" redefinido";
+	return true;
+}
+
+bool NodoInternoArbol::isUnderflowded(int blockSize){
+	cout<<" redefinido";
+	return true;
+}
+
 
 void NodoInternoArbol::setClaves(list<string>* claves) {
 	this->claves = claves;
@@ -36,15 +48,34 @@ list<int>* NodoInternoArbol::getHijos() const{
 	return hijos;
 }
 
-
-bool NodoInternoArbol::isOverflowded(int blockSize){
-	cout<<" redefinido";
-	return true;
+char NodoInternoArbol::getTipoNodo() const
+{
+	return this->tipoNodo;
 }
 
-bool NodoInternoArbol::isUnderflowded(int blockSize){
-	cout<<" redefinido";
-	return true;
+void NodoInternoArbol::setTipoNodo(char tipoNodo)
+{
+	this->tipoNodo = tipoNodo;
+}
+
+void NodoInternoArbol::setId(int id)
+{
+	this->id  = id;
+}
+
+int NodoInternoArbol::getId() const
+{
+	return this->id;
+}
+
+int NodoInternoArbol::getNivel() const
+{
+    return nivel;
+}
+
+void NodoInternoArbol::setNivel(int nivel)
+{
+    this->nivel = nivel;
 }
 
 

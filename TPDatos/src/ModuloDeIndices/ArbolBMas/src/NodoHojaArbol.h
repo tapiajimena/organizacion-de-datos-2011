@@ -33,6 +33,8 @@ public:
 	int modificar(Dato* dato);
 	Dato* buscar(Dato* dato);
 
+	bool agregarLibro(uint32_t);
+
 	bool isOverflowded(int sizeBloque);
 	bool isUnderflowded(int sizeBloque);
 
@@ -46,6 +48,8 @@ public:
     uint32_t getIdSiguienteHoja() const;
     void setIdLibros(list<uint32_t>* idLibros);
     void setIdSiguienteHoja(uint32_t idSiguienteHoja);
+    int getNivel() const;
+    void setNivel(int nivel);
 
     virtual ~NodoHojaArbol();
 };

@@ -26,15 +26,25 @@ private:
 public:
 	NodoInternoArbol();
 
-	virtual int insertar(Dato* dato);
-	virtual void partir(NodoArbol* hermano, int sizeBloque, string clavePromovida, int idNodoPromovido);
-	virtual int remover(Dato* dato, uint32_t offset, fstream* fs, unsigned int* nodeCounter, fstream* freefs, unsigned int* freeNodeCounter);
+	int insertar(Dato* dato);
+	void partir(NodoArbol* hermano, int sizeBloque, string clavePromovida, int idNodoPromovido);
+	int eliminar(Dato* dato, uint32_t offset, fstream fs, unsigned int cantidadNodos, fstream arcLibros, unsigned int cantidadNodosLibres);
+	int remover(Dato* dato, uint32_t offset, fstream* fs, unsigned int* nodeCounter, fstream* freefs, unsigned int* freeNodeCounter);
 
-	virtual bool isOverflowded(int blockSize);
-    virtual bool isUnderflowded(int blockSize);
+	bool isOverflowded(int blockSize);
+    bool isUnderflowded(int blockSize);
 
 
 	/* Getters y Setters */
+    char getTipoNodo() const;
+    void setTipoNodo(char tipoNodo);
+
+    void setId(int id);
+    int getId() const;
+
+    int getNivel() const;
+    void setNivel(int nivel);
+
     void setClaves(list<string>* claves);
     void setHijos(list<int>* hijos);
 

@@ -48,6 +48,10 @@ Dato *NodoHojaArbol::buscar(Dato *dato)
 {
 }
 
+bool NodoHojaArbol::agregarLibro(uint32_t idLibro)
+{
+	this->idLibros->push_back(idLibro);
+}
 
 int NodoHojaArbol::modificar(Dato *dato)
 {
@@ -94,6 +98,17 @@ void NodoHojaArbol::setIdSiguienteHoja(uint32_t idSiguienteHoja)
 {
     this->idSiguienteHoja = idSiguienteHoja;
 }
+
+int NodoHojaArbol::getNivel() const
+{
+    return nivel;
+}
+
+void NodoHojaArbol::setNivel(int nivel)
+{
+    this->nivel = nivel;
+}
+
 
 NodoHojaArbol::~NodoHojaArbol() {
 

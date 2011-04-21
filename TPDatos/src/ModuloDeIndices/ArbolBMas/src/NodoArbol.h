@@ -17,10 +17,12 @@
 #include <fstream>
 #include "../../../ModuloDeTipos/Dato.h"
 
+
 using namespace std;
-class NodoArbol {
+class NodoArbol{
 protected:
 	int id;
+	int nivel;
 	long int nodoPadre;
 	char tipoNodo;//H si es hoja, I si es interno
 
@@ -35,12 +37,18 @@ public:
 	virtual bool isUnderflowded(int sizeBloque)=0;
 
 	/* Setters y Getters */
+
     virtual char getTipoNodo() const=0;
     virtual void setTipoNodo(char tipoNodo)=0;
+
 	virtual void setId(int id)=0;
     virtual int getId() const=0;
 
+    virtual int getNivel() const=0;
+    virtual void setNivel(int nivel)=0;
+
 	virtual ~NodoArbol();
+
 
 
 };
