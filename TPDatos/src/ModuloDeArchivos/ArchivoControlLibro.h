@@ -12,7 +12,7 @@
  *      	-idLibro: offset a la biblioteca
  *      	-sizeLibre: espacio libre en el bloque.
  *      	-flags: un char de 4 donde cada uno represente un tipo de clave (editorial, autor, tit, palabra)
-  *
+ *
  */
 
 #ifndef ARCHIVOCONTROLLIBRO_H_
@@ -100,6 +100,12 @@ public:
 	 * @param idLibro: id del libro que se esta eliminando.
 	 */
     void eliminarLibro(uint32_t idLibro);
+
+    /**
+     * Actualiza el archivo de control con los cambios realizados
+     * durante las consultas.
+     */
+    void actualizarArchivo();
 
     string getPathArchivoControlLibro() const;
     void setPathArchivoControlLibro(string pathArchivoControlLibro);
