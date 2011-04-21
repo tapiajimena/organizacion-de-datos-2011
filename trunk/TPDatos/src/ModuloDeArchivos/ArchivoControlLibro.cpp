@@ -81,7 +81,6 @@ void ArchivoControlLibro::setPathArchivoControlLibro(
 }
 
 uint32_t ArchivoControlLibro::dondeEscribo(uint32_t sizeAlmacenar) {
-
 	list<DatoControlLibro*>* espaciosLibres = getEspaciosLibres();
 	list<DatoControlLibro*>* espaciosLibresFusionados;
 	uint32_t mejorAjuste;
@@ -100,7 +99,6 @@ uint32_t ArchivoControlLibro::dondeEscribo(uint32_t sizeAlmacenar) {
 		return mejorAjuste;
 	else
 		return FIN_DE_ARCHIVO;
-
 }
 
 list<DatoControlLibro*>* ArchivoControlLibro::getEspaciosLibres() {
@@ -142,7 +140,6 @@ list<DatoControlLibro*>* ArchivoControlLibro::fusionarEspaciosLibres(
 
 uint32_t ArchivoControlLibro::getMejorAjuste(
 		list<DatoControlLibro*>* espaciosLibres, uint32_t sizeAlmacenar) {
-
 	espaciosLibres->sort();
 
 	for (list<DatoControlLibro*>::const_iterator ci = espaciosLibres->begin(); ci
@@ -182,8 +179,21 @@ void ArchivoControlLibro::registrarIndexado(uint32_t idLibro, char tipoClave) {
 	for (it = d->getIndexado()->begin(); it != d->getIndexado()->end(); it++) {
 		cout << "ahora quedo como: " << *it << endl;
 	}
+}
 
-	//TODO Persistir cambios en el disco.
+void ArchivoControlLibro::actualizarArchivo(){
+	IrAlInicio(this->archivoControlLibro);
+
+	Logger::log("ArchivoControlLibro", "actualizarArchivo",
+			"Se comienza a actualizar el archivo de control.");
+
+	for (it = this->libros->begin(); it != this->libros->end(); it++){
+		cout<<(it->second)->serializar()<<endl;
+	}
+
+	Logger::log("ArchivoControlLibro", "actualizarArchivo",
+				"Se termina de actualizar el archivo de control.");
+
 }
 
 void ArchivoControlLibro::registrarLibro(uint32_t idLibro) {
@@ -212,10 +222,10 @@ void ArchivoControlLibro::eliminarLibro(uint32_t idLibro) {
 
 ArchivoControlLibro::~ArchivoControlLibro() {
 	// TODO Auto-generated destructor stub
+	Cerrar(this->archivoControlLibro);
 	Logger::log("ArchivoControlLibro", "~ArchivoControlLibro",
 			"Se cierra el archivo de control.");
-	Cerrar(this->archivoControlLibro);
-	this->libros->clear();
-	delete (this->libros);
-	delete (this->parser);
+//	this->libros->clear();
+//	delete (this->libros);
+//	delete (this->parser);
 }
