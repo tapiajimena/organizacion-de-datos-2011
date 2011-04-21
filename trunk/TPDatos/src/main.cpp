@@ -19,6 +19,10 @@
 #include "ModuloDeArchivos/ControladorBiblioteca.h"
 #include "ModuloDeArchivos/ManejadorArchivo.h"
 #include "ModuloDeIndices/ArbolBMas/src/NodoInternoArbol.h"
+#include "ModuloDeInterfaz/ParserDeTitulo.h"
+#include "ModuloDeInterfaz/ParserDeAutor.h"
+#include "ModuloDeInterfaz/ParserDeEditorial.h"
+#include "ModuloDeInterfaz/ParserDePalabras.h"
 #include "ModuloEstructuras/Diccionario.h"
 #include "ModuloDeInterfaz/ManejadorInstrucciones.h"
 
@@ -75,6 +79,23 @@ void cargarLibros(ArchivoLibro* arcReg, ArchivoControlLibro* arcControl)
 
 void testParser()
 {
+	/*
+    fstream fs;
+    Libro *libro = new Libro();
+    ParserDeLibros *parserLibros = new ParserDeLibros("../Common/stopwordstest.txt");
+    ManejadorArchivo::Crear("pruebaParser.par", fs, false);
+    libro = parserLibros->parsearLibro("doc/libros/Arthur Conan Doyle - El signo de los cuatro.txt");
+
+    //Se imprimen por archivo primeras 100 Palabras Clave
+    EstructuraPalabrasClave *palabrasClave = libro->getPalabrasClave();
+    EstructuraPalabrasClave::iterator it_palabrasClave;
+    int x = 0;
+    //se escribe en un archivo
+    for(it_palabrasClave = palabrasClave->begin();it_palabrasClave != palabrasClave->end() && x < 100;it_palabrasClave++)
+        fs << it_palabrasClave->first << std::endl;
+
+    delete(libro);
+    delete(parserLibros);
 //    fstream fs;
 //    Libro *libro = new Libro();
 //    ParserDeLibros *parserLibros = new ParserDeLibros("../Common/stopwordstest.txt");
@@ -91,6 +112,8 @@ void testParser()
 //
 //    delete(libro);
 //    delete(parserLibros);
+
+    */
 }
 
 
@@ -177,6 +200,54 @@ void testControladorBiblioteca()
 	Logger::log("ControlBiblioteca","recuperarLibro",libro.getDato());
 }
 
+void testParsersDeAtributos()
+{
+	std::cout<<"INICIO TEST DE PARSERS INDIVIDUALES*********************"<<std::endl<<std::endl;
+
+	    std::string seudoLibro = "lala \n #TITULO_LIBRO acentosáéíóúüAÑ titulooooooo ok! \n lolololol la le \n #EDITORIAL_LIBRO edítoriaaaal ok! \n lollolo \n #AUTOR_LIBRO JLBorges \n klsdjfaslkfj";
+	    DatoLibro* datoLibro = new DatoLibro(seudoLibro);
+
+	    ParserDeTitulo* parserTitulo = new ParserDeTitulo();
+	    ParserDeAutor* parserAutor = new ParserDeAutor();
+	    ParserDeEditorial* parserEditorial = new ParserDeEditorial();
+	    ParserDePalabras* parserPalabras = new ParserDePalabras("stopwordstest.txt");
+
+	    Libro* libroTitulo = parserTitulo->parsear(datoLibro);
+	    Libro* libroAutor = parserAutor->parsear(datoLibro);
+	    Libro* libroEditorial = parserEditorial->parsear(datoLibro);
+	    Libro* libroPalabras = parserPalabras->parsear(datoLibro);
+
+
+	    std::string titulo = libroTitulo->getTitulo();
+	    std::string autor = libroAutor->getAutor();
+	    std::string editorial = libroEditorial->getEditorial();
+	    std::cout<<"Titulo Parseado: "<<titulo<<"#"<<std::endl;
+	    std::cout<<"Autor Parseado: "<<autor<<"#"<<std::endl;
+	    std::cout<<"Editorial Parseada: "<<editorial<<"#"<<std::endl;
+
+	    std::cout<<"Lista de Palabras"<<std::endl;
+	    std::cout<<"*****************"<<std::endl;
+	    EstructuraPalabrasClave::iterator it_palabras;
+	    EstructuraPalabrasClave* palabras = libroPalabras->getPalabrasClave();
+	    for (it_palabras = palabras->begin(); it_palabras != palabras->end(); it_palabras++)
+	    {
+	    	std::cout<< (*it_palabras).first <<"   "<<(*it_palabras).second<<std::endl;
+	    }
+
+	    std::cout<<"FIN TEST PARSERS**************"<<std::endl;
+
+
+	    delete libroAutor;
+	    delete libroEditorial;
+	    delete libroTitulo;
+	    delete libroPalabras;
+	    delete datoLibro;
+	    delete parserTitulo;
+	    delete parserAutor;
+	    delete parserEditorial;
+	    delete parserPalabras;
+}
+
 void testDiccionario(){
 	Diccionario* d = new Diccionario("stopWords.txt");
 	d->cargarDiccionario();
@@ -189,12 +260,6 @@ void testDiccionario(){
 	delete(d);
 }
 
-void testInstrucciones(){
-
-	ManejadorInstrucciones* mi = new ManejadorInstrucciones();
-	mi->armarInstruccion();
-}
-
 int main()
 {
 	//testDato();
@@ -202,6 +267,7 @@ int main()
     //testBiblioteca();
 	testControladorBiblioteca();
 	testPersistenciaNodoInterno();
+	testParsersDeAtributos();
 
     return 0;
 }
