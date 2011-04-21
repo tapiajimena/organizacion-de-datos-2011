@@ -102,7 +102,9 @@ uint32_t ArchivoControlLibro::dondeEscribo(uint32_t sizeAlmacenar) {
 }
 
 list<DatoControlLibro*>* ArchivoControlLibro::getEspaciosLibres() {
-	cargarLibros();
+	if (libros->empty()) {
+		cargarLibros();
+	}
 
 	list<DatoControlLibro*>* espaciosLibres = new list<DatoControlLibro*> ();
 
@@ -112,7 +114,6 @@ list<DatoControlLibro*>* ArchivoControlLibro::getEspaciosLibres() {
 		if (((*it).second)->getEspacioLibre() > 0)
 			espaciosLibres->push_back(((*it).second));
 	}
-
 	return espaciosLibres;
 }
 
@@ -135,6 +136,11 @@ list<DatoControlLibro*>* ArchivoControlLibro::fusionarEspaciosLibres(
 		espaciosLibresFusionados->push_back(aux);
 		aux = *ci;
 	}
+	if(espaciosLibresFusionados->size()>0)
+	{
+		actualizarEspaciosLibres(espaciosLibresFusionados);
+	}
+
 	return espaciosLibresFusionados;
 }
 
@@ -152,7 +158,19 @@ uint32_t ArchivoControlLibro::getMejorAjuste(
 	return FIN_DE_ARCHIVO;
 }
 
-void ArchivoControlLibro::actualizarEspaciosLibres(list<DatoControlLibro*>* espaciosLibres){;
+void ArchivoControlLibro::actualizarEspaciosLibres(
+		list<DatoControlLibro*>* espaciosLibres) {
+
+	//borro los espacios libres anteriores desactualizados
+	for (it = libros->begin(); it != libros->end(); ++it) {
+			if (((*it).second)->getEspacioLibre() > 0)
+				libros->erase(it);
+		}
+
+	//ingreso los nuevos espacios
+	for(list<DatoControlLibro*>::const_iterator ci = espaciosLibres->begin(); ci!=espaciosLibres->end(); ++ci){
+		libros->insert(pair<uint32_t, DatoControlLibro*>((*ci)->getId_Libro(),(*ci)));
+	}
 
 }
 
