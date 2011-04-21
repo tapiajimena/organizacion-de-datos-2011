@@ -30,7 +30,6 @@ void testCrearArbol()
 	int 			cantidadBloques;
 	ArbolBMas* 		arb = new ArbolBMas("IndiceArbol", SIZE_BLOQUE);
 
-	arb->setMetaDataControl();
 	ss.write(arb->getMetaDataControl().c_str(), arb->getMetaDataControl().length());//se lee la metadata en ss
 
 	ss.seekp(0, ios_base::beg);
