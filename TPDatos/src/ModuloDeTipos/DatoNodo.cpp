@@ -44,22 +44,70 @@ DatoNodo::DatoNodo(const NodoInternoArbol* nodo){
 
 DatoNodo::DatoNodo(const NodoHojaArbol* nodo)
 {
+	this->setDatoNodo(nodo);
+}
+
+void DatoNodo::setDatoNodo(const NodoInternoArbol* nodo)
+{
+
+}
+
+void DatoNodo::setDatoNodo(const NodoHojaArbol* nodo)
+{
 	/*
-	 * <IdNodo><TipoNodo><CantidadLibros><Libro1>....<LibroN><SiguienteHoja>
+	 * Se serializa en el siguiente orden:
+	 * <IdNodo><Nivel><TipoNodo><CantidadLibros><Libro1>....<LibroN><SiguienteHoja>
 	 */
 	int id 			= nodo->getId();
+	int nivel		= nodo->getNivel();
 	char tipo		= nodo->getTipoNodo();
+
 	cantidad_libros = nodo->getIdLibros()->size();
 
+
 	this->dato.write(reinterpret_cast<char *>(&id), sizeof(id));//idNodo
+	this->dato.write(reinterpret_cast<char *>(&nivel), sizeof(nivel));//nivel
 	this->dato.write(reinterpret_cast<char *>(&tipo), sizeof(tipo));//tipoNodo
 	this->dato.write(reinterpret_cast<char *>(&cantidad_libros), sizeof(cantidad_libros));//cantidadLibros
 
-	idLibros = nodo->getIdLibros();
-	for (list<uint32_t>::const_iterator ci = idLibros->begin(); ci != idLibros->end(); ++ci)
+	list<uint32_t>* aux = nodo->getIdLibros();
+	for (list<uint32_t>::const_iterator ci = aux->begin(); ci != aux->end(); ++ci)
 	{
-		this->dato.write(reinterpret_cast<char *>(*ci), sizeof(*ci));//cantidadLibros
+		uint32_t idLibro = *ci;
+		this->dato.write(reinterpret_cast<char *>(&idLibro), sizeof(idLibro));//cantidadLibros
 	}
+}
+
+
+void  DatoNodo::hidratar(NodoHojaArbol* nodoHoja)
+{
+	/*
+	 * Se hidrata en el siguiente orden:
+	 * <IdNodo><Nivel><TipoNodo><CantidadLibros><Libro1>....<LibroN><SiguienteHoja>
+	 */
+	int		idNodo, nivel, cantidadLibros;
+	char	tipoNodo;
+	uint32_t idLibro;
+
+	this->dato.seekp(0,ios::beg);
+	this->dato.read(reinterpret_cast<char *>(&idNodo), sizeof(idNodo));
+	this->dato.read(reinterpret_cast<char *>(&nivel), sizeof(nivel));
+	this->dato.read(reinterpret_cast<char *>(&tipoNodo), sizeof(tipoNodo));
+	this->dato.read(reinterpret_cast<char *>(&cantidadLibros), sizeof(cantidadLibros));
+
+	nodoHoja->setId(idNodo);
+	nodoHoja->setTipoNodo(tipoNodo);
+
+	for (int i = 0; i < cantidadLibros; ++i)
+	{
+		this->dato.read(reinterpret_cast<char *>(&idLibro), sizeof(idLibro));
+		nodoHoja->agregarLibro(idLibro);
+	}
+}
+
+void  DatoNodo::hidratar(NodoInternoArbol* nodoInterno)
+{
+
 }
 
 long int DatoNodo::getSize()
@@ -67,7 +115,7 @@ long int DatoNodo::getSize()
 	return Dato::getSize();
 }
 
-
-DatoNodo::~DatoNodo() {
+DatoNodo::~DatoNodo()
+{
 	// TODO Auto-generated destructor stub
 }
