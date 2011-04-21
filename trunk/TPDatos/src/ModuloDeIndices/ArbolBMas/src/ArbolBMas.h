@@ -16,8 +16,8 @@
 #include <fstream>
 #include <stdint.h>
 #include "./src/ModuloDeArchivos/ManejadorArchivo.h"
-#include "./src/ModuloDeTipos/DatoNodo.h"
-#include "./Common/Constantes.h"
+#include "../../../ModuloDeTipos/DatoNodo.h"
+#include "../../../../Common/Constantes.h"
 #include "NodoArbol.h"
 #include "NodoHojaArbol.h"
 #include "NodoInternoArbol.h"
@@ -42,7 +42,11 @@ public:
     ArbolBMas();
     ArbolBMas(string pathIndice, int sizeBloque);
     int insertar(Dato *dato);
+
+    NodoArbol* leerNodo(int idNodo);
+
     void setDatoNodo(NodoHojaArbol *nodo);
+
     int getMaxCantidadHijos() const;
     int getMinCantidadClaves() const;
     int getOrden() const;
@@ -53,18 +57,22 @@ public:
     string getPathArcIndice() const;
     NodoArbol *getRaiz() const;
     int getSizeBloque() const;
+
     int setMetaDataControl();
-    bool getMetaDataControl();
+    string getMetaDataControl();
+
     void setOffsetRaiz(uint32_t offsetRaiz);
     void setPathArcIndice(string pathArcIndice);
     void setRaiz(NodoArbol *raiz);
     void setSizeBloque(int sizeBloque);
-    virtual ~ArbolBMas();
     int getSizeMetaDataControl() const;
     void setSizeMetaDataControl(int metaDataControl);
 
 private:
 	int insertarDatoRecursivo(Dato* dato, NodoArbol* nodoActual, string clavePromovida, int idNodoPromovido);
+
+public:
+	virtual ~ArbolBMas();
 
 };
 

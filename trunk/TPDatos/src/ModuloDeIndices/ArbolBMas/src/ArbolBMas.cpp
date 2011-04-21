@@ -30,7 +30,8 @@ ArbolBMas::ArbolBMas(string pathIndice, int sizeBloque)
 	setPathArcIndice(pathIndice);
 	setSizeMetaDataControl(2*sizeof(uint32_t));//sizeBloque, cantidadBloques
 
-	if (CrearSiNoExiste(pathIndice.c_str(),this->arcIndice))
+	//si no existe se crea y se inserta una raiz
+	if(CrearSiNoExiste(pathIndice.c_str(),this->arcIndice))
 	{
 		string pathAux =getPathArcIndice()+"NodosLibres";
 		Crear(pathAux.c_str(), arcNodosLibres, true);
@@ -39,14 +40,16 @@ ArbolBMas::ArbolBMas(string pathIndice, int sizeBloque)
 		this->cantidadBloquesLibres = 0;
 		this->setMetaDataControl();
 
-		this->raiz = new NodoHojaArbol();
-		this->raiz->setId(0);
+		raiz = new NodoHojaArbol();
+		raiz->setId(0);
+
 		this->setDatoNodo((NodoHojaArbol*)raiz);
-
 	}
-
-
-
+	else //el archivo ya existe
+	{
+		Abrir(pathIndice.c_str(), arcNodosLibres, true);
+		raiz = leerNodo(0);	//lee y carga la raiz, del primer bloque del archivo
+	}
 }
 
 int ArbolBMas::insertarDatoRecursivo(Dato* dato, NodoArbol* nodoActual, string clavePromovida, int idNodoPromovido)
@@ -60,7 +63,6 @@ int ArbolBMas::insertarDatoRecursivo(Dato* dato, NodoArbol* nodoActual, string c
 		if (rdo == 1)
 		{
 			nodoAInsertar = new NodoHojaArbol();
-
 			setDatoNodo((NodoHojaArbol*)nodoAInsertar);
 		}
 		/*
@@ -122,15 +124,14 @@ int ArbolBMas::insertarDatoRecursivo(Dato* dato, NodoArbol* nodoActual, string c
 
 
 
-
 void ArbolBMas::setDatoNodo(NodoHojaArbol* nodo)
 {
+	//TODO definir la metadata
+	uint32_t offset;
 	stringstream ssAux;
 
-	//TODO definir la metadata
-	uint32_t offset = sizeMetaDataControl + (nodo->getId() * SIZE_BLOQUE);
+	offset = sizeMetaDataControl + (nodo->getId() * SIZE_BLOQUE);
 
-	//TODO
 	DatoNodo* datoNodo = new DatoNodo(nodo);
 	string aux = datoNodo->getDato().c_str();
 	ssAux.write(aux.c_str(), datoNodo->getSize());
@@ -138,6 +139,7 @@ void ArbolBMas::setDatoNodo(NodoHojaArbol* nodo)
 
 	delete(datoNodo);
 }
+
 
 int ArbolBMas::setMetaDataControl()
 {
@@ -158,32 +160,22 @@ int ArbolBMas::setMetaDataControl()
 }
 
 
-bool ArbolBMas::getMetaDataControl()
+string ArbolBMas::getMetaDataControl()
 {
-
 	/* Meta data de control del arbol:
 	 * <SizeBloque><CantidadBloques><CantidadBloquesLibres>? Va o no? Serviria?
 	 *
 	 */
-	stringstream ss(ios_base::in| ios_base::out| ios_base::binary);;
-	uint32_t sizeBloque;
 	int cantidadBloques;
-	int idNodo;
-	char* c;
-	RecuperarEstructura(arcIndice,ss,0,this->sizeMetaDataControl+5);
+	uint32_t sizeBloque;
+	stringstream ss(ios_base::in| ios_base::out| ios_base::binary);
+	RecuperarEstructura(arcIndice,ss,0,this->sizeMetaDataControl);
 
 	ss.seekp(0, ios_base::beg);
 	ss.read(reinterpret_cast<char *>(&sizeBloque), sizeof(sizeBloque));
 	ss.read(reinterpret_cast<char *>(&cantidadBloques), sizeof(cantidadBloques));
 
-	ss.read(reinterpret_cast<char *>(&idNodo), sizeof(idNodo));
-	ss.read(reinterpret_cast<char *>(&c), sizeof(c));
-
-	cout<<"size metadata: "<<this->sizeMetaDataControl<<endl;
-	cout<<"Size Bloques: "<<sizeBloque<<endl;
-	cout<<"Cant. Bloques: "<<cantidadBloques<<endl;
-	cout<<"Id Nodo: "<<idNodo<<endl;
-	cout<<"Tipo Nodo: "<<c<<endl;
+	return ss.str();
 }
 
 
@@ -219,6 +211,34 @@ int ArbolBMas::insertar(Dato* dato)
 */
 	return rdo;
 
+}
+
+
+
+NodoArbol* ArbolBMas::leerNodo(int idNodo){
+	NodoArbol* nodo;
+	DatoNodo* dNodo = new DatoNodo();
+	stringstream ss;
+	int nivel= 0;
+	uint32_t offset = this->sizeMetaDataControl + (SIZE_BLOQUE *idNodo);
+
+	RecuperarEstructura(arcIndice,ss,offset,SIZE_BLOQUE);
+
+	ss.read(reinterpret_cast<char *> (&nivel), sizeof(int));
+	dNodo->setDato(ss.str());
+	if (nivel == 0)
+	{
+		nodo = new NodoHojaArbol();
+		dNodo->hidratar((NodoHojaArbol*)nodo);
+	}
+	else
+	{
+		nodo = new NodoInternoArbol();
+		nodo->setNivel(nivel);
+		dNodo->hidratar((NodoInternoArbol*)nodo);
+	}
+
+	return nodo;
 }
 
 int ArbolBMas::getMaxCantidadHijos() const {
