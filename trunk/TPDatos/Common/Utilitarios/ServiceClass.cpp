@@ -236,6 +236,10 @@ string ServiceClass::normalizarString(string cadena)
 		case 'ñ':
 			cadenaRetorno.replace(x,1,"n");
 			break;
+		case 'Ñ':
+			cadenaRetorno.replace(x,1,"n");
+			break;
+			//(lamentablemente el toDownCase no reconoce la Ñ mayúscula)
 		}
 	}
 	return cadenaRetorno;
