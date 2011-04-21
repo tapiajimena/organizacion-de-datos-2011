@@ -85,7 +85,7 @@ void  DatoNodo::hidratar(NodoHojaArbol* nodoHoja)
 	 * Se hidrata en el siguiente orden:
 	 * <IdNodo><Nivel><TipoNodo><CantidadLibros><Libro1>....<LibroN><SiguienteHoja>
 	 */
-	int		idNodo, nivel, cantidadLibros;
+	int		idNodo, nivel;
 	char	tipoNodo;
 	uint32_t idLibro;
 
@@ -93,12 +93,12 @@ void  DatoNodo::hidratar(NodoHojaArbol* nodoHoja)
 	this->dato.read(reinterpret_cast<char *>(&idNodo), sizeof(idNodo));
 	this->dato.read(reinterpret_cast<char *>(&nivel), sizeof(nivel));
 	this->dato.read(reinterpret_cast<char *>(&tipoNodo), sizeof(tipoNodo));
-	this->dato.read(reinterpret_cast<char *>(&cantidadLibros), sizeof(cantidadLibros));
+	this->dato.read(reinterpret_cast<char *>(&cantidad_libros), sizeof(cantidad_libros));
 
 	nodoHoja->setId(idNodo);
 	nodoHoja->setTipoNodo(tipoNodo);
 
-	for (int i = 0; i < cantidadLibros; ++i)
+	for (int i = 0; i < cantidad_libros; ++i)
 	{
 		this->dato.read(reinterpret_cast<char *>(&idLibro), sizeof(idLibro));
 		nodoHoja->agregarLibro(idLibro);
