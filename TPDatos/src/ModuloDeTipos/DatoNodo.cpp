@@ -19,11 +19,11 @@ DatoNodo::DatoNodo() {
 
 DatoNodo::DatoNodo(const NodoInternoArbol* nodo){
 
-	this->cantidad_hijos = nodo->getHijos()->size();
+	this->cantidad_hijos = nodo->getHijos().size();
 	this->hijos = nodo->getHijos();
 
-	list<string>* claves = nodo->getClaves();
-	for (list<string>::const_iterator ci = claves->begin(); ci != claves->end(); ++ci)
+	list<string> claves = nodo->getClaves();
+	for (list<string>::const_iterator ci = claves.begin(); ci != claves.end(); ++ci)
 	{
 		this->claves += *ci+"|";
 	}
@@ -33,7 +33,7 @@ DatoNodo::DatoNodo(const NodoInternoArbol* nodo){
 
 	this->dato.write(reinterpret_cast<char *>(&this->offset_continuacion), sizeof(this->offset_continuacion));
 	this->dato.write(reinterpret_cast<char *>(&this->cantidad_hijos), sizeof(this->cantidad_hijos));
-	for(list<int>::const_iterator it = hijos->begin(); it!=hijos->end(); ++it)
+	for(list<int>::const_iterator it = hijos.begin(); it!=hijos.end(); ++it)
 	{
 		this->dato.write(reinterpret_cast<const char *>(&(*it)),sizeof(*it));
 	}
@@ -56,26 +56,29 @@ void DatoNodo::setDatoNodo(const NodoHojaArbol* nodo)
 {
 	/*
 	 * Se serializa en el siguiente orden:
-	 * <IdNodo><Nivel><TipoNodo><CantidadLibros><Libro1>....<LibroN><SiguienteHoja>
+	 * <IdNodo><Nivel><TipoNodo><CantidadDatoElementoNodo><TamanioDatoElementoNodo><DatoElementoNodo>...<TamanioDatoElementoNodo><DatoElementoNodo><SiguienteHoja>
 	 */
-	int id 			= nodo->getId();
-	int nivel		= nodo->getNivel();
-	char tipo		= nodo->getTipoNodo();
-
-	cantidad_libros = nodo->getIdLibros()->size();
+	int id 					= nodo->getId();
+	int nivel				= nodo->getNivel();
+	char tipo				= nodo->getTipoNodo();
+	int cantidadElementos 	= nodo->getElementos().size();
+	int tamanioElementoNodo = 0;
 
 
 	this->dato.write(reinterpret_cast<char *>(&id), sizeof(id));//idNodo
 	this->dato.write(reinterpret_cast<char *>(&nivel), sizeof(nivel));//nivel
 	this->dato.write(reinterpret_cast<char *>(&tipo), sizeof(tipo));//tipoNodo
-	this->dato.write(reinterpret_cast<char *>(&cantidad_libros), sizeof(cantidad_libros));//cantidadLibros
+	this->dato.write(reinterpret_cast<char *>(&cantidadElementos), sizeof(cantidadElementos));//cantidadElementos
 
-	list<uint32_t>* aux = nodo->getIdLibros();
-	for (list<uint32_t>::const_iterator ci = aux->begin(); ci != aux->end(); ++ci)
+	list<DatoElementoNodo*> aux = nodo->getElementos();
+	for (list<DatoElementoNodo*>::const_iterator ci = aux.begin(); ci != aux.end(); ++ci)
 	{
-		uint32_t idLibro = *ci;
-		this->dato.write(reinterpret_cast<char *>(&idLibro), sizeof(idLibro));//cantidadLibros
+		DatoElementoNodo* elemento = *ci;
+		this->dato.write(reinterpret_cast<char *>(&tamanioElementoNodo), sizeof(tamanioElementoNodo));//tamanioElementoNodo
+		elemento->serializar();
+		cout<<"Serializando: "<<elemento->getDato()<<endl;
 	}
+
 }
 
 
@@ -83,25 +86,34 @@ void  DatoNodo::hidratar(NodoHojaArbol* nodoHoja)
 {
 	/*
 	 * Se hidrata en el siguiente orden:
-	 * <IdNodo><Nivel><TipoNodo><CantidadLibros><Libro1>....<LibroN><SiguienteHoja>
+	 * <IdNodo><Nivel><TipoNodo><CantidadDatoElementoNodo><TamanioDatoElementoNodo><DatoElementoNodo>...<TamanioDatoElementoNodo><DatoElementoNodo><SiguienteHoja>
 	 */
-	int		idNodo, nivel;
+	int		idNodo, nivel, cantidadDatos, tamanioElemento;
 	char	tipoNodo;
-	uint32_t idLibro;
+
 
 	this->dato.seekp(0,ios::beg);
 	this->dato.read(reinterpret_cast<char *>(&idNodo), sizeof(idNodo));
 	this->dato.read(reinterpret_cast<char *>(&nivel), sizeof(nivel));
 	this->dato.read(reinterpret_cast<char *>(&tipoNodo), sizeof(tipoNodo));
-	this->dato.read(reinterpret_cast<char *>(&cantidad_libros), sizeof(cantidad_libros));
+	this->dato.read(reinterpret_cast<char *>(&cantidadDatos), sizeof(cantidadDatos));
 
 	nodoHoja->setId(idNodo);
 	nodoHoja->setTipoNodo(tipoNodo);
 
-	for (int i = 0; i < cantidad_libros; ++i)
+	for (int i = 0; i < cantidadDatos; ++i)
 	{
-		this->dato.read(reinterpret_cast<char *>(&idLibro), sizeof(idLibro));
-		nodoHoja->agregarLibro(idLibro);
+		char* aux;
+		stringstream* ss;
+		DatoElementoNodo* elemento = new DatoElementoNodo();
+		this->dato.read(reinterpret_cast<char *>(&tamanioElemento), sizeof(tamanioElemento));
+		this->dato.read(aux, tamanioElemento);
+
+		ss->write(aux, sizeof(aux));
+		elemento->hidratar(ss);
+		nodoHoja->getElementos().push_back(elemento);
+
+		delete(elemento);
 	}
 }
 

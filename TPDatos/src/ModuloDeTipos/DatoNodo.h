@@ -6,7 +6,8 @@
  *	Materia	: Organizacion de Datos (75.06) - FIUBA
  *      
  *  
- *      
+ *     Hidrata y serializa cada Nodo.
+ *
  *      
  */
 
@@ -35,10 +36,10 @@ private:
 	uint32_t 		offset_continuacion;
 	string 			claves;
 	int 			size_claves;
-	list<int>* 		hijos;
+	list<int> 		hijos;
 	int 			cantidad_hijos;
 	int 			cantidad_libros;
-	list<uint32_t>* idLibros;
+	list<uint32_t> idLibros;
 
 
 public:
