@@ -61,9 +61,13 @@
 #define CONTROL_LENGTH 100
 
 /* CONSTANTES DEFINIDAS PARA EL ARBOL */
+
 #define SIZE_BLOQUE 32678
 
-#define MAX_SIZE_DATO 32600
+
+#define OVERFLOWDED -10
+
+#define MAX_SIZE_DATO 100000 //cambiar a cuenta valida
 
 #define ERROR -1
 
