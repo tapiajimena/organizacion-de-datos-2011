@@ -15,12 +15,8 @@
 
 ArbolBMas::ArbolBMas()
 {
-
-
-// TODO Auto-generated constructor stub
 	setMinCantidadClaves();
 	setMaxCantidadHijos();
-	//setOrden();
 }
 
 
@@ -42,6 +38,7 @@ ArbolBMas::ArbolBMas(string pathIndice, int sizeBloque)
 
 		raiz = new NodoHojaArbol();
 		raiz->setId(0);
+		raiz->setNivel(0);
 
 		this->setDatoNodo((NodoHojaArbol*)raiz);
 	}
@@ -52,26 +49,34 @@ ArbolBMas::ArbolBMas(string pathIndice, int sizeBloque)
 	}
 }
 
-int ArbolBMas::insertarDatoRecursivo(Dato* dato, NodoArbol* nodoActual, string clavePromovida, int idNodoPromovido)
+int ArbolBMas::insertarDatoRecursivo(string clave, NodoArbol* nodoActual, string clavePromovida, int idNodoPromovido)
 {
+	int rdo;
 	NodoArbol* nodoAInsertar;
 
 	if (nodoActual->getTipoNodo() == 'H')
 	{
-		int rdo = nodoActual->insertar(dato);
+		rdo = ((NodoHojaArbol*)nodoActual)->insertar(clave);
 
-		if (rdo == 1)
+		if (rdo == EXITO)
 		{
 			nodoAInsertar = new NodoHojaArbol();
+			int aux = nodoActual->getId();
+			aux++;
+			nodoAInsertar->setId(aux);
 			setDatoNodo((NodoHojaArbol*)nodoAInsertar);
 		}
-		/*
 		else if (rdo == OVERFLOWDED)
 		{
 			nodoAInsertar = new NodoHojaArbol();
 
 			//NodeFactory::assignNodeId(newNode,&nodeCounter,&freeNodeCounter,&freeNodesFile);
 			nodoActual->partir(nodoAInsertar, SIZE_BLOQUE, clavePromovida, idNodoPromovido);
+
+			int aux = nodoActual->getId();
+			aux++;
+			nodoAInsertar->setId(aux);
+
 			setDatoNodo(nodoActual);
 			setDatoNodo(nodoAInsertar);
 
@@ -80,60 +85,64 @@ int ArbolBMas::insertarDatoRecursivo(Dato* dato, NodoArbol* nodoActual, string c
 		}
 		else if (rdo == 2)//duplicado
 			return rdo;
-			*/
-		return 1;//ok
+
+		return EXITO;//ok
 	}
-/*
-	else
+	else// Es un nodo interno
 	{
-		// Es un InternalNode
-		InternalNode* inner = (InternalNode*) nodoActual;
-		int locationId = inner->findLocation(record);
+		NodoInternoArbol* nodoInterno = (NodoInternoArbol*)nodoActual;
+		uint32_t offsetNodo = nodoInterno->buscarClave(clave);
 
-		Node* nextNode = readNode(locationId);
-		result = recursiveInsert(record, nextNode, promotedKey, promotedNodeId);
+		NodoArbol* nodoSiguiente = leerNodo(offsetNodo);
+		rdo = insertarDatoRecursivo(clave, nodoSiguiente, clavePromovida, idNodoPromovido);
 
-		if (result == OVERFLOWDED)
+		if (rdo == OVERFLOWDED)
 		{
-			inner->insertKeyChild(*promotedKey, *promotedNodeId);
-			if (inner->isOverFlowded(BLOCKSIZE))
+			nodoInterno->agregarClaveHijo(clavePromovida, idNodoPromovido);
+			if (nodoInterno->isOverflowded(SIZE_BLOQUE))
 			{
-				// Si luego de inserwriteControlDatatar el "registrito" quedo en overflow
-				newNode = new InternalNode();
-				newNode->setLevel(inner->getLevel());
-				NodeFactory::assignNodeId(newNode,&nodeCounter,&freeNodeCounter,&freeNodesFile);
-				inner->split(newNode, BLOCKSIZE, promotedKey, promotedNodeId);
-				writeNode(inner);
-				writeNode(newNode);
-				delete(newNode);
-				delete(nextNode);
+				// Si luego de insertar el "registrito" quedo en overflow
+				nodoAInsertar = new NodoInternoArbol();
+				nodoAInsertar->setNivel(nodoInterno->getNivel());
+				//FabricaDeNodos::asignarId(nodoAInsertar, arcNodosLibres);
+				int aux = nodoInterno->getId();
+				nodoAInsertar->setId(++aux);
+				nodoInterno->partir(nodoAInsertar,SIZE_BLOQUE, clavePromovida, idNodoPromovido);
+				setDatoNodo(nodoInterno);
+				setDatoNodo(nodoAInsertar);
+				delete(nodoInterno);
+				delete(nodoAInsertar);
 				return OVERFLOWDED;
 			}
-			writeNode(inner);
-			delete(nextNode);
-			return EXIT_SUCCESS;
+			setDatoNodo(nodoInterno);
+			delete(nodoSiguiente);
+			return EXITO;
 		}
 		else
 		{
-			delete(nextNode);
-			return result;
+			delete(nodoSiguiente);
+			return rdo;
 		}
+		delete (nodoInterno);
 	}
-	*/
 }
 
 
 
-void ArbolBMas::setDatoNodo(NodoHojaArbol* nodo)
+void ArbolBMas::setDatoNodo(NodoArbol* nodo)
 {
 	//TODO definir la metadata
 	uint32_t offset;
 	stringstream ssAux;
+	offset 				= sizeMetaDataControl + (nodo->getId() * SIZE_BLOQUE);
+	DatoNodo* datoNodo 	= new DatoNodo();
 
-	offset = sizeMetaDataControl + (nodo->getId() * SIZE_BLOQUE);
+	if (nodo->getTipoNodo() == 'H')
+		datoNodo->setDatoNodo((NodoHojaArbol*)nodo);
+	else
+		datoNodo->setDatoNodo((NodoInternoArbol*)nodo);
 
-	DatoNodo* datoNodo = new DatoNodo(nodo);
-	string aux = datoNodo->getDato().c_str();
+	string aux = datoNodo->getDato();
 	ssAux.write(aux.c_str(), datoNodo->getSize());
 	Escribir(arcIndice,&ssAux, offset);
 
@@ -166,8 +175,6 @@ string ArbolBMas::getMetaDataControl()
 	 * <SizeBloque><CantidadBloques><CantidadBloquesLibres>? Va o no? Serviria?
 	 *
 	 */
-	int cantidadBloques;
-	uint32_t sizeBloque;
 	stringstream ss(ios_base::in| ios_base::out| ios_base::binary);
 	RecuperarEstructura(arcIndice,ss,0,this->sizeMetaDataControl);
 
@@ -179,43 +186,44 @@ string ArbolBMas::getMetaDataControl()
 }
 
 
-int ArbolBMas::insertar(Dato* dato)
+int ArbolBMas::insertar(string clave)
 {
 	int rdo;
 	int idNodoPromovido;
 	string clavePromovida;
 
 
-	if(dato->getSize() > MAX_SIZE_DATO)
+	if(clave.length() > MAX_SIZE_DATO)
 		return ERROR;
 
-	rdo = insertarDatoRecursivo(dato, raiz, clavePromovida, idNodoPromovido);
-/*
+	rdo = insertarDatoRecursivo(clave, raiz, clavePromovida, idNodoPromovido);
+
 	if(rdo == OVERFLOWDED)
 	{
 		// Si se desborda la raiz...
-		InternalNode* newRoot = new InternalNode();
-		newRoot->setLevel(root->getLevel()+1);
-		newRoot->setNodeId(0);
-		NodeFactory::assignNodeId(root,&nodeCounter,&freeNodeCounter,&freeNodesFile);
+		NodoInternoArbol* nuevaRaiz = new NodoInternoArbol();
+		nuevaRaiz->setId(0);
+		nuevaRaiz->setNivel(raiz->getNivel()+1);
+		//FabricaDeNodos::asignarId(root,&nodeCounter,&freeNodeCounter,&freeNodesFile);
 
-		newRoot->getChildIds()->push_back(root->getNodeId()); //por orden se pone una despues de la otra
-		newRoot->insertKeyChild(promotedKey, promotedNodeId);
+		nuevaRaiz->getHijos().push_back(raiz->getId()); //por orden se pone una despues de la otra
+		nuevaRaiz->agregarClaveHijo(clavePromovida, idNodoPromovido);
 
-		writeNode(root);
- 		writeNode(newRoot);
- 		delete this->root;
-		this->root=newRoot;
-		return EXIT_SUCCESS;
+		setDatoNodo(raiz);
+ 		setDatoNodo(nuevaRaiz);
+ 		delete this->raiz;
+		this->raiz	=	nuevaRaiz;
+		return EXITO;
 	}
-*/
+
 	return rdo;
 
 }
 
 
 
-NodoArbol* ArbolBMas::leerNodo(int idNodo){
+NodoArbol* ArbolBMas::leerNodo(int idNodo)
+{
 	NodoArbol* nodo;
 	DatoNodo* dNodo = new DatoNodo();
 	stringstream ss;
@@ -319,4 +327,6 @@ void ArbolBMas::setSizeMetaDataControl(int sizeMetaDataControl)
 ArbolBMas::~ArbolBMas() {
 	// TODO Auto-generated destructor stub
 	delete(this->raiz);
+	Cerrar(this->arcIndice);
+	Cerrar(this->arcNodosLibres);
 }

@@ -1,7 +1,6 @@
 #include "NodoHojaArbol.h"
 
 NodoHojaArbol::NodoHojaArbol() {
-	this->idLibros = new list<uint32_t>();
 	this->tipoNodo = 'H';
 
 }
@@ -10,9 +9,10 @@ NodoHojaArbol::NodoHojaArbol(list<uint32_t> idLibros, int idSiguienteHoja)
 {
 }
 
-int NodoHojaArbol::insertar(Dato* dato)
+int NodoHojaArbol::insertar(string clave)
 {
-	return 0;
+	//this->setClave(clave);
+	return OVERFLOWDED;
 }
 
 
@@ -21,11 +21,23 @@ void NodoHojaArbol::partir(NodoArbol* hermano, int sizeBloque, string clavePromo
 	return;
 }
 
-int NodoHojaArbol::eliminar(Dato* dato, uint32_t offset, fstream fs, unsigned int cantidadNodos, fstream arcLibros, unsigned int cantidadNodosLibres)
+int NodoHojaArbol::eliminar(Dato *dato, uint32_t offset, fstream fs, unsigned int cantidadNodos, fstream arcLibros, unsigned int nodosLibres)
 {
 	return 0;
 
 }
+
+list<DatoElementoNodo*> NodoHojaArbol::getElementos() const
+{
+    return elementos;
+}
+
+void NodoHojaArbol::setElementos(list<DatoElementoNodo*> elementos)
+{
+    this->elementos = elementos;
+}
+
+
 
 int NodoHojaArbol::remover(Dato* dato, uint32_t offset, fstream fs, unsigned int cantidadNodos, fstream arcLibros, unsigned int cantidadNodosLibres)
 {
@@ -48,9 +60,9 @@ Dato *NodoHojaArbol::buscar(Dato *dato)
 {
 }
 
-bool NodoHojaArbol::agregarLibro(uint32_t idLibro)
+bool NodoHojaArbol::agregarElemento(DatoElementoNodo* elemento)
 {
-	this->idLibros->push_back(idLibro);
+	this->elementos.push_back(elemento);
 }
 
 int NodoHojaArbol::modificar(Dato *dato)
@@ -79,20 +91,12 @@ int NodoHojaArbol::getId() const
 
 
 
-list<uint32_t>* NodoHojaArbol::getIdLibros() const
-{
-    return idLibros;
-}
 
 uint32_t NodoHojaArbol::getIdSiguienteHoja() const
 {
     return idSiguienteHoja;
 }
 
-void NodoHojaArbol::setIdLibros(list<uint32_t>* idLibros)
-{
-    this->idLibros = idLibros;
-}
 
 void NodoHojaArbol::setIdSiguienteHoja(uint32_t idSiguienteHoja)
 {
@@ -110,8 +114,7 @@ void NodoHojaArbol::setNivel(int nivel)
 }
 
 
-NodoHojaArbol::~NodoHojaArbol() {
 
-	// TODO ELIMINAR LO QUE ESTA DENTRO DE LA LISTA
-	delete (this->idLibros);
+NodoHojaArbol::~NodoHojaArbol()
+{
 }

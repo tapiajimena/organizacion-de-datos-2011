@@ -41,11 +41,11 @@ private:
 public:
     ArbolBMas();
     ArbolBMas(string pathIndice, int sizeBloque);
-    int insertar(Dato *dato);
+    int insertar(string clave);
 
     NodoArbol* leerNodo(int idNodo);
 
-    void setDatoNodo(NodoHojaArbol *nodo);
+    void setDatoNodo(NodoArbol *nodo);
 
     int getMaxCantidadHijos() const;
     int getMinCantidadClaves() const;
@@ -69,7 +69,7 @@ public:
     void setSizeMetaDataControl(int metaDataControl);
 
 private:
-	int insertarDatoRecursivo(Dato* dato, NodoArbol* nodoActual, string clavePromovida, int idNodoPromovido);
+	int insertarDatoRecursivo(string clave, NodoArbol* nodoActual, string clavePromovida, int idNodoPromovido);
 
 public:
 	virtual ~ArbolBMas();

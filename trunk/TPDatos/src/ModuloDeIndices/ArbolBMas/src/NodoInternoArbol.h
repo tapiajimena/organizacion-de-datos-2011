@@ -13,23 +13,29 @@
 #ifndef NODOINTERNOARBOL_H_
 #define NODOINTERNOARBOL_H_
 
-#include "NodoArbol.h"
+
 #include <list>
+#include <stdio.h>
+#include <string.h>
+#include <algorithm>
+#include "NodoArbol.h"
 
 using namespace std;
 
 class NodoInternoArbol : public NodoArbol {
 private:
-	list<string>* claves;
-	list<int>* hijos;
+	list<int> hijos;
+	list<string> claves;
 
 public:
 	NodoInternoArbol();
 
-	int insertar(Dato* dato);
+	int insertar(string clave);
 	void partir(NodoArbol* hermano, int sizeBloque, string clavePromovida, int idNodoPromovido);
 	int eliminar(Dato* dato, uint32_t offset, fstream fs, unsigned int cantidadNodos, fstream arcLibros, unsigned int cantidadNodosLibres);
 	int remover(Dato* dato, uint32_t offset, fstream* fs, unsigned int* nodeCounter, fstream* freefs, unsigned int* freeNodeCounter);
+	void agregarClaveHijo(string clave, int idHijo);
+	uint32_t buscarClave(string clave);
 
 	bool isOverflowded(int blockSize);
     bool isUnderflowded(int blockSize);
@@ -45,11 +51,11 @@ public:
     int getNivel() const;
     void setNivel(int nivel);
 
-    void setClaves(list<string>* claves);
-    void setHijos(list<int>* hijos);
+    void setClaves(list<string> claves);
+    void setHijos(list<int> hijos);
 
-    list<string>* getClaves() const;
-    list<int>* getHijos() const;
+    list<string> getClaves() const;
+    list<int> getHijos() const;
 
 
 	virtual ~NodoInternoArbol();

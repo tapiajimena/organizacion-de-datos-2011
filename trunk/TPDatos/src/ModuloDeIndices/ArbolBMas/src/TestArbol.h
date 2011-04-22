@@ -42,6 +42,22 @@ void testCrearArbol()
 	delete(arb);
 }
 
+
+void testInsertarArbol()
+{
+	stringstream 	ss;
+	uint32_t 		sizeBloque;
+	int 			cantidadBloques;
+	ArbolBMas* 		arb = new ArbolBMas("IndiceArbol", SIZE_BLOQUE);
+
+	arb->insertar("666");
+	arb->insertar("pe");
+	arb->insertar("peludo");
+	arb->insertar("pirulo en el bosque");
+
+	delete(arb);
+}
+
 void testSetHidratacionHoja()
 {
 	//se crea un nodoHoja y se le setea data (libros, id, tipo)
@@ -76,8 +92,9 @@ void testSetHidratacionHoja()
 
 void TestArbol()
 {
-	testCrearArbol();
-	testSetHidratacionHoja();
+	//testCrearArbol();
+	testInsertarArbol();
+	//testSetHidratacionHoja();
 }
 
 #endif /* TESTARBOL_CPP_ */
