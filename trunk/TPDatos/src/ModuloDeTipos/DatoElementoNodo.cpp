@@ -27,22 +27,22 @@ void DatoElementoNodo::serializar(){
 	}
 }
 
-void DatoElementoNodo::hidratar(stringstream datoElementoNodo){
+void DatoElementoNodo::hidratar(stringstream* datoElementoNodo){
 	int tamanioClave = 0;
 	int cantidadLibros = 0;
 	char* claveAux;
 
-	datoElementoNodo.seekp(0,ios::beg);
-	datoElementoNodo.read(reinterpret_cast<char *>(&tamanioClave), sizeof(tamanioClave));
-	datoElementoNodo.read(claveAux, tamanioClave);
-	datoElementoNodo.read(reinterpret_cast<char *>(&cantidadLibros), sizeof(cantidadLibros));
+	datoElementoNodo->seekp(0,ios::beg);
+	datoElementoNodo->read(reinterpret_cast<char *>(&tamanioClave), sizeof(tamanioClave));
+	datoElementoNodo->read(claveAux, tamanioClave);
+	datoElementoNodo->read(reinterpret_cast<char *>(&cantidadLibros), sizeof(cantidadLibros));
 
 	clave = claveAux;
 
 	for(int i = 0; i<cantidadLibros; i++)
 	{
 		uint32_t aux;
-		datoElementoNodo.read(reinterpret_cast<char *>(&aux),sizeof(aux));
+		datoElementoNodo->read(reinterpret_cast<char *>(&aux),sizeof(aux));
 		idLibros.push_back(aux);
 	}
 

@@ -28,7 +28,7 @@ public:
 
 	//se llama en las hojas
 	//<TamanioClave><Clave><Cantidad_Id_Libros><Id_Libro>[]
-	void hidratar(stringstream datoElementoNodo);
+	void hidratar(stringstream* datoElementoNodo);
 
 	virtual ~DatoElementoNodo();
 };
