@@ -20,7 +20,7 @@
 
 
 using namespace std;
-class NodoArbol{
+class NodoArbol: public Dato{
 protected:
 	int id;
 	int nivel;
