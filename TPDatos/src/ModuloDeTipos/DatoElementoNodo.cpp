@@ -12,42 +12,57 @@ DatoElementoNodo::DatoElementoNodo() {
 
 }
 
-void DatoElementoNodo::serializar(){
+void DatoElementoNodo::serializar() {
 	int tamanioClave = clave.length();
 	int cantidadLibros = idLibros.size();
 
-	this->dato.write(reinterpret_cast<char *>(&tamanioClave),sizeof(tamanioClave));
+	this->dato.write(reinterpret_cast<char *> (&tamanioClave),
+			sizeof(tamanioClave));
 	this->dato.write(clave.c_str(), tamanioClave);
-	this->dato.write(reinterpret_cast<char *>(&cantidadLibros), sizeof(cantidadLibros));
+	this->dato.write(reinterpret_cast<char *> (&cantidadLibros),
+			sizeof(cantidadLibros));
 
-	for(list<uint32_t>::const_iterator ci = idLibros.begin(); ci != idLibros.end(); ++ci)
-	{
+	for (list<uint32_t>::const_iterator ci = idLibros.begin(); ci
+			!= idLibros.end(); ++ci) {
 		uint32_t idLibro = *ci;
-		this->dato.write(reinterpret_cast<char *>(&idLibro),sizeof(idLibro));
+		this->dato.write(reinterpret_cast<char *> (&idLibro), sizeof(idLibro));
 	}
 }
 
-void DatoElementoNodo::hidratar(stringstream* datoElementoNodo){
+void DatoElementoNodo::hidratar(stringstream* datoElementoNodo) {
 	int tamanioClave = 0;
 	int cantidadLibros = 0;
 	char* claveAux;
 
-	datoElementoNodo->seekp(0,ios::beg);
-	datoElementoNodo->read(reinterpret_cast<char *>(&tamanioClave), sizeof(tamanioClave));
+	datoElementoNodo->seekp(0, ios::beg);
+	datoElementoNodo->read(reinterpret_cast<char *> (&tamanioClave),
+			sizeof(tamanioClave));
 	datoElementoNodo->read(claveAux, tamanioClave);
-	datoElementoNodo->read(reinterpret_cast<char *>(&cantidadLibros), sizeof(cantidadLibros));
+	datoElementoNodo->read(reinterpret_cast<char *> (&cantidadLibros),
+			sizeof(cantidadLibros));
 
 	clave = claveAux;
 
-	for(int i = 0; i<cantidadLibros; i++)
-	{
+	for (int i = 0; i < cantidadLibros; i++) {
 		uint32_t aux;
-		datoElementoNodo->read(reinterpret_cast<char *>(&aux),sizeof(aux));
+		datoElementoNodo->read(reinterpret_cast<char *> (&aux), sizeof(aux));
 		idLibros.push_back(aux);
 	}
 
+}
 
+void DatoElementoNodo::setClave(string clave) {
+	this->clave = clave;
+}
 
+string DatoElementoNodo::getClave() {
+	return this->clave;
+}
+list<uint32_t> DatoElementoNodo::getLibros() {
+	return this->idLibros;
+}
+void DatoElementoNodo::agregarLibro(uint32_t idLibro) {
+	this->idLibros.push_back(idLibro);
 }
 
 DatoElementoNodo::~DatoElementoNodo() {
