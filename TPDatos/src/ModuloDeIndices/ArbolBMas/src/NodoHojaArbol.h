@@ -15,6 +15,8 @@
 
 #include "NodoArbol.h"
 #include "../../../ModuloDeTipos/DatoElementoNodo.h"
+#include "../../../../Common/Utilitarios/Logger.h"
+#include "../../../../Common/Utilitarios/ServiceClass.h"
 
 class NodoHojaArbol : public NodoArbol{
 
