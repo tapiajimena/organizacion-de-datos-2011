@@ -30,6 +30,15 @@ public:
 	//<TamanioClave><Clave><Cantidad_Id_Libros><Id_Libro>[]
 	void hidratar(stringstream* datoElementoNodo);
 
+	void setClave(string clave);
+
+	string getClave();
+
+	list<uint32_t> getLibros();
+
+	void agregarLibro(uint32_t idLibro);
+
+
 	virtual ~DatoElementoNodo();
 };
 
