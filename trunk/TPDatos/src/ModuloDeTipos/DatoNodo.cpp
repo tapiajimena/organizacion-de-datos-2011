@@ -104,13 +104,11 @@ void  DatoNodo::hidratar(NodoHojaArbol* nodoHoja)
 	for (int i = 0; i < cantidadDatos; ++i)
 	{
 		char* aux;
-		stringstream* ss;
 		DatoElementoNodo* elemento = new DatoElementoNodo();
 		this->dato.read(reinterpret_cast<char *>(&tamanioElemento), sizeof(tamanioElemento));
 		this->dato.read(aux, tamanioElemento);
 
-		ss->write(aux, sizeof(aux));
-		elemento->hidratar(ss);
+		elemento->hidratar((string)aux);
 		nodoHoja->getElementos().push_back(elemento);
 
 		delete(elemento);
