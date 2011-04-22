@@ -17,6 +17,13 @@ FabricaDeNodos::FabricaDeNodos() {
 
 }
 
+void FabricaDeNodos::asignarId(NodoArbol* nodo, unsigned int* cantidadNodos, unsigned int* nodosLibres, fstream* fs)
+{
+
+
+}
+
+
 FabricaDeNodos::~FabricaDeNodos() {
 	// TODO Auto-generated destructor stub
 }

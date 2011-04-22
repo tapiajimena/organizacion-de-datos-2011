@@ -1,11 +1,10 @@
 #include "NodoInternoArbol.h"
 
 NodoInternoArbol::NodoInternoArbol() {
-	// TODO Auto-generated constructor stub
+
 }
 
-
-int NodoInternoArbol::insertar(Dato* dato)
+int NodoInternoArbol::insertar(string clave)
 {
 
 }
@@ -21,30 +20,73 @@ int NodoInternoArbol::eliminar(Dato* dato, uint32_t offset, fstream fs, unsigned
 }
 
 
-bool NodoInternoArbol::isOverflowded(int blockSize){
+void NodoInternoArbol::agregarClaveHijo(string clave, int idHijo)
+{
+	string claveActual;
+	list<int>::iterator itHijos 	= this->hijos.begin();
+	list<string>::iterator itClaves;
+
+	for (itClaves =claves.begin(); itClaves!=claves.end(); ++itClaves)
+	{
+		claveActual = (string) *itClaves;
+		if (strcmp(clave.c_str(),claveActual.c_str()))//TODO ver que devuelve si 1 o -1
+			break;
+
+		itHijos++;
+	}
+
+	itHijos++;
+	hijos.insert(itHijos, idHijo);
+	claves.insert(itClaves, clave);
+}
+
+
+uint32_t NodoInternoArbol::buscarClave(string clave)
+{
+	string claveActual;
+	uint32_t rdo = 0;
+	list<int>::iterator itHijos 	= hijos.begin();
+	list<string>::iterator itClaves;
+
+	if (!claves.empty())
+	{
+		for (itClaves =claves.begin(); itClaves!=claves.end(); ++itClaves)
+		{
+			if (strcmp(clave.c_str(),claveActual.c_str())== 0)
+				claveActual = (string) *itClaves;
+			itHijos++;
+		}
+	}
+	rdo = (uint32_t)claveActual.length();
+	return rdo;
+}
+
+bool NodoInternoArbol::isOverflowded(int blockSize)
+{
 	cout<<" redefinido";
 	return true;
 }
 
-bool NodoInternoArbol::isUnderflowded(int blockSize){
+bool NodoInternoArbol::isUnderflowded(int blockSize)
+{
 	cout<<" redefinido";
 	return true;
 }
 
 
-void NodoInternoArbol::setClaves(list<string>* claves) {
+void NodoInternoArbol::setClaves(list<string> claves) {
 	this->claves = claves;
 }
 
-void NodoInternoArbol::setHijos(list<int>* hijos) {
+void NodoInternoArbol::setHijos(list<int> hijos) {
 	this->hijos = hijos;
 }
 
-list<string>* NodoInternoArbol::getClaves() const{
+list<string> NodoInternoArbol::getClaves() const{
 	return this->claves;
 }
 
-list<int>* NodoInternoArbol::getHijos() const{
+list<int> NodoInternoArbol::getHijos() const{
 	return hijos;
 }
 

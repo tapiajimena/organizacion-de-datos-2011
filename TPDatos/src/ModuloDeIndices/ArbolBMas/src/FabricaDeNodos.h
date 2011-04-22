@@ -13,12 +13,19 @@
 #ifndef FABRICADENODOS_H_
 #define FABRICADENODOS_H_
 
+#include"NodoArbol.h"
+
 /*
  *
  */
-class FabricaDeNodos {
+class FabricaDeNodos
+{
 public:
 	FabricaDeNodos();
+
+	void asignarId(NodoArbol* nodo, unsigned int* cantidadNodos, unsigned int* nodosLibres, fstream* fs);
+
+
 	virtual ~FabricaDeNodos();
 };
 
