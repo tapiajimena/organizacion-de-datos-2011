@@ -119,6 +119,10 @@ void NodoHojaArbol::serializar(){
 	 * <IdNodo><Nivel><TipoNodo><CantidadDatoElementoNodo><TamanioDatoElementoNodo><DatoElementoNodo>...<TamanioDatoElementoNodo><DatoElementoNodo><SiguienteHoja>
 	 */
 	int cantidadElementos 	= this->elementos.size();
+	string mensaje = "Se serializa la hoja con ";
+	mensaje +=ServiceClass::toString(cantidadElementos);
+	mensaje +=" elementos.";
+	Logger::log("NodoHojaArbol", "serializar", mensaje);
 	long int tamanioElementoNodo = 0;
 
 	this->dato.write(reinterpret_cast<char *>(&(this->id)), sizeof(this->id));//idNodo
@@ -130,12 +134,16 @@ void NodoHojaArbol::serializar(){
 	for (list<DatoElementoNodo*>::const_iterator ci = this->elementos.begin(); ci != this->elementos.end(); ++ci)
 	{
 		elemento = *ci;
+		mensaje = "Se va a serializar el elemento de clave: ";
+		mensaje += (*ci)->getClave();
+		Logger::log("NodoHojaArbol", "serializar", mensaje);
 		elemento->serializar();
 		tamanioElementoNodo = elemento->getSize();
 		this->dato.write(reinterpret_cast<char *>(&tamanioElementoNodo), sizeof(tamanioElementoNodo));//tamanioElementoNodo
 		this->dato.write(elemento->getDato().c_str(),tamanioElementoNodo);
-		//cout<<"Serializando: "<<elemento->getDato()<<endl;
 	}
+
+
 }
 
 void NodoHojaArbol::hidratar(string nodoHojaArbol){
