@@ -155,6 +155,35 @@ string ServiceClass::toString(uint32_t numero)
 	return (string)aux;
 }
 
+string ServiceClass::toStringSized(uint32_t numero, unsigned int cantidadCaracteres)
+{
+	std::string cadena = toString(numero);
+
+	if(cadena.size() < cantidadCaracteres)
+	{
+		std::stringstream ss;
+		std::string ceros(cantidadCaracteres-cadena.size(), '0');
+		ss<<ceros<<cadena;
+
+		return ss.str();
+	}
+	else if (cadena.size() > cantidadCaracteres)
+	{
+		int caracteresSobrantes = cadena.size()-cantidadCaracteres;
+		cadena.erase( cadena.size()-caracteresSobrantes, caracteresSobrantes);
+	}
+
+	return cadena;
+
+}
+
+/*
+string ServiceClass::toStringSized(unsigned int numero, unsigned int cantidadCaracteres)
+{
+
+}
+*/
+
 
 string ServiceClass::normalizarString(string cadena)
 {
@@ -165,28 +194,28 @@ string ServiceClass::normalizarString(string cadena)
 		char letra = cadenaRetorno.at(x);
 		switch(letra)
 		{
-		case 'ï¿½':
+		case 'á':
 			cadenaRetorno.replace(x,1,"a");
 			break;
-		case 'ï¿½':
+		case 'é':
 			cadenaRetorno.replace(x,1,"e");
 			break;
-		case 'ï¿½':
+		case 'í':
 			cadenaRetorno.replace(x,1,"i");
 			break;
-		case 'ï¿½':
+		case 'ó':
 			cadenaRetorno.replace(x,1,"o");
 			break;
-		case 'ï¿½':
+		case 'ú':
 			cadenaRetorno.replace(x,1,"u");
 			break;
-		case 'ï¿½':
+		case 'ü':
 			cadenaRetorno.replace(x,1,"u");
 			break;
-		case 'ï¿½':
+		case 'ñ':
 			cadenaRetorno.replace(x,1,"n");
 			break;
-		case 'ï¿½':
+		case 'Ñ':
 			cadenaRetorno.replace(x,1,"n");
 			break;
 			//(lamentablemente el toDownCase no reconoce la ï¿½ mayï¿½scula)
