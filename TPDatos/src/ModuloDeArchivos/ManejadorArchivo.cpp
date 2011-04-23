@@ -77,16 +77,12 @@ bool ManejadorArchivo::EscribirDato(fstream &arc, Dato* d, uint32_t offset)
 
 bool ManejadorArchivo::Escribir(fstream &arc, stringstream * ss)
 {
-	cout << "ESCRIBIR" << endl;
-	cout << "dentro del escribir: " << ss->str() << endl;
 	if(arc.is_open() && arc.good()){
 		IrAlInicio(arc);
-		cout << "el archivo esta abierto" <<endl;
 	}
 	if(arc.good() && ss->good())
 	{
 		arc<< ss->str();
-		cout << "pase" << endl;
 		arc.flush();
 	}
 	else
