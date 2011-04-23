@@ -99,7 +99,7 @@ public:
 	 * Coloca el size del libro como el tamaño del espacio libre de un offset.
 	 * @param idLibro: id del libro que se esta eliminando.
 	 */
-    void eliminarLibro(uint32_t idLibro);
+    void eliminarLibro(uint32_t idLibro, uint32_t size);
 
     /**
      * Actualiza el archivo de control con los cambios realizados
