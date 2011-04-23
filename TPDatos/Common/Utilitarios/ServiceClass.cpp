@@ -4,29 +4,6 @@ ServiceClass::ServiceClass() {
 
 }
 
-string ServiceClass::agregarExtensionArchivo(string valor) {
-	if (valor.find(".tmpl") == string::npos)
-		valor.insert(valor.size(), ".tmpl");
-	return valor;
-}
-
-string ServiceClass::obtenerNombreArchivo(string valor) {
-	size_t pos = 0;
-	pos = valor.rfind('/');
-	string aux;
-
-	if (pos != string::npos && pos != valor.size() - 1)
-		aux = valor.substr(pos + 1, valor.size());
-	else
-		aux = valor;
-
-	pos = aux.find(".tmpl");
-	if (pos != string::npos)
-		aux.erase(pos, aux.size() - pos);
-
-	return aux;
-}
-
 string ServiceClass::obtenerString(unsigned int valor) {
 	stringstream aux;
 	aux << valor;
@@ -69,45 +46,6 @@ const unsigned char* ServiceClass::obtenerPuntero(const string & valor) {
 	return pValor;
 }
 
-int ServiceClass::getLineas(string texto) {
-	int lineas = 0;
-	size_t pos = 0;
-	if (!texto.empty()) {
-		while (pos < texto.size() && pos != string::npos) {
-			pos = texto.find('\n', pos);
-			if (pos != string::npos) {
-				lineas++;
-				pos++;
-			}
-		}
-		if (texto.at(texto.size() - 1) != '\n')
-			lineas++;
-	}
-	return lineas;
-}
-
-unsigned int ServiceClass::getMaxLargoLinea(std::string cadena) {
-	unsigned int largo_linea = 0;
-	size_t pos = 0;
-	if (!cadena.empty()) {
-		while (pos != string::npos) {
-			pos = cadena.find('\n', 0);
-			if (pos != string::npos) {
-				if (pos < cadena.size() - 1)
-					cadena = cadena.substr(pos + 1);
-				else
-					cadena = "";
-				if (pos > largo_linea)
-					largo_linea = pos;
-			} else {
-				if (cadena.size() > largo_linea)
-					largo_linea = cadena.size();
-			}
-		}
-	}
-	return largo_linea;
-}
-
 string ServiceClass::toUppercase(string s) {
 	for (size_t i = 0; i < s.length(); ++i) {
 		s[i] = toupper(s[i]);
@@ -122,6 +60,18 @@ string ServiceClass::toDowncase(string s) {
 	};
 
 	return s;
+}
+
+string ServiceClass::toStringData(vector<string>* datos, string separador){
+	string aux;
+	vector<string>::iterator it = datos->begin();
+
+	for(it; it != datos->end(); it++){
+		aux += (*it);
+		aux += separador;
+	}
+
+	return aux;
 }
 
 std::vector<std::string> ServiceClass::obtenerListaPalabras(std::string linea, std::string separadores)
@@ -215,31 +165,31 @@ string ServiceClass::normalizarString(string cadena)
 		char letra = cadenaRetorno.at(x);
 		switch(letra)
 		{
-		case 'á':
+		case 'ï¿½':
 			cadenaRetorno.replace(x,1,"a");
 			break;
-		case 'é':
+		case 'ï¿½':
 			cadenaRetorno.replace(x,1,"e");
 			break;
-		case 'í':
+		case 'ï¿½':
 			cadenaRetorno.replace(x,1,"i");
 			break;
-		case 'ó':
+		case 'ï¿½':
 			cadenaRetorno.replace(x,1,"o");
 			break;
-		case 'ú':
+		case 'ï¿½':
 			cadenaRetorno.replace(x,1,"u");
 			break;
-		case 'ü':
+		case 'ï¿½':
 			cadenaRetorno.replace(x,1,"u");
 			break;
-		case 'ñ':
+		case 'ï¿½':
 			cadenaRetorno.replace(x,1,"n");
 			break;
-		case 'Ñ':
+		case 'ï¿½':
 			cadenaRetorno.replace(x,1,"n");
 			break;
-			//(lamentablemente el toDownCase no reconoce la Ñ mayúscula)
+			//(lamentablemente el toDownCase no reconoce la ï¿½ mayï¿½scula)
 		}
 	}
 	return cadenaRetorno;
@@ -255,6 +205,7 @@ uint32_t ServiceClass::convertirAUint32(string aux)
 	{
 		s=aux[i];
 		int iAux=atoi((const char*)s.c_str());
+		//int iAux = obtenerNumero(aux);
 		rdo+= iAux*(pow(10,tamanioString-1-i));
 	}
 
