@@ -2,209 +2,153 @@
 
 NodoHojaArbol::NodoHojaArbol() {
 	this->tipoNodo = 'H';
+	this->idSiguienteHoja = 0;
 
 }
 
-NodoHojaArbol::NodoHojaArbol(list<uint32_t> idLibros, int idSiguienteHoja)
-{
+NodoHojaArbol::NodoHojaArbol(list<uint32_t> idLibros, int idSiguienteHoja) {
 }
 
-int NodoHojaArbol::insertar(string clave)
-{
+int NodoHojaArbol::insertar(string clave) {
 	//this->setClave(clave);
 	return OVERFLOWDED;
 }
 
-
-void NodoHojaArbol::partir(NodoArbol* hermano, int sizeBloque, string clavePromovida, int idNodoPromovido)
-{
+void NodoHojaArbol::partir(NodoArbol* hermano, int sizeBloque,
+		string clavePromovida, int idNodoPromovido) {
 	return;
 }
 
-int NodoHojaArbol::eliminar(Dato *dato, uint32_t offset, fstream fs, unsigned int cantidadNodos, fstream arcLibros, unsigned int nodosLibres)
-{
+int NodoHojaArbol::eliminar(Dato *dato, uint32_t offset, fstream fs,
+		unsigned int cantidadNodos, fstream arcLibros, unsigned int nodosLibres) {
 	return 0;
 
 }
 
-list<DatoElementoNodo*> NodoHojaArbol::getElementos() const
-{
-    return elementos;
+list<DatoElementoNodo*> NodoHojaArbol::getElementos() const {
+	return elementos;
 }
 
-void NodoHojaArbol::setElementos(list<DatoElementoNodo*> elementos)
-{
-    this->elementos = elementos;
+void NodoHojaArbol::setElementos(list<DatoElementoNodo*> elementos) {
+	this->elementos = elementos;
 }
 
-
-
-int NodoHojaArbol::remover(Dato* dato, uint32_t offset, fstream fs, unsigned int cantidadNodos, fstream arcLibros, unsigned int cantidadNodosLibres)
-{
+int NodoHojaArbol::remover(Dato* dato, uint32_t offset, fstream fs,
+		unsigned int cantidadNodos, fstream arcLibros,
+		unsigned int cantidadNodosLibres) {
 	return 0;
 }
 
-
-bool NodoHojaArbol::isOverflowded(int blockSize){
-	cout<<" redefinido";
+bool NodoHojaArbol::isOverflowded(int blockSize) {
+	cout << " redefinido";
 	return true;
 }
 
-bool NodoHojaArbol::isUnderflowded(int blockSize){
-	cout<<" redefinido";
+bool NodoHojaArbol::isUnderflowded(int blockSize) {
+	cout << " redefinido";
 	return true;
 }
 
-
-Dato *NodoHojaArbol::buscar(Dato *dato)
-{
+Dato *NodoHojaArbol::buscar(Dato *dato) {
 }
 
-bool NodoHojaArbol::agregarElemento(DatoElementoNodo* elemento)
-{
+bool NodoHojaArbol::agregarElemento(DatoElementoNodo* elemento) {
 	this->elementos.push_back(elemento);
 }
 
-int NodoHojaArbol::modificar(Dato *dato)
-{
+int NodoHojaArbol::modificar(Dato *dato) {
 }
 
-char NodoHojaArbol::getTipoNodo() const
-{
+char NodoHojaArbol::getTipoNodo() const {
 	return this->tipoNodo;
 }
 
-void NodoHojaArbol::setTipoNodo(char tipoNodo)
-{
+void NodoHojaArbol::setTipoNodo(char tipoNodo) {
 	this->tipoNodo = tipoNodo;
 }
 
-void NodoHojaArbol::setId(int id)
-{
-	this->id  = id;
+void NodoHojaArbol::setId(int id) {
+	this->id = id;
 }
 
-int NodoHojaArbol::getId() const
-{
+int NodoHojaArbol::getId() const {
 	return this->id;
 }
 
-
-
-
-uint32_t NodoHojaArbol::getIdSiguienteHoja() const
-{
-    return idSiguienteHoja;
+uint32_t NodoHojaArbol::getIdSiguienteHoja() const {
+	return idSiguienteHoja;
 }
 
-
-void NodoHojaArbol::setIdSiguienteHoja(uint32_t idSiguienteHoja)
-{
-    this->idSiguienteHoja = idSiguienteHoja;
+void NodoHojaArbol::setIdSiguienteHoja(uint32_t idSiguienteHoja) {
+	this->idSiguienteHoja = idSiguienteHoja;
 }
 
-int NodoHojaArbol::getNivel() const
-{
-    return nivel;
+int NodoHojaArbol::getNivel() const {
+	return nivel;
 }
 
-void NodoHojaArbol::setNivel(int nivel)
-{
-    this->nivel = nivel;
+void NodoHojaArbol::setNivel(int nivel) {
+	this->nivel = nivel;
 }
 
-void NodoHojaArbol::serializar(){
+void NodoHojaArbol::serializar(iostream* stream) {
 	/*
 	 * Se serializa en el siguiente orden
-	 * <IdNodo><Nivel><TipoNodo><CantidadDatoElementoNodo><TamanioDatoElementoNodo><DatoElementoNodo>...<TamanioDatoElementoNodo><DatoElementoNodo><SiguienteHoja>
+	 * <IdNodo><Nivel><TipoNodo><CantidadDatoElementoNodo><DatoElementoNodo>...<DatoElementoNodo><SiguienteHoja>
 	 */
-	int cantidadElementos 	= this->elementos.size();
-	string mensaje = "Se serializa la hoja con ";
-	mensaje +=ServiceClass::toString(cantidadElementos);
-	mensaje +=" elementos.";
-	Logger::log("NodoHojaArbol", "serializar", mensaje);
-	int tamanioElementoNodo = 0;
+	int cantidadElementos = this->elementos.size();
 
-	this->dato.write(reinterpret_cast<char *>(&(this->id)), sizeof(this->id));//idNodo
-	this->dato.write(reinterpret_cast<char *>(&(this->nivel)), sizeof(this->nivel));//nivel
-	this->dato.write(reinterpret_cast<char *>(&(this->tipoNodo)), sizeof(this->tipoNodo));//tipoNodo
-	this->dato.write(reinterpret_cast<char *>(&cantidadElementos), sizeof(cantidadElementos));//cantidadElementos
+	string mensaje = "Se serializa la hoja con ";
+	mensaje += ServiceClass::toString(cantidadElementos);
+	mensaje += " elementos.";
+	Logger::log("NodoHojaArbol", "serializar", mensaje);
+
+	stream->write(reinterpret_cast<char *> (&(this->id)), sizeof(this->id));
+	stream->write(reinterpret_cast<char *> (&(this->nivel)),sizeof(this->nivel));
+	stream->write(reinterpret_cast<char *> (&(this->tipoNodo)),sizeof(this->tipoNodo));
+	stream->write(reinterpret_cast<char *> (&cantidadElementos),sizeof(cantidadElementos));
 
 	DatoElementoNodo* elemento;
-	for (list<DatoElementoNodo*>::const_iterator ci = this->elementos.begin(); ci != this->elementos.end(); ++ci)
-	{
-		elemento = *ci;
+	list<DatoElementoNodo*>::iterator it;
+	for (it = this->elementos.begin(); it!= this->elementos.end(); ++it) {
+		elemento = *it;
+
 		mensaje = "Se va a serializar el elemento de clave: ";
-		mensaje += (*ci)->getClave();
+		mensaje += (*it)->getClave();
 		Logger::log("NodoHojaArbol", "serializar", mensaje);
-		elemento->serializar();
-		tamanioElementoNodo = elemento->getSize();
-		this->dato.write(reinterpret_cast<char *>(&tamanioElementoNodo), sizeof(tamanioElementoNodo));//tamanioElementoNodo
-		this->dato.write(elemento->getDato().c_str(),tamanioElementoNodo);
+
+		elemento->serializar(stream);
 	}
-
-
+	stream->write(reinterpret_cast<char *> (&(this->idSiguienteHoja)),sizeof(this->idSiguienteHoja));
 }
 
-void NodoHojaArbol::hidratar(string nodoHojaArbol){
-	stringstream hoja(nodoHojaArbol);
+void NodoHojaArbol::hidratar(iostream* stream) {
 
 	int cantidadElementos = 0;
-	int tamanioElementoNodo = 0;
 
-	hoja.seekp(0, ios::beg);
-	hoja.read(reinterpret_cast<char *>(&(this->id)), sizeof(this->id));
-	hoja.read(reinterpret_cast<char *>(&(this->nivel)), sizeof(this->nivel));
-	hoja.read(reinterpret_cast<char *>(&(this->tipoNodo)), sizeof(this->tipoNodo));
-	hoja.read(reinterpret_cast<char *>(&(cantidadElementos)), sizeof(cantidadElementos));
+	stream->read(reinterpret_cast<char *> (&(this->id)),sizeof(this->id));
+	stream->read(reinterpret_cast<char *> (&(this->nivel)),sizeof(this->nivel));
+	stream->read(reinterpret_cast<char *> (&(this->tipoNodo)),sizeof(this->tipoNodo));
+	stream->read(reinterpret_cast<char *> (&(cantidadElementos)),sizeof(cantidadElementos));
+
+	string mensaje = "Se hidrata la hoja con ";
+		mensaje += ServiceClass::toString(cantidadElementos);
+		mensaje += " elementos.";
+		Logger::log("NodoHojaArbol", "hidratar", mensaje);
 
 	DatoElementoNodo* elemento;
-
-	char* claveAux = (char*)malloc(0);
-	stringstream ss;
-	string clave;
-	int tamanioClave = 0;
-	int cantidadLibros = 0;
-
-	for (int i = 0; i<cantidadElementos; i++)
-	{
+	for (int i = 0; i < cantidadElementos; i++) {
 		elemento = new DatoElementoNodo();
-
-		hoja.read(reinterpret_cast<char *>(&tamanioElementoNodo),sizeof(tamanioElementoNodo));
-
-		hoja.read(reinterpret_cast<char *> (&tamanioClave),sizeof(tamanioClave));
-		claveAux= (char*)realloc(claveAux, tamanioClave);
-		hoja.read(claveAux, tamanioClave);
-		hoja.read(reinterpret_cast<char *> (&cantidadLibros),sizeof(cantidadLibros));
-
-		clave = claveAux;
-		clave = clave.substr(0,tamanioClave);
-
-		elemento->setClave(clave);
-
-		for (int i = 0; i < cantidadLibros; i++)
-		{
-			uint32_t aux;
-			hoja.read(reinterpret_cast<char *> (&aux), sizeof(aux));
-			elemento->getLibros()->push_back(aux);
-		}
-
+		elemento->hidratar(stream);
 		elementos.push_back(elemento);
 	}
+	stream->read(reinterpret_cast<char *> (&(this->idSiguienteHoja)),sizeof(this->idSiguienteHoja));
 }
 
-
-NodoHojaArbol::~NodoHojaArbol()
-{
+NodoHojaArbol::~NodoHojaArbol() {
+	list<DatoElementoNodo*>::iterator it;
+	for(it=this->elementos.begin(); it!= this->elementos.end(); ++it)
+	{
+		delete(*it);
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
