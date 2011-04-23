@@ -35,10 +35,6 @@ class ServiceClass {
 public:
 	ServiceClass();
 
-	/* Metodos para manejo de archivos */
-	static string agregarExtensionArchivo(string valor);
-	static string obtenerNombreArchivo(string valor);
-
 	/* Metodos usados para realizar casteos */
 	static string obtenerString(unsigned int valor);
 	static unsigned int obtenerNumero(string valor);
@@ -51,16 +47,6 @@ public:
 	 * y la devuelve en int como AAAA MM DD
 	 */
 	static int devolverFechaInt(string valor);
-
-	/* Metodo que devuelve la cantidad de lineas
-	 * en el string
-	 */
-	static int getLineas(string texto);
-
-	/* Metodo que devuelve el largo de la linea
-	 * mas larga en el texto
-	 */
-	static unsigned int getMaxLargoLinea(string texto);
 
 	/* Metodo que devuelve la fecha y la hora local */
 	static string getFechaHora();
@@ -90,7 +76,7 @@ public:
 	static string toString(uint32_t numero);
 
 
-	/*
+	/**
 	 * Normaliza todos los caracteres de la cadena de caracteres
 	 * Quita las tildes y pone todos los caracteres en minúsculas.
 	 */
@@ -101,6 +87,11 @@ public:
 	 */
 	static uint32_t convertirAUint32(string aux);
 
+	/**
+	 * Devuelve un string con los datos del vector separados por el
+	 * separador indicado por parametro.
+	 */
+	static string toStringData(vector<string>* datos, string separador);
 
 	virtual ~ServiceClass();
 };
