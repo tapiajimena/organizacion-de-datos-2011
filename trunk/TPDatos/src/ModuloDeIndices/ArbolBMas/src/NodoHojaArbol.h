@@ -47,8 +47,8 @@ public:
     list<DatoElementoNodo*> getElementos() const;
     void setElementos(list<DatoElementoNodo*> elementos);
 
-    void serializar();
-    void hidratar(string nodoHojaArbol);
+    void serializar(iostream* stream);
+    void hidratar(iostream* stream);
 
 };
 
