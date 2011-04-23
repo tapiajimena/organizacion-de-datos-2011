@@ -6,12 +6,12 @@ NodoInternoArbol::NodoInternoArbol()
 
 }
 
-int NodoInternoArbol::insertar(string clave)
+int NodoInternoArbol::insertar(DatoElementoNodo elemento)
 {
 
 }
 
-void NodoInternoArbol::partir(NodoArbol* hermano, int sizeBloque, string clavePromovida, int idNodoPromovido)
+void NodoInternoArbol::partir(NodoArbol* hermano, int sizeBloque, DatoElementoNodo clavePromovida, int idNodoPromovido)
 {
 
 }
@@ -22,8 +22,11 @@ int NodoInternoArbol::eliminar(Dato* dato, uint32_t offset, fstream fs, unsigned
 }
 
 
-void NodoInternoArbol::agregarClaveHijo(string clave, int idHijo)
+void NodoInternoArbol::agregarClaveHijo(DatoElementoNodo clave, int idHijo)
 {
+	/*
+	 *
+	 //TODO TERMINAR ACA!!!
 	string claveActual;
 	list<int>::iterator itHijos 	= this->hijos.begin();
 	list<string>::iterator itClaves;
@@ -40,12 +43,15 @@ void NodoInternoArbol::agregarClaveHijo(string clave, int idHijo)
 	itHijos++;
 	hijos.insert(itHijos, idHijo);
 	claves.insert(itClaves, clave);
+	*/
 }
 
 
-uint32_t NodoInternoArbol::buscarClave(string clave)
+uint32_t NodoInternoArbol::buscarClave(DatoElementoNodo clave)
 {
-	string claveActual;
+	/*
+	 //TODO TERMINAR ACA CONTINUAR!!
+	DatoElementoNodo claveActual;
 	uint32_t rdo = 0;
 	list<int>::iterator itHijos 	= hijos.begin();
 	list<string>::iterator itClaves;
@@ -61,6 +67,8 @@ uint32_t NodoInternoArbol::buscarClave(string clave)
 	}
 	rdo = (uint32_t)claveActual.length();
 	return rdo;
+	*/
+	return 0;
 }
 
 

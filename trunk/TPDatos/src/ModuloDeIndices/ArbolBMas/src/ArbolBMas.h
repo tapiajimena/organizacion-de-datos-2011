@@ -17,6 +17,7 @@
 #include <stdint.h>
 #include "./src/ModuloDeArchivos/ManejadorArchivo.h"
 #include "../../../ModuloDeTipos/DatoNodo.h"
+#include "../../../ModuloDeTipos/DatoElementoNodo.h"
 #include "../../../../Common/Constantes.h"
 #include "NodoArbol.h"
 #include "NodoHojaArbol.h"
@@ -41,7 +42,7 @@ private:
 public:
     ArbolBMas();
     ArbolBMas(string pathIndice, int sizeBloque);
-    int insertar(string clave);
+    int insertar(DatoElementoNodo elemento);
 
     NodoArbol* leerNodo(int idNodo);
 
@@ -69,7 +70,8 @@ public:
     void setSizeMetaDataControl(int metaDataControl);
 
 private:
-	int insertarDatoRecursivo(string clave, NodoArbol* nodoActual, string clavePromovida, int idNodoPromovido);
+	int insertarDatoRecursivo(DatoElementoNodo elemento, NodoArbol* nodoActual, DatoElementoNodo clavePromovida, int idNodoPromovido);
+	void escribirNodo(NodoArbol* nodo);
 
 public:
 	virtual ~ArbolBMas();

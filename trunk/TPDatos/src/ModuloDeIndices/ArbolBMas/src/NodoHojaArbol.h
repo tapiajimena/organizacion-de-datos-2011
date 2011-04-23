@@ -14,7 +14,6 @@
 #define NODOHOJAARBOL_H_
 
 #include "NodoArbol.h"
-#include "../../../ModuloDeTipos/DatoElementoNodo.h"
 #include "../../../../Common/Utilitarios/Logger.h"
 #include "../../../../Common/Utilitarios/ServiceClass.h"
 
@@ -26,12 +25,13 @@ private:
 public:
     NodoHojaArbol();
     NodoHojaArbol(list<uint32_t> idLibros, int idSiguienteHoja);
-    int insertar(string clave);
-    void partir(NodoArbol *hermano, int sizeBloque, string clavePromovida, int idNodoPromovido);
+    int insertar(DatoElementoNodo clave);
+    void partir(NodoArbol *hermano, int sizeBloque, DatoElementoNodo clavePromovida, int idNodoPromovido);
     int eliminar(Dato *dato, uint32_t offset, fstream fs, unsigned int cantidadNodos, fstream arcLibros, unsigned int nodosLibres);
     int remover(Dato *dato, uint32_t offset, fstream fs, unsigned int cantidadNodos, fstream arcLibros, unsigned int cantidadNodosLibres);
     int modificar(Dato *dato);
     Dato *buscar(Dato *dato);
+    int buscarElemento(DatoElementoNodo* ele);
     bool agregarElemento(DatoElementoNodo* elemento);
     bool isOverflowded(int sizeBloque);
     bool isUnderflowded(int sizeBloque);
