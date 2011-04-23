@@ -339,14 +339,4 @@ ArchivoControlLibro::~ArchivoControlLibro() {
 			"Se cierra el archivo de control.");
 
 	Cerrar(this->archivoControlLibro);
-	while (it != libros->end()) {
-		if (((*it).second)->getEspacioLibre() > 0) {
-			it_aux = it;
-			++it;
-			libros->erase(it_aux);
-		} else {
-			++it;
-		}
-	}
-
 }
