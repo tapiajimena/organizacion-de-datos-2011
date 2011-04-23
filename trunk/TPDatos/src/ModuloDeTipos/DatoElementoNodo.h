@@ -9,6 +9,8 @@
 #define DATOELEMENTONODO_H_
 
 #include "Dato.h"
+#include "../../Common/Utilitarios/Logger.h"
+#include "../../Common/Utilitarios/ServiceClass.h"
 #include <list>
 #include <fstream>
 #include <string.h>
@@ -24,11 +26,11 @@ public:
 	DatoElementoNodo();
 
 	//se llama en las hojas
-	void serializar();
+	void serializar(iostream* stream);
 
 	//se llama en las hojas
 	//<TamanioClave><Clave><Cantidad_Id_Libros><Id_Libro>[]
-	void hidratar(string datoElementoNodo);
+	void hidratar(iostream* stream);
 
 	void setClave(string clave);
 
@@ -37,7 +39,6 @@ public:
 	list<uint32_t> getLibros();
 
 	void agregarLibro(uint32_t idLibro);
-
 
 	virtual ~DatoElementoNodo();
 };
