@@ -27,20 +27,24 @@ map<uint32_t, DatoControlLibro*>* ParserArchivoControl::getLibros(
 void ParserArchivoControl::leerArchivo(fstream* archivo) {
 	char buffer[CONTROL_LENGTH];
 
-	if (archivo->is_open()) {
-		Logger::log("parserArchivoControl", "leerArchivo",
-				"Se comienza a leer el archivo de control");
-		this->it = this->libros->begin();
-		do {
-			archivo->getline(buffer, CONTROL_LENGTH);
-			cout << buffer << endl;
-			cargarEstructura(buffer);
-			this->contadorLinea++;
-			this->it++;
-		} while (!archivo->eof());
+	if (GetSizeArchivo(*archivo) > 0) {
+		if (archivo->is_open()) {
+			Logger::log("parserArchivoControl", "leerArchivo",
+					"Se comienza a leer el archivo de control");
+			this->it = this->libros->begin();
+			do {
+				archivo->getline(buffer, CONTROL_LENGTH);
+				cargarEstructura(buffer);
+				this->contadorLinea++;
+				this->it++;
+			} while (!archivo->eof());
+		} else {
+			Logger::log("parserArchivoControl", "leerArchivo",
+					"El archivo no esta abierto.");
+		}
 	} else {
 		Logger::log("parserArchivoControl", "leerArchivo",
-				"No se pudo abrir el archivo de control");
+				"El archivo esta vacio o no existe.");
 	}
 }
 
@@ -57,20 +61,12 @@ void ParserArchivoControl::cargarEstructura(string dato) {
 	setTipoIndice(datos);
 	this->datoNuevo->setOffset(this->contadorLinea);
 
-	cout << "DATO NUEVO" << endl;
-	cout << this->datoNuevo->getEspacioLibre() << endl;
-	cout << this->datoNuevo->getId_Libro() << endl;
-	cout << this->datoNuevo->getOffset() << endl;
-
 	setTipoIndice(datos);
 
 	Logger::log("parserArchivoControl", "cargarEstructura",
 			"Se obtiene el dato de control.");
 
 	DatoControlLibro* d = new DatoControlLibro(this->datoNuevo);
-
-	cout << d->getIndexado()->front() << endl;
-	cout << d->getIndexado()->back() << endl;
 
 	this->libros->insert(pair<uint32_t, DatoControlLibro*> (
 			ServiceClass::convertirAUint32(datos.at(0)), d));
