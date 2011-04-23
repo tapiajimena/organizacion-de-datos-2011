@@ -123,7 +123,7 @@ void NodoHojaArbol::serializar(){
 	mensaje +=ServiceClass::toString(cantidadElementos);
 	mensaje +=" elementos.";
 	Logger::log("NodoHojaArbol", "serializar", mensaje);
-	long int tamanioElementoNodo = 0;
+	int tamanioElementoNodo = 0;
 
 	this->dato.write(reinterpret_cast<char *>(&(this->id)), sizeof(this->id));//idNodo
 	this->dato.write(reinterpret_cast<char *>(&(this->nivel)), sizeof(this->nivel));//nivel
@@ -150,7 +150,7 @@ void NodoHojaArbol::hidratar(string nodoHojaArbol){
 	stringstream hoja(nodoHojaArbol);
 
 	int cantidadElementos = 0;
-	long int tamanioElementoNodo = 0;
+	int tamanioElementoNodo = 0;
 
 	hoja.seekp(0, ios::beg);
 	hoja.read(reinterpret_cast<char *>(&(this->id)), sizeof(this->id));
@@ -159,15 +159,36 @@ void NodoHojaArbol::hidratar(string nodoHojaArbol){
 	hoja.read(reinterpret_cast<char *>(&(cantidadElementos)), sizeof(cantidadElementos));
 
 	DatoElementoNodo* elemento;
-	char* elementoAux;
-	string aux;
+
+	char* claveAux = (char*)malloc(0);
+	stringstream ss;
+	string clave;
+	int tamanioClave = 0;
+	int cantidadLibros = 0;
+
 	for (int i = 0; i<cantidadElementos; i++)
 	{
-		hoja.read(reinterpret_cast<char *>(&tamanioElementoNodo),sizeof(tamanioElementoNodo));
-		hoja.read(elementoAux,tamanioElementoNodo);
 		elemento = new DatoElementoNodo();
-		aux=elementoAux;
-		elemento->hidratar(aux.substr(0,tamanioElementoNodo));
+
+		hoja.read(reinterpret_cast<char *>(&tamanioElementoNodo),sizeof(tamanioElementoNodo));
+
+		hoja.read(reinterpret_cast<char *> (&tamanioClave),sizeof(tamanioClave));
+		claveAux= (char*)realloc(claveAux, tamanioClave);
+		hoja.read(claveAux, tamanioClave);
+		hoja.read(reinterpret_cast<char *> (&cantidadLibros),sizeof(cantidadLibros));
+
+		clave = claveAux;
+		clave = clave.substr(0,tamanioClave);
+
+		elemento->setClave(clave);
+
+		for (int i = 0; i < cantidadLibros; i++)
+		{
+			uint32_t aux;
+			hoja.read(reinterpret_cast<char *> (&aux), sizeof(aux));
+			elemento->getLibros()->push_back(aux);
+		}
+
 		elementos.push_back(elemento);
 	}
 }
@@ -176,3 +197,14 @@ void NodoHojaArbol::hidratar(string nodoHojaArbol){
 NodoHojaArbol::~NodoHojaArbol()
 {
 }
+
+
+
+
+
+
+
+
+
+
+
