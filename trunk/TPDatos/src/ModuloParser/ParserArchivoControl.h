@@ -16,6 +16,7 @@
 
 #include <fstream>
 #include <map>
+#include <list>
 #include <iostream>
 #include <stdint.h>
 
@@ -23,13 +24,16 @@
 #include "../Common/Utilitarios/Logger.h"
 #include "../ModuloParser/ParserAuxiliar.h"
 #include "../ModuloDeTipos/DatoControlLibro.h"
+#include "../ModuloDeArchivos/ManejadorArchivo.h"
 
 using namespace std;
+using namespace ManejadorArchivo;
 
 class ParserArchivoControl : ParserAuxiliar{
 private:
 	map<uint32_t,DatoControlLibro*>::iterator it;
 	map<uint32_t,DatoControlLibro*>* libros;
+	DatoControlLibro* datoNuevo;
 	int contadorLinea;
 public:
 	ParserArchivoControl(string token);
@@ -43,6 +47,7 @@ public:
     string getEspacioLibre() const;
     string getId() const;
     list<char>* getTipoIndice(vector<string> datos) const;
+    void setTipoIndice(vector<string> datos);
 
 	virtual ~ParserArchivoControl();
 };
