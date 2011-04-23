@@ -96,6 +96,21 @@ bool ManejadorArchivo::Escribir(fstream &arc, stringstream * ss, uint32_t offset
 	Escribir(arc, ss);
 }
 
+bool ManejadorArchivo::Escribir(fstream* arc, iostream* ios, long offset, long size)
+{
+	bool rdo = false;
+	char* buffer = new char[size];
+
+	arc->seekp(offset, ios_base::beg);
+	ios->read(buffer, size);
+	arc->write(buffer, size);
+	if (arc->good() && ios->good())
+		rdo = true;
+
+	delete [] buffer;
+	return rdo;
+}
+
 string ManejadorArchivo::LeerDato(fstream &arc)
 {
 	string 		rdo;

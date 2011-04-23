@@ -79,6 +79,8 @@ namespace ManejadorArchivo
 	 bool Escribir(fstream &arc, stringstream* ss, uint32_t offset);
 
 
+	 bool Escribir(fstream* arc, iostream* ios, long offset, long size);
+
 	/*
 	 * se leen los datos de arc con un corrimiento offset en ss
 	 * arc debe estar abierto
