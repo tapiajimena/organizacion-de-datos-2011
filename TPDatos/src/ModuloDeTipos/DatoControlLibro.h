@@ -18,6 +18,7 @@
 
 #include "Dato.h"
 #include "../../Common/Utilitarios/Logger.h"
+#include "../../Common/Constantes.h"
 
 using namespace std;
 
@@ -34,6 +35,8 @@ public:
 			list<char>* indexado, uint32_t offset);
 
 	friend bool operator< (const DatoControlLibro  &primero, const DatoControlLibro &segundo);
+
+	string serializar();
 
 	/* Getters y Setters */
 	uint32_t getEspacioLibre() const;
