@@ -69,6 +69,11 @@
 
 #define ERROR -1
 
+/* CONSTANTES DEFINIDAS PARA EL HASH */
+#define TAMANIOCUBETA 1024 //Tamanio de cubeta: cantidad de elementos (4), lista de offsets (n*4), offset prox. cubeta(4)
+
+#define TAMANIODATOTABLA 8 //Tamanio del elemento de la tabla de hash: offset a cubeta inicial y cantidad de elementos
+
 /* CONSTANTES DEFINIDAS PARA VALORES DE RETORNO */
 #define EXITO 0
 
