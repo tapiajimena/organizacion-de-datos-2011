@@ -8,44 +8,47 @@
 #include "DatoElementoNodo.h"
 
 DatoElementoNodo::DatoElementoNodo() {
-	// TODO Auto-generated constructor stub
-
+	this->clave = "";
 }
 
-void DatoElementoNodo::serializar() {
+void DatoElementoNodo::serializar(iostream* stream) {
+
 	int tamanioClave = clave.length();
 	int cantidadLibros = idLibros.size();
+	uint32_t idLibro = 0;
 
-	this->dato.write(reinterpret_cast<char *> (&tamanioClave),sizeof(tamanioClave));
-	this->dato.write(clave.c_str(), tamanioClave);
-	this->dato.write(reinterpret_cast<char *> (&cantidadLibros),sizeof(cantidadLibros));
+	stream->write(reinterpret_cast<char *> (&tamanioClave),sizeof(tamanioClave));
+	stream->write(clave.c_str(), tamanioClave);
+	stream->write(reinterpret_cast<char *> (&cantidadLibros),sizeof(cantidadLibros));
 
-	for (list<uint32_t>::const_iterator ci = idLibros.begin(); ci
-			!= idLibros.end(); ++ci) {
-		uint32_t idLibro = *ci;
-		this->dato.write(reinterpret_cast<char *> (&idLibro), sizeof(idLibro));
+
+	list<uint32_t>::iterator it;
+	for (it = idLibros.begin(); it	!= idLibros.end(); ++it) {
+		idLibro = *it;
+		stream->write(reinterpret_cast<char *> (&idLibro), sizeof(idLibro));
 	}
 }
 
-void DatoElementoNodo::hidratar(string dato) {
-	stringstream datoElementoNodo(dato);
+void DatoElementoNodo::hidratar(iostream* stream) {
+
 	int tamanioClave = 0;
 	int cantidadLibros = 0;
-	char* claveAux;
+	uint32_t aux = 0;
+	char* buffer;
 
-	datoElementoNodo.seekp(0, ios::beg);
-	datoElementoNodo.read(reinterpret_cast<char *> (&tamanioClave),sizeof(tamanioClave));
-	datoElementoNodo.read(claveAux, tamanioClave);
-	datoElementoNodo.read(reinterpret_cast<char *> (&cantidadLibros),sizeof(cantidadLibros));
+	stream->read(reinterpret_cast<char *> (&tamanioClave),sizeof(tamanioClave));
+	buffer = new char [tamanioClave];
+	stream->read(buffer, tamanioClave);
+	stream->read(reinterpret_cast<char *> (&cantidadLibros),sizeof(cantidadLibros));
 
-	clave = claveAux;
-	clave = clave.substr(0,tamanioClave);
+	clave.append( buffer,tamanioClave);
 
 	for (int i = 0; i < cantidadLibros; i++) {
-		uint32_t aux;
-		datoElementoNodo.read(reinterpret_cast<char *> (&aux), sizeof(aux));
+		stream->read(reinterpret_cast<char *> (&aux), sizeof(aux));
 		idLibros.push_back(aux);
 	}
+
+	delete[] buffer;
 }
 
 void DatoElementoNodo::setClave(string clave) {
@@ -63,5 +66,5 @@ void DatoElementoNodo::agregarLibro(uint32_t idLibro) {
 }
 
 DatoElementoNodo::~DatoElementoNodo() {
-	// TODO Auto-generated destructor stub
+
 }
