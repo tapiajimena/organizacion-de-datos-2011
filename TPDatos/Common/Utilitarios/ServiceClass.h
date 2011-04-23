@@ -75,6 +75,12 @@ public:
 	 */
 	static string toString(uint32_t numero);
 
+	/*
+	 * Convierte numero (uint32_t) a una cadena de caracteres string, pero con la cantidad de digitos
+	 * indicada por cantidadCaracteres.
+	 * Nota: se puede usar con otros tipos de enteros (int, unsigned int)...
+	 */
+	static string toStringSized(uint32_t numero, unsigned int cantidadCaracteres);
 
 	/**
 	 * Normaliza todos los caracteres de la cadena de caracteres
