@@ -17,6 +17,7 @@
 #include <fstream>
 #include "./Common/Constantes.h"
 #include "../../../ModuloDeTipos/Dato.h"
+#include "../../../ModuloDeTipos/DatoElementoNodo.h"
 
 
 using namespace std;
@@ -30,8 +31,8 @@ protected:
 public:
 	NodoArbol();
 
-	virtual int insertar(string clave)=0;
-	virtual void partir(NodoArbol* hermano, int sizeBloque, string clavePromovida, int idNodoPromovido)=0;
+	virtual int insertar(DatoElementoNodo clave)=0;
+	virtual void partir(NodoArbol* hermano, int sizeBloque, DatoElementoNodo clavePromovida, int idNodoPromovido)=0;
 	virtual int eliminar(Dato* dato, uint32_t offset, fstream fs, unsigned int cantidadNodos, fstream arcLibros, unsigned int cantidadNodosLibres)=0;
 
 	virtual bool isOverflowded(int sizeBloque)=0;

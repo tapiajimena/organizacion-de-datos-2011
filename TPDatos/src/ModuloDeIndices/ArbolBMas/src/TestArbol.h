@@ -15,6 +15,7 @@
 
 #include <iostream>
 #include "ArbolBMas.h"
+#include "./src/ModuloDeTipos/DatoElementoNodo.h"
 #include "./Common/Constantes.h"
 
 using namespace std;
@@ -23,6 +24,7 @@ using namespace std;
 /*
  * se crea un arbol con su data de control y se muestra la data de control
  */
+
 void testCrearArbol()
 {
 	stringstream 	ss;
@@ -60,41 +62,22 @@ void testInsertarArbol()
 
 void testSetHidratacionHoja()
 {
-	//se crea un nodoHoja y se le setea data (libros, id, tipo)
-	NodoHojaArbol* raiz = new NodoHojaArbol();
-	raiz->setId(0);
+	DatoElementoNodo* elemento = new DatoElementoNodo();
+	elemento->setClave("Atlantida");
+	elemento->agregarLibro((uint32_t)21);
 
-	raiz->agregarLibro(999);
-	raiz->agregarLibro(512);
-	raiz->agregarLibro(1024);
+	elemento->serializar();
+	cout<<"SERIALIZACION: "<<elemento->getDato()<<endl;
 
-	//se crea un DatoNodo y se le setea un Nodo
-	//o sea se seraliza la info de raiz en dNodo
-	DatoNodo* dNodo = new DatoNodo();
-	dNodo->setDatoNodo(raiz);
-
-	delete(raiz);
-
-	//se crea un nHoja auxliar para hidratarlo con el DatoNodo
-	//para testear que se haya serializado y se hidrate bien
-	NodoHojaArbol* nHoja = new NodoHojaArbol();
-	dNodo->hidratar(nHoja);
-
-	cout<<"Id Nodo: "<<nHoja->getId()<<endl;
-	cout<<"Tipo Nodo: "<<nHoja->getTipoNodo()<<endl;
-	list<uint32_t>* aux = nHoja->getIdLibros();
-	for (list<uint32_t>::const_iterator ci = aux->begin(); ci != aux->end(); ci++)
-		cout<<"Libro: "<<*ci<<endl;
-
-	delete(nHoja);
-	delete(dNodo);
+	delete(elemento);
 }
+
 
 void TestArbol()
 {
-	//testCrearArbol();
-	testInsertarArbol();
-	//testSetHidratacionHoja();
+	cout<<"HOLA"<<endl;
+	testSetHidratacionHoja();
+
 }
 
 #endif /* TESTARBOL_CPP_ */

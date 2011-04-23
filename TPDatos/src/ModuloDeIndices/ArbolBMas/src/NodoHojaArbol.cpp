@@ -9,13 +9,55 @@ NodoHojaArbol::NodoHojaArbol() {
 NodoHojaArbol::NodoHojaArbol(list<uint32_t> idLibros, int idSiguienteHoja) {
 }
 
-int NodoHojaArbol::insertar(string clave) {
-	//this->setClave(clave);
-	return OVERFLOWDED;
+int NodoHojaArbol::insertar(DatoElementoNodo elemento)
+{
+	/*
+	//TODO continuar aca
+	if (recordIndex(elemento)==-1)
+	{
+		this->elementos.push_front(record);
+		//TODO comparar elementos
+		this->elementos.sort(&compararElementos);
+		if (isOverflowded(SIZE_BLOQUE))
+			return OVERFLOWDED;
+		return EXITO;
+	}
+	else
+		return DUPLICADO;
+*/
+}
+
+
+/**
+ * Si no existe devuelve -1 sino devuelve la posicion del elemento.
+ */
+int NodoHojaArbol::buscarElemento(DatoElementoNodo* ele)
+{
+	list<DatoElementoNodo*>::iterator it = elementos.begin();
+	int rdoCompara, rdo = 0;
+	DatoElementoNodo* eleActual = NULL;
+	while (it != this->elementos.end())
+	{
+		eleActual = (DatoElementoNodo*) *it;
+		//strcmp(eleActual,ele->getClave());
+		//rdoCompara = ele->comparar((void*) eleActual);
+		switch (rdoCompara)
+		{
+			case 1:
+				rdo++;
+				break;
+			case 0:
+				return rdo;
+			case -1:
+				return -1;
+		}
+		it++;
+	}
+	return -1;
 }
 
 void NodoHojaArbol::partir(NodoArbol* hermano, int sizeBloque,
-		string clavePromovida, int idNodoPromovido) {
+		DatoElementoNodo clavePromovida, int idNodoPromovido) {
 	return;
 }
 
@@ -122,8 +164,12 @@ void NodoHojaArbol::serializar(iostream* stream) {
 	stream->write(reinterpret_cast<char *> (&(this->idSiguienteHoja)),sizeof(this->idSiguienteHoja));
 }
 
-void NodoHojaArbol::hidratar(iostream* stream) {
-
+void NodoHojaArbol::hidratar(iostream* stream)
+{
+	/*
+	 * Se serializa en el siguiente orden
+	 * <IdNodo><Nivel><TipoNodo><CantidadDatoElementoNodo><DatoElementoNodo>...<DatoElementoNodo><SiguienteHoja>
+	 */
 	int cantidadElementos = 0;
 
 	stream->read(reinterpret_cast<char *> (&(this->id)),sizeof(this->id));

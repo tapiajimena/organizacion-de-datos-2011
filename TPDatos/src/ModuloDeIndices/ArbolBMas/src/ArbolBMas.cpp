@@ -29,6 +29,7 @@ ArbolBMas::ArbolBMas(string pathIndice, int sizeBloque)
 	//si no existe se crea y se inserta una raiz
 	if(CrearSiNoExiste(pathIndice.c_str(),this->arcIndice))
 	{
+		stringstream ss;
 		string pathAux =getPathArcIndice()+"NodosLibres";
 		Crear(pathAux.c_str(), arcNodosLibres, true);
 
@@ -40,7 +41,8 @@ ArbolBMas::ArbolBMas(string pathIndice, int sizeBloque)
 		raiz->setId(0);
 		raiz->setNivel(0);
 
-		this->setDatoNodo((NodoHojaArbol*)raiz);
+		//this->setDatoNodo((NodoHojaArbol*)raiz);
+		escribirNodo(raiz);
 	}
 	else //el archivo ya existe
 	{
@@ -49,22 +51,32 @@ ArbolBMas::ArbolBMas(string pathIndice, int sizeBloque)
 	}
 }
 
-int ArbolBMas::insertarDatoRecursivo(string clave, NodoArbol* nodoActual, string clavePromovida, int idNodoPromovido)
+void ArbolBMas::escribirNodo(NodoArbol* nodo)
+{
+	stringstream ss(ios_base::in| ios_base::out| ios_base::binary);
+	long offset = this->sizeMetaDataControl + (nodo->getId() * SIZE_BLOQUE);
+
+	if(nodo->getTipoNodo()=='H')
+		((NodoHojaArbol*)nodo)->serializar(&ss);
+	else
+		((NodoInternoArbol*)nodo)->serializar(&ss);
+
+	Escribir(&arcIndice,&ss, offset, SIZE_BLOQUE);
+}
+
+int ArbolBMas::insertarDatoRecursivo(DatoElementoNodo elemento, NodoArbol* nodoActual, DatoElementoNodo clavePromovida, int idNodoPromovido)
 {
 	int rdo;
 	NodoArbol* nodoAInsertar;
 
 	if (nodoActual->getTipoNodo() == 'H')
 	{
-		rdo = ((NodoHojaArbol*)nodoActual)->insertar(clave);
+		rdo = ((NodoHojaArbol*)nodoActual)->insertar(elemento);
 
 		if (rdo == EXITO)
 		{
 			nodoAInsertar = new NodoHojaArbol();
-			int aux = nodoActual->getId();
-			aux++;
-			nodoAInsertar->setId(aux);
-			setDatoNodo((NodoHojaArbol*)nodoAInsertar);
+			escribirNodo(nodoAInsertar);
 		}
 		else if (rdo == OVERFLOWDED)
 		{
@@ -77,8 +89,8 @@ int ArbolBMas::insertarDatoRecursivo(string clave, NodoArbol* nodoActual, string
 			aux++;
 			nodoAInsertar->setId(aux);
 
-			setDatoNodo(nodoActual);
-			setDatoNodo(nodoAInsertar);
+			escribirNodo(nodoActual);
+			escribirNodo(nodoAInsertar);
 
 			delete(nodoAInsertar);
 			return OVERFLOWDED;
@@ -91,10 +103,10 @@ int ArbolBMas::insertarDatoRecursivo(string clave, NodoArbol* nodoActual, string
 	else// Es un nodo interno
 	{
 		NodoInternoArbol* nodoInterno = (NodoInternoArbol*)nodoActual;
-		uint32_t offsetNodo = nodoInterno->buscarClave(clave);
+		uint32_t offsetNodo = nodoInterno->buscarClave(elemento);
 
 		NodoArbol* nodoSiguiente = leerNodo(offsetNodo);
-		rdo = insertarDatoRecursivo(clave, nodoSiguiente, clavePromovida, idNodoPromovido);
+		rdo = insertarDatoRecursivo(elemento, nodoSiguiente, clavePromovida, idNodoPromovido);
 
 		if (rdo == OVERFLOWDED)
 		{
@@ -127,6 +139,74 @@ int ArbolBMas::insertarDatoRecursivo(string clave, NodoArbol* nodoActual, string
 	}
 }
 
+
+int ArbolBMas::insertar(DatoElementoNodo elemento)
+{
+	int rdo;
+	int idNodoPromovido;
+	DatoElementoNodo clavePromovida;
+
+
+	if(elemento.getClave().length() > MAX_SIZE_DATO)
+		return ERROR;
+
+	rdo = insertarDatoRecursivo(elemento, raiz, clavePromovida, idNodoPromovido);
+
+	if(rdo == OVERFLOWDED)
+	{
+		// Si se desborda la raiz...
+		NodoInternoArbol* nuevaRaiz = new NodoInternoArbol();
+		nuevaRaiz->setId(0);
+		nuevaRaiz->setNivel(raiz->getNivel()+1);
+		//FabricaDeNodos::asignarId(root,&nodeCounter,&freeNodeCounter,&freeNodesFile);
+
+		nuevaRaiz->getHijos().push_back(raiz->getId()); //por orden se pone una despues de la otra
+		nuevaRaiz->agregarClaveHijo(clavePromovida, idNodoPromovido);
+
+		escribirNodo(raiz);
+		escribirNodo(nuevaRaiz);
+ 		delete this->raiz;
+		this->raiz	=	nuevaRaiz;
+		return EXITO;
+	}
+
+	return rdo;
+
+}
+
+
+
+NodoArbol* ArbolBMas::leerNodo(int idNodo)
+{
+	NodoArbol* nodo = NULL;
+	stringstream ss;
+	int nivel= 0, id =-1;
+	uint32_t offset = this->sizeMetaDataControl + (SIZE_BLOQUE *idNodo);
+
+	RecuperarEstructura(arcIndice,ss,offset,SIZE_BLOQUE);
+
+	ss.read(reinterpret_cast<char *> (&id), sizeof(id));
+	if (id == idNodo)
+	{
+		ss.read(reinterpret_cast<char *> (&nivel), sizeof(nivel));
+		ss.seekg(0, ios_base::beg);
+		if (nivel == 0)
+		{
+			nodo = new NodoHojaArbol();
+			((NodoHojaArbol*)nodo)->hidratar(&ss);
+		}
+		else
+		{
+			ss.read(reinterpret_cast<char *> (&id), sizeof(id));
+			cout<<"VOLVIO AL INICIO ID NODO: "<<id;
+			nodo = new NodoInternoArbol();
+			nodo->setNivel(nivel);
+			((NodoInternoArbol*)nodo)->hidratar(&ss);
+		}
+	}
+
+	return nodo;
+}
 
 
 void ArbolBMas::setDatoNodo(NodoArbol* nodo)
@@ -183,70 +263,6 @@ string ArbolBMas::getMetaDataControl()
 	ss.read(reinterpret_cast<char *>(&cantidadBloques), sizeof(cantidadBloques));
 
 	return ss.str();
-}
-
-
-int ArbolBMas::insertar(string clave)
-{
-	int rdo;
-	int idNodoPromovido;
-	string clavePromovida;
-
-
-	if(clave.length() > MAX_SIZE_DATO)
-		return ERROR;
-
-	rdo = insertarDatoRecursivo(clave, raiz, clavePromovida, idNodoPromovido);
-
-	if(rdo == OVERFLOWDED)
-	{
-		// Si se desborda la raiz...
-		NodoInternoArbol* nuevaRaiz = new NodoInternoArbol();
-		nuevaRaiz->setId(0);
-		nuevaRaiz->setNivel(raiz->getNivel()+1);
-		//FabricaDeNodos::asignarId(root,&nodeCounter,&freeNodeCounter,&freeNodesFile);
-
-		nuevaRaiz->getHijos().push_back(raiz->getId()); //por orden se pone una despues de la otra
-		nuevaRaiz->agregarClaveHijo(clavePromovida, idNodoPromovido);
-
-		setDatoNodo(raiz);
- 		setDatoNodo(nuevaRaiz);
- 		delete this->raiz;
-		this->raiz	=	nuevaRaiz;
-		return EXITO;
-	}
-
-	return rdo;
-
-}
-
-
-
-NodoArbol* ArbolBMas::leerNodo(int idNodo)
-{
-	NodoArbol* nodo;
-	DatoNodo* dNodo = new DatoNodo();
-	stringstream ss;
-	int nivel= 0;
-	uint32_t offset = this->sizeMetaDataControl + (SIZE_BLOQUE *idNodo);
-
-	RecuperarEstructura(arcIndice,ss,offset,SIZE_BLOQUE);
-
-	ss.read(reinterpret_cast<char *> (&nivel), sizeof(int));
-	dNodo->setDato(ss.str());
-	if (nivel == 0)
-	{
-		nodo = new NodoHojaArbol();
-		dNodo->hidratar((NodoHojaArbol*)nodo);
-	}
-	else
-	{
-		nodo = new NodoInternoArbol();
-		nodo->setNivel(nivel);
-		dNodo->hidratar((NodoInternoArbol*)nodo);
-	}
-
-	return nodo;
 }
 
 int ArbolBMas::getMaxCantidadHijos() const {

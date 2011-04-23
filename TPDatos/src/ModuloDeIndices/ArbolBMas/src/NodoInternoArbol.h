@@ -30,12 +30,12 @@ private:
 public:
 	NodoInternoArbol();
 
-	int insertar(string clave);
-	void partir(NodoArbol* hermano, int sizeBloque, string clavePromovida, int idNodoPromovido);
+	int insertar(DatoElementoNodo elemento);
+	void partir(NodoArbol* hermano, int sizeBloque, DatoElementoNodo clavePromovida, int idNodoPromovido);
 	int eliminar(Dato* dato, uint32_t offset, fstream fs, unsigned int cantidadNodos, fstream arcLibros, unsigned int cantidadNodosLibres);
 	int remover(Dato* dato, uint32_t offset, fstream* fs, unsigned int* nodeCounter, fstream* freefs, unsigned int* freeNodeCounter);
-	void agregarClaveHijo(string clave, int idHijo);
-	uint32_t buscarClave(string clave);
+	void agregarClaveHijo(DatoElementoNodo clave, int idHijo);
+	uint32_t buscarClave(DatoElementoNodo clave);
 
     void serializar(iostream* s);
     void hidratar(iostream* s);
