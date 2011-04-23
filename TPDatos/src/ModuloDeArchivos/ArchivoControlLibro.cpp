@@ -328,9 +328,19 @@ void ArchivoControlLibro::registrarLibro(uint32_t idLibro) {
 	Escribir(archivoControlLibro, &ssAux);
 }
 
-void ArchivoControlLibro::eliminarLibro(uint32_t idLibro) {
+void ArchivoControlLibro::eliminarLibro(uint32_t idLibro, uint32_t size) {
 	archivoFragmentado = true;
-	//TODO implementar
+	cargarLibros();
+
+
+	if(buscarEnMap(idLibro) != NULL){
+		(buscarEnMap(idLibro))->setEspacioLibre(size);
+		cout << "el espacio libre es: " << (buscarEnMap(idLibro))->getEspacioLibre() << endl;
+		Logger::log("ArchivoControlLibro","eliminarLibro","Se elimina el libro.");
+	}else{
+		Logger::log("ArchivoControlLibro","eliminarLibro","No se encontro el libro.");
+	}
+
 }
 
 ArchivoControlLibro::~ArchivoControlLibro() {
