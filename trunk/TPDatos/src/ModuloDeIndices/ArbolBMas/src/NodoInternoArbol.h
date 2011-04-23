@@ -37,6 +37,12 @@ public:
 	void agregarClaveHijo(string clave, int idHijo);
 	uint32_t buscarClave(string clave);
 
+    void serializar(iostream* s);
+    void hidratar(iostream* s);
+
+    void agregarHijo(int idHijo);
+    void agregarClave(string clave);
+
 	bool isOverflowded(int blockSize);
     bool isUnderflowded(int blockSize);
 
@@ -54,8 +60,8 @@ public:
     void setClaves(list<string> claves);
     void setHijos(list<int> hijos);
 
-    list<string> getClaves() const;
-    list<int> getHijos() const;
+    list<string> getClaves();
+    list<int> getHijos();
 
 
 	virtual ~NodoInternoArbol();

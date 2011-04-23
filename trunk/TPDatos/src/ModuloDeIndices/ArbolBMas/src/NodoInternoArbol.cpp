@@ -1,6 +1,8 @@
 #include "NodoInternoArbol.h"
 
-NodoInternoArbol::NodoInternoArbol() {
+NodoInternoArbol::NodoInternoArbol()
+{
+	this->tipoNodo = 'I';
 
 }
 
@@ -61,6 +63,90 @@ uint32_t NodoInternoArbol::buscarClave(string clave)
 	return rdo;
 }
 
+
+void NodoInternoArbol::serializar(iostream* s)
+{
+	/* Se serializara:
+	 * <IdNodo><Nivel><TipoNodo><CantidadClaves>[<SizeClave><Clave>]...[<SizeClave><Clave>]<idHijo>...<idHijo>
+	 * */
+	int hijoAux = 0;
+	int sizeClave = 0;
+	int cantidadClaves = this->claves.size();
+	string claveAux;
+
+	s->write(reinterpret_cast<char *>(&(id)), sizeof(id));//idNodo
+	s->write(reinterpret_cast<char *>(&(nivel)), sizeof(nivel));//nivel
+	s->write(reinterpret_cast<char *>(&(tipoNodo)), sizeof(tipoNodo));//tipoNodo
+	s->write(reinterpret_cast<char *>(&cantidadClaves), sizeof(cantidadClaves));//cantidadClaves
+
+	//se serializan las claves
+	list<string> claves = this->claves;
+	for (list<string>::const_iterator ci = claves.begin(); ci != claves.end(); ++ci)
+	{
+		claveAux = *ci;
+		sizeClave = claveAux.size();
+		s->write(reinterpret_cast<char *>(&sizeClave), sizeof(sizeClave));//sizeClave
+		s->write(claveAux.c_str(), sizeClave);//clave
+	}
+
+	//se serializan los hijos TODO -5 encapsular cada for
+	list<int> hijos = this->hijos;
+	for (list<int>::const_iterator ci = hijos.begin(); ci != hijos.end(); ++ci)
+	{
+		hijoAux = *ci;
+		s->write(reinterpret_cast<char *>(&hijoAux), sizeof(hijoAux));//hijo
+	}
+
+}
+
+
+void NodoInternoArbol::hidratar(iostream* s)
+{
+	/* Se serializara:
+	 * <IdNodo><Nivel><TipoNodo><CantidadClaves>[<SizeClave><Clave>]...[<SizeClave><Clave>]<idHijo>...<idHijo>
+	 * */
+	int sizeClave =0, cantidadClaves = 0, hijo= 0;
+	char* claveAux = (char*)malloc(0);
+	string clave;
+
+
+
+	s->read(reinterpret_cast<char *>(&(id)), sizeof(id));//idNodo
+	s->read(reinterpret_cast<char *>(&(nivel)), sizeof(nivel));//nivel
+	s->read(reinterpret_cast<char *>(&(tipoNodo)), sizeof(tipoNodo));//tipoNodo
+	s->read(reinterpret_cast<char *>(&cantidadClaves), sizeof(cantidadClaves));//cantidadClaves
+
+	for(int i =0; i < cantidadClaves; i++)
+	{
+		s->read(reinterpret_cast<char *>(&sizeClave), sizeof(sizeClave));//sizeClave
+		claveAux= (char*)realloc(claveAux, sizeClave);
+		s->read(claveAux, sizeClave);//clave
+
+		clave = claveAux;
+		clave = clave.substr(0,sizeClave);
+
+		agregarClave(clave);
+	}
+
+	for(int i =0; i <= cantidadClaves; i++)
+	{
+		s->read(reinterpret_cast<char *>(&hijo), sizeof(hijo));//sizeClave
+		agregarHijo(hijo);
+	}
+
+
+
+}
+
+
+void NodoInternoArbol::agregarClave(string clave) {
+	this->claves.push_back(clave);
+}
+
+void NodoInternoArbol::agregarHijo(int idHijo) {
+	this->hijos.push_back(idHijo);
+}
+
 bool NodoInternoArbol::isOverflowded(int blockSize)
 {
 	cout<<" redefinido";
@@ -82,11 +168,11 @@ void NodoInternoArbol::setHijos(list<int> hijos) {
 	this->hijos = hijos;
 }
 
-list<string> NodoInternoArbol::getClaves() const{
+list<string> NodoInternoArbol::getClaves(){
 	return this->claves;
 }
 
-list<int> NodoInternoArbol::getHijos() const{
+list<int> NodoInternoArbol::getHijos(){
 	return hijos;
 }
 
@@ -122,5 +208,5 @@ void NodoInternoArbol::setNivel(int nivel)
 
 
 NodoInternoArbol::~NodoInternoArbol() {
-	// TODO Auto-generated destructor stub
+
 }
