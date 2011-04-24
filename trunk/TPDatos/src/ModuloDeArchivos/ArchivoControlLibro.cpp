@@ -16,6 +16,7 @@ ArchivoControlLibro::ArchivoControlLibro() {
 ArchivoControlLibro::ArchivoControlLibro(string path) {
 	this->pathArchivoControlLibro = path;
 	this->archivoFragmentado = true;
+	this->libros = new map<uint32_t, DatoControlLibro*> ();
 
 	if (Existe(this->pathArchivoControlLibro.c_str(), this->archivoControlLibro)) {
 		Abrir(this->pathArchivoControlLibro.c_str(), this->archivoControlLibro,
@@ -25,6 +26,10 @@ ArchivoControlLibro::ArchivoControlLibro(string path) {
 	} else {
 		Logger::log("ArchivoControlLibro", "ArchivoControlLibro",
 				"El archivo no existe.");
+		CrearSiNoExiste(this->pathArchivoControlLibro.c_str(),
+				this->archivoControlLibro);
+		Logger::log("ArchivoControlLibro", "ArchivoControlLibro",
+				"Se crea un archivo nuevo.");
 	}
 }
 
@@ -78,14 +83,8 @@ void ArchivoControlLibro::setPathArchivoControlLibro(
 
 uint32_t ArchivoControlLibro::dondeEscribo(uint32_t sizeAlmacenar) {
 	list<DatoControlLibro*>* espaciosLibres = getEspaciosLibres();
-
-	cout << "lo que recibe el donde escribo: " << endl;
-	list<DatoControlLibro*>::iterator itt;
-	for (itt = espaciosLibres->begin(); itt != espaciosLibres->end(); ++itt) {
-		cout << (*itt)->getEspacioLibre() << endl;
-	}
-
-	list<DatoControlLibro*>* espaciosLibresFusionados;
+	list<DatoControlLibro*>* espaciosLibresFusionados = new list<
+			DatoControlLibro*> ();
 	uint32_t mejorAjuste;
 
 	if (espaciosLibres->size() == 0) {
@@ -93,19 +92,20 @@ uint32_t ArchivoControlLibro::dondeEscribo(uint32_t sizeAlmacenar) {
 	} else {
 
 		if (this->archivoFragmentado) {
-			espaciosLibresFusionados = fusionarEspaciosLibres(espaciosLibres);
 
-			cout << "espaciosLibresFusionados: " << endl;
-			for (itt = espaciosLibresFusionados->begin(); itt
-					!= espaciosLibresFusionados->end(); ++itt) {
-				cout << (*itt)->getEspacioLibre() << endl;
+			/* Se tiene mas de un registro con espacio libre para
+			 * fusionar.
+			 */
+			if (espaciosLibres->size() > 1) {
+				espaciosLibresFusionados = fusionarEspaciosLibres(
+						espaciosLibres);
+			} else {
+				espaciosLibresFusionados->push_back(espaciosLibres->front());
 			}
 
 			this->archivoFragmentado = false;
 			mejorAjuste = getMejorAjuste(espaciosLibresFusionados,
 					sizeAlmacenar);
-
-			cout << "mejorAjuste: " << mejorAjuste << endl;
 
 			Logger::log(
 					"ArchivoControlLibro",
@@ -118,6 +118,8 @@ uint32_t ArchivoControlLibro::dondeEscribo(uint32_t sizeAlmacenar) {
 		}
 	}
 
+	Logger::log("ArchivoControlLibro", "dondeEscribo",ServiceClass::toString(mejorAjuste));
+
 	return mejorAjuste;
 }
 
@@ -127,8 +129,10 @@ list<DatoControlLibro*>* ArchivoControlLibro::getEspaciosLibres() {
 	list<DatoControlLibro*>* espaciosLibres = new list<DatoControlLibro*> ();
 
 	DatoControlLibro* d_aux;
-	//recorro el map en busqueda de espacios libres
-	//y lleno la lista anterior con los mismos
+
+	/* recorro el map en busqueda de espacios libres
+	 * y lleno la lista anterior con los mismos
+	 */
 	for (it = libros->begin(); it != libros->end(); ++it) {
 		if (((*it).second)->getEspacioLibre() > 0) {
 			d_aux = new DatoControlLibro((*it).second);
@@ -153,20 +157,18 @@ list<DatoControlLibro*>* ArchivoControlLibro::fusionarEspaciosLibres(list<
 
 	Logger::log("ArchivoControlLibro", "fusionarEspaciosLibres",
 			"Fusionando los espacios libres.");
+
 	list<DatoControlLibro*>::iterator it;
 	for (it = espaciosLibres->begin(); it != espaciosLibres->end(); it++) {
-
 		while ((aux->getId_Libro() + METADATA_SIZE_BOOK
 				+ aux->getEspacioLibre()) == (*it)->getId_Libro()) {
 			aux->setEspacioLibre(aux->getEspacioLibre()
 					+ (*it)->getEspacioLibre() + METADATA_SIZE_BOOK);
 
-			if ((*it)->getId_Libro() < cola->getId_Libro()){
-				delete(*it);
+			if ((*it)->getId_Libro() < cola->getId_Libro()) {
+				delete (*it);
 				it++;
 			}
-			cout << aux->getEspacioLibre() << " id_Libro: "
-					<< aux->getId_Libro() << endl;
 		}
 		espaciosLibresFusionados->push_back(aux);
 		if (it != espaciosLibres->end())
@@ -182,7 +184,6 @@ list<DatoControlLibro*>* ArchivoControlLibro::fusionarEspaciosLibres(list<
 			"Se terminan de fusionar los espacios libres.");
 
 	return espaciosLibresFusionados;
-
 }
 
 struct less_than {
@@ -208,22 +209,9 @@ uint32_t ArchivoControlLibro::getMejorAjuste(
 
 void ArchivoControlLibro::actualizarEspaciosLibres(
 		list<DatoControlLibro*>* espaciosLibres) {
-
-	cout << "llega: " << endl;
-	list<DatoControlLibro*>::iterator itt;
-	for (itt = espaciosLibres->begin(); itt != espaciosLibres->end(); ++itt) {
-		cout << (*itt)->getEspacioLibre() << endl;
-		cout << (*itt)->getId_Libro() << endl;
-	}
-
-	cout << "tamaño: " << libros->size() << endl;
-	//BORRARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR
-	for (this->it = libros->begin(); this->it != libros->end(); ++it) {
-		cout << ((*it).first) << endl;
-	}
-
 	this->it = this->libros->begin();
 	map<uint32_t, DatoControlLibro*>::iterator it_aux;
+
 	//borro los espacios libres anteriores desactualizados
 	while (it != libros->end()) {
 		if (((*it).second)->getEspacioLibre() > 0) {
@@ -234,7 +222,6 @@ void ArchivoControlLibro::actualizarEspaciosLibres(
 			++it;
 		}
 	}
-	cout << "tamaño: " << libros->size() << endl;
 
 	//ingreso los nuevos espacios
 	for (list<DatoControlLibro*>::const_iterator ci = espaciosLibres->begin(); ci
@@ -243,10 +230,6 @@ void ArchivoControlLibro::actualizarEspaciosLibres(
 				(*ci)));
 	}
 
-	cout << "A ver como quedo... " << endl;
-	for (this->it = libros->begin(); this->it != libros->end(); ++it) {
-		cout << ((*it).first) << endl;
-	}
 }
 
 void ArchivoControlLibro::registrarIndexado(uint32_t idLibro, char tipoClave) {
@@ -256,6 +239,9 @@ void ArchivoControlLibro::registrarIndexado(uint32_t idLibro, char tipoClave) {
 	if (d != NULL) {
 		Logger::log("ArchivoControlLibro", "registrarIndexado",
 				"Obtengo el libro a indexar.");
+
+		Logger::log("ArchivoControlLibro", "registrarIndexado",
+						ServiceClass::toString(idLibro));
 
 		list<char>::iterator it;
 		bool encontrado = false;
@@ -272,9 +258,9 @@ void ArchivoControlLibro::registrarIndexado(uint32_t idLibro, char tipoClave) {
 		Logger::log("ArchivoControlLibro", "registrarIndexado",
 				"Se registra una nueva indexacion.");
 
-		for (it = d->getIndexado()->begin(); it != d->getIndexado()->end(); it++) {
-			cout << "ahora quedo como: " << *it << endl;
-		}
+		Logger::log("ArchivoControlLibro", "registrarIndexado",
+								ServiceClass::toString(idLibro));
+
 	} else {
 		Logger::log("ArchivoControlLibro", "registrarIndexado",
 				"No se encontro el libro.");
@@ -293,7 +279,6 @@ void ArchivoControlLibro::actualizarArchivo() {
 	for (it = this->libros->begin(); it != this->libros->end(); it++) {
 		ss << (it->second)->serializar();
 		ss << "\n";
-		cout << ss.str() << endl;
 	}
 	//se le saca el ultimo \n
 	string aux = ss.str();
@@ -309,36 +294,43 @@ void ArchivoControlLibro::actualizarArchivo() {
 
 }
 
-void ArchivoControlLibro::registrarLibro(uint32_t idLibro) {
-	string str;
-	stringstream ssAux;
-	char aux[11]; // 11 bytes: 10 for the digits, 1 for the null character
+void ArchivoControlLibro::registrarLibro(uint32_t size) {
+	//cargar una lista inicial de indices.
+	list<char>* indexado = new list<char> ();
+	indexado->push_back('-');
+	indexado->push_back('-');
+	indexado->push_back('-');
+	indexado->push_back('-');
 
-	snprintf(aux, sizeof aux, "%lu", (uint32_t) idLibro);
+	uint32_t id_Libro = dondeEscribo(size);
+	DatoControlLibro* d = new DatoControlLibro(id_Libro,size,indexado,this->parser->getOffsetArchivo());
 
-	//	if (idLibro > 0)//si no es el primer archivo se le inserta un enter adelante
-	//	str = "\n";
-
-	//se arma el string:
-	//offset|sizeLibre|TagAutor|TagEditorial|TagTitulo|TagPalabras (se inicializan en 0 los tags)
-	str = str + aux + INICIALIZACION_ARCHIVO_LIBRO_CONTROL;
-
-	ssAux.write(str.c_str(), str.length());
-	IrAlFinal(archivoControlLibro);
-	Escribir(archivoControlLibro, &ssAux);
+	if (GetSizeArchivo(this->archivoControlLibro) == 0) {
+		if(id_Libro == FIN_DE_ARCHIVO){
+			IrAlFinal(this->archivoControlLibro);
+			d->setId_Libro();
+		}
+		this->libros->insert(pair<uint32_t, DatoControlLibro*> (0,d));
+		Logger::log("ArchivoControlLibro", "registrarLibro",
+				"El archivo de control esta vacio.");
+	} else {
+		this->libros->insert(pair<uint32_t, DatoControlLibro*> (d->getId_Libro(),d));
+		Logger::log("ArchivoControlLibro", "registrarLibro",
+				"Se agregan nuevos libros.");
+	}
 }
 
 void ArchivoControlLibro::eliminarLibro(uint32_t idLibro, uint32_t size) {
 	archivoFragmentado = true;
 	cargarLibros();
 
-
-	if(buscarEnMap(idLibro) != NULL){
+	if (buscarEnMap(idLibro) != NULL) {
 		(buscarEnMap(idLibro))->setEspacioLibre(size);
-		cout << "el espacio libre es: " << (buscarEnMap(idLibro))->getEspacioLibre() << endl;
-		Logger::log("ArchivoControlLibro","eliminarLibro","Se elimina el libro.");
-	}else{
-		Logger::log("ArchivoControlLibro","eliminarLibro","No se encontro el libro.");
+		Logger::log("ArchivoControlLibro", "eliminarLibro",
+				"Se elimina el libro.");
+	} else {
+		Logger::log("ArchivoControlLibro", "eliminarLibro",
+				"No se encontro el libro.");
 	}
 
 }

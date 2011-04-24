@@ -48,6 +48,7 @@ public:
     string getId() const;
     list<char>* getTipoIndice(vector<string> datos) const;
     void setTipoIndice(vector<string> datos);
+    int getOffsetArchivo();
 
 	virtual ~ParserArchivoControl();
 };
