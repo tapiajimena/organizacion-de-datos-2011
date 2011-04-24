@@ -27,8 +27,6 @@ Hash::Hash(std::string nombreArchivoTabla, std::string nombreArchivoCubetas){
 	this->cantidadDeBloques = (int)GetSizeArchivo(archivoTabla) / TAMANIODATOTABLA;
 }
 
-Hash::~Hash() {
-}
 
 unsigned int Hash::getCantidadDeBloques()
 {
@@ -206,4 +204,10 @@ std::vector<uint32_t> Hash::buscarFraseEnHash(std::string fraseConPalabrasClave)
 	}
 
 	return resultadosFinales;
+}
+
+Hash::~Hash()
+{
+	Cerrar(archivoTabla);
+	Cerrar(archivoCubetas);
 }
