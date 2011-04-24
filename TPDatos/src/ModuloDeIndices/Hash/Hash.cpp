@@ -88,15 +88,24 @@ DatoCubetaHash Hash::levantarBloqueNro(unsigned int numeroBloque)
 DatoTablaHash* Hash::levantarDatoTabla(uint32_t offsetDatoTabla)
 {
 	DatoTablaHash* datoTabla = NULL;
+	std::stringstream ss;
 
+	ManejadorArchivo::RecuperarEstructura(this->archivoTabla, ss, offsetDatoTabla, sizeof(TAMANIODATOTABLA));
 
+	datoTabla = new DatoTablaHash(&ss);
 
 	return datoTabla;
 }
 
-DatoCubetaHash* Hash::levantarDatoCubeta(DatoTablaHash* datoTabla)
+DatoCubetaHash* Hash::levantarDatoCubeta(uint32_t offsetCubeta)
 {
 	DatoCubetaHash* datoCubeta = NULL;
+
+	std::stringstream ss;
+
+	ManejadorArchivo::RecuperarEstructura(this->archivoCubetas, ss, offsetCubeta, sizeof(TAMANIOCUBETA));
+
+	datoCubeta = new DatoCubetaHash(&ss);
 
 	return datoCubeta;
 }
@@ -105,16 +114,34 @@ std::vector<uint32_t> Hash::acumularResultados(DatoCubetaHash* datoCubeta, std::
 {
 	std::vector<uint32_t> resultados;
 
-	for (unsigned int x = 0; x < datoCubeta->getElementos().size(); x++)
-	{
-		ElementoHash elemento = datoCubeta->getElementos().at(x);
+	bool siguienteCubeta = true; //indica si hay siguiente cubeta donde continuan los datos de la presente.
+	uint32_t offsetSiguienteCubeta;
 
-		if( elemento.getPalabra() == palabra)
+	while (siguienteCubeta)
+	{
+		if (datoCubeta->getOffsetCubetaContinuacion() == 0)
 		{
-			//resultados.push_back(elemento);
+			siguienteCubeta = false;
+		}
+
+		offsetSiguienteCubeta = datoCubeta->getOffsetCubetaContinuacion();
+
+		for (unsigned int x = 0; x < datoCubeta->getElementos().size(); x++)
+		{
+			ElementoHash elemento = datoCubeta->getElementos().at(x);
+
+			if( elemento.getPalabra() == palabra)
+			{
+				resultados.push_back(elemento.getOffsetALibro());
+			}
+		}
+
+		if(siguienteCubeta)
+		{
+			delete datoCubeta;
+			datoCubeta = this->levantarDatoCubeta(offsetSiguienteCubeta);
 		}
 	}
-
 	return resultados;
 }
 
@@ -131,9 +158,12 @@ std::vector<uint32_t> Hash::buscarPalabraEnHash(std::string palabraClave)
 
 	DatoTablaHash* datoTabla = this->levantarDatoTabla(offsetDatoTabla);
 
-	DatoCubetaHash* datoCubeta = this->levantarDatoCubeta(datoTabla);
+	DatoCubetaHash* datoCubeta = this->levantarDatoCubeta(datoTabla->getOffsetCubeta());
 
 	std::vector<uint32_t> resultadosBusqueda = this->acumularResultados(datoCubeta, palabraClave);
+
+	delete datoTabla;
+	delete datoCubeta;
 
 	return resultadosBusqueda;
 }

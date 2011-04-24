@@ -75,7 +75,7 @@ private:
 
 	DatoTablaHash* levantarDatoTabla(uint32_t offsetDatoTabla);
 
-	DatoCubetaHash* levantarDatoCubeta(DatoTablaHash* datoTabla);
+	DatoCubetaHash* levantarDatoCubeta(uint32_t offsetCubeta);
 
 	std::vector<uint32_t> acumularResultados(DatoCubetaHash* datoCubeta, std::string palabra);
 
@@ -90,6 +90,9 @@ public:
 
 	//Ingresa un libro por su clave. El libro de
 	void insertarClaveLibro(Libro* libro);
+
+	//Agrega la palabra
+	void insertarClave(std::pair<std::string, uint32_t> registroHash);
 
 	//Devuelve el resultado de la búsqueda con la clave contenida en el libro
 	std::vector<uint32_t> buscarPalabraEnHash(std::string palabraClave);
