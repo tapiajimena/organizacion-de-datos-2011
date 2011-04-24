@@ -40,6 +40,29 @@ DatoLibro ControladorBiblioteca::recuperarLibro(uint32_t offset) {
 	return arcLibro->recuperarLibro(offset);
 }
 
+
+
+list<uint32_t> ControladorBiblioteca::recuperarLibrosNoIndexadosPor(char tipoIndice)
+{
+	//TODO como se hace para obtener el offset a libro del controlBiblioteca
+	list<uint32_t> idLibros;
+	DatoControlLibro* dControlLibro;
+	map<uint32_t,DatoControlLibro*>::iterator it;
+	map<uint32_t,DatoControlLibro*>* librosControl = arcControl->getLibros();
+
+
+	map<uint32_t, DatoControlLibro*>::iterator it_aux;
+
+	while (it != librosControl->end())
+	{
+		dControlLibro = (*it).second;
+		if (dControlLibro->isIndexadoPor(tipoIndice))
+			idLibros.push_back((*it).first);
+	}
+	return idLibros;
+}
+
+
 string ControladorBiblioteca::getPathControlBiblioteca() {
 	//return arcControl->getPathArchivoControlLibro();
 }

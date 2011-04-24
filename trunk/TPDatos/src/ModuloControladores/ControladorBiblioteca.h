@@ -44,13 +44,15 @@ public:
 	 */
 	DatoLibro recuperarLibro(uint32_t offset);
 
+
+
 	/*
 	 *TODO implementar
 	 *TODO devuelve los libros no indexados por ese indice
 	 *TODO ojo no lo implementemos demas.
 	 * @param tipoIndice A E T P
 	 */
-	list<DatoLibro> recuperarLibrosNoIndexadosPor(char tipoIndice);
+	list<uint32_t> recuperarLibrosNoIndexadosPor(char tipoIndice);
 
 	/*
 	 * TODO implementar
