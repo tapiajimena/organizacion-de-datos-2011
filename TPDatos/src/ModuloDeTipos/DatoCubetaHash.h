@@ -20,7 +20,6 @@
 class DatoCubetaHash : Dato{
 
 private:
-	std::string datoCubeta;
 
 	unsigned int cantidadElementos;
 	unsigned int bytesLibres;
