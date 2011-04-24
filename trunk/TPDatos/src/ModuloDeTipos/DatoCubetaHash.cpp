@@ -9,9 +9,6 @@
 
 DatoCubetaHash::DatoCubetaHash()
 {
-	std::string inicializacion(TAMANIOCUBETA, '0');
-
-	this->datoCubeta = inicializacion;
 	this->cantidadElementos = 0;
 	this->offsetProxCubeta = 0;
 }

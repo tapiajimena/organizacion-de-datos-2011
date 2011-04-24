@@ -10,14 +10,11 @@
 
 #include "Dato.h"
 #include "stdint.h"
-#include "../ModuloDeIndices/Hash/Hash.h"
+//#include "../ModuloDeIndices/Hash/Hash.h"
 
 class DatoTablaHash: public Dato {
 
 private:
-	//Dato serializado.
-	std::string datoTablaHash;
-
 	//Offset a su cubeta correspondiente en el archivo de cubetas (a la primera, en caso de que tenga que tener varias).
 	uint32_t offsetCubeta;
 
