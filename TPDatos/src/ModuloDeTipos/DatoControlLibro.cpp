@@ -79,6 +79,21 @@ list<char> * DatoControlLibro::getIndexado() const {
 	return indexado;
 }
 
+bool DatoControlLibro::isIndexadoPor(char tipo)
+{
+	bool rdo = false;
+
+	list<char>::iterator it = indexado->begin();
+	for (it; it != indexado->end(); it++)
+	{
+		char aux = *it;
+		if (aux == tipo)
+			rdo = true;
+	}
+
+	return rdo;
+}
+
 uint32_t DatoControlLibro::getOffset() const {
 	return offset;
 }
