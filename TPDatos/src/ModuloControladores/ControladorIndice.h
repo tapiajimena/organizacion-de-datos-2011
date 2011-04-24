@@ -21,7 +21,7 @@
 
 #include "../../Common/Utilitarios/ServiceClass.h"
 #include "../ModuloDeArchivos/ManejadorArchivo.h"
-#include "../ModuloDeInterfaz/Libro.h"
+#include "../ModuloEstructuras/Libro.h"
 #include "../ModuloDeIndices/Hash/Hash.h"
 #include "../ModuloDeIndices/ArbolBMas/src/ArbolBMas.h"
 
