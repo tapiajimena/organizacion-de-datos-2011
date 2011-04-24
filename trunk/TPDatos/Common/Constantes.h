@@ -67,6 +67,8 @@
 
 #define MAX_SIZE_DATO 100000 //cambiar a cuenta valida
 
+#define DUPLICADO -30
+
 #define ERROR -1
 
 /* CONSTANTES DEFINIDAS PARA EL HASH */
