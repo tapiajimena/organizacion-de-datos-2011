@@ -81,4 +81,18 @@
 
 #define ERROR_ARCHIVO 1
 
+
+
+/* VALORES DE CONTROLADOR INDICE*/
+#define ARCHIVO_INDICE_AUTOR "IndiceAutor"
+#define CARPETA_DEFAULT ""
+
+
+
+
+
+
+
+
+
 #endif /* CONSTANTES_H_ */
