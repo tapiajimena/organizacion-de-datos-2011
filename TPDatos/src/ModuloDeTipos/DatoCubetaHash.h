@@ -32,9 +32,15 @@ public:
 
 	DatoCubetaHash();
 
+	//Creador con datos serializados. Se hidrata la estructura.
 	DatoCubetaHash(std::stringstream* datoStream);
 
+	//Devuelve UNA COPIA DEL VECTOR de elementos
 	std::vector<ElementoHash> getElementos();
+
+	//Si tiene lugar disponible, inserta el elemento y devuelve true, caso contrario,
+	//devuelve false y no hace nada.
+	bool insertarElementoHash(ElementoHash elemento);
 
 	uint32_t getOffsetCubetaContinuacion();
 
@@ -44,7 +50,7 @@ public:
 
 	virtual ~DatoCubetaHash();
 
-	std::string serializarCubeta();
+	void serializarCubeta(std::iostream* ios);
 
 };
 
