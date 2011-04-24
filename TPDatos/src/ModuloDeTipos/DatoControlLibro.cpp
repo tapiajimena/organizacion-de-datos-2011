@@ -83,8 +83,8 @@ bool DatoControlLibro::isIndexadoPor(char tipo)
 {
 	bool rdo = false;
 
-	list<char>::iterator it = indexado->begin();
-	for (it; it != indexado->end(); it++)
+	list<char>::iterator it;
+	for (it = indexado->begin(); it != indexado->end(); it++)
 	{
 		char aux = *it;
 		if (aux == tipo)
