@@ -20,7 +20,7 @@
 #include <string>
 
 #include "ElementoHash.h"
-#include "../../ModuloDeInterfaz/Libro.h"
+#include "../../ModuloEstructuras/Libro.h"
 #include "../../ModuloDeTipos/Dato.h"
 #include "../../ModuloDeTipos/DatoCubetaHash.h"
 #include "../../ModuloDeTipos/DatoTablaHash.h"
