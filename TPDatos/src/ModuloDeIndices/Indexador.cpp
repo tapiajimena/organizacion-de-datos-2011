@@ -28,7 +28,7 @@ Indexador::Indexador(string pathCarpeta)
 void Indexador::indexar(char tipoIndice)
 {
 	Libro*					libro;
-	DatoLibro				dLibro;
+	DatoLibro*				dLibro;
 	list<uint32_t> 			idLibros;
 	pair<Libro*,uint32_t>	parLibroOffset;
 
@@ -61,14 +61,15 @@ void Indexador::indexar(char tipoIndice)
 	for(it = idLibros.begin(); it != idLibros.end(); ++it)
 	{
 		libro = new Libro();
-		dLibro = controlBiblioteca->recuperarLibro(*it);
-		libro = parser->parsear(&dLibro);
+		dLibro = new DatoLibro(controlBiblioteca->recuperarLibro(*it));
+		libro = parser->parsear(dLibro);
 
 		parLibroOffset.first 	= libro;
 		parLibroOffset.second 	= *it;
 		controlIndice->indexarPorAutor(parLibroOffset);
 
 		delete (libro);
+		delete(dLibro);
 	}
 }
 
