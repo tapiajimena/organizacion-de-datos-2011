@@ -150,6 +150,11 @@ void Hash::insertarClaveLibro(Libro* libro)
 
 }
 
+
+void Hash::insertarClave(std::pair<std::string, uint32_t> registroHash){
+
+}
+
 std::vector<uint32_t> Hash::buscarPalabraEnHash(std::string palabraClave)
 {
 	unsigned int numeroBloque = this->obtenerNumeroDeBloque(palabraClave);
