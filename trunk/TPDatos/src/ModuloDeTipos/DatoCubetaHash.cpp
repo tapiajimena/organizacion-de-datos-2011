@@ -100,11 +100,22 @@ std::string DatoCubetaHash::serializarCubeta()
 	//Bytes libres: unsigned int (4 bytes)
 	ss.write(reinterpret_cast<char *> (this->bytesLibres), sizeof(this->bytesLibres));
 
-	//Offset a proxima cubeta: (4 bytes)
+	//Offset a proxima cubeta: uint32_t(4 bytes)
 	ss.write(reinterpret_cast<char *> (this->offsetProxCubeta), sizeof(this->offsetProxCubeta));
 
+	//Cantidad de elementos: unsigned int (4 bytes)
+	ss.write(reinterpret_cast<char *> (this->cantidadElementos), sizeof(this->cantidadElementos));
 
+	std::vector<ElementoHash>::iterator it_elementos;
+	for( it_elementos = this->ElementosHash.begin(); it_elementos != this->ElementosHash.end(); it_elementos++)
+	{
+		stringstream ssElemento;
+		it_elementos->serializarElementoHash(&ssElemento);
 
+		ss<<ssElemento;
+	}
+
+	//Hash se deberia encargar de rellenar los bytes que falten para llegar a TAMANIOCUBETA al escribir en disco.
 
 	return ss.str();
 }
