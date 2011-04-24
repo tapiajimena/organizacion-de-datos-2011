@@ -343,6 +343,18 @@ void ArchivoControlLibro::eliminarLibro(uint32_t idLibro, uint32_t size) {
 
 }
 
+map<uint32_t,DatoControlLibro*> *ArchivoControlLibro::getLibros() const
+{
+    return libros;
+}
+
+void ArchivoControlLibro::setLibros(map<uint32_t,DatoControlLibro*> *libros)
+{
+    this->libros = libros;
+}
+
+
+
 ArchivoControlLibro::~ArchivoControlLibro() {
 	// TODO Auto-generated destructor stub
 	Logger::log("ArchivoControlLibro", "~ArchivoControlLibro",

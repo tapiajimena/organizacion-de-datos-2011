@@ -111,6 +111,9 @@ public:
     void setPathArchivoControlLibro(string pathArchivoControlLibro);
 
 	virtual ~ArchivoControlLibro();
+
+    map<uint32_t,DatoControlLibro*> *getLibros() const;
+    void setLibros(map<uint32_t,DatoControlLibro*> *libros);
 };
 
 #endif /* ARCHIVOCONTROLLIBRO_H_ */
