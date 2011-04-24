@@ -60,10 +60,6 @@ string DatoControlLibro::serializar() {
 }
 
 bool operator<(const DatoControlLibro &primero, const DatoControlLibro &segundo) {
-
-	cout << "primero" << primero.getEspacioLibre() << endl;
-	cout << "segundo" << segundo.getEspacioLibre() << endl;
-
 	return (primero.getEspacioLibre() < segundo.getEspacioLibre());
 }
 

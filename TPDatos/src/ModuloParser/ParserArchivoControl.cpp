@@ -99,6 +99,10 @@ list<char>* ParserArchivoControl::getTipoIndice(vector<string> datos) const {
 	return this->datoNuevo->getIndexado();
 }
 
+int ParserArchivoControl::getOffsetArchivo() {
+	return this->contadorLinea;
+}
+
 ParserArchivoControl::~ParserArchivoControl() {
 	delete (this->datoNuevo);
 

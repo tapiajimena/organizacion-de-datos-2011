@@ -1,7 +1,21 @@
 TEMPLATE = app
 TARGET = TPDatos
 QT += core
-HEADERS += src/ModuloDeIndices/ArbolBMas/src/TestArbol.h \
+HEADERS += src/ModuloDeArchivos/TestArchivos.h \
+    src/ModuloDeIndices/Hash/ElementoHash.h \
+    src/ModuloDeIndices/Hash/Hash.h \
+    src/ModuloDeIndices/Indexador.h \
+    src/ModuloDeTipos/DatoCubetaHash.h \
+    src/ModuloDeTipos/DatoTablaHash.h \
+    src/ModuloEstructuras/Libro.h \
+    src/ModuloParser/ParserDeAtributo.h \
+    src/ModuloParser/ParserDeAutor.h \
+    src/ModuloParser/ParserDeEditorial.h \
+    src/ModuloParser/ParserDePalabras.h \
+    src/ModuloParser/ParserDeTitulo.h \
+    Pruebas/TestArchivoControlLibro.h \
+    src/ModuloControladores/ControladorBiblioteca.h \
+    src/ModuloDeTipos/DatoElementoNodo.h \
     src/ModuloDeInterfaz/Instruccion_VerEstructura.h \
     src/ModuloDeInterfaz/Instruccion_QuitarArchivo.h \
     src/ModuloDeInterfaz/Instruccion_ObtenerArchivo.h \
@@ -13,14 +27,7 @@ HEADERS += src/ModuloDeIndices/ArbolBMas/src/TestArbol.h \
     src/ModuloDeInterfaz/Instruccion_ProcesarEditorial.h \
     src/ModuloDeInterfaz/Instruccion.h \
     src/ModuloDeInterfaz/ManejadorInstrucciones.h \
-    src/ModuloDeIndices/ArbolBMas/src/FabricaDeNodos.h \
-    src/ModuloDeInterfaz/ParserDeAtributo.h \
-    src/ModuloDeInterfaz/ParserDeAutor.h \
-    src/ModuloDeInterfaz/ParserDeEditorial.h \
-    src/ModuloDeInterfaz/ParserDePalabras.h \
-    src/ModuloDeInterfaz/ParserDeTitulo.h \
     src/ModuloDeTipos/FrontCodedString.h \
-    src/ModuloDeArchivos/ControladorBiblioteca.h \
     src/ModuloParser/ParserAuxiliar.h \
     src/ModuloParser/ParserArchivoControl.h \
     src/ModuloParser/ParserDiccionario.h \
@@ -30,16 +37,25 @@ HEADERS += src/ModuloDeIndices/ArbolBMas/src/TestArbol.h \
     src/ModuloDeTipos/DatoNodo.h \
     src/ModuloDeTipos/DatoControlLibro.cpp \
     src/ModuloDeTipos/Dato.h \
-    src/ModuloDeIndices/ArbolBMas/src/NodoInternoArbol.h \
-    src/ModuloDeIndices/ArbolBMas/src/NodoHojaArbol.h \
-    src/ModuloDeIndices/ArbolBMas/src/NodoArbol.h \
     src/ModuloDeArchivos/ManejadorArchivo.h \
     Common/Constantes.h \
     Common/Utilitarios/Logger.h \
     Common/Utilitarios/ServiceClass.h \
-    src/ModuloDeInterfaz/Libro.h \
     src/ModuloEstructuras/Diccionario.h
-SOURCES += src/ModuloDeInterfaz/Instruccion_VerEstructura.cpp \
+SOURCES += src/ModuloDeIndices/Hash/ElementoHash.cpp \
+    src/ModuloDeIndices/Hash/Hash.cpp \
+    src/ModuloDeIndices/Indexador.cpp \
+    src/ModuloDeTipos/DatoCubetaHash.cpp \
+    src/ModuloDeTipos/DatoTablaHash.cpp \
+    src/ModuloEstructuras/Libro.cpp \
+    src/ModuloParser/ParserDeAutor.cpp \
+    src/ModuloParser/ParserDeEditorial.cpp \
+    src/ModuloParser/ParserDePalabras.cpp \
+    src/ModuloParser/ParserDeTitulo.cpp \
+    Pruebas/TestArchivoControlLibro.cpp \
+    src/ModuloControladores/ControladorBiblioteca.cpp \
+    src/ModuloDeTipos/DatoElementoNodo.cpp \
+    src/ModuloDeInterfaz/Instruccion_VerEstructura.cpp \
     src/ModuloDeInterfaz/Instruccion_QuitarArchivo.cpp \
     src/ModuloDeInterfaz/Instruccion_ObtenerArchivo.cpp \
     src/ModuloDeInterfaz/Instruccion_ListarArchivosTomados.cpp \
@@ -49,14 +65,8 @@ SOURCES += src/ModuloDeInterfaz/Instruccion_VerEstructura.cpp \
     src/ModuloDeInterfaz/Instruccion_ProcesarAutor.cpp \
     src/ModuloDeInterfaz/Instruccion_ProcesarEditorial.cpp \
     src/ModuloDeInterfaz/Instruccion.cpp \
-    src/ModuloDeIndices/ArbolBMas/src/FabricaDeNodos.cpp \
-    src/ModuloDeInterfaz/ParserDeAutor.cpp \
-    src/ModuloDeInterfaz/ParserDeEditorial.cpp \
-    src/ModuloDeInterfaz/ParserDePalabras.cpp \
-    src/ModuloDeInterfaz/ParserDeTitulo.cpp \
     src/ModuloDeInterfaz/ManejadorInstrucciones.cpp \
     src/ModuloDeTipos/FrontCodedString.cpp \
-    src/ModuloDeArchivos/ControladorBiblioteca.cpp \
     src/ModuloParser/ParserAuxiliar.cpp \
     src/ModuloParser/ParserArchivoControl.cpp \
     src/ModuloParser/ParserDiccionario.cpp \
@@ -66,13 +76,9 @@ SOURCES += src/ModuloDeInterfaz/Instruccion_VerEstructura.cpp \
     src/ModuloDeTipos/DatoNodo.cpp \
     src/ModuloDeTipos/Dato.cpp \
     src/ModuloDeTipos/DatoControlLibro.cpp \
-    src/ModuloDeIndices/ArbolBMas/src/NodoInternoArbol.cpp \
-    src/ModuloDeIndices/ArbolBMas/src/NodoHojaArbol.cpp \
-    src/ModuloDeIndices/ArbolBMas/src/NodoArbol.cpp \
     src/ModuloDeArchivos/ManejadorArchivo.cpp \
     Common/Utilitarios/Logger.cpp \
     Common/Utilitarios/ServiceClass.cpp \
-    src/ModuloDeInterfaz/Libro.cpp \
     src/ModuloEstructuras/Diccionario.cpp \
     src/main.cpp
 FORMS += 

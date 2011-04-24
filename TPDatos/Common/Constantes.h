@@ -57,7 +57,7 @@
 #define CONTROL_TOKEN "|"
 
 /*Usado para el ArchivoControlLibros al momento de guardar el archivo de control*/
-#define INICIALIZACION_ARCHIVO_LIBRO_CONTROL "|0|-|-|-|-"
+#define INICIALIZACION_ARCHIVO_LIBRO_CONTROL "|0|-|-|-|-|"
 
 /* Define la cantidad de caracteres de cada stopword */
 #define CONTROL_LENGTH 256
