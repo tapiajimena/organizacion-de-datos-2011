@@ -16,29 +16,38 @@ DatoCubetaHash::DatoCubetaHash()
 DatoCubetaHash::DatoCubetaHash(std::stringstream* datoStream)
 {
 	//Formato de dato en disco:
-	//<bytesLibre: 4><cantidadElementos: 4>< <ElementosHash: n>...<ElementoHash:m>: x><offsetProxCubeta: 4>
+	//<bytesLibre: 4><offsetProxCubeta: 4><cantidadElementos: 4>< <ElementosHash: n>...<ElementoHash:m>: x>
 
 	//this->datoCubeta = datoStream->str();
 
 	datoStream->read(reinterpret_cast<char *>(&this->bytesLibres), sizeof(this->bytesLibres));
 
+	datoStream->read(reinterpret_cast<char *>(&this->offsetProxCubeta), sizeof(this->offsetProxCubeta));
+
 	datoStream->read(reinterpret_cast<char *>(&this->cantidadElementos), sizeof(this->cantidadElementos));
-	//cadenaNro = this->datoCubeta.substr(4, 4);
-	//this->cantidadElementos = atoi(cadenaNro.c_str());
+
+
 	std::cout<<"BytesLibres: "<<this->bytesLibres<<std::endl;
 	std::cout<<"CantidadElementos: "<<this->cantidadElementos<<std::endl;
-	unsigned int posicionActual = 8; //Desde posición 8.
-	unsigned int numeroCubeta = 1;
-	while (posicionActual <= TAMANIOCUBETA-4 && numeroCubeta <= cantidadElementos)
+	unsigned int posicionActual = 12; //Desde posición 12.
+	unsigned int numeroElemento = 1;
+
+	while (posicionActual <= TAMANIOCUBETA-8 && numeroElemento <= cantidadElementos)
 	{
+		//PERSISTIR ELEMENTOHASH
+
+		//Tamanio
 		unsigned int tamanioElemento;
 		datoStream->read(reinterpret_cast<char *> (&tamanioElemento), sizeof(tamanioElemento));
 		std::cout<<"TamanioElemento: "<<tamanioElemento<<std::endl;
 
+		//Offset
 		uint32_t offsetALibro;
-		string aux="";
 		datoStream->read(reinterpret_cast<char *> (&offsetALibro), sizeof(offsetALibro));
 		std::cout<<"OffsetLibro: "<<offsetALibro<<std::endl;
+
+		//Palabra
+		string aux="";
 		char* palabra = new char[tamanioElemento-8];
 		datoStream->read(palabra, (tamanioElemento-8));//8 bytes son 4 de offsetALibro y 4 de tamanioElemento.
 		aux.append(palabra,(tamanioElemento-8));
@@ -54,13 +63,11 @@ DatoCubetaHash::DatoCubetaHash(std::stringstream* datoStream)
 		this->ElementosHash.push_back(elementoHash);
 
 		posicionActual = posicionActual + tamanioElemento;
-		numeroCubeta++;
+		numeroElemento++;
 	}
 
-	datoStream->seekg(TAMANIOCUBETA-sizeof(this->offsetProxCubeta));
-
-	datoStream->read(reinterpret_cast<char *>(&this->offsetProxCubeta), sizeof(this->offsetProxCubeta));
-	std::cout<<"2"<<std::endl;
+	//datoStream->seekg(TAMANIOCUBETA-sizeof(this->offsetProxCubeta));
+	//datoStream->read(reinterpret_cast<char *>(&this->offsetProxCubeta), sizeof(this->offsetProxCubeta));
 }
 
 DatoCubetaHash::~DatoCubetaHash() {
@@ -88,7 +95,16 @@ unsigned int DatoCubetaHash::getBytesLibres()
 
 std::string DatoCubetaHash::serializarCubeta()
 {
-	std::string cubetaSerializada;
+	stringstream ss;
 
-	return cubetaSerializada;
+	//Bytes libres: unsigned int (4 bytes)
+	ss.write(reinterpret_cast<char *> (this->bytesLibres), sizeof(this->bytesLibres));
+
+	//Offset a proxima cubeta: (4 bytes)
+	ss.write(reinterpret_cast<char *> (this->offsetProxCubeta), sizeof(this->offsetProxCubeta));
+
+
+
+
+	return ss.str();
 }
