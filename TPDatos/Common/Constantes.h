@@ -16,6 +16,8 @@
 
 /* CONSTANTES DEFINIDAS PARA ARCHIVO DE STOPWORDS */
 
+#define ARCHIVO_STOPWORDS "stopWords.txt"
+
 /* Define el caracter utilizado como separador */
 #define STOPWORDS_TOKEN "\n"
 
@@ -84,8 +86,21 @@
 
 
 /* VALORES DE CONTROLADOR INDICE*/
-#define ARCHIVO_INDICE_AUTOR "IndiceAutor"
-#define CARPETA_DEFAULT ""
+
+#define INDICE_AUTOR  'A'
+#define INDICE_EDITORIAL  'E'
+#define INDICE_TITULO  'T'
+#define INDICE_PALABRAS  'P'
+
+#define CARPETA_DEFAULT "/"
+
+#define ARCHIVO_BIBLIOTECA "/Biblioteca.dat"
+#define ARCHIVO_INDICE_AUTOR "/IndiceAutor"
+#define ARCHIVO_INDICE_EDITORIAL "/IndiceEditorial"
+#define ARCHIVO_INDICE_PALABRAS "/IndicePalabra"
+#define ARCHIVO_INDICE_TITULO "/IndiceTitulo"
+#define ARCHIVO_CONTROL_BIBLIOTECA "/BibliotecaControl.dat"
+
 
 
 
