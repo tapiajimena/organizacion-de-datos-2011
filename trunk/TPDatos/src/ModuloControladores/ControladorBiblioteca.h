@@ -47,9 +47,7 @@ public:
 
 
 	/*
-	 *TODO implementar
-	 *TODO devuelve los libros no indexados por ese indice
-	 *TODO ojo no lo implementemos demas.
+	 * devuelve los libros no indexados por ese indice
 	 * @param tipoIndice A E T P
 	 */
 	list<uint32_t> recuperarLibrosNoIndexadosPor(char tipoIndice);
