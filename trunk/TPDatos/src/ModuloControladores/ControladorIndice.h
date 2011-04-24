@@ -32,7 +32,7 @@ class ControladorIndice
 private:
 	Hash* 		indiceHash;
 	ArbolBMas* 	indiceArbol;
-	string		pathCarpeta;
+	string		pathCarpeta;//path de trabajo
 
 
 public:
