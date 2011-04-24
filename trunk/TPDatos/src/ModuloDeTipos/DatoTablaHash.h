@@ -24,13 +24,15 @@ private:
 public:
 	DatoTablaHash();
 
-	DatoTablaHash(std::stringstream datoTablaHash);
+	DatoTablaHash(std::stringstream* ss);
 
 	virtual ~DatoTablaHash();
 
 	uint32_t getOffsetCubeta();
 
 	unsigned int getCantidadDeElementos();
+
+	void serializarDatoTabla(iostream* ios);
 
 };
 
