@@ -47,8 +47,8 @@ public:
 	ControladorIndice(string pathCarpeta);
 
 	/*
-	 *Crean un nuevo indice del tipo autor,
-	 *editorial, titulo y palabras.
+	 * Crean un nuevo indice del tipo autor,
+	 * editorial, titulo y palabras.
 	 */
 	void nuevoIndiceAutor();
 	void nuevoIndiceEditorial();
