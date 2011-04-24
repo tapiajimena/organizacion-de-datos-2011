@@ -36,6 +36,12 @@ public:
 
 	friend bool operator< (const DatoControlLibro  &primero, const DatoControlLibro &segundo);
 
+	/*
+	 * Devuelve si el libro esta indexado por un tipo.
+	 * @param tipo puede ser A, T, E, P refiriendose a los tipos de indexacion que hay
+	 */
+	bool isIndexadoPor(char tipo);
+
 	string serializar();
 
 	/* Getters y Setters */
