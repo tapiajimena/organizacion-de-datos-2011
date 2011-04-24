@@ -19,6 +19,7 @@
 #include <vector>
 #include <string>
 
+#include "ElementoHash.h"
 #include "../../ModuloDeInterfaz/Libro.h"
 #include "../../ModuloDeTipos/Dato.h"
 #include "../../ModuloDeTipos/DatoCubetaHash.h"
@@ -47,8 +48,9 @@ using namespace ManejadorArchivo;
 class Hash {
 private:
 
-	//Cantidad de bloques o cubetas direccionables por la función de HASH.
-	unsigned int cantidadDeCubetas;
+	//Cantidad de bloques direccionables por la función de HASH. Dos bloques distintos pueden
+	//direccionar a una misma cubeta en el archivo de cubetas.
+	unsigned int cantidadDeBloques;
 
 	//Estructuras de archivo
 	fstream 	archivoTabla;
@@ -63,9 +65,21 @@ private:
 	//Función de HASH usada para la dispersión. Convierte un string en un numero entero positivo
 	unsigned int funcionHash(std::string claveADispersar);
 
-	unsigned int obtenerNumeroDeCubeta(unsigned int valorDispersado, unsigned int cantidadDeCubetas);
+	//Devuelve el numero de bloque que corresponde a un valor dispersado por la funcion hash en funcion de la cantida de cubetas
+	unsigned int obtenerNumeroDeBloque(unsigned int valorDispersado, unsigned int cantidadDeCubetas);
 
-	DatoCubetaHash levantarCubeta(uint32_t offsetCubeta);
+	//Devuelve el numero de cubeta que le corresponde a una clave string segun funcion hash y cantidad de cubetas
+	unsigned int obtenerNumeroDeBloque(std::string claveADispersar);
+
+	DatoCubetaHash levantarBloqueNro(unsigned int numeroBloque);
+
+	DatoTablaHash* levantarDatoTabla(uint32_t offsetDatoTabla);
+
+	DatoCubetaHash* levantarDatoCubeta(DatoTablaHash* datoTabla);
+
+	std::vector<uint32_t> acumularResultados(DatoCubetaHash* datoCubeta, std::string palabra);
+
+	uint32_t calcularOffsetBloqueEnTabla(unsigned int numeroBloque);
 
 public:
 	//Hash();
@@ -84,7 +98,7 @@ public:
 	//las palabras contenidas en la frase pasada por parámetro.
 	std::vector<uint32_t> buscarFraseEnHash(std::string fraseConPalabrasClave);
 
-	unsigned int getCantidadDeCubetas();
+	unsigned int getCantidadDeBloques();
 
 	std::string getNombreArchivoTabla();
 

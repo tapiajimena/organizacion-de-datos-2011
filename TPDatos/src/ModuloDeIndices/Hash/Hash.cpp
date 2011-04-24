@@ -23,16 +23,16 @@ Hash::Hash(std::string nombreArchivoTabla, std::string nombreArchivoCubetas){
 	this->nombreArchivoTabla = nombreArchivoTabla;
 	this->nombreArchivoCubetas = nombreArchivoCubetas;
 
-	//Verificar esto...
-	this->cantidadDeCubetas = (int)GetSizeArchivo(archivoTabla) / TAMANIODATOTABLA;
+	//
+	this->cantidadDeBloques = (int)GetSizeArchivo(archivoTabla) / TAMANIODATOTABLA;
 }
 
 Hash::~Hash() {
 }
 
-unsigned int Hash::getCantidadDeCubetas()
+unsigned int Hash::getCantidadDeBloques()
 {
-	return this->cantidadDeCubetas;
+	return this->cantidadDeBloques;
 }
 
 std::string Hash::getNombreArchivoTabla()
@@ -56,22 +56,68 @@ unsigned int Hash::funcionHash(std::string claveADispersar)
 	return valorHash;
 }
 
-unsigned int Hash::obtenerNumeroDeCubeta(unsigned int valorDispersado, unsigned int cantidadDeCubetas)
+unsigned int Hash::obtenerNumeroDeBloque(unsigned int valorDispersado, unsigned int cantidadDeBloques)
 {
-	unsigned int valorRetorno = (unsigned int)valorDispersado%cantidadDeCubetas;
+	unsigned int valorRetorno = (unsigned int)valorDispersado%cantidadDeBloques;
 
 	return valorRetorno;
 }
 
-DatoCubetaHash Hash::levantarCubeta(uint32_t offsetCubeta)
+unsigned int Hash::obtenerNumeroDeBloque(std::string claveADispersar)
 {
+	unsigned int valorHash = this->funcionHash(claveADispersar);
+
+	return this->obtenerNumeroDeBloque(valorHash, this->cantidadDeBloques);
+}
+
+uint32_t Hash::calcularOffsetBloqueEnTabla(unsigned int numeroBloque)
+{
+	return numeroBloque * TAMANIODATOTABLA; //Se busca en la tabla 1ero y luego en archivo de cubetas.
+}
+
+DatoCubetaHash Hash::levantarBloqueNro(unsigned int numeroBloque)
+{
+	//Recordar que dos bloques distintos de la tabla hash pueden direccionar una misma cubeta de datos.
 	std::stringstream cadenaLeida(ios_base::out|ios_base::in);
 
-	RecuperarEstructura(archivoCubetas, cadenaLeida, offsetCubeta, TAMANIOCUBETA );
+	//RecuperarEstructura(archivoCubetas, cadenaLeida, offsetBloque, TAMANIOCUBETA );
 
 	DatoCubetaHash datoCubeta(&cadenaLeida);
 
 	return datoCubeta;
+}
+
+DatoTablaHash* Hash::levantarDatoTabla(uint32_t offsetDatoTabla)
+{
+	DatoTablaHash* datoTabla = NULL;
+
+
+
+	return datoTabla;
+}
+
+DatoCubetaHash* Hash::levantarDatoCubeta(DatoTablaHash* datoTabla)
+{
+	DatoCubetaHash* datoCubeta = NULL;
+
+	return datoCubeta;
+}
+
+std::vector<uint32_t> Hash::acumularResultados(DatoCubetaHash* datoCubeta, std::string palabra)
+{
+	std::vector<uint32_t> resultados;
+
+	for (unsigned int x = 0; x < datoCubeta->getElementos().size(); x++)
+	{
+		ElementoHash elemento = datoCubeta->getElementos().at(x);
+
+		if( elemento.getPalabra() == palabra)
+		{
+			//resultados.push_back(elemento);
+		}
+	}
+
+	return resultados;
 }
 
 void Hash::insertarClaveLibro(Libro* libro)
@@ -81,7 +127,15 @@ void Hash::insertarClaveLibro(Libro* libro)
 
 std::vector<uint32_t> Hash::buscarPalabraEnHash(std::string palabraClave)
 {
-	std::vector<uint32_t> resultadosBusqueda;
+	unsigned int numeroBloque = this->obtenerNumeroDeBloque(palabraClave);
+
+	uint32_t offsetDatoTabla = this->calcularOffsetBloqueEnTabla(numeroBloque);
+
+	DatoTablaHash* datoTabla = this->levantarDatoTabla(offsetDatoTabla);
+
+	DatoCubetaHash* datoCubeta = this->levantarDatoCubeta(datoTabla);
+
+	std::vector<uint32_t> resultadosBusqueda = this->acumularResultados(datoCubeta, palabraClave);
 
 	return resultadosBusqueda;
 }
