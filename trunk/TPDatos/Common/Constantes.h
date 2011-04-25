@@ -92,14 +92,14 @@
 #define INDICE_TITULO  'T'
 #define INDICE_PALABRAS  'P'
 
-#define CARPETA_DEFAULT "/"
+#define CARPETA_DEFAULT_INDICES "Indices/"
 
-#define ARCHIVO_BIBLIOTECA "/Biblioteca.dat"
-#define ARCHIVO_INDICE_AUTOR "/IndiceAutor"
-#define ARCHIVO_INDICE_EDITORIAL "/IndiceEditorial"
-#define ARCHIVO_INDICE_PALABRAS "/IndicePalabra"
-#define ARCHIVO_INDICE_TITULO "/IndiceTitulo"
-#define ARCHIVO_CONTROL_BIBLIOTECA "/BibliotecaControl.dat"
+#define ARCHIVO_BIBLIOTECA "Biblioteca.dat"
+#define ARCHIVO_INDICE_AUTOR "IndiceAutor.dat"
+#define ARCHIVO_INDICE_EDITORIAL "IndiceEditorial.dat"
+#define ARCHIVO_INDICE_PALABRAS "IndicePalabra.dat"
+#define ARCHIVO_INDICE_TITULO "IndiceTitulo.dat"
+#define ARCHIVO_CONTROL_BIBLIOTECA "BibliotecaControl.dat"
 
 
 
