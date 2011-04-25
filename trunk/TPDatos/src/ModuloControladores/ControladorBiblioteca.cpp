@@ -17,6 +17,8 @@ ControladorBiblioteca::ControladorBiblioteca(string pathBiblioteca,
 		string pathControlBiblioteca) {
 	arcLibro = new ArchivoLibro(pathBiblioteca);
 	arcControl = new ArchivoControlLibro(pathControlBiblioteca);
+
+	arcControl->cargarLibros();
 }
 
 bool ControladorBiblioteca::ingresarLibro(string pathLibro) {
@@ -54,12 +56,17 @@ list<uint32_t> ControladorBiblioteca::recuperarLibrosNoIndexadosPor(char tipoInd
 
 	map<uint32_t, DatoControlLibro*>::iterator it_aux;
 
-	while (it != librosControl->end())
+	if (!librosControl->empty())
 	{
-		dControlLibro = (*it).second;
-		if (dControlLibro->isIndexadoPor(tipoIndice))
-			idLibros.push_back((*it).first);
+		while (it != librosControl->end())
+		{
+			dControlLibro = (*it).second;
+			if (dControlLibro->isIndexadoPor(tipoIndice))
+				idLibros.push_back((*it).first);
+		}
 	}
+	else
+		Logger::log("ControladorBiblioteca", "recuperarLibrosNoIndexadosPor","la lista de control esta vacia");
 	return idLibros;
 }
 
