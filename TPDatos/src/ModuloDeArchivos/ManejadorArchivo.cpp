@@ -52,6 +52,13 @@ bool ManejadorArchivo::CrearSiNoExiste(const char* pathArchivo, fstream &arc) {
 	}
 }
 
+bool ManejadorArchivo::CrearDirectorios(string pathCarpeta)
+{
+	system(("mkdir -p " + pathCarpeta).c_str());
+	return true;
+}
+
+
 bool ManejadorArchivo::EscribirDato(fstream &arc, Dato* d) {
 	stringstream aux;
 	aux << d->getDato();

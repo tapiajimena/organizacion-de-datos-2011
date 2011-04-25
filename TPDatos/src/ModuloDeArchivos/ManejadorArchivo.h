@@ -53,6 +53,14 @@ namespace ManejadorArchivo
 	 */
 	 bool CrearSiNoExiste(const char* pathArchivo, fstream &arc);
 
+
+	 /*
+	  * Crea las carpetas de una direccion.
+	  * @param pathCarpeta la direccion de carpetas
+	  */
+	 bool CrearDirectorios(string pathCarpeta);
+
+
 	/**
 	 * se escriben los datos contenido al final del archivo arc
 	 * arc debe estar abierto
