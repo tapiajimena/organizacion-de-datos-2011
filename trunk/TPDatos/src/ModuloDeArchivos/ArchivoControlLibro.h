@@ -84,9 +84,9 @@ public:
 	/**
 	 * Escribe en el registro de control que un libro se agregar en la
 	 * biblioteca.
-	 * @param idLibro: id del libro a ser registrado.
+	 *
 	 */
-	void registrarLibro(uint32_t idLibro);
+	uint32_t registrarLibro(uint32_t size, uint32_t finArcLibros);
 
 	/**
 	 * Coloca el tipo de indexacion al libro correspondiente.
@@ -106,6 +106,13 @@ public:
      * durante las consultas.
      */
     void actualizarArchivo();
+
+    /**
+     * Metodos utilizados para calculos necesarios para nuevas inserciones en
+     * espacios anteriormente asignados a otros libros.
+     */
+    uint32_t calcularNuevoOffset(uint32_t espacioLibre, uint32_t size, uint32_t idLibro);
+    uint32_t calcularNuevoEspacioLibre(uint32_t espacioLibre, uint32_t nuevoOffset);
 
     string getPathArchivoControlLibro() const;
     void setPathArchivoControlLibro(string pathArchivoControlLibro);
