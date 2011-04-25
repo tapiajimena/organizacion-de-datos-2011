@@ -15,7 +15,7 @@
 
 ControladorIndice::ControladorIndice()
 {
-	this->pathCarpeta = CARPETA_DEFAULT;
+	this->pathCarpeta = CARPETA_DEFAULT_INDICES;
 }
 
 
@@ -27,7 +27,7 @@ ControladorIndice::ControladorIndice(string pathCarpeta)
 
 void ControladorIndice::nuevoIndiceAutor()
 {
-	this->indiceArbol = new ArbolBMas(pathCarpeta+ARCHIVO_INDICE_AUTOR, SIZE_BLOQUE);
+		this->indiceArbol = new ArbolBMas(pathCarpeta+ARCHIVO_INDICE_AUTOR, SIZE_BLOQUE);
 }
 
 
