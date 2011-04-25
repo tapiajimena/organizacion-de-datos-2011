@@ -14,14 +14,17 @@
 
 Indexador::Indexador()
 {
-	pathCarpeta = CARPETA_DEFAULT;
+	pathCarpeta = CARPETA_DEFAULT_INDICES;
+	controlIndice = new ControladorIndice(pathCarpeta);
+	CrearDirectorios(pathCarpeta);
 
 }
 
 Indexador::Indexador(string pathCarpeta)
 {
 	pathCarpeta = pathCarpeta;
-
+	controlIndice = new ControladorIndice(pathCarpeta);
+	CrearDirectorios(pathCarpeta);
 }
 
 

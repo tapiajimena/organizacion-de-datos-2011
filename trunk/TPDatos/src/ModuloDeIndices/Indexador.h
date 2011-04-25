@@ -20,6 +20,7 @@
 #include "../ModuloParser/ParserDePalabras.h"
 #include "../ModuloParser/ParserDeAtributo.h"
 #include "../ModuloParser/ParserDeEditorial.h"
+#include "../ModuloDeArchivos/ManejadorArchivo.h"
 #include "../ModuloControladores/ControladorIndice.h"
 #include "../ModuloControladores/ControladorBiblioteca.h"
 
