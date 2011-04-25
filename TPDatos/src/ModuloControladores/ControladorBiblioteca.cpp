@@ -5,9 +5,6 @@
  *	Catedra	: SERVETTO-FERRER-FERNANDEZ
  *	Materia	: Organizacion de Datos (75.06) - FIUBA
  *
- *
- *
- *
  */
 
 #include "ControladorBiblioteca.h"
@@ -24,11 +21,15 @@ ControladorBiblioteca::ControladorBiblioteca(string pathBiblioteca,
 
 bool ControladorBiblioteca::ingresarLibro(string pathLibro) {
 
+	/* Se agrega el libro en el archivo de registros variables */
+	arcLibro->agregarLibro((char*) pathLibro.c_str());
+
+	/* Se actualiza la insercion en el archivo de control */
+	//uint32_t nuevoOffset = arcControl->registrarLibro(size,finArchivoLibros);
+
 	/* Tengo que preguntar donde escribo y despues pasarselo al registrar de
 	 * archivo de control. Y despues guardarlo en el de archivo variables. */
 
-	arcControl->registrarLibro(arcLibro->getPosicionActual());
-	arcLibro->agregarLibro((char*) pathLibro.c_str());
 }
 
 bool ControladorBiblioteca::eliminarLibro(uint32_t offset) {
