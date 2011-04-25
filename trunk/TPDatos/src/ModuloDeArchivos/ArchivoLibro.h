@@ -17,8 +17,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-#include"ManejadorArchivo.h"
-#include"../ModuloDeTipos/DatoLibro.h"
+#include "ManejadorArchivo.h"
+#include "./Common/Utilitarios/Logger.h"
+#include "../ModuloDeTipos/DatoLibro.h"
 
 
 class ArchivoLibro {
