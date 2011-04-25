@@ -56,7 +56,7 @@ public:
 	 * TODO implementar
 	 * deberia recorrer a lista e ir insertando el tag en el archvio de control
 	 */
-	void registrarIndexado(list<DatoLibro> );
+	void registrarIndexado(list<DatoLibro> dLibros);
 
 	/*
 	 * elimina un libro a la biblioteca y su data de control en el archivo de control
