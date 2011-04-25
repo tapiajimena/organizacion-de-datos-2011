@@ -67,6 +67,8 @@ void Indexador::indexar(char tipoIndice)
 		dLibro = new DatoLibro(controlBiblioteca->recuperarLibro(*it));
 		libro = parser->parsear(dLibro);
 
+		cout<<"EL LIBRO: "<<libro->getAutor()<<endl;
+
 		parLibroOffset.first 	= libro;
 		parLibroOffset.second 	= *it;
 		controlIndice->indexarPorAutor(parLibroOffset);
