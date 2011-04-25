@@ -105,16 +105,28 @@ void LeafNode::redistribute(Node* sibling) {
 }
 
 int LeafNode::insert(DatoElementoNodo* elemento) {
-	if (elementoIndex(elemento)==-1)
+
+	list<DatoElementoNodo*>::iterator it;
+	int posicion = elementoIndex(elemento);
+
+	if (posicion ==-1)
 	{
 		elementos.push_front(elemento);
 		elementos.sort(&LeafNode::compareElementos);
-		if (isOverFlowded(BLOCKSIZE)) {
+	}
+	else
+	{
+		it = this->elementos.begin();
+		for(int i = 0; i<posicion; i++)
+		{
+			++it;
+		}
+		(*it)->agregarLibro(elemento->getLibros().front());
+	}
+	if (isOverFlowded(BLOCKSIZE)) {
 			return OVERFLOWDED;
 		}
-		return EXIT_SUCCESS;
-	}
-	else return DUPLICATED;
+	return EXIT_SUCCESS;
 }
 
 bool LeafNode::compareElementos(DatoElementoNodo* d1, DatoElementoNodo* d2)
@@ -137,8 +149,9 @@ int LeafNode::remove(DatoElementoNodo* elemento, int sizeOffset, fstream* fs, un
 		case -1:
 			return EXIT_FAILURE;
 		case 0:
-			elementos.erase(it);
-			delete (DatoElementoNodo*)*it;
+			((DatoElementoNodo*)(*it))->quitarLibro(elemento->getLibros().front());
+			//elementos.erase(it);
+			//delete (DatoElementoNodo*)*it;
 
 			if(isUnderFlowded(BLOCKSIZE)) {
 				return UNDERFLOWDED;
@@ -423,9 +436,6 @@ long LeafNode::getDataSize() {
 	return dataSize;
 }
 
-/*
- * TODO descubrir bien que hace
- */
 long LeafNode::getFreeDataSizeOnRight(){
 	long minSize = (BLOCKSIZE - getCtrlDataSize()) * MIN_PERCENTAGE;
 	long freeDataSize = 0;
@@ -442,9 +452,7 @@ long LeafNode::getFreeDataSizeOnRight(){
 	return freeDataSize;
 }
 
-/*
- * TODO descubrir bien que hace
- */
+
 long LeafNode::getFreeDataSizeOnLeft(){
 	long minSize = (BLOCKSIZE - getCtrlDataSize()) * MIN_PERCENTAGE;
 	long freeDataSize = 0;
