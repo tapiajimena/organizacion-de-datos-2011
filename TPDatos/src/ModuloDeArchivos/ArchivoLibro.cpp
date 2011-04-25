@@ -45,18 +45,21 @@ void ArchivoLibro::agregarLibro(char* pathLibro)
 	uint32_t sizeAux;
 	fstream arcLibro;
 
-	Abrir(pathLibro, arcLibro, true);//se abre el libro a insertar
+	if(Abrir(pathLibro, arcLibro, true))//se abre el libro a insertar
+	{
+		//se lee en contenidoLibro el libro completo
+		char* contenidoLibro = leer(arcLibro, sizeAux);
 
-	//se lee en contenidoLibro el libro completo
-    char* contenidoLibro = leer(arcLibro, sizeAux);
+		//se procesa
+		rdo = contenidoLibro;
+		rdo = rdo.substr(0,sizeAux);
+		dato.setDato(rdo);
 
-	//se procesa
-	rdo = contenidoLibro;
-	rdo = rdo.substr(0,sizeAux);
-	dato.setDato(rdo);
-
-	Cerrar(arcLibro);//se cierra el arcLibro
-	escribirAlFinal(dato);//se escribe en la biblioteca
+		Cerrar(arcLibro);//se cierra el arcLibro
+		escribirAlFinal(dato);//se escribe en la biblioteca
+	}
+	else
+		Logger::log("ArchivoLibro","agregarLibro", "El archivo de libro a insertar no existe.");
 }
 
 
