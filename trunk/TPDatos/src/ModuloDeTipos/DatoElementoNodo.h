@@ -34,6 +34,8 @@ public:
 
 	void setClave(string clave);
 
+	int comparar(DatoElementoNodo* ele);
+
 	string getClave();
 
 	list<uint32_t> getLibros();

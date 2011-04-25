@@ -1,8 +1,13 @@
 /*
- * DatoElementoNodo.cpp
+ * NodoHojaArbol.h
  *
- *  Created on: 21/04/2011
- *      Author: paulo
+ *    Autor   	 : GRUPO 1 - Fernandez, Gallinal, Maraggi, Tapia
+ *    Catedra    : SERVETTO-FERRER-FERNANDEZ
+ *    Materia    : Organizacion de Datos (75.06) - FIUBA
+ *
+ *
+ *	Clase utilizada para la representacion de los nodos hoja del arbol.
+ *
  */
 
 #include "DatoElementoNodo.h"
@@ -53,6 +58,12 @@ void DatoElementoNodo::hidratar(iostream* stream) {
 
 void DatoElementoNodo::setClave(string clave) {
 	this->clave = clave;
+}
+
+
+int DatoElementoNodo::comparar(DatoElementoNodo* ele)
+{
+	return strcmp(this->clave.c_str(), ele->getClave().c_str());
 }
 
 string DatoElementoNodo::getClave() {
