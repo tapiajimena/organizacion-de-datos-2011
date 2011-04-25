@@ -26,7 +26,7 @@ public:
 	//ParserDeAtributo();
 	//virtual ~ParserDeAtributo();
 
-	//Método abstracto que reimplementan los herederos.
+	//Metodo abstracto que reimplementan los herederos.
 	//Devuelve un libro en el que solamente se carga el atributo que es propio del
 	//parser según su tipo específico (el resto de los atributos del libro quedan vacíos).
 	virtual Libro* parsear(DatoLibro* datoLibro) = 0;
