@@ -63,7 +63,7 @@ void ArchivoLibro::agregarLibro(char* pathLibro, uint32_t nuevoOffset) {
 	Logger::log("ArchivoLibro", "agregarLibro",
 			"Se crea el nuevo dato libro.");
 
-	EscribirDato(this->archivoVariable, dato, nuevoOffset);
+	escribir(*dato, nuevoOffset);
 
 	Logger::log("ArchivoLibro", "agregarLibro",
 			"Se escribe el dato en el archivo de registros variables.");
