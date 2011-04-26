@@ -19,6 +19,9 @@ ControladorBiblioteca::ControladorBiblioteca(string pathBiblioteca,
 	arcControl = new ArchivoControlLibro(pathControlBiblioteca);
 
 	arcControl->cargarLibros();
+
+	Logger::log("ControladorBiblioteca", "ControladorBiblioteca",
+			"Se cargan los libros.");
 }
 
 bool ControladorBiblioteca::ingresarLibro(string pathLibro) {
@@ -26,10 +29,22 @@ bool ControladorBiblioteca::ingresarLibro(string pathLibro) {
 	uint32_t nuevoOffset = arcControl->registrarLibro(
 			GetSizeArchivo(pathLibro), arcLibro->getSizeArchivo());
 
+	Logger::log("ControladorBiblioteca", "ingresarLibro",
+			"Se registra el libro en el archivo de control.");
+
+	Logger::log("ControladorBiblioteca", "ingresarLibro",
+			ServiceClass::toString(nuevoOffset));
+
 	/* Se agrega el libro en el archivo de registros variables */
 	arcLibro->agregarLibro((char*) pathLibro.c_str(), nuevoOffset);
 
+	Logger::log("ControladorBiblioteca", "ingresarLibro",
+			"Se agrega un libro en el archivo de registros variables.");
+
 	arcControl->actualizarArchivo();
+
+	Logger::log("ControladorBiblioteca", "ingresarLibro",
+			"Se actualiza el archivo de control.");
 }
 
 bool ControladorBiblioteca::eliminarLibro(uint32_t offset) {
@@ -37,6 +52,14 @@ bool ControladorBiblioteca::eliminarLibro(uint32_t offset) {
 
 	/* Actualiza el estado del archivo de control */
 	arcControl->eliminarLibro(offset, datoLibro.getSize());
+
+	Logger::log("ControladorBiblioteca", "eliminarLibro",
+			"Se elimina el libro.");
+
+	arcControl->actualizarArchivo();
+
+	Logger::log("ControladorBiblioteca", "eliminarLibro",
+			"Se actualiza el archivo de control.");
 }
 
 DatoLibro ControladorBiblioteca::recuperarLibro(uint32_t offset) {
