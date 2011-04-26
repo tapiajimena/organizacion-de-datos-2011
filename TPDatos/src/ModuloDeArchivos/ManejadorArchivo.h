@@ -112,7 +112,7 @@ namespace ManejadorArchivo
 
 
 	 uint32_t GetSizeArchivo(fstream & arc);
-
+	 uint32_t GetSizeArchivo(string path);
 
 	/**
 	 *posiciona el puntero del archivo en el inicio.
