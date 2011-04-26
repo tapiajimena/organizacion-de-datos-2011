@@ -135,6 +135,7 @@ string ManejadorArchivo::LeerCaracteres(fstream &arc, int tamanio) {
 
 uint32_t ManejadorArchivo::GetSizeArchivo(string path) {
 	fstream archivo;
+
 	if (Existe(path.c_str(), archivo)) {
 		Abrir(path.c_str(), archivo, false);
 	}
