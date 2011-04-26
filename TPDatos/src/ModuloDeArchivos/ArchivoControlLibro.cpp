@@ -303,18 +303,18 @@ uint32_t ArchivoControlLibro::calcularNuevoOffset(uint32_t espacioLibre, uint32_
 	cout << "idLibro viejo: " << idLibro << endl;
 	cout << "size: " << size << endl;
 
-	uint32_t nuevoOffset = espacioLibre - (size + METADATA_SIZE_BOOK + idLibro);
+	uint32_t nuevoOffset = idLibro + METADATA_SIZE_BOOK + size;
 
 	cout <<"calculo offset: " << nuevoOffset << endl;
 
 	return nuevoOffset;
 }
 
-uint32_t ArchivoControlLibro::calcularNuevoEspacioLibre(uint32_t espacioLibre, uint32_t nuevoOffset){
+uint32_t ArchivoControlLibro::calcularNuevoEspacioLibre(uint32_t espacioLibre, uint32_t size){
 	/* nuevoEspacioLibre =
 	 * espacio libre viejo - (proximo id libro + meta)
 	 */
-	uint32_t nuevoEspacioLibre =  espacioLibre - (nuevoOffset + METADATA_SIZE_BOOK);
+	uint32_t nuevoEspacioLibre =  espacioLibre - size - METADATA_SIZE_BOOK;
 
 	return nuevoEspacioLibre;
 }
@@ -348,13 +348,13 @@ uint32_t ArchivoControlLibro::registrarLibro(uint32_t size, uint32_t finArcLibro
 		nuevoLibro->setId_Libro((calcularNuevoOffset(buscado->getEspacioLibre(),size,id_Libro)));
 		cout << "nuevo Id: " << nuevoLibro->getId_Libro() << endl;
 
-		nuevoLibro->setEspacioLibre(0);
+		nuevoLibro->setEspacioLibre(calcularNuevoEspacioLibre(buscado->getEspacioLibre(),size));
 
 		nuevoLibro->setOffset(this->parser->getOffsetArchivo());
 		cout << "nuevo offset: " << nuevoLibro->getOffset() << endl;
 
 		this->libros->insert(pair<uint32_t, DatoControlLibro*> (nuevoLibro->getId_Libro(),nuevoLibro));
-		buscado->setEspacioLibre(calcularNuevoEspacioLibre(buscado->getEspacioLibre(),nuevoLibro->getId_Libro()));
+		buscado->setEspacioLibre(0);
 		cout << "nuevo espacio libre: " << buscado->getEspacioLibre() << endl;
 
 		Logger::log("ArchivoControlLibro", "registrarLibro",
