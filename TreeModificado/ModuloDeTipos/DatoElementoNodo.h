@@ -53,7 +53,11 @@ public:
 
 	list<uint32_t> getLibros();
 
+	int getCantidadLibros();
+
 	void agregarLibro(uint32_t idLibro);
+
+	void quitarLibro(uint32_t idLibro);
 
 	virtual ~DatoElementoNodo();
 };
