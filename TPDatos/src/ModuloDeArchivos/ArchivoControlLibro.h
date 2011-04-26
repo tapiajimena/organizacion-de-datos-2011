@@ -119,7 +119,7 @@ public:
 
 	virtual ~ArchivoControlLibro();
 
-    map<uint32_t,DatoControlLibro*> *getLibros() const;
+    map<uint32_t,DatoControlLibro*> *getLibros();
     void setLibros(map<uint32_t,DatoControlLibro*> *libros);
 };
 

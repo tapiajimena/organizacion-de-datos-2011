@@ -233,7 +233,8 @@ void ArchivoControlLibro::actualizarEspaciosLibres(
 }
 
 void ArchivoControlLibro::registrarIndexado(uint32_t idLibro, char tipoClave) {
-	cargarLibros();
+	//FIXME se comento el cargarLibros() ya que se cargan los libros en un nivel superior
+	//cargarLibros();
 	DatoControlLibro* d = buscarEnMap(idLibro);
 
 	if (d != NULL) {
@@ -382,9 +383,10 @@ void ArchivoControlLibro::eliminarLibro(uint32_t idLibro, uint32_t size) {
 
 }
 
-map<uint32_t,DatoControlLibro*> *ArchivoControlLibro::getLibros() const
+map<uint32_t,DatoControlLibro*> *ArchivoControlLibro::getLibros()
 {
-    return libros;
+	cargarLibros();
+	return libros;
 }
 
 void ArchivoControlLibro::setLibros(map<uint32_t,DatoControlLibro*> *libros)
