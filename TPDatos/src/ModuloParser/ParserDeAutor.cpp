@@ -24,18 +24,21 @@ void ParserDeAutor::ProcesarRenglonLibro(std::string renglonLibro, Libro* libro,
 	//No nos interesa la puntuación del contexto -> SEPARADORES_DE_PALABRAS (sin puntuación).
 	std::vector<std::string> listaPalabras = ServiceClass::obtenerListaPalabras(renglonLibro, SEPARADORES_DE_PALABRAS);
 
-	if(listaPalabras.at(0) == IDENTIFICADOR_AUTOR) //Definido en Constantes.h
+	if (listaPalabras.size() > 0)
 	{
-		std::stringstream autorLibro;
-		for (unsigned int numeroPalabra = 1; numeroPalabra < listaPalabras.size(); numeroPalabra++)
+		if(listaPalabras.at(0) == IDENTIFICADOR_AUTOR) //Definido en Constantes.h
 		{
-			autorLibro<<listaPalabras.at(numeroPalabra);
-			//Espacio entre palabras, salvo al final.
-			if(numeroPalabra < listaPalabras.size()-1)
-				autorLibro<<" ";
+			std::stringstream autorLibro;
+			for (unsigned int numeroPalabra = 1; numeroPalabra < listaPalabras.size(); numeroPalabra++)
+			{
+				autorLibro<<listaPalabras.at(numeroPalabra);
+				//Espacio entre palabras, salvo al final.
+				if(numeroPalabra < listaPalabras.size()-1)
+					autorLibro<<" ";
+			}
+			libro->setAutor( autorLibro.str());
+			autorEncontrado = true;
 		}
-		libro->setAutor( autorLibro.str());
-		autorEncontrado = true;
 	}
 }
 
@@ -78,4 +81,17 @@ Libro* ParserDeAutor::parsear(DatoLibro* datoLibro)
 
 	return libro;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
