@@ -18,8 +18,6 @@ ControladorBiblioteca::ControladorBiblioteca(string pathBiblioteca,
 	arcLibro = new ArchivoLibro(pathBiblioteca);
 	arcControl = new ArchivoControlLibro(pathControlBiblioteca);
 
-	arcControl->cargarLibros();
-
 	Logger::log("ControladorBiblioteca", "ControladorBiblioteca",
 			"Se cargan los libros.");
 }
@@ -28,6 +26,8 @@ bool ControladorBiblioteca::ingresarLibro(string pathLibro) {
 	/* Se actualiza la insercion en el archivo de control */
 	uint32_t nuevoOffset = arcControl->registrarLibro(
 			GetSizeArchivo(pathLibro), arcLibro->getSizeArchivo());
+
+
 
 	Logger::log("ControladorBiblioteca", "ingresarLibro",
 			"Se registra el libro en el archivo de control.");
@@ -73,6 +73,8 @@ list<uint32_t> ControladorBiblioteca::recuperarLibrosNoIndexadosPor(char tipoInd
 	list<uint32_t> idLibros;
 	DatoControlLibro* dControlLibro;
 	map<uint32_t,DatoControlLibro*>::iterator it;
+
+	arcControl->cargarLibros();
 	map<uint32_t,DatoControlLibro*>* librosControl = arcControl->getLibros();
 
 	if (!librosControl->empty())
