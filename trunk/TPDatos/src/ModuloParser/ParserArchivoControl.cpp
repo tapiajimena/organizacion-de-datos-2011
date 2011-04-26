@@ -25,13 +25,14 @@ map<uint32_t, DatoControlLibro*>* ParserArchivoControl::getLibros(
 }
 
 void ParserArchivoControl::leerArchivo(fstream* archivo) {
-	char buffer[CONTROL_LENGTH];
+	char  buffer[CONTROL_LENGTH];
 
 	if (GetSizeArchivo(*archivo) > 0) {
 		if (archivo->is_open()) {
 			Logger::log("parserArchivoControl", "leerArchivo",
 					"Se comienza a leer el archivo de control");
 			this->it = this->libros->begin();
+
 			do {
 				archivo->getline(buffer, CONTROL_LENGTH);
 				cargarEstructura(buffer);
@@ -100,6 +101,7 @@ list<char>* ParserArchivoControl::getTipoIndice(vector<string> datos) const {
 }
 
 int ParserArchivoControl::getOffsetArchivo() {
+
 	return this->contadorLinea;
 }
 
