@@ -45,6 +45,18 @@ public:
 	DatoLibro recuperarLibro(uint32_t offset);
 
 
+	/**
+	 * Coloca el tipo de indexacion al libro correspondiente.
+	 * @param idLibro: id del libro que se indexa.
+	 * @param tipoClave: char que representa el tipo de indice.
+	 */
+	void registrarIndexadoArchivoControl(uint32_t idLibro, char tipoClave);
+
+	/*
+	 *Actualiza el archivo de control
+	 */
+	void actualizarArchivoDeControl();
+
 
 	/*
 	 * devuelve los libros no indexados por ese indice
