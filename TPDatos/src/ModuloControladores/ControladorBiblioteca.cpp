@@ -74,7 +74,7 @@ list<uint32_t> ControladorBiblioteca::recuperarLibrosNoIndexadosPor(char tipoInd
 	DatoControlLibro* dControlLibro;
 	map<uint32_t,DatoControlLibro*>::iterator it;
 
-	arcControl->cargarLibros();
+	//arcControl->cargarLibros();
 	map<uint32_t,DatoControlLibro*>* librosControl = arcControl->getLibros();
 
 	if (!librosControl->empty())
@@ -92,6 +92,16 @@ list<uint32_t> ControladorBiblioteca::recuperarLibrosNoIndexadosPor(char tipoInd
 	else
 		Logger::log("ControladorBiblioteca", "recuperarLibrosNoIndexadosPor","la lista de control esta vacia");
 	return idLibros;
+}
+
+void ControladorBiblioteca::actualizarArchivoDeControl()
+{
+	arcControl->actualizarArchivo();
+}
+
+void ControladorBiblioteca::registrarIndexadoArchivoControl(uint32_t idLibro, char tipoClave)
+{
+	arcControl->registrarIndexado(idLibro, tipoClave);
 }
 
 

@@ -57,7 +57,7 @@ void ControladorIndice::indexarPorAutor(pair<Libro*,uint32_t> parLibroOffset)
 	ele->setClave(((Libro*)(parLibroOffset.first))->getAutor());
 	ele->agregarLibro(parLibroOffset.second);
 
-	this->indiceArbol->insertar(ele);
+	//this->indiceArbol->insertar(ele);
 	delete(ele);
 }
 
