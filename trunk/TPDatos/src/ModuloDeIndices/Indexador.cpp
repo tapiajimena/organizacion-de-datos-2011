@@ -65,17 +65,19 @@ void Indexador::indexar(char tipoIndice)
 	{
 		libro = new Libro();
 		dLibro = new DatoLibro(controlBiblioteca->recuperarLibro(*it));
-		libro = parser->parsear(dLibro);
 
-		cout<<"EL LIBRO: "<<libro->getAutor()<<endl;
+		libro = parser->parsear(dLibro);
 
 		parLibroOffset.first 	= libro;
 		parLibroOffset.second 	= *it;
 		controlIndice->indexarPorAutor(parLibroOffset);
+		controlBiblioteca->registrarIndexadoArchivoControl(*it, INDICE_AUTOR);
 
 		delete (libro);
 		delete(dLibro);
 	}
+	this->controlBiblioteca->actualizarArchivoDeControl();
+
 }
 
 /*
