@@ -134,8 +134,30 @@ string DatoElementoNodo::getClave() {
 list<uint32_t> DatoElementoNodo::getLibros() {
 	return this->idLibros;
 }
+
+int DatoElementoNodo::getCantidadLibros(){
+	return this->idLibros.size();
+}
+
 void DatoElementoNodo::agregarLibro(uint32_t idLibro) {
 	this->idLibros.push_back(idLibro);
+	this->idLibros.sort();
+}
+
+void DatoElementoNodo::quitarLibro(uint32_t idLibro){
+
+	this->idLibros.remove(idLibro);
+
+	//	this->it = this->idLibros.begin();
+//	while(this->it!=this->idLibros.end())
+//	{
+//		if((*it) == idLibro)
+//		{
+//			this->idLibros.erase(it);
+//		}
+//		++it;
+//	}
+
 }
 
 DatoElementoNodo::~DatoElementoNodo() {
