@@ -18,18 +18,21 @@ void ParserDeTitulo::ProcesarRenglonLibro(std::string renglonLibro, Libro* libro
 	//Separamos en palabras la línea y verificamos si se define en esta línea el título.
 	std::vector<std::string> listaPalabras = ServiceClass::obtenerListaPalabras(renglonLibro, SEPARADORES_DE_PALABRAS_CON_PUNTUACION);
 
-	if(listaPalabras.at(0) == IDENTIFICADOR_TITULO) //Definido en Constantes.h
+	if (listaPalabras.size() > 0)
 	{
-		std::stringstream tituloLibro;
-		for (unsigned int numeroPalabra = 1; numeroPalabra < listaPalabras.size(); numeroPalabra++)
+		if(listaPalabras.at(0) == IDENTIFICADOR_TITULO) //Definido en Constantes.h
 		{
-			tituloLibro<<listaPalabras.at(numeroPalabra);
-			//Espacio entre palabras, salvo al final.
-			if(numeroPalabra < listaPalabras.size()-1)
-				tituloLibro<<" ";
+			std::stringstream tituloLibro;
+			for (unsigned int numeroPalabra = 1; numeroPalabra < listaPalabras.size(); numeroPalabra++)
+			{
+				tituloLibro<<listaPalabras.at(numeroPalabra);
+				//Espacio entre palabras, salvo al final.
+				if(numeroPalabra < listaPalabras.size()-1)
+					tituloLibro<<" ";
+			}
+			libro->setTitulo( tituloLibro.str());
+			tituloEncontrado = true;
 		}
-		libro->setTitulo( tituloLibro.str());
-		tituloEncontrado = true;
 	}
 }
 
