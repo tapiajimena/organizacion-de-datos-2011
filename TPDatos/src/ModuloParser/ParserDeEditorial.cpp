@@ -18,18 +18,21 @@ void ParserDeEditorial::ProcesarRenglonLibro(std::string renglonLibro, Libro* li
 	//Separamos en palabras la línea y verificamos si se define en esta línea el título.
 	std::vector<std::string> listaPalabras = ServiceClass::obtenerListaPalabras(renglonLibro, SEPARADORES_DE_PALABRAS_CON_PUNTUACION);
 
-	if(listaPalabras.at(0) == IDENTIFICADOR_EDITORIAL) //Definido en Constantes.h
+	if(listaPalabras.size() > 0)
 	{
-		std::stringstream editorialLibro;
-		for (unsigned int numeroPalabra = 1; numeroPalabra < listaPalabras.size(); numeroPalabra++)
+		if(listaPalabras.at(0) == IDENTIFICADOR_EDITORIAL) //Definido en Constantes.h
 		{
-			editorialLibro<<listaPalabras.at(numeroPalabra);
-			//Espacio entre palabras, salvo al final.
-			if(numeroPalabra < listaPalabras.size()-1)
-				editorialLibro<<" ";
+			std::stringstream editorialLibro;
+			for (unsigned int numeroPalabra = 1; numeroPalabra < listaPalabras.size(); numeroPalabra++)
+			{
+				editorialLibro<<listaPalabras.at(numeroPalabra);
+				//Espacio entre palabras, salvo al final.
+				if(numeroPalabra < listaPalabras.size()-1)
+					editorialLibro<<" ";
+			}
+			libro->setEditorial( editorialLibro.str());
+			editorialEncontrada = true;
 		}
-		libro->setEditorial( editorialLibro.str());
-		editorialEncontrada = true;
 	}
 }
 
