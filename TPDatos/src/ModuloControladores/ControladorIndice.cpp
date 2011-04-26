@@ -53,7 +53,8 @@ void ControladorIndice::indexarPorAutor(pair<Libro*,uint32_t> parLibroOffset)
 {
 	DatoElementoNodo* ele = new DatoElementoNodo();
 
-	ele->setClave(((Libro*)(parLibroOffset.first))->getTitulo());
+
+	ele->setClave(((Libro*)(parLibroOffset.first))->getAutor());
 	ele->agregarLibro(parLibroOffset.second);
 
 	this->indiceArbol->insertar(ele);
