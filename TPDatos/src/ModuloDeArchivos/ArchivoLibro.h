@@ -18,8 +18,8 @@
 #include <stdlib.h>
 #include <iostream>
 #include "ManejadorArchivo.h"
-#include "./Common/Utilitarios/Logger.h"
 #include "../ModuloDeTipos/DatoLibro.h"
+#include "../../Common/Utilitarios/Logger.h"
 
 
 class ArchivoLibro {
@@ -48,7 +48,7 @@ public:
 	 * almacena el archivo al final de la libreria.
 	 * pathLibro: ruta+nombre del archivo que se quiere agregar a la biblioteca
 	 */
-	void agregarLibro(char* pathLibro);
+	void agregarLibro(char* pathLibro, uint32_t nuevoOffset);
 
 
 	DatoLibro recuperarLibro(uint32_t idLibro);
@@ -58,12 +58,6 @@ public:
 	 *para recorrer toda la biblioteca habr�a que ir al inicio de la misma.
 	 */
 	string recuperarBiblioteca();
-
-	/**
-	 * TODO implementar
-	 * eliminar registro que se encuentra en al posicion offset
-	 */
-	void eliminar(uint32_t offset);
 
 	/**
 	 *posiciona el puntero del archivo en el inicio.
