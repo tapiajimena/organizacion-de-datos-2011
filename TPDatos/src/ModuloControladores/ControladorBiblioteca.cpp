@@ -66,27 +66,32 @@ DatoLibro ControladorBiblioteca::recuperarLibro(uint32_t offset) {
 	return arcLibro->recuperarLibro(offset);
 }
 
-list<uint32_t> ControladorBiblioteca::recuperarLibrosNoIndexadosPor(
-		char tipoIndice) {
+
+list<uint32_t> ControladorBiblioteca::recuperarLibrosNoIndexadosPor(char tipoIndice)
+{
 	//TODO como se hace para obtener el offset a libro del controlBiblioteca
 	list<uint32_t> idLibros;
 	DatoControlLibro* dControlLibro;
-	map<uint32_t, DatoControlLibro*>::iterator it;
-	map<uint32_t, DatoControlLibro*>* librosControl = arcControl->getLibros();
+	map<uint32_t,DatoControlLibro*>::iterator it;
+	map<uint32_t,DatoControlLibro*>* librosControl = arcControl->getLibros();
 
-	map<uint32_t, DatoControlLibro*>::iterator it_aux;
+	if (!librosControl->empty())
+	{
 
-	if (!librosControl->empty()) {
-		while (it != librosControl->end()) {
+		it = librosControl->begin();
+		while (it != librosControl->end())
+		{
 			dControlLibro = (*it).second;
-			if (dControlLibro->isIndexadoPor(tipoIndice))
+			if (!dControlLibro->isIndexadoPor(tipoIndice))
 				idLibros.push_back((*it).first);
+			it++;
 		}
-	} else
-		Logger::log("ControladorBiblioteca", "recuperarLibrosNoIndexadosPor",
-				"la lista de control esta vacia");
+	}
+	else
+		Logger::log("ControladorBiblioteca", "recuperarLibrosNoIndexadosPor","la lista de control esta vacia");
 	return idLibros;
 }
+
 
 string ControladorBiblioteca::getPathControlBiblioteca() {
 	return arcControl->getPathArchivoControlLibro();
