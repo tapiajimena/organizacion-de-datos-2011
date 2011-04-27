@@ -52,6 +52,12 @@ public:
 	 */
 	void registrarIndexadoArchivoControl(uint32_t idLibro, char tipoClave);
 
+
+	/*
+	 *Devuelve los idLibros que tiene la biblioteca
+	 */
+	list<uint32_t> recuperarLibrosDeBiblioteca();
+
 	/*
 	 *Actualiza el archivo de control
 	 */

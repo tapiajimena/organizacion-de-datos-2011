@@ -84,7 +84,39 @@ list<uint32_t> ControladorBiblioteca::recuperarLibrosNoIndexadosPor(char tipoInd
 		while (it != librosControl->end())
 		{
 			dControlLibro = (*it).second;
-			if (!dControlLibro->isIndexadoPor(tipoIndice))
+			//si no fue borrado y tiene el indice deseado => se agrega
+			if ((!dControlLibro->isIndexadoPor(tipoIndice))&& (dControlLibro->getEspacioLibre()==0))
+				idLibros.push_back((*it).first);
+			it++;
+		}
+	}
+	else
+		Logger::log("ControladorBiblioteca", "recuperarLibrosNoIndexadosPor","la lista de control esta vacia");
+	return idLibros;
+}
+
+
+
+list<uint32_t> ControladorBiblioteca::recuperarLibrosDeBiblioteca()
+{
+	//TODO como se hace para obtener el offset a libro del controlBiblioteca
+	//TODO REFACTORIZAR CON RECUPERARLIBROSNOINDEXADOSPOR
+	list<uint32_t> idLibros;
+	DatoControlLibro* dControlLibro;
+	map<uint32_t,DatoControlLibro*>::iterator it;
+
+	//arcControl->cargarLibros();
+	map<uint32_t,DatoControlLibro*>* librosControl = arcControl->getLibros();
+
+	if (!librosControl->empty())
+	{
+
+		it = librosControl->begin();
+		while (it != librosControl->end())
+		{
+			dControlLibro = (*it).second;
+			//si no fue borrado => se agrega
+			if (dControlLibro->getEspacioLibre()==0)
 				idLibros.push_back((*it).first);
 			it++;
 		}

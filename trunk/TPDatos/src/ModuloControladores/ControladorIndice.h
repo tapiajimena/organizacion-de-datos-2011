@@ -55,13 +55,27 @@ public:
 	void nuevoIndiceTitulo();
 	void nuevoIndicePalabras();
 
+	/*
+	 * Indexan en un indice Arbol el autor o editorial
+	 *@param parLibroOffset contiene el libro parseado y su id (offset) en la biblioteca
+	 *@param tipoIndice la clase de indexacion a realizar
+	 */
+	void indexar(pair<Libro*,uint32_t> parLibroOffset, char tipoIndice);
+
+	/*
+	 * elimina la indexacion de un libro
+	 * @param libro con las claves a eliminar offset de biblioteca donde se encuentra el archivo a
+	 * 	eliminar los indices
+	 */
+	void eliminarIndexado(Libro* libroRemover);
+
+private:
 
 	/*
 	 * Indexan en un indice Arbol el autor o editorial
 	 *
 	 */
-	void indexarPorAutor(pair<Libro*,uint32_t> parLibroOffset);
-	void indexarPorEditorial(pair<Libro*,uint32_t> parLibroOffset);
+	void indexarPorAutorOEditorial(pair<Libro*,uint32_t> parLibroOffset);
 
 	/*
 	 * Indexan en un indice Hash el titulo o palabras.
@@ -70,8 +84,9 @@ public:
 	void indexarPorTitulo(pair<Libro*,uint32_t> parLibroOffset);
 	void indexarPorPalabras(pair<Libro*,uint32_t> parLibroOffset);
 
-
+public:
 	virtual ~ControladorIndice();
+
 };
 
 #endif /* CONTROLADORINDICE_H_ */
