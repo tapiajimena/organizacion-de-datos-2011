@@ -10,6 +10,7 @@
 *      
 */   
 
+/*
 void testDatoCubetaHash()
 {
 	stringstream ssElemento;
@@ -33,7 +34,7 @@ void testDatoCubetaHash()
 
 	//Serializamos elemento
 	ssCubeta.write(ssElemento.str().c_str(), ssElemento.str().size());
-
+*/
 	/*
 	//Completamos los bytes supuestamente leidos del disco.
 	for( unsigned int x = 0; x < 989; x++)
@@ -42,7 +43,7 @@ void testDatoCubetaHash()
 		ssCubeta.write(&c, 1);
 	}
 	 */
-
+/*
 
 	fstream archivoCubetas;
 	ManejadorArchivo::Crear("pruebaDatoCubeta.dat", archivoCubetas, true);
@@ -66,3 +67,4 @@ void testDatoCubetaHash()
 	ManejadorArchivo::Cerrar(archivoCubetas);
 
 }
+*/
