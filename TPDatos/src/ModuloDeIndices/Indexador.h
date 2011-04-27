@@ -52,6 +52,16 @@ public:
 	 */
 	void indexar(char tipoIndice);
 
+	void eliminarIndiceEditorialYAutor();
+
+	/*
+	 * Da la orden a un indice para que elimine la indexacion de un libro.
+	 * Incluyendo la eliminacion del libro de la biblioteca
+	 * @param tipoIndice la indexacion deseada puede ser A,E,T o P
+	 * Ver tipos Indices definidos como ctes INDICE_
+	 */
+	void eliminarIndexado(uint32_t idLibro);
+
 	virtual ~Indexador();
 };
 
