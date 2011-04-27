@@ -43,7 +43,7 @@ void ElementoHash::serializarElementoHash(std::iostream* ios)
 
 	char* charPalabra = new char[palabra.size()+1];
 	strcpy(charPalabra, palabra.c_str());
-	ios->write(charPalabra, this->palabra.size());
+	ios->write(charPalabra, this->palabra.size()); //no se copia caracter final '\n'
 	delete[] charPalabra;
 	//manejador de archivos...
 

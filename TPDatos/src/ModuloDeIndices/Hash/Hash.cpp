@@ -23,8 +23,39 @@ Hash::Hash(std::string nombreArchivoTabla, std::string nombreArchivoCubetas){
 	this->nombreArchivoTabla = nombreArchivoTabla;
 	this->nombreArchivoCubetas = nombreArchivoCubetas;
 
-	//
-	this->cantidadDeBloques = (int)GetSizeArchivo(archivoTabla) / TAMANIODATOTABLA;
+	this->cantidadDeBloques = 0;
+	this->cantidadDeCubetas = 0;
+
+	if(ManejadorArchivo::GetSizeArchivo(this->archivoTabla) == 0)
+	{
+		//Creamos los dos primeros bloques de la tabla (vacías).
+		DatoTablaHash datoTabla0 = DatoTablaHash();
+		DatoTablaHash datoTabla1 = DatoTablaHash();
+
+		//Agregamos los dos primeros bloques...
+		datoTabla0.setOffsetCubeta( 0 );
+		datoTabla0.setCantidadDeElementos( 0 );
+
+		datoTabla1.setOffsetCubeta( TAMANIOCUBETA );
+		datoTabla1.setCantidadDeElementos(0);
+
+		this->escribirDatoTabla(&datoTabla0, this->calcularOffsetBloqueEnTabla(0));
+		this->escribirDatoTabla(&datoTabla1, this->calcularOffsetBloqueEnTabla(1));
+		this->cantidadDeBloques = 2;
+		//Y sus correspondientes cubetas...
+		DatoCubetaHash datoCubeta0 = DatoCubetaHash(); //inicializan en cero.
+		DatoCubetaHash datoCubeta1 = DatoCubetaHash();
+
+		this->escribirDatoCubeta( &datoCubeta0, datoTabla0.getOffsetCubeta() );
+		this->escribirDatoCubeta( &datoCubeta1, datoTabla1.getOffsetCubeta() );
+	}
+	else
+	{
+		//Calculamos la cantidad de bloques
+		this->cantidadDeBloques = (unsigned int)(GetSizeArchivo(archivoTabla) / TAMANIODATOTABLA);
+
+		this->cantidadDeCubetas = (unsigned int) (GetSizeArchivo(archivoCubetas) / TAMANIOCUBETA);
+	}
 }
 
 
@@ -70,9 +101,10 @@ unsigned int Hash::obtenerNumeroDeBloque(std::string claveADispersar)
 
 uint32_t Hash::calcularOffsetBloqueEnTabla(unsigned int numeroBloque)
 {
-	return numeroBloque * TAMANIODATOTABLA; //Se busca en la tabla 1ero y luego en archivo de cubetas.
+	return (numeroBloque * TAMANIODATOTABLA); //Se busca en la tabla 1ero y luego en archivo de cubetas.
 }
 
+/*
 DatoCubetaHash Hash::levantarBloqueNro(unsigned int numeroBloque)
 {
 	//Recordar que dos bloques distintos de la tabla hash pueden direccionar una misma cubeta de datos.
@@ -84,6 +116,7 @@ DatoCubetaHash Hash::levantarBloqueNro(unsigned int numeroBloque)
 
 	return datoCubeta;
 }
+*/
 
 DatoTablaHash* Hash::levantarDatoTabla(uint32_t offsetDatoTabla)
 {
@@ -108,6 +141,30 @@ DatoCubetaHash* Hash::levantarDatoCubeta(uint32_t offsetCubeta)
 	datoCubeta = new DatoCubetaHash(&ss);
 
 	return datoCubeta;
+}
+
+void Hash::escribirDatoCubeta(DatoCubetaHash* datoCubeta, uint32_t offsetCubeta)
+{
+	stringstream ss;
+	datoCubeta->serializarCubeta(&ss);
+
+	/*
+	ManejadorArchivo::Escribir(archivoCubetas, &ss, offsetCubeta);//, TAMANIOCUBETA);
+	int caracteres = ss.str().size();
+	ss.clear();
+	ss<<'.';
+	for (int x = 0; x < TAMANIOCUBETA - caracteres; x++)
+		ManejadorArchivo::Escribir(archivoCubetas, &ss, offsetCubeta);
+	*/
+
+	ManejadorArchivo::Escribir(&archivoCubetas, &ss, offsetCubeta, TAMANIOCUBETA);
+}
+
+void Hash::escribirDatoTabla(DatoTablaHash* datoTabla, uint32_t offsetCubeta)
+{
+	stringstream ss;
+	datoTabla->serializarDatoTabla(&ss);
+	ManejadorArchivo::Escribir(&archivoTabla, &ss, offsetCubeta, TAMANIODATOTABLA);
 }
 
 std::vector<uint32_t> Hash::acumularResultados(DatoCubetaHash* datoCubeta, std::string palabra)
@@ -145,14 +202,61 @@ std::vector<uint32_t> Hash::acumularResultados(DatoCubetaHash* datoCubeta, std::
 	return resultados;
 }
 
-void Hash::insertarClaveLibro(Libro* libro)
+uint32_t Hash::nuevaCubetaAlFinal(DatoCubetaHash* datoCubeta)
 {
+	uint32_t offsetNuevaCubeta = this->cantidadDeCubetas * TAMANIOCUBETA;
+	this->escribirDatoCubeta( datoCubeta, offsetNuevaCubeta );
+	this->cantidadDeCubetas++;
 
+	return offsetNuevaCubeta;
 }
 
 
-void Hash::insertarClave(std::pair<std::string, uint32_t> registroHash){
+void Hash::manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCubetaDesbordada, DatoTablaHash* datoTablaDesbordada)
+{
+	//TODO
+}
 
+void Hash::insertarClaveLibro(Libro* libro)
+{
+	//DEPRECATED
+}
+
+void Hash::insertarClave(std::pair<std::string, uint32_t> registroHash)
+{
+	//Elementos a insertar
+	uint32_t offsetALibro = registroHash.second;
+	std::string palabraClave = registroHash.first;
+
+	ElementoHash elementoAInsertar(palabraClave, offsetALibro);
+
+	//Primero obtenemos el bloque al que iría la palabra
+	unsigned int numeroDeBLoqueAPriori = this->obtenerNumeroDeBloque(palabraClave);
+	uint32_t offsetDatoTabla = this->calcularOffsetBloqueEnTabla(numeroDeBLoqueAPriori);
+
+	DatoTablaHash* datoTablaAPriori = this->levantarDatoTabla(offsetDatoTabla);
+
+	//Obtenemos el offset de la cubeta con la tabla
+	uint32_t offsetCubeta = datoTablaAPriori->getOffsetCubeta();
+
+	DatoCubetaHash* datoCubeta = this->levantarDatoCubeta( offsetCubeta );
+
+	bool datoInsertado = datoCubeta->insertarElementoHash(elementoAInsertar); //Lo inserta si puede.
+
+	if (datoInsertado)
+	{
+		//Reescribimos la cubeta en disco
+		this->escribirDatoCubeta(datoCubeta, offsetCubeta);
+	}
+	else
+	{
+		//Delegamos el manejo del desborde a otro método
+		this->manejarDesbordeCubeta(&elementoAInsertar, datoCubeta, datoTablaAPriori);
+	}
+
+
+	delete datoCubeta;
+	delete datoTablaAPriori;
 }
 
 std::vector<uint32_t> Hash::buscarPalabraEnHash(std::string palabraClave)

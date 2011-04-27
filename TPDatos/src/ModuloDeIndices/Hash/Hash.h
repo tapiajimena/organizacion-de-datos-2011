@@ -52,6 +52,9 @@ private:
 	//direccionar a una misma cubeta en el archivo de cubetas.
 	unsigned int cantidadDeBloques;
 
+	//Cantidad de bloques efectivamente creados y que contienen alguna información
+	unsigned int cantidadDeCubetas;
+
 	//Estructuras de archivo
 	fstream 	archivoTabla;
 	fstream 	archivoCubetas;
@@ -59,8 +62,6 @@ private:
 	//Nombres en disco de los archivos (path)
 	std::string nombreArchivoTabla;
 	std::string nombreArchivoCubetas;
-
-	//std::list<BloqueHash> listaBloques;
 
 	//Función de HASH usada para la dispersión. Convierte un string en un numero entero positivo
 	unsigned int funcionHash(std::string claveADispersar);
@@ -71,15 +72,25 @@ private:
 	//Devuelve el numero de cubeta que le corresponde a una clave string segun funcion hash y cantidad de cubetas
 	unsigned int obtenerNumeroDeBloque(std::string claveADispersar);
 
-	DatoCubetaHash levantarBloqueNro(unsigned int numeroBloque);
+	//DatoCubetaHash levantarBloqueNro(unsigned int numeroBloque);
 
 	DatoTablaHash* levantarDatoTabla(uint32_t offsetDatoTabla);
 
 	DatoCubetaHash* levantarDatoCubeta(uint32_t offsetCubeta);
 
+	void escribirDatoCubeta(DatoCubetaHash* datoCubeta, uint32_t offsetCubeta);
+
+	void escribirDatoTabla(DatoTablaHash* datoTabla, uint32_t offsetCubeta);
+
 	std::vector<uint32_t> acumularResultados(DatoCubetaHash* datoCubeta, std::string palabra);
 
 	uint32_t calcularOffsetBloqueEnTabla(unsigned int numeroBloque);
+
+	//Agrega una nueva cubeta en el archivo de cubetas, le escribe la información contenida en datoCubeta y devuelve
+	//el offset a esta nueva cubeta.
+	uint32_t nuevaCubetaAlFinal(DatoCubetaHash* datoCubeta);
+
+	void manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCubetaDesbordada, DatoTablaHash* datoTablaDesbordada);
 
 public:
 	//Hash();
