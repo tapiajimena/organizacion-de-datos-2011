@@ -32,6 +32,10 @@ public:
 
 	unsigned int getCantidadDeElementos();
 
+	void setOffsetCubeta(uint32_t offsetCubeta);
+
+	void setCantidadDeElementos(unsigned int cantidadDeElementos);
+
 	void serializarDatoTabla(iostream* ios);
 
 };

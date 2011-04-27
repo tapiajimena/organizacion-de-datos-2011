@@ -7,7 +7,7 @@
 
 #include "DatoTablaHash.h"
 
-DatoTablaHash::DatoTablaHash() {
+DatoTablaHash::DatoTablaHash(){
 }
 
 DatoTablaHash::DatoTablaHash(std::stringstream* ss)
@@ -31,6 +31,16 @@ uint32_t DatoTablaHash::getOffsetCubeta()
 unsigned int DatoTablaHash::getCantidadDeElementos()
 {
 	return this->cantidadDeElementos;
+}
+
+void DatoTablaHash::setOffsetCubeta(uint32_t offsetCubeta)
+{
+	this->offsetCubeta = offsetCubeta;
+}
+
+void DatoTablaHash::setCantidadDeElementos(unsigned int cantidadDeElementos)
+{
+	this->cantidadDeElementos = cantidadDeElementos;
 }
 
 void DatoTablaHash::serializarDatoTabla(iostream* ios)

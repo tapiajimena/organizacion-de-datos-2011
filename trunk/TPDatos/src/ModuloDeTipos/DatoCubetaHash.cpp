@@ -11,6 +11,7 @@ DatoCubetaHash::DatoCubetaHash()
 {
 	this->cantidadElementos = 0;
 	this->offsetProxCubeta = 0;
+	this->bytesLibres = TAMANIOCUBETA - METADATACUBETA; //12 bytes de metadata: bytes libres, cantidad de elementos y offset a prox. cubeta.
 }
 
 DatoCubetaHash::DatoCubetaHash(std::stringstream* datoStream)
@@ -30,6 +31,7 @@ DatoCubetaHash::DatoCubetaHash(std::stringstream* datoStream)
 	//std::cout<<"BytesLibres: "<<this->bytesLibres<<std::endl;
 	//std::cout<<"CantidadElementos: "<<this->cantidadElementos<<std::endl;
 
+	//Si se usó la cubeta antes, se liberan recursos. No debería usarse de esa manera.
 	if (!this->ElementosHash.empty())
 	{
 		this->ElementosHash.clear();
@@ -127,10 +129,9 @@ void DatoCubetaHash::serializarCubeta(std::iostream* ios)
 		stringstream ssElemento;
 		it_elementos->serializarElementoHash(&ssElemento);
 
-		std::cout<<"Tamanio Elem. serializado 2da vez: "<<ssElemento.str().size()<<std::endl;
+		//Revisar esto, parece andar bien. ¿se duplica la escritura?
 		*ios<<ssElemento.str();
-
-		std::cout<<"Tamanio retorno ss2: "<< ssElemento.str().size() + 12<<std::endl;
+		//Sino, usar algo del estilo ios->write(...) ver si hay que cambiar clase ios.
 	}
 
 	//Hash se debe encargar de rellenar los bytes que falten para llegar a TAMANIOCUBETA al escribir en disco.
