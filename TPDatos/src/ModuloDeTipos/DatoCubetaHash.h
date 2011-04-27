@@ -17,17 +17,25 @@
 //#include <iostream.h>
 #include <string>
 
+#define METADATACUBETA 12 //Bytes de metadata que almacena la cubeta: 3 enteros de 4 bytes cada uno:
+//bytesLibres
+//cantidadDeElementos
+//offsetProximaCubeta
+
 class DatoCubetaHash : Dato{
 
 private:
 
 	unsigned int cantidadElementos;
 	unsigned int bytesLibres;
-	std::vector<ElementoHash> ElementosHash;
 
 	//Puntero a la próxima cubeta, en que continúan los datos de esta cubeta, en caso de que no
 	//alcance su espacio para sus datos. Si no se usa se setea en cero ('0').
 	uint32_t offsetProxCubeta;
+
+	std::vector<ElementoHash> ElementosHash;
+
+
 public:
 
 	DatoCubetaHash();
