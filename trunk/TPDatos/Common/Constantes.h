@@ -78,6 +78,8 @@
 
 #define TAMANIODATOTABLA 8 //Tamanio del elemento de la tabla de hash: offset a cubeta inicial y cantidad de elementos
 
+#define BYTENULOENDISCO '.' //Byte que se considera nulo. Se usa para rellenar espacio libre en las cubetas del hash.
+
 /* CONSTANTES DEFINIDAS PARA VALORES DE RETORNO */
 #define EXITO 0
 
