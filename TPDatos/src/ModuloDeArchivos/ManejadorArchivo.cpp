@@ -86,8 +86,13 @@ bool ManejadorArchivo::Escribir(fstream &arc, stringstream * ss) {
 
 bool ManejadorArchivo::Escribir(fstream &arc, stringstream * ss,
 		uint32_t offset) {
-	arc.seekg(offset, ios_base::beg);
-	Escribir(arc, ss);
+
+	if (arc.good() && ss->good()) {
+		arc.seekp(offset, ios_base::beg);
+		arc << ss->str();
+		arc.flush();
+	} else
+		return false;
 }
 
 bool ManejadorArchivo::Escribir(fstream* arc, iostream* ios, long offset,
