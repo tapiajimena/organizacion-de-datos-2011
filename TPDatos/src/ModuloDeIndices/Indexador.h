@@ -13,17 +13,9 @@
 #ifndef INDEXADOR_H_
 #define INDEXADOR_H_
 
-
-
-#include "../ModuloParser/ParserDeAutor.h"
-#include "../ModuloParser/ParserDeTitulo.h"
-#include "../ModuloParser/ParserDePalabras.h"
-#include "../ModuloParser/ParserDeAtributo.h"
-#include "../ModuloParser/ParserDeEditorial.h"
 #include "../ModuloDeArchivos/ManejadorArchivo.h"
 #include "../ModuloControladores/ControladorIndice.h"
 #include "../ModuloControladores/ControladorBiblioteca.h"
-
 
 
 class Indexador
@@ -51,8 +43,6 @@ public:
 	 * Ver tipos Indices definidos como ctes INDICE_
 	 */
 	void indexar(char tipoIndice);
-
-	void eliminarIndiceEditorialYAutor();
 
 	/*
 	 * Da la orden a un indice para que elimine la indexacion de un libro.
