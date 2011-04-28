@@ -72,8 +72,6 @@ private:
 	//Devuelve el numero de cubeta que le corresponde a una clave string segun funcion hash y cantidad de cubetas
 	unsigned int obtenerNumeroDeBloque(std::string claveADispersar);
 
-	//DatoCubetaHash levantarBloqueNro(unsigned int numeroBloque);
-
 	DatoTablaHash* levantarDatoTabla(uint32_t offsetDatoTabla);
 
 	DatoCubetaHash* levantarDatoCubeta(uint32_t offsetCubeta);
