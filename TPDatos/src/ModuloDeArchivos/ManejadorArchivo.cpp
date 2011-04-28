@@ -55,7 +55,7 @@ bool ManejadorArchivo::CrearSiNoExiste(const char* pathArchivo, fstream &arc) {
 
 bool ManejadorArchivo::CrearDirectorios(string pathCarpeta)
 {
-	system(("mkdir -p " + pathCarpeta).c_str());
+	system(("md " + pathCarpeta).c_str());
 	return true;
 }
 
@@ -135,15 +135,14 @@ string ManejadorArchivo::LeerCaracteres(fstream &arc, int tamanio) {
 
 uint32_t ManejadorArchivo::GetSizeArchivo(string path) {
 	fstream archivo;
+	uint32_t size = 0;
 
-	if (Existe(path.c_str(), archivo)) {
+	if (Existe(path.c_str(), archivo))
+	{
 		Abrir(path.c_str(), archivo, false);
+		size = GetSizeArchivo(archivo);
+		Cerrar(archivo);
 	}
-
-	uint32_t size = GetSizeArchivo(archivo);
-
-	Cerrar(archivo);
-
 	return size;
 }
 
