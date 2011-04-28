@@ -80,7 +80,7 @@ private:
 
 	void escribirDatoCubeta(DatoCubetaHash* datoCubeta, uint32_t offsetCubeta);
 
-	void escribirDatoTabla(DatoTablaHash* datoTabla, uint32_t offsetCubeta);
+	void escribirDatoTabla(DatoTablaHash* datoTabla, uint32_t offsetDatoTabla);
 
 	std::vector<uint32_t> acumularResultados(DatoCubetaHash* datoCubeta, std::string palabra);
 
