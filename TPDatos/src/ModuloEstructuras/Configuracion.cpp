@@ -50,10 +50,6 @@ Configuracion::Configuracion(string pathConfiguracion)
 		}
 	}
 	Cerrar(arcConf);
-
-	cout<<"PATH CARPETA DE TRABAJO: "<<getPathCarpetaTrabajo()<<endl;
-	cout<<"PATH CARPETA DE STOP: "<<getPathArchivoStopWords()<<endl;
-
 }
 
 string Configuracion::getPathArchivoStopWords() const
