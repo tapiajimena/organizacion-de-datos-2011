@@ -14,6 +14,11 @@
 #define CONTROLADORBIBLIOTECA_H_
 
 #include <list>
+#include "../ModuloParser/ParserDeAutor.h"
+#include "../ModuloParser/ParserDeTitulo.h"
+#include "../ModuloParser/ParserDePalabras.h"
+#include "../ModuloParser/ParserDeAtributo.h"
+#include "../ModuloParser/ParserDeEditorial.h"
 #include "../ModuloDeArchivos/ArchivoLibro.h"
 #include "../ModuloDeArchivos/ArchivoControlLibro.h"
 
@@ -44,14 +49,12 @@ public:
 	 */
 	DatoLibro recuperarLibro(uint32_t offset);
 
-
 	/**
 	 * Coloca el tipo de indexacion al libro correspondiente.
 	 * @param idLibro: id del libro que se indexa.
 	 * @param tipoClave: char que representa el tipo de indice.
 	 */
 	void registrarIndexadoArchivoControl(uint32_t idLibro, char tipoClave);
-
 
 	/*
 	 *Devuelve los idLibros que tiene la biblioteca
@@ -63,7 +66,6 @@ public:
 	 */
 	void actualizarArchivoDeControl();
 
-
 	/*
 	 * devuelve los libros no indexados por ese indice
 	 * @param tipoIndice A E T P
@@ -71,16 +73,24 @@ public:
 	list<uint32_t> recuperarLibrosNoIndexadosPor(char tipoIndice);
 
 	/*
+	 * Devuelve un libro con sus atributos cargados
+	 */
+	Libro* cargarNuevoLibroParseado(uint32_t idLibro);
+
+
+	/*
 	 * TODO implementar
 	 * deberia recorrer a lista e ir insertando el tag en el archvio de control
 	 */
 	void registrarIndexado(list<DatoLibro> dLibros);
+
 
 	/*
 	 * elimina un libro a la biblioteca y su data de control en el archivo de control
 	 * @param offset id del libro a eliminar
 	 */
 	bool eliminarLibro(uint32_t offset);
+
 
 	string getPathBiblioteca();
 	string getPathControlBiblioteca();

@@ -23,28 +23,33 @@ ControladorBiblioteca::ControladorBiblioteca(string pathBiblioteca,
 }
 
 bool ControladorBiblioteca::ingresarLibro(string pathLibro) {
-	/* Se actualiza la insercion en el archivo de control */
-	uint32_t nuevoOffset = arcControl->registrarLibro(
-			GetSizeArchivo(pathLibro), arcLibro->getSizeArchivo());
+	uint32_t sizeLibroIngresado = GetSizeArchivo(pathLibro);
 
+	if (sizeLibroIngresado > 0)
+	{
+		/* Se actualiza la insercion en el archivo de control */
+		uint32_t nuevoOffset = arcControl->registrarLibro(
+				sizeLibroIngresado, arcLibro->getSizeArchivo());
 
+		Logger::log("ControladorBiblioteca", "ingresarLibro",
+				"Se registra el libro en el archivo de control.");
 
-	Logger::log("ControladorBiblioteca", "ingresarLibro",
-			"Se registra el libro en el archivo de control.");
+		Logger::log("ControladorBiblioteca", "ingresarLibro",
+				ServiceClass::toString(nuevoOffset));
 
-	Logger::log("ControladorBiblioteca", "ingresarLibro",
-			ServiceClass::toString(nuevoOffset));
+		/* Se agrega el libro en el archivo de registros variables */
+		arcLibro->agregarLibro((char*) pathLibro.c_str(), nuevoOffset);
 
-	/* Se agrega el libro en el archivo de registros variables */
-	arcLibro->agregarLibro((char*) pathLibro.c_str(), nuevoOffset);
+		Logger::log("ControladorBiblioteca", "ingresarLibro",
+				"Se agrega un libro en el archivo de registros variables.");
 
-	Logger::log("ControladorBiblioteca", "ingresarLibro",
-			"Se agrega un libro en el archivo de registros variables.");
+		arcControl->actualizarArchivo();
 
-	arcControl->actualizarArchivo();
-
-	Logger::log("ControladorBiblioteca", "ingresarLibro",
-			"Se actualiza el archivo de control.");
+		Logger::log("ControladorBiblioteca", "ingresarLibro",
+				"Se actualiza el archivo de control.");
+	}
+	else
+		Logger::log("ControladorBiblioteca", "ingresarLibro","El libro a ingresar no existe, verifique.");
 }
 
 bool ControladorBiblioteca::eliminarLibro(uint32_t offset) {
@@ -124,6 +129,63 @@ list<uint32_t> ControladorBiblioteca::recuperarLibrosDeBiblioteca()
 	else
 		Logger::log("ControladorBiblioteca", "recuperarLibrosNoIndexadosPor","la lista de control esta vacia");
 	return idLibros;
+}
+
+Libro* ControladorBiblioteca::cargarNuevoLibroParseado(uint32_t idLibro)
+{
+	Libro *libroAutor, *libroEditorial, *libroTitulo,*libroPalabras, *libroNuevo;
+	DatoLibro* dLibro;
+	ParserDeAtributo *parserAutor, *parserEditorial, *parserPalabras, *parserTitulo;
+	pair<Libro*,uint32_t>	parLibroOffset;
+
+
+	//se recupera el libro a eliminar
+	dLibro = new DatoLibro(this->recuperarLibro(idLibro));
+	libroNuevo = new Libro();
+
+
+	//TODO refactorizar y modularizar estaria bueno poder parser en el mismo libro distintos parsers
+	//se parsea para obtener la clave y luego eliminarla del indice
+	parserAutor = new ParserDeAutor();
+	libroAutor 	= new Libro();
+	libroAutor 	=parserAutor->parsear(dLibro);
+
+	libroNuevo->setAutor(libroAutor->getAutor());
+	delete(libroAutor);
+	delete(parserAutor);
+
+	//se parsea para obtener la clave y luego eliminarla del indice
+	parserEditorial = new ParserDeEditorial();
+	libroEditorial 	= new Libro();
+	libroEditorial 	= parserEditorial->parsear(dLibro);
+
+	libroNuevo->setEditorial(libroEditorial->getEditorial());
+	delete(libroEditorial);
+	delete(parserEditorial);
+
+
+	parserTitulo= new ParserDeTitulo();
+	libroTitulo	= new Libro();
+	libroTitulo	= parserTitulo->parsear(dLibro);
+
+	libroNuevo->setTitulo(libroTitulo->getTitulo());
+	delete(libroTitulo);
+	delete(parserTitulo);
+
+/*
+ 	 //TODO terminar de eliminar la lista de palabras
+	parserPalabras	= new ParserDePalabras(ARCHIVO_STOPWORDS);
+	libroPalabras 	= new Libro();
+	libroPalabras 	= parserPalabras->parsear(dLibro);
+
+	libroNuevo->setPalabras(libroAutor->getAutor());
+	delete(libroAutor);
+	delete(parserAutor);
+
+	cout<<"LIBRO PARSEADO IMPRIME: "<<libroPalabras->getPalabrasClave()->back()<<endl;
+*/
+
+	return libroNuevo;
 }
 
 void ControladorBiblioteca::actualizarArchivoDeControl()
