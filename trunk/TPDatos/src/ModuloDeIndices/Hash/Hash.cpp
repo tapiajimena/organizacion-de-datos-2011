@@ -105,20 +105,6 @@ uint32_t Hash::calcularOffsetBloqueEnTabla(unsigned int numeroBloque)
 	return (numeroBloque * TAMANIODATOTABLA); //Se busca en la tabla 1ero y luego en archivo de cubetas.
 }
 
-/*
-DatoCubetaHash Hash::levantarBloqueNro(unsigned int numeroBloque)
-{
-	//Recordar que dos bloques distintos de la tabla hash pueden direccionar una misma cubeta de datos.
-	std::stringstream cadenaLeida(ios_base::out|ios_base::in);
-
-	//RecuperarEstructura(archivoCubetas, cadenaLeida, offsetBloque, TAMANIOCUBETA );
-
-	DatoCubetaHash datoCubeta(&cadenaLeida);
-
-	return datoCubeta;
-}
-*/
-
 DatoTablaHash* Hash::levantarDatoTabla(uint32_t offsetDatoTabla)
 {
 	DatoTablaHash* datoTabla = NULL;
@@ -192,7 +178,23 @@ std::vector<uint32_t> Hash::acumularResultados(DatoCubetaHash* datoCubeta, std::
 
 			if( elemento.getPalabra() == palabra)
 			{
-				resultados.push_back(elemento.getOffsetALibro());
+				//TODO: si hace falta recorrer usar otra estructura más eficaz para buscar.
+
+				//Verificamos si el offset de ese libro ya fue ingresado. Si así fue, no se vuelve a ingresar.
+				bool yaFueIngresado = false;
+				std::vector<uint32_t>::iterator it;
+
+				for(it = resultados.begin(); it != resultados.end() && yaFueIngresado == false; it++)
+				{
+					if ( (*it) == elemento.getOffsetALibro())
+						yaFueIngresado = true;
+				}
+
+				if (!yaFueIngresado)
+				{
+					resultados.push_back(elemento.getOffsetALibro());
+				}
+
 			}
 		}
 
