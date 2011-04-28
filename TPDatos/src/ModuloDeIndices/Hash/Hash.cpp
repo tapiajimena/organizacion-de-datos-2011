@@ -48,6 +48,7 @@ Hash::Hash(std::string nombreArchivoTabla, std::string nombreArchivoCubetas){
 
 		this->escribirDatoCubeta( &datoCubeta0, datoTabla0.getOffsetCubeta() );
 		this->escribirDatoCubeta( &datoCubeta1, datoTabla1.getOffsetCubeta() );
+		this->cantidadDeCubetas = 2;
 	}
 	else
 	{
@@ -123,7 +124,7 @@ DatoTablaHash* Hash::levantarDatoTabla(uint32_t offsetDatoTabla)
 	DatoTablaHash* datoTabla = NULL;
 	std::stringstream ss;
 
-	ManejadorArchivo::RecuperarEstructura(this->archivoTabla, ss, offsetDatoTabla, sizeof(TAMANIODATOTABLA));
+	ManejadorArchivo::RecuperarEstructura(this->archivoTabla, ss, offsetDatoTabla, TAMANIODATOTABLA);
 
 	datoTabla = new DatoTablaHash(&ss);
 
@@ -136,7 +137,7 @@ DatoCubetaHash* Hash::levantarDatoCubeta(uint32_t offsetCubeta)
 
 	std::stringstream ss;
 
-	ManejadorArchivo::RecuperarEstructura(this->archivoCubetas, ss, offsetCubeta, sizeof(TAMANIOCUBETA));
+	ManejadorArchivo::RecuperarEstructura(this->archivoCubetas, ss, offsetCubeta, TAMANIOCUBETA);
 
 	datoCubeta = new DatoCubetaHash(&ss);
 
@@ -145,26 +146,28 @@ DatoCubetaHash* Hash::levantarDatoCubeta(uint32_t offsetCubeta)
 
 void Hash::escribirDatoCubeta(DatoCubetaHash* datoCubeta, uint32_t offsetCubeta)
 {
-	stringstream ss;
+	stringstream ss;//(ios_base::in | ios_base::out);
 	datoCubeta->serializarCubeta(&ss);
 
-	/*
-	ManejadorArchivo::Escribir(archivoCubetas, &ss, offsetCubeta);//, TAMANIOCUBETA);
 	int caracteres = ss.str().size();
-	ss.clear();
-	ss<<'.';
-	for (int x = 0; x < TAMANIOCUBETA - caracteres; x++)
-		ManejadorArchivo::Escribir(archivoCubetas, &ss, offsetCubeta);
-	*/
 
-	ManejadorArchivo::Escribir(&archivoCubetas, &ss, offsetCubeta, TAMANIOCUBETA);
+	for (int x = 0; x < TAMANIOCUBETA - caracteres; x++)
+	{
+		ss<<BYTENULOENDISCO;
+	}
+
+	ManejadorArchivo::Escribir(archivoCubetas, &ss, offsetCubeta);
+
+	//este método de abajo no reserva espacio adicional... no me sirve.
+	//ManejadorArchivo::Escribir(&archivoCubetas, &ss, offsetCubeta, TAMANIOCUBETA);
 }
 
-void Hash::escribirDatoTabla(DatoTablaHash* datoTabla, uint32_t offsetCubeta)
+void Hash::escribirDatoTabla(DatoTablaHash* datoTabla, uint32_t offsetDatoTabla)
 {
+	//stringstream ss(ios_base::in | ios_base::out);
 	stringstream ss;
 	datoTabla->serializarDatoTabla(&ss);
-	ManejadorArchivo::Escribir(&archivoTabla, &ss, offsetCubeta, TAMANIODATOTABLA);
+	ManejadorArchivo::Escribir(&archivoTabla, &ss, offsetDatoTabla, TAMANIODATOTABLA);
 }
 
 std::vector<uint32_t> Hash::acumularResultados(DatoCubetaHash* datoCubeta, std::string palabra)
