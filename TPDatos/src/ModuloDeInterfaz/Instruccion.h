@@ -19,6 +19,7 @@
 
 #include "../../Common/Constantes.h"
 #include "../../Common/Utilitarios/Logger.h"
+#include "../ModuloEstructuras/Configuracion.h"
 #include "../ModuloControladores/ControladorBiblioteca.h"
 #include "../ModuloControladores/ControladorIndice.h"
 
