@@ -305,8 +305,6 @@ int InternalNode::resolveUnderflow(Node* node, int sizeOffset, fstream* fs,
 	return EXIT_SUCCESS;
 }
 
-/* Devuelve el id del hijo en el cual hay que buscar el registro recibido. */
-
 list<string>* InternalNode::getKeys() {
 	return &keys;
 }
@@ -356,6 +354,7 @@ int InternalNode::findLocation(DatoElementoNodo* elemento) {
 		keyIterator++;
 		childIterator++;
 	}
+
 	/*
 	 * en caso de no poder encontrarlo
 	 * devuelve el hijo de màs a la derecha.
