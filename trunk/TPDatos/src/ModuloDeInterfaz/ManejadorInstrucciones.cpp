@@ -10,10 +10,10 @@
 #include "ManejadorInstrucciones.h"
 
 ManejadorInstrucciones::ManejadorInstrucciones(char* argumentos[], int cantidad) {
-	for (int i = 0; i < cantidad; i++){
+	for (int i = 0; i < cantidad; i++) {
 		string aux = argumentos[i];
 		this->comando[i] = aux;
-		cout << i << ": " << this->comando[i]<<endl;
+		cout << i << ": " << this->comando[i] << endl;
 	}
 }
 
@@ -56,16 +56,18 @@ void ManejadorInstrucciones::ejecutarInstruccion(char id) {
 		this->instruccion->ejecutar();
 		break;
 	case 'q':
-		this->instruccion = new Instruccion_QuitarArchivo(id);
+		this->instruccion = new Instruccion_QuitarArchivo(id,
+				ServiceClass::convertirAUint32(this->comando[2]));
 		this->instruccion->ejecutar();
 		break;
 	case 'v':
-		this->instruccion = new Instruccion_VerEstructura(id,this->comando);
+		this->instruccion = new Instruccion_VerEstructura(id, this->comando);
 		this->instruccion->ejecutar();
 		break;
 	default:
 		cout << "default" << endl;
-		Logger::log("ManejadorInstrucciones","ejecutarInstruccion","Comando no valido.");
+		Logger::log("ManejadorInstrucciones", "ejecutarInstruccion",
+				"Comando no valido.");
 		break;
 	}
 }
@@ -78,15 +80,16 @@ char ManejadorInstrucciones::obtenerIDinstruccion(string id) {
 			idInstruccion = id[i + 1];
 	}
 
-	Logger::log("ManejadorInstrucciones", "obtenerIDInstruccion", "Se codifica.");
+	Logger::log("ManejadorInstrucciones", "obtenerIDInstruccion",
+			"Se codifica.");
 
 	return idInstruccion;
 }
 
-void ManejadorInstrucciones::ejecutarInstruccionElegida(){
+void ManejadorInstrucciones::ejecutarInstruccionElegida() {
 	ejecutarInstruccion(armarInstruccion());
 }
 
 ManejadorInstrucciones::~ManejadorInstrucciones() {
-	delete(this->instruccion);
+	delete (this->instruccion);
 }
