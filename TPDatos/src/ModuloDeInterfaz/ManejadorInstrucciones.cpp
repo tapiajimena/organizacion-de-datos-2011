@@ -52,7 +52,8 @@ void ManejadorInstrucciones::ejecutarInstruccion(char id) {
 		this->instruccion->ejecutar();
 		break;
 	case 'o':
-		this->instruccion = new Instruccion_ObtenerArchivo(id);
+		this->instruccion = new Instruccion_ObtenerArchivo(id,
+				ServiceClass::convertirAUint32(this->comando[2]));
 		this->instruccion->ejecutar();
 		break;
 	case 'q':

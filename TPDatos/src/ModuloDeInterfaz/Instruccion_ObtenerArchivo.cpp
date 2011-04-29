@@ -9,12 +9,18 @@
 
 #include "Instruccion_ObtenerArchivo.h"
 
-Instruccion_ObtenerArchivo::Instruccion_ObtenerArchivo(char id) : Instruccion(id) {
-	// TODO Auto-generated constructor stub
-
+Instruccion_ObtenerArchivo::Instruccion_ObtenerArchivo(char id, uint32_t idLibro) : Instruccion(id) {
+	this->idLibro = idLibro;
 }
 
 void Instruccion_ObtenerArchivo::ejecutar(){
+	Configuracion* conf = Configuracion::GetInstancia();
+	this->controladorBiblioteca = new ControladorBiblioteca(
+			conf->getPathCarpetaTrabajo() + "/" + ARCHIVO_BIBLIOTECA,
+			conf->getPathCarpetaTrabajo() + "/" + ARCHIVO_CONTROL_BIBLIOTECA);
+
+	this->controladorBiblioteca->recuperarLibro(this->idLibro);
+
 	Logger::log("Instruccion_ObtenerArchivo", "ejecutar",
 			"Se levanta el archivo de texto.");
 }
