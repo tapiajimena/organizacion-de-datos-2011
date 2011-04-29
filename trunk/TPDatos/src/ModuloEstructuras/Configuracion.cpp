@@ -14,6 +14,16 @@
 
 Configuracion* Configuracion::pInstancia= 0;
 
+
+
+Configuracion* Configuracion::GetInstancia()
+{
+	if (pInstancia == 0)  // ¿Es la primera llamada?
+		pInstancia = new Configuracion(ARCHIVO_CONFIGURACION_DEFAULT); // Se crea la instancia
+
+	return pInstancia; // se devuelve la direccion de la instancia
+}
+
 Configuracion* Configuracion::GetInstancia(string pathConfiguracion)
 {
 	if (pInstancia == 0)  // ¿Es la primera llamada?

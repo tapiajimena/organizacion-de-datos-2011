@@ -33,6 +33,7 @@ private:
 
 
 public:
+	static Configuracion* GetInstancia();
 	static Configuracion* GetInstancia(string pathConfiguracion);
 
 	/*
