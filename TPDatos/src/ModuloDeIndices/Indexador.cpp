@@ -17,8 +17,9 @@ Indexador::Indexador()
 	Configuracion* conf = Configuracion::GetInstancia();
 	pathCarpeta = conf->getPathCarpetaTrabajo();
 	controlIndice = new ControladorIndice(pathCarpeta);
-	controlBiblioteca = new ControladorBiblioteca(pathCarpeta+ARCHIVO_BIBLIOTECA,
-			pathCarpeta+ARCHIVO_CONTROL_BIBLIOTECA);
+	controlBiblioteca = new ControladorBiblioteca(
+			pathCarpeta + ARCHIVO_BIBLIOTECA,
+			pathCarpeta + ARCHIVO_CONTROL_BIBLIOTECA);
 }
 
 Indexador::Indexador(string pathCarpeta)
