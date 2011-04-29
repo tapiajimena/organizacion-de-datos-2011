@@ -9,15 +9,24 @@
 
 #include "Instruccion_QuitarArchivo.h"
 
-Instruccion_QuitarArchivo::Instruccion_QuitarArchivo(char id) :
+Instruccion_QuitarArchivo::Instruccion_QuitarArchivo(char id, uint32_t idArchivo) :
 	Instruccion(id) {
-	// TODO Auto-generated constructor stub
-
+	this->idArchivo = idArchivo;
+	cout << "idArchivo: " << idArchivo << endl;
+	this->controladorBiblioteca = new ControladorBiblioteca();
 }
 
 void Instruccion_QuitarArchivo::ejecutar() {
-	Logger::log("Instruccion_QuitarArchivo", "ejecutar",
+	bool exito = this->controladorBiblioteca->eliminarLibro(this->idArchivo);
+
+	if (exito) {
+		Logger::log("Instruccion_QuitarArchivo", "ejecutar",
 			"Se elimina el archivo.");
+	} else {
+		Logger::log("Instruccion_QuitarArchivo", "ejecutar",
+					"No se pudo eliminar el archivo.");
+	}
+
 }
 
 Instruccion_QuitarArchivo::~Instruccion_QuitarArchivo() {
