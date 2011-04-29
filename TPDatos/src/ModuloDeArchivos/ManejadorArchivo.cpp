@@ -55,7 +55,7 @@ bool ManejadorArchivo::CrearSiNoExiste(const char* pathArchivo, fstream &arc) {
 
 bool ManejadorArchivo::CrearDirectorios(string pathCarpeta)
 {
-	system(("mkdir " + pathCarpeta).c_str());
+	system(("mkdir -p " + pathCarpeta).c_str());
 	return true;
 }
 
