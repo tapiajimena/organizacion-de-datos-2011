@@ -21,6 +21,7 @@ char ManejadorInstrucciones::armarInstruccion() {
 	Logger::log("ManejadorInstrucciones", "armarInstruccion",
 			"Se obtiene la instruccion ingresada como parametro");
 
+	cout<<"SE MANDO: "<<this->comando[0]<<endl;
 	return obtenerIDinstruccion(this->comando[1]);
 }
 
