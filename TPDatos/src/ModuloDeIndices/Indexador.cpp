@@ -14,8 +14,8 @@
 
 Indexador::Indexador()
 {
-	pathCarpeta = CARPETA_DEFAULT_INDICES;
-	CrearDirectorios(pathCarpeta);
+	Configuracion* conf = Configuracion::GetInstancia();
+	pathCarpeta = conf->getPathCarpetaTrabajo();
 	controlIndice = new ControladorIndice(pathCarpeta);
 	controlBiblioteca = new ControladorBiblioteca(pathCarpeta+ARCHIVO_BIBLIOTECA,
 			pathCarpeta+ARCHIVO_CONTROL_BIBLIOTECA);

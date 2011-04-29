@@ -13,6 +13,7 @@
 #ifndef INDEXADOR_H_
 #define INDEXADOR_H_
 
+#include "../ModuloEstructuras/Configuracion.h"
 #include "../ModuloDeArchivos/ManejadorArchivo.h"
 #include "../ModuloControladores/ControladorIndice.h"
 #include "../ModuloControladores/ControladorBiblioteca.h"
