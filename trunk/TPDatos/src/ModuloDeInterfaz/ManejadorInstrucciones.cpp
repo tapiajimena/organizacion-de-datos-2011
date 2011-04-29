@@ -21,14 +21,14 @@ char ManejadorInstrucciones::armarInstruccion() {
 	Logger::log("ManejadorInstrucciones", "armarInstruccion",
 			"Se obtiene la instruccion ingresada como parametro");
 
-	cout<<"SE MANDO: "<<this->comando[0]<<endl;
 	return obtenerIDinstruccion(this->comando[1]);
 }
 
 void ManejadorInstrucciones::ejecutarInstruccion(char id) {
 	switch (id) {
 	case 'i':
-		this->instruccion = new Instruccion_TomarTexto(id);
+		this->instruccion = new Instruccion_TomarTexto(id,
+				ServiceClass::normalizarString(this->comando[2]));
 		this->instruccion->ejecutar();
 		break;
 	case 'e':
@@ -65,7 +65,6 @@ void ManejadorInstrucciones::ejecutarInstruccion(char id) {
 		this->instruccion->ejecutar();
 		break;
 	default:
-		cout << "default" << endl;
 		Logger::log("ManejadorInstrucciones", "ejecutarInstruccion",
 				"Comando no valido.");
 		break;
