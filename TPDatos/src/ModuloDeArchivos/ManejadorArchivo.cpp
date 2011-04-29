@@ -161,17 +161,18 @@ uint32_t ManejadorArchivo::GetSizeArchivo(fstream & arc) {
 
 bool ManejadorArchivo::RecuperarEstructura(fstream &arc, stringstream &ss,
 		uint32_t offset) {
-	string rdo = "";
+	//string rdo = "";
 	uint32_t size;
 	char* buffer;
 
 	arc.seekg(offset, ios_base::beg);//se posiciona el ptro en offset
 	arc.read(reinterpret_cast<char *> (&size), sizeof(size));//se lee el size del dato
 	buffer = new char[size];
+	memset(buffer, 0, size);
 	arc.read(buffer, size);
-	rdo.append(buffer, size);
+	//rdo.append(buffer, size);
 
-	ss.write(rdo.c_str(), rdo.length());
+	ss.write(buffer, size);
 
 	delete[] buffer;
 
