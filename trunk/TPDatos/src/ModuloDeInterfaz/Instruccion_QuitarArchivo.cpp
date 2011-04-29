@@ -16,24 +16,19 @@ Instruccion_QuitarArchivo::Instruccion_QuitarArchivo(char id,
 	cout << "idArchivo: " << idArchivo << endl;
 }
 
-void Instruccion_QuitarArchivo::ejecutar() {
-	Configuracion* conf = Configuracion::GetInstancia();
-	this->controladorBiblioteca = new ControladorBiblioteca(
-			conf->getPathCarpetaTrabajo() + "/" + ARCHIVO_BIBLIOTECA,
-			conf->getPathCarpetaTrabajo() + "/" + ARCHIVO_CONTROL_BIBLIOTECA);
+void Instruccion_QuitarArchivo::ejecutar()
+{
+	Indexador* 	indexador 	= new Indexador();
 
-	bool exito = this->controladorBiblioteca->eliminarLibro(this->idArchivo);
+	//se lo elimina de los indices y biblioteca
+	indexador->eliminarIndexado(idArchivo);
 
-	if (exito) {
-		Logger::log("Instruccion_QuitarArchivo", "ejecutar",
-				"Se elimina el archivo.");
-	} else {
-		Logger::log("Instruccion_QuitarArchivo", "ejecutar",
-				"No se pudo eliminar el archivo.");
-	}
+	Logger::log("Instruccion_QuitarArchivo", "ejecutar","Se elimina el archivo.");
 
+	delete (indexador);
 }
 
-Instruccion_QuitarArchivo::~Instruccion_QuitarArchivo() {
-	// TODO Auto-generated destructor stub
+Instruccion_QuitarArchivo::~Instruccion_QuitarArchivo()
+{
+	delete this->controladorBiblioteca;
 }
