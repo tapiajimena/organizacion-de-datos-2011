@@ -58,9 +58,6 @@ bool ControladorBiblioteca::eliminarLibro(uint32_t offset) {
 	/* Actualiza el estado del archivo de control */
 	arcControl->eliminarLibro(offset, datoLibro.getSize());
 
-	Logger::log("ControladorBiblioteca", "eliminarLibro",
-			"Se elimina el libro.");
-
 	arcControl->actualizarArchivo();
 
 	Logger::log("ControladorBiblioteca", "eliminarLibro",
