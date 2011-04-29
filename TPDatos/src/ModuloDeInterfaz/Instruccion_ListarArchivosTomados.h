@@ -10,18 +10,20 @@
  * Editorial y cantidad de palabras registradas para el libro pasado por
  * parametro.
  * Comando:
- * ./ejecutable –l
+ * ./ejecutable -l
  */
 
 #ifndef INSTRUCCION_LISTARARCHIVOSTOMADOS_H_
 #define INSTRUCCION_LISTARARCHIVOSTOMADOS_H_
 
+#include "../ModuloEstructuras/Configuracion.h"
 #include "Instruccion.h"
 
 class Instruccion_ListarArchivosTomados: public Instruccion {
 public:
 	Instruccion_ListarArchivosTomados(char id);
 
+	void getLibro(uint32_t idLibro);
 	virtual void ejecutar();
 
 	virtual ~Instruccion_ListarArchivosTomados();
