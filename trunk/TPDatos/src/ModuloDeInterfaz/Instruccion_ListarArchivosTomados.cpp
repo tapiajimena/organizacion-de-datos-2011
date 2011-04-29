@@ -14,9 +14,39 @@ Instruccion_ListarArchivosTomados::Instruccion_ListarArchivosTomados(char id) : 
 
 }
 
+
+void Instruccion_ListarArchivosTomados::getLibro(uint32_t idLibro)
+{
+	Configuracion* conf = Configuracion::GetInstancia();
+	ControladorBiblioteca* controlBiblioteca = new ControladorBiblioteca(conf->getPathCarpetaTrabajo()+"/"+ARCHIVO_BIBLIOTECA,
+																conf->getPathCarpetaTrabajo()+"/"+ARCHIVO_CONTROL_BIBLIOTECA);
+	Libro* libro = controlBiblioteca->cargarNuevoLibroParseado(idLibro);
+
+	cout<<"LIBRO IMPRIME TITULO: "<<libro->getTitulo()<<endl;
+	cout<<"LIBRO IMPRIME AUTOR: "<<libro->getAutor()<<endl;
+	cout<<"LIBRO IMPRIME EDITORIAL: "<<libro->getEditorial()<<endl;
+	cout<<"LIBRO IMPRIME CANTIDAD PALABRAS REGISTRADAS: "<<libro->getPalabrasClave()->size()<<endl;
+
+	delete(libro);
+	delete (controlBiblioteca);
+}
+
+
 void Instruccion_ListarArchivosTomados::ejecutar(){
 	Logger::log("Instruccion_ListarArchivosTomados", "ejecutar",
 			"Se muestran los libros guardados.");
+	Configuracion* conf = Configuracion::GetInstancia();
+	ControladorBiblioteca* controlBiblioteca = new ControladorBiblioteca(conf->getPathCarpetaTrabajo()+"/"+ARCHIVO_BIBLIOTECA,
+																conf->getPathCarpetaTrabajo()+"/"+ARCHIVO_CONTROL_BIBLIOTECA);
+	list<uint32_t>::iterator it;
+	list<uint32_t> biblioteca = controlBiblioteca->recuperarLibrosDeBiblioteca();
+
+	for(it=biblioteca.begin(); it != biblioteca.end(); ++it)
+	{
+		cout<<"ID LIBRO: "<<*it<<endl;
+		getLibro(*it);
+	}
+	delete (controlBiblioteca);
 }
 
 Instruccion_ListarArchivosTomados::~Instruccion_ListarArchivosTomados() {
