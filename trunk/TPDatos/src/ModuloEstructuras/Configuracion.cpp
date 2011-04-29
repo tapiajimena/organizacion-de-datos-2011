@@ -60,6 +60,9 @@ Configuracion::Configuracion(string pathConfiguracion)
 		}
 	}
 	Cerrar(arcConf);
+
+	CrearDirectorios(getPathCarpetaTrabajo());
+
 }
 
 string Configuracion::getPathArchivoStopWords() const
