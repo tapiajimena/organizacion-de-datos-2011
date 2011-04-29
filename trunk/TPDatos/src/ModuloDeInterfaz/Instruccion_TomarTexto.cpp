@@ -9,13 +9,20 @@
 
 #include "Instruccion_TomarTexto.h"
 
-Instruccion_TomarTexto::Instruccion_TomarTexto(char id) :
+Instruccion_TomarTexto::Instruccion_TomarTexto(char id, string pathLibro) :
 	Instruccion(id) {
-	// TODO Auto-generated constructor stub
+	this->libroNuevo = pathLibro;
 
 }
 
 void Instruccion_TomarTexto::ejecutar() {
+	Configuracion* conf = Configuracion::GetInstancia();
+	this->controladorBiblioteca = new ControladorBiblioteca(
+			conf->getPathCarpetaTrabajo() + "/" + ARCHIVO_BIBLIOTECA,
+			conf->getPathCarpetaTrabajo() + "/" + ARCHIVO_CONTROL_BIBLIOTECA);
+
+	this->controladorBiblioteca->ingresarLibro(this->libroNuevo);
+
 	Logger::log("Instruccion_TomarTexto", "ejecutar",
 			"Se toma el archivo correspondiente.");
 }

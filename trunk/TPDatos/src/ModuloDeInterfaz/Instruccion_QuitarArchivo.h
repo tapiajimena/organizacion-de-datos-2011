@@ -17,7 +17,6 @@
 #define INSTRUCCION_QUITARARCHIVO_H_
 
 #include "Instruccion.h"
-#include "../ModuloEstructuras/Configuracion.h"
 
 class Instruccion_QuitarArchivo: public Instruccion {
 private:

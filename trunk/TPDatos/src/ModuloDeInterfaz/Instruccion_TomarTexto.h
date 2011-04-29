@@ -18,8 +18,10 @@
 #include "Instruccion.h"
 
 class Instruccion_TomarTexto: public Instruccion {
+private:
+	string libroNuevo;
 public:
-	Instruccion_TomarTexto(char id);
+	Instruccion_TomarTexto(char id, string pathLibro);
 
 	virtual void ejecutar();
 
