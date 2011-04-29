@@ -17,6 +17,7 @@
 #include <string>
 #include <iostream>
 
+#include "../ModuloDeIndices/Indexador.h"
 #include "../../Common/Constantes.h"
 #include "../../Common/Utilitarios/Logger.h"
 #include "../ModuloEstructuras/Configuracion.h"
