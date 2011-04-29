@@ -15,7 +15,8 @@
 
 ControladorIndice::ControladorIndice()
 {
-	this->pathCarpeta = CARPETA_DEFAULT_INDICES;
+	Configuracion* conf = Configuracion::GetInstancia();
+	this->pathCarpeta = conf->getPathCarpetaTrabajo();
 }
 
 
@@ -65,6 +66,7 @@ void ControladorIndice::indexar(pair<Libro*,uint32_t> parLibroOffset, char tipoI
 
 void ControladorIndice::eliminarIndexado(Libro* libroRemover)
 {
+
 	//se remueven los indices de autor del arbol
 	ArbolBMas* indiceAutorArbol = new ArbolBMas(pathCarpeta+ARCHIVO_INDICE_AUTOR, SIZE_BLOQUE);
 	//indiceAutorArbol->eliminar(libroRemover->getAutor());
@@ -129,8 +131,8 @@ void ControladorIndice::indexarPorPalabras(pair<Libro*,uint32_t> parLibroOffset)
 
 ControladorIndice::~ControladorIndice()
 {
-	delete (indiceHash);
-	delete (indiceArbol);
+	//delete (indiceHash);
+	//delete (indiceArbol);
 }
 
 
