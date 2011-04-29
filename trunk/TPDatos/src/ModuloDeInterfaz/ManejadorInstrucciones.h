@@ -38,7 +38,7 @@ public:
 	ManejadorInstrucciones(char* argumentos[], int cantidad);
 
 	/* *
-	 * Método que se encarga de armar cada instrucción
+	 * Metodo que se encarga de armar cada instrucción
 	 * obteniendo los datos de la lectura de un archivo
 	 */
 	char armarInstruccion();
