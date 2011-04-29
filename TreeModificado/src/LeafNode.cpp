@@ -150,9 +150,11 @@ int LeafNode::remove(DatoElementoNodo* elemento, int sizeOffset, fstream* fs, un
 			return EXIT_FAILURE;
 		case 0:
 			((DatoElementoNodo*)(*it))->quitarLibro(elemento->getLibros().front());
-			//elementos.erase(it);
-			//delete (DatoElementoNodo*)*it;
-
+			if (((DatoElementoNodo*)(*it))->getCantidadLibros() == 0)
+			{
+				elementos.erase(it);
+				delete (DatoElementoNodo*)*it;
+			}
 			if(isUnderFlowded(BLOCKSIZE)) {
 				return UNDERFLOWDED;
 			}
