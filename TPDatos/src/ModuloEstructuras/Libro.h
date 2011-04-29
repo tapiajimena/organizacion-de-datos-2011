@@ -18,6 +18,8 @@
 #include <map>
 #include <stdint.h>
 
+
+//Guarda claves string unicas y un int con la cantidad de apariciones
 typedef std::map<std::string, int> EstructuraPalabrasClave;
 
 class Libro
@@ -67,6 +69,7 @@ public:
 	uint32_t getOffset() const;
 
     void setOffset(uint32_t offset);
+    void setPalabrasClave(EstructuraPalabrasClave *_palabrasClave);
 };
 
 #endif /* LIBRO_H_ */
