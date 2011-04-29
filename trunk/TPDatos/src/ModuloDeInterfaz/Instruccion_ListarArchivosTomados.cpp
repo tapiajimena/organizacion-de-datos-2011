@@ -10,7 +10,7 @@
 #include "Instruccion_ListarArchivosTomados.h"
 
 Instruccion_ListarArchivosTomados::Instruccion_ListarArchivosTomados(char id) : Instruccion(id) {
-	// TODO Auto-generated constructor stub
+
 
 }
 
