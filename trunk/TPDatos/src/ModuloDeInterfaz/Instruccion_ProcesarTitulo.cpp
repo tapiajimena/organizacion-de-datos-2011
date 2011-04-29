@@ -16,8 +16,16 @@ Instruccion_ProcesarTitulo::Instruccion_ProcesarTitulo(char id) :
 }
 
 void Instruccion_ProcesarTitulo::ejecutar() {
+	Configuracion* conf = Configuracion::GetInstancia();
+
+	Indexador* indexador = new Indexador();
+
+	indexador->indexar(INDICE_TITULO);
+
 	Logger::log("Instruccion_ProcesarTitulo", "ejecutar",
 			"Se indexa por titulo.");
+
+	delete(indexador);
 }
 
 Instruccion_ProcesarTitulo::~Instruccion_ProcesarTitulo() {

@@ -24,9 +24,6 @@ void Instruccion_QuitarArchivo::ejecutar() {
 
 	bool exito = this->controladorBiblioteca->eliminarLibro(this->idArchivo);
 
-
-
-
 	if (exito) {
 		Logger::log("Instruccion_QuitarArchivo", "ejecutar",
 				"Se elimina el archivo.");

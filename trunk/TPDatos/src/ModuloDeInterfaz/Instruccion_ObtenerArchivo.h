@@ -17,8 +17,10 @@
 #include "Instruccion.h"
 
 class Instruccion_ObtenerArchivo: public Instruccion {
+private:
+	uint32_t idLibro;
 public:
-	Instruccion_ObtenerArchivo(char id);
+	Instruccion_ObtenerArchivo(char id, uint32_t idLibro);
 
 	virtual void ejecutar();
 
