@@ -19,6 +19,8 @@
 
 #include "../../Common/Constantes.h"
 #include "../../Common/Utilitarios/Logger.h"
+#include "../ModuloControladores/ControladorBiblioteca.h"
+#include "../ModuloControladores/ControladorIndice.h"
 
 #include "../ModuloDeIndices/Indexador.h"
 
@@ -32,8 +34,10 @@
 using namespace std;
 
 class Instruccion {
-private:
+protected:
 	char idInstruccion;
+	ControladorBiblioteca* controladorBiblioteca;
+	ControladorIndice* controladorIndice;
 public:
 	Instruccion(char id);
 	char getIDInstruccion() const;
