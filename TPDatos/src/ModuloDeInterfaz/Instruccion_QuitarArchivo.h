@@ -19,8 +19,10 @@
 #include "Instruccion.h"
 
 class Instruccion_QuitarArchivo: public Instruccion {
+private:
+	uint32_t idArchivo;
 public:
-	Instruccion_QuitarArchivo(char id);
+	Instruccion_QuitarArchivo(char id, uint32_t idArchivo);
 
 	virtual void ejecutar();
 
