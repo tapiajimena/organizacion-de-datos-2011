@@ -1,4 +1,4 @@
-/*
+	/*
 * Libro.cpp
 *
 *	Autor	: GRUPO 1 - Fernandez, Gallinal, Maraggi, Tapia
@@ -15,6 +15,11 @@ Libro::Libro()
 {
 	this->_palabrasClave = new EstructuraPalabrasClave;
 };
+
+void Libro::setPalabrasClave(EstructuraPalabrasClave *_palabrasClave)
+{
+    this->_palabrasClave = _palabrasClave;
+}
 
 Libro::~Libro()
 {
