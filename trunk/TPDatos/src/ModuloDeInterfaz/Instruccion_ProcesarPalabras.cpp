@@ -15,8 +15,16 @@ Instruccion_ProcesarPalabras::Instruccion_ProcesarPalabras(char id) : Instruccio
 }
 
 void Instruccion_ProcesarPalabras::ejecutar(){
+	Configuracion* conf = Configuracion::GetInstancia();
+
+	Indexador* indexador = new Indexador();
+
+	indexador->indexar(INDICE_PALABRAS);
+
 	Logger::log("Instruccion_ProcesarPalabras", "ejecutar",
 			"Se indexa por palabras.");
+
+	delete(indexador);
 }
 
 Instruccion_ProcesarPalabras::~Instruccion_ProcesarPalabras() {

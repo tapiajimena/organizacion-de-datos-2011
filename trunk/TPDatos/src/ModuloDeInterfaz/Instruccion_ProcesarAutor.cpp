@@ -15,8 +15,16 @@ Instruccion_ProcesarAutor::Instruccion_ProcesarAutor(char id) : Instruccion(id) 
 }
 
 void Instruccion_ProcesarAutor::ejecutar(){
+	Configuracion* conf = Configuracion::GetInstancia();
+
+	Indexador* indexador = new Indexador();
+
+	indexador->indexar(INDICE_AUTOR);
+
 	Logger::log("Instruccion_ProcesarAutor", "ejecutar",
 			"Se indexa por autor.");
+
+	delete(indexador);
 }
 
 Instruccion_ProcesarAutor::~Instruccion_ProcesarAutor() {
