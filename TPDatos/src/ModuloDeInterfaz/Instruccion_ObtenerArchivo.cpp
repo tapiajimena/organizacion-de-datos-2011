@@ -19,7 +19,7 @@ void Instruccion_ObtenerArchivo::ejecutar(){
 			conf->getPathCarpetaTrabajo() + "/" + ARCHIVO_BIBLIOTECA,
 			conf->getPathCarpetaTrabajo() + "/" + ARCHIVO_CONTROL_BIBLIOTECA);
 
-	this->controladorBiblioteca->recuperarLibro(this->idLibro);
+	cout << (this->controladorBiblioteca->recuperarLibro(this->idLibro)).getDato() << endl;
 
 	Logger::log("Instruccion_ObtenerArchivo", "ejecutar",
 			"Se levanta el archivo de texto.");
