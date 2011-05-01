@@ -40,13 +40,13 @@ void ControladorIndice::nuevoIndiceEditorial()
 
 void ControladorIndice::nuevoIndiceTitulo()
 {
-	this->indiceArbol = new ArbolBMas(pathCarpeta+ARCHIVO_INDICE_TITULO, SIZE_BLOQUE);
+	this->indiceHash = new Hash(pathCarpeta+ARCHIVO_INDICE_TITULO, pathCarpeta+ARCHIVO_INDICE_TITULO+"_Cubetas");
 }
 
 
 void ControladorIndice::nuevoIndicePalabras()
 {
-	this->indiceArbol = new ArbolBMas(pathCarpeta+ARCHIVO_INDICE_PALABRAS, SIZE_BLOQUE);
+	this->indiceHash = new Hash(pathCarpeta+ARCHIVO_INDICE_PALABRAS, pathCarpeta+ARCHIVO_INDICE_PALABRAS+"_Cubetas");
 }
 
 
