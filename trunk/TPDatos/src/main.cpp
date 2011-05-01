@@ -51,9 +51,9 @@ void testAgregarLibros()
 	//FIXME cuando se intentan agregar archivos que no existen hay sigsegv
 	ControladorBiblioteca* controlBiblioteca = new ControladorBiblioteca(((string)"Indices/")+ARCHIVO_BIBLIOTECA,
 																	((string)"Indices/")+ARCHIVO_CONTROL_BIBLIOTECA);
-	controlBiblioteca->ingresarLibro("prueba.txt");
-	controlBiblioteca->ingresarLibro("prueba2.txt");
-	controlBiblioteca->ingresarLibro("prueba.txt");
+	controlBiblioteca->ingresarLibro("librotest.txt");
+	controlBiblioteca->ingresarLibro("librotest.txt");
+	controlBiblioteca->ingresarLibro("librotest.txt");
 
 	delete (controlBiblioteca);
 }
@@ -91,10 +91,13 @@ void testEliminarIndexado(uint32_t idLibro)
 	delete (indexador);
 }
 
-int main()
+int main(int argc, char *argv[])
 {
-	cout<<"ANTES DE ELIMINAR"<<endl;
-	testListarLibrosDeBiblioteca();
+	//testAgregarLibros();
+
+	ManejadorInstrucciones* m = new ManejadorInstrucciones(argv,argc);
+
+	m->ejecutarInstruccionElegida();
 
     return 0;
 }
