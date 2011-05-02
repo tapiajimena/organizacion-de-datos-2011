@@ -88,7 +88,12 @@ private:
 	//el offset a esta nueva cubeta.
 	uint32_t nuevaCubetaAlFinal(DatoCubetaHash* datoCubeta);
 
-	void manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCubetaDesbordada, DatoTablaHash* datoTablaDesbordada);
+	//Duplica la cantidad de bloques que puede almacenar la tabla y hace que los nuevos bloques
+	//apunten a las cubetas que les corresponderían según la función de hash sin expandir la tabla.
+	//Luego se modifica el valor "cantidadDeCubetas" que determina el direccionamiento de la función de hash.
+	void duplicarTablaHash();
+
+	void manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCubetaDesbordada, DatoTablaHash* datoTablaDesbordada, uint32_t offsetDatoTabla);
 
 public:
 	//Hash();

@@ -216,10 +216,70 @@ uint32_t Hash::nuevaCubetaAlFinal(DatoCubetaHash* datoCubeta)
 	return offsetNuevaCubeta;
 }
 
-
-void Hash::manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCubetaDesbordada, DatoTablaHash* datoTablaDesbordada)
+void Hash::duplicarTablaHash()
 {
-	//TODO
+	for (unsigned int nroBloque = this->cantidadDeBloques + 1; nroBloque <= this->cantidadDeBloques * 2; nroBloque++)
+	{
+		uint32_t offsetNuevoBloqueTabla = this->calcularOffsetBloqueEnTabla( nroBloque );
+		DatoTablaHash nuevoDatoTabla;
+
+
+		//offsetCubeta = cubeta de la entrada del bloque pariente anterior... lalala
+		//nuevoDatoTabla.setCantidadDeElementos(sumatoria de cubetas... esta en el bloque del primo anterior);
+
+		this->escribirDatoTabla(&nuevoDatoTabla, offsetNuevoBloqueTabla);
+	}
+
+	this->cantidadDeBloques = this->cantidadDeBloques * 2;
+}
+
+void Hash::manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCubeta, DatoTablaHash* datoTabla, uint32_t offsetDatoTabla)
+{
+	//Si llegamos hasta acá sabemos que el dato no cabe en la cubeta que nos llega por parámetro
+
+	//En este vector se guardan consecutivamente los offsets de las cubetas que extienden la cubeta inicial.
+	std::vector<uint32_t> offsetsDeExtensionesDeCubeta;
+	offsetsDeExtensionesDeCubeta.push_back( datoCubeta->getOffsetCubetaContinuacion() ); //1er offset de cubeta que extiende.
+	bool elementoInsertado = false;
+
+	//Si la cubeta ya tenía abierta otra cubeta que la extendía, probamos insertar el dato en esa cubeta
+	//y recursivamente en sus extensiones, si las hubiere.
+	//NOTA: La cubeta con offset 0 siempre es inicializada y no continúua otras anteriores.
+	while (offsetsDeExtensionesDeCubeta.back() != 0 && !elementoInsertado)
+	{
+		delete datoCubeta;
+		datoCubeta = this->levantarDatoCubeta( offsetsDeExtensionesDeCubeta.back() );
+		offsetsDeExtensionesDeCubeta.push_back( datoCubeta->getOffsetCubetaContinuacion() );
+
+		elementoInsertado = datoCubeta->insertarElementoHash(*elemento); //Lo inserta si puede.
+	}
+
+	//Si no se ingresó el dato en alguna cubeta extendida anteriormente, se hace lo siguiente:
+	//
+	// * Se duplica el tamaño de la tabla y se redispersan todos los elementos contenidos en la cubeta (o bloque de cubetas
+	// agrupadas por la entrada de la tabla) desbordada.
+	//
+	// * En caso de que aún haciendo lo anterior siga habiendo desborde, se repite el proceso hasta 3 veces.
+	//
+	// * Si luego de duplicar la tabla 3 veces la cubeta sigue desbordada, se asume que el desborde se debe a que muchas palabras
+	// tienen exactamente el mismo valor de hash, y por lo tanto la única manera de agregar la nueva entrada es extendiendo una cubeta.
+	// Para esto se indica en la cubeta el offset de la nueva cubeta que la extiende.
+
+	for (int intentos = 0; intentos < 3 && !elementoInsertado; intentos++)
+	{
+		// ?y si antes de duplicar tabla intento redispersar cubeta?
+
+
+		//this->duplicarTablaHash();
+		//this->redispersarBloqueDeTabla( datoTabla, offsetDatoTabla );
+
+		//insertar elemento con tabla extendida.
+	}
+
+	//registramos el incremento en la entrada también de la tabla.
+	datoTabla->setCantidadDeElementos(datoTabla->getCantidadDeElementos() + 1);
+	this->escribirDatoTabla( datoTabla, offsetDatoTabla);
+	//los delete finales de datoCubeta y datoTabla se hace afuera, en el método que invoca a este.
 }
 
 void Hash::insertarClaveLibro(Libro* libro)
@@ -252,13 +312,14 @@ void Hash::insertarClave(std::pair<std::string, uint32_t> registroHash)
 	{
 		//Reescribimos la cubeta en disco
 		this->escribirDatoCubeta(datoCubeta, offsetCubeta);
+		datoTablaAPriori->setCantidadDeElementos(datoTablaAPriori->getCantidadDeElementos()+1);
+		this->escribirDatoTabla(datoTablaAPriori, offsetDatoTabla);
 	}
 	else
 	{
 		//Delegamos el manejo del desborde a otro método
-		this->manejarDesbordeCubeta(&elementoAInsertar, datoCubeta, datoTablaAPriori);
+		this->manejarDesbordeCubeta(&elementoAInsertar, datoCubeta, datoTablaAPriori, offsetDatoTabla);
 	}
-
 
 	delete datoCubeta;
 	delete datoTablaAPriori;
