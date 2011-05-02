@@ -17,8 +17,9 @@ Instruccion_TomarTexto::Instruccion_TomarTexto(char id, string pathLibro) :
 
 void Instruccion_TomarTexto::ejecutar() {
 	Configuracion* conf = Configuracion::GetInstancia();
+
 	this->controladorBiblioteca = new ControladorBiblioteca(
-			conf->getPathCarpetaTrabajo() + ARCHIVO_BIBLIOTECA,
+			conf->getPathCarpetaTrabajo() + ARCHIVO_BIBLIOTECA + EXTENSION_ARCHIVO_INDICE,
 			conf->getPathCarpetaTrabajo() + ARCHIVO_CONTROL_BIBLIOTECA);
 
 	this->controladorBiblioteca->ingresarLibro(this->libroNuevo);
