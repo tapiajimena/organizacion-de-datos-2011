@@ -102,14 +102,21 @@
 
 #define CARPETA_DEFAULT_INDICES "Indices/"
 
-#define ARCHIVO_CUBETAS "ArchivoCubetas.dat"
-#define ARCHIVO_BIBLIOTECA "Biblioteca.dat"
+#define EXTENSION_ARCHIVO_INDICE ".dat"
+
+#define ARCHIVO_CUBETAS "ArchivoCubetas"
+#define ARCHIVO_BIBLIOTECA "Biblioteca"
 #define ARCHIVO_CONTROL_BIBLIOTECA "BibliotecaControl.txt"
 
-#define ARCHIVO_INDICE_AUTOR "IndiceAutor.dat"
-#define ARCHIVO_INDICE_EDITORIAL "IndiceEditorial.dat"
-#define ARCHIVO_INDICE_PALABRAS "IndicePalabra.dat"
-#define ARCHIVO_INDICE_TITULO "IndiceTitulo.dat"
+#define ARCHIVO_INDICE_AUTOR "IndiceAutor"
+#define ARCHIVO_INDICE_EDITORIAL "IndiceEditorial"
+#define ARCHIVO_INDICE_PALABRAS "IndicePalabra"
+#define ARCHIVO_INDICE_TITULO "IndiceTitulo"
+
+#define ARCHIVO_TABLA_SUFIX "_Tabla"
+#define ARCHIVO_INDICE_SUFIX "_Indice"
+#define ARCHIVO_ESPACIOSLIBRES_SUFIX "_EspaciosLibres"
+#define ARCHIVO_BLOQUES_SUFIX "_Bloques"
 
 
 
