@@ -16,8 +16,11 @@
 #include "Instruccion.h"
 
 class Instruccion_VerEstructura: public Instruccion {
+private:
+	char tipoEstructura;
+	string nombreArchivo;
 public:
-	Instruccion_VerEstructura(char id, string argvs[]);
+	Instruccion_VerEstructura(char id, char tipoEstructura, string nombreArchivo);
 
 	virtual void ejecutar();
 
