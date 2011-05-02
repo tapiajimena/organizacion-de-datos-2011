@@ -16,7 +16,7 @@ Instruccion_ObtenerArchivo::Instruccion_ObtenerArchivo(char id, uint32_t idLibro
 void Instruccion_ObtenerArchivo::ejecutar(){
 	Configuracion* conf = Configuracion::GetInstancia();
 	this->controladorBiblioteca = new ControladorBiblioteca(
-			conf->getPathCarpetaTrabajo() + "/" + ARCHIVO_BIBLIOTECA,
+			conf->getPathCarpetaTrabajo() + "/" + ARCHIVO_BIBLIOTECA + EXTENSION_ARCHIVO_INDICE,
 			conf->getPathCarpetaTrabajo() + "/" + ARCHIVO_CONTROL_BIBLIOTECA);
 
 	cout << (this->controladorBiblioteca->recuperarLibro(this->idLibro)).getDato() << endl;
