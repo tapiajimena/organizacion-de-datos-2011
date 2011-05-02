@@ -9,12 +9,17 @@
 
 #include "Instruccion_VerEstructura.h"
 
-Instruccion_VerEstructura::Instruccion_VerEstructura(char id, string argvs[]) : Instruccion(id) {
-	// TODO Auto-generated constructor stub
+Instruccion_VerEstructura::Instruccion_VerEstructura(char id,
+		char tipoEstructura, string nombreArchivo) :
+	Instruccion(id) {
+	this->tipoEstructura = tipoEstructura;
+	this->nombreArchivo = nombreArchivo;
 }
 
-void Instruccion_VerEstructura::ejecutar(){
-	Logger::log("Instruccion_VerEstructura","ejecutar","Se muestra la estructura.");
+void Instruccion_VerEstructura::ejecutar() {
+
+	Logger::log("Instruccion_VerEstructura", "ejecutar",
+			"Se muestra la estructura.");
 }
 
 Instruccion_VerEstructura::~Instruccion_VerEstructura() {
