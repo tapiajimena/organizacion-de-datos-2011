@@ -17,20 +17,21 @@ Instruccion_VerEstructura::Instruccion_VerEstructura(char id,
 }
 
 void Instruccion_VerEstructura::crearArchivos() {
+	string archivoEstructura;
 	if ((this->tipoEstructura == INDICE_AUTOR || this->tipoEstructura
 			== INDICE_EDITORIAL)) {
-		string archivoEstructura = this->nombreArchivo + ARCHIVO_INDICE_SUFIX;
+		archivoEstructura = this->nombreArchivo + ARCHIVO_INDICE_SUFIX;
 	} else {
-		string archivoEstructura = this->nombreArchivo + ARCHIVO_TABLA_SUFIX;
+		archivoEstructura = this->nombreArchivo + ARCHIVO_TABLA_SUFIX;
 	}
-	Crear(archivoEstructura, this->archivoEstructuras, true);
+	Crear(archivoEstructura.c_str(), this->archivoEstructuras, true);
 
 	string archivoEspaciosLibres = this->nombreArchivo
 			+ ARCHIVO_ESPACIOSLIBRES_SUFIX;
-	Crear(archivoEspaciosLibres, this->archivoEspaciosLibres, true);
+	Crear(archivoEspaciosLibres.c_str(), this->archivoEspaciosLibres, true);
 
 	string archivoBloques = this->nombreArchivo + ARCHIVO_BLOQUES_SUFIX;
-	Crear(archivoBloques, this->archivoBloques, true);
+	Crear(archivoBloques.c_str(), this->archivoBloques, true);
 }
 
 void Instruccion_VerEstructura::ejecutar() {
@@ -39,7 +40,8 @@ void Instruccion_VerEstructura::ejecutar() {
 	Indexador* indexador = new Indexador();
 
 	//genero el indice correspondiente
-	indexador->indexar(ServiceClass::toUppercase(this->tipoEstructura));
+	//FIXME aca que se quizo hacer?
+	//indexador->indexar(ServiceClass::toUppercase(this->tipoEstructura));
 
 	//armo los archivos.
 	crearArchivos();
