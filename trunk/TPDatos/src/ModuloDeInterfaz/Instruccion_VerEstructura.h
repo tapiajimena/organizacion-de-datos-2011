@@ -19,10 +19,16 @@ class Instruccion_VerEstructura: public Instruccion {
 private:
 	char tipoEstructura;
 	string nombreArchivo;
+	fstream archivoEstructuras;
+	fstream archivoEspaciosLibres;
+	fstream archivoBloques;
+
 public:
 	Instruccion_VerEstructura(char id, char tipoEstructura, string nombreArchivo);
 
 	virtual void ejecutar();
+
+	void crearArchivos();
 
 	virtual ~Instruccion_VerEstructura();
 };
