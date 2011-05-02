@@ -62,7 +62,9 @@ void ManejadorInstrucciones::ejecutarInstruccion(char id) {
 		this->instruccion->ejecutar();
 		break;
 	case 'v':
-		this->instruccion = new Instruccion_VerEstructura(id, this->comando);
+		this->instruccion = new Instruccion_VerEstructura(id,
+				obtenerIDinstruccion(this->comando[2]),
+				ServiceClass::normalizarString(this->comando[3]));
 		this->instruccion->ejecutar();
 		break;
 	default:
