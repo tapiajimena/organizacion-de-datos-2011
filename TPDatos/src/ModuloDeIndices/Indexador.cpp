@@ -18,7 +18,7 @@ Indexador::Indexador()
 	pathCarpeta = conf->getPathCarpetaTrabajo();
 	controlIndice = new ControladorIndice(pathCarpeta);
 	controlBiblioteca = new ControladorBiblioteca(
-			pathCarpeta + ARCHIVO_BIBLIOTECA,
+			pathCarpeta + ARCHIVO_BIBLIOTECA + EXTENSION_ARCHIVO_INDICE,
 			pathCarpeta + ARCHIVO_CONTROL_BIBLIOTECA);
 }
 
@@ -27,8 +27,9 @@ Indexador::Indexador(string pathCarpeta)
 	pathCarpeta = pathCarpeta;
 	CrearDirectorios(pathCarpeta);
 	controlIndice = new ControladorIndice(pathCarpeta);
-	controlBiblioteca = new ControladorBiblioteca(pathCarpeta+ARCHIVO_BIBLIOTECA,
-			pathCarpeta+ARCHIVO_CONTROL_BIBLIOTECA);
+	controlBiblioteca = new ControladorBiblioteca(
+			pathCarpeta + ARCHIVO_BIBLIOTECA + EXTENSION_ARCHIVO_INDICE,
+			pathCarpeta + ARCHIVO_CONTROL_BIBLIOTECA);
 }
 
 
