@@ -19,8 +19,8 @@
 
 #define METADATACUBETA 12 //Bytes de metadata que almacena la cubeta: 3 enteros de 4 bytes cada uno:
 //bytesLibres
-//cantidadDeElementos
 //offsetProximaCubeta
+//cantidadDeElementos
 
 class DatoCubetaHash : Dato{
 
