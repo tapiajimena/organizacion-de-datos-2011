@@ -10,10 +10,10 @@
 #include "ManejadorInstrucciones.h"
 
 ManejadorInstrucciones::ManejadorInstrucciones(char* argumentos[], int cantidad) {
-	for (int i = 0; i < cantidad; i++) {
+	for (int i = 0; i < cantidad; i++)
+	{
 		string aux = argumentos[i];
 		this->comando[i] = aux;
-		cout << i << ": " << this->comando[i] << endl;
 	}
 }
 
