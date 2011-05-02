@@ -28,25 +28,33 @@ ControladorIndice::ControladorIndice(string pathCarpeta)
 
 void ControladorIndice::nuevoIndiceAutor()
 {
-		this->indiceArbol = new ArbolBMas(pathCarpeta+ARCHIVO_INDICE_AUTOR, SIZE_BLOQUE);
+		this->indiceArbol = new ArbolBMas(
+				pathCarpeta + ARCHIVO_INDICE_AUTOR + EXTENSION_ARCHIVO_INDICE,
+				SIZE_BLOQUE);
 }
 
 
 void ControladorIndice::nuevoIndiceEditorial()
 {
-	this->indiceArbol = new ArbolBMas(pathCarpeta+ARCHIVO_INDICE_EDITORIAL, SIZE_BLOQUE);
+	this->indiceArbol = new ArbolBMas(
+			pathCarpeta + ARCHIVO_INDICE_EDITORIAL + EXTENSION_ARCHIVO_INDICE,
+			SIZE_BLOQUE);
 }
 
 
 void ControladorIndice::nuevoIndiceTitulo()
 {
-	this->indiceHash = new Hash(pathCarpeta+ARCHIVO_INDICE_TITULO, pathCarpeta+ARCHIVO_INDICE_TITULO+"_Cubetas");
+	this->indiceHash = new Hash(
+			pathCarpeta + ARCHIVO_INDICE_TITULO + EXTENSION_ARCHIVO_INDICE,
+			pathCarpeta + ARCHIVO_INDICE_TITULO + "_Cubetas" + EXTENSION_ARCHIVO_INDICE);
 }
 
 
 void ControladorIndice::nuevoIndicePalabras()
 {
-	this->indiceHash = new Hash(pathCarpeta+ARCHIVO_INDICE_PALABRAS, pathCarpeta+ARCHIVO_INDICE_PALABRAS+"_Cubetas");
+	this->indiceHash = new Hash(
+			pathCarpeta+ARCHIVO_INDICE_PALABRAS + EXTENSION_ARCHIVO_INDICE,
+			pathCarpeta + ARCHIVO_INDICE_PALABRAS + "_Cubetas" + EXTENSION_ARCHIVO_INDICE);
 }
 
 
@@ -68,25 +76,32 @@ void ControladorIndice::eliminarIndexado(Libro* libroRemover)
 {
 
 	//se remueven los indices de autor del arbol
-	ArbolBMas* indiceAutorArbol = new ArbolBMas(pathCarpeta+ARCHIVO_INDICE_AUTOR, SIZE_BLOQUE);
+	ArbolBMas* indiceAutorArbol = new ArbolBMas(
+			pathCarpeta + ARCHIVO_INDICE_AUTOR + EXTENSION_ARCHIVO_INDICE,
+			SIZE_BLOQUE);
 	//indiceAutorArbol->eliminar(libroRemover->getAutor());
 	delete(indiceAutorArbol);
 
 	//se remueven los indices de editorial del arbol
-	ArbolBMas* indiceEditorialArbol = new ArbolBMas(pathCarpeta+ARCHIVO_INDICE_EDITORIAL, SIZE_BLOQUE);
+	ArbolBMas* indiceEditorialArbol = new ArbolBMas(
+			pathCarpeta + ARCHIVO_INDICE_EDITORIAL + EXTENSION_ARCHIVO_INDICE,
+			SIZE_BLOQUE);
 	//indiceEditorialArbol->eliminar(libroRemover->getEditorial());
 	delete(indiceEditorialArbol);
 
 	//se remueven los indices de titulo del hash
-	Hash* indiceTituloHash= new Hash(pathCarpeta+ARCHIVO_INDICE_TITULO, pathCarpeta+ARCHIVO_CUBETAS);
-	//indiceTituloHash->eliminar(libroRemover->getAutor());
+	Hash* indiceTituloHash= new Hash(
+			pathCarpeta + ARCHIVO_INDICE_TITULO + EXTENSION_ARCHIVO_INDICE,
+			pathCarpeta + ARCHIVO_CUBETAS + EXTENSION_ARCHIVO_INDICE);
+	//sindiceTituloHash->eliminar(libroRemover->getAutor());
 	delete(indiceTituloHash);
 
 
 	/*
 	 //TODO hacer llegar la lista de palabras
 	//se remueven los indices de palabras el hash
-	Hash* indicePalabrasHash= new Hash(pathCarpeta+ARCHIVO_INDICE_PALABRAS, pathCarpeta+ARCHIVO_CUBETAS);
+	Hash* indicePalabrasHash= new Hash(pathCarpeta + ARCHIVO_INDICE_PALABRAS + EXTENSION_ARCHIVO_INDICE,
+	 	 	 	 	 	 	 	 pathCarpeta + ARCHIVO_CUBETAS + EXTENSION_ARCHIVO_INDICE);
 	indicePalabrasHash->eliminar(ACA LA LISTA DE PALABRAS);
 	delete(indicePalabrasHash);
 	*/
