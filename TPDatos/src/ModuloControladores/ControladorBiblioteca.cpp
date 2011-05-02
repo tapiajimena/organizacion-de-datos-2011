@@ -15,6 +15,7 @@ ControladorBiblioteca::ControladorBiblioteca() {
 
 ControladorBiblioteca::ControladorBiblioteca(string pathBiblioteca,
 		string pathControlBiblioteca) {
+
 	arcLibro = new ArchivoLibro(pathBiblioteca);
 	arcControl = new ArchivoControlLibro(pathControlBiblioteca);
 
