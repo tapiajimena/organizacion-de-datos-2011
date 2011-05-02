@@ -254,7 +254,7 @@ void Hash::manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCub
 
 	//Si la cubeta ya ten�a abierta otra cubeta que la extend�a, probamos insertar el dato en esa cubeta
 	//y recursivamente en sus extensiones, si las hubiere.
-	//NOTA: La cubeta con offset 0 siempre es inicializada y no contin�ua otras anteriores.
+	//NOTA: La cubeta con offset 0 siempre es inicializada y no contin�ua otras anteriores
 	while (offsetsDeExtensionesDeCubeta.back() != 0 && !elementoInsertado)
 	{
 		delete datoCubeta;
