@@ -44,15 +44,15 @@
 
 using namespace ManejadorArchivo;
 
-//Clase que administra una tabla de dispersión dinámica y almacena los valores dispersados.
+//Clase que administra una tabla de dispersiï¿½n dinï¿½mica y almacena los valores dispersados.
 class Hash {
 private:
 
-	//Cantidad de bloques direccionables por la función de HASH. Dos bloques distintos pueden
+	//Cantidad de bloques direccionables por la funciï¿½n de HASH. Dos bloques distintos pueden
 	//direccionar a una misma cubeta en el archivo de cubetas.
 	unsigned int cantidadDeBloques;
 
-	//Cantidad de bloques efectivamente creados y que contienen alguna información
+	//Cantidad de bloques efectivamente creados y que contienen alguna informaciï¿½n
 	unsigned int cantidadDeCubetas;
 
 	//Estructuras de archivo
@@ -63,7 +63,7 @@ private:
 	std::string nombreArchivoTabla;
 	std::string nombreArchivoCubetas;
 
-	//Función de HASH usada para la dispersión. Convierte un string en un numero entero positivo
+	//Funciï¿½n de HASH usada para la dispersiï¿½n. Convierte un string en un numero entero positivo
 	unsigned int funcionHash(std::string claveADispersar);
 
 	//Devuelve el numero de bloque que corresponde a un valor dispersado por la funcion hash en funcion de la cantida de cubetas
@@ -84,13 +84,13 @@ private:
 
 	uint32_t calcularOffsetBloqueEnTabla(unsigned int numeroBloque);
 
-	//Agrega una nueva cubeta en el archivo de cubetas, le escribe la información contenida en datoCubeta y devuelve
+	//Agrega una nueva cubeta en el archivo de cubetas, le escribe la informaciï¿½n contenida en datoCubeta y devuelve
 	//el offset a esta nueva cubeta.
 	uint32_t nuevaCubetaAlFinal(DatoCubetaHash* datoCubeta);
 
 	//Duplica la cantidad de bloques que puede almacenar la tabla y hace que los nuevos bloques
-	//apunten a las cubetas que les corresponderían según la función de hash sin expandir la tabla.
-	//Luego se modifica el valor "cantidadDeCubetas" que determina el direccionamiento de la función de hash.
+	//apunten a las cubetas que les corresponderï¿½an segï¿½n la funciï¿½n de hash sin expandir la tabla (comparten cubetas).
+	//Luego se modifica el valor "cantidadDeBloques" que determina el direccionamiento de la funciï¿½n de hash.
 	void duplicarTablaHash();
 
 	void manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCubetaDesbordada, DatoTablaHash* datoTablaDesbordada, uint32_t offsetDatoTabla);
@@ -108,11 +108,11 @@ public:
 	//Agrega la palabra
 	void insertarClave(std::pair<std::string, uint32_t> registroHash);
 
-	//Devuelve el resultado de la búsqueda con la clave contenida en el libro
+	//Devuelve el resultado de la bï¿½squeda con la clave contenida en el libro
 	std::vector<uint32_t> buscarPalabraEnHash(std::string palabraClave);
 
-	//Hace un 'AND' lógico entre las palabras y devuelve referencias que contengan todas
-	//las palabras contenidas en la frase pasada por parámetro.
+	//Hace un 'AND' lï¿½gico entre las palabras y devuelve referencias que contengan todas
+	//las palabras contenidas en la frase pasada por parï¿½metro.
 	std::vector<uint32_t> buscarFraseEnHash(std::string fraseConPalabrasClave);
 
 	unsigned int getCantidadDeBloques();

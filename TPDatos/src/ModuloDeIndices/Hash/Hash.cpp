@@ -28,7 +28,7 @@ Hash::Hash(std::string nombreArchivoTabla, std::string nombreArchivoCubetas){
 
 	if(ManejadorArchivo::GetSizeArchivo(this->archivoTabla) == 0)
 	{
-		//Creamos los dos primeros bloques de la tabla (vacías).
+		//Creamos los dos primeros bloques de la tabla (vacï¿½as).
 		DatoTablaHash datoTabla0 = DatoTablaHash();
 		DatoTablaHash datoTabla1 = DatoTablaHash();
 
@@ -144,7 +144,7 @@ void Hash::escribirDatoCubeta(DatoCubetaHash* datoCubeta, uint32_t offsetCubeta)
 
 	ManejadorArchivo::Escribir(archivoCubetas, &ss, offsetCubeta);
 
-	//este método de abajo no reserva espacio adicional... no me sirve.
+	//este mï¿½todo de abajo no reserva espacio adicional... no me sirve.
 	//ManejadorArchivo::Escribir(&archivoCubetas, &ss, offsetCubeta, TAMANIOCUBETA);
 }
 
@@ -178,9 +178,9 @@ std::vector<uint32_t> Hash::acumularResultados(DatoCubetaHash* datoCubeta, std::
 
 			if( elemento.getPalabra() == palabra)
 			{
-				//TODO: si hace falta recorrer usar otra estructura más eficaz para buscar.
+				//TODO: si hace falta recorrer usar otra estructura mï¿½s eficaz para buscar.
 
-				//Verificamos si el offset de ese libro ya fue ingresado. Si así fue, no se vuelve a ingresar.
+				//Verificamos si el offset de ese libro ya fue ingresado. Si asï¿½ fue, no se vuelve a ingresar.
 				bool yaFueIngresado = false;
 				std::vector<uint32_t>::iterator it;
 
@@ -218,33 +218,43 @@ uint32_t Hash::nuevaCubetaAlFinal(DatoCubetaHash* datoCubeta)
 
 void Hash::duplicarTablaHash()
 {
-	for (unsigned int nroBloque = this->cantidadDeBloques + 1; nroBloque <= this->cantidadDeBloques * 2; nroBloque++)
+	unsigned int nuevaCantidadDeBloques = this->cantidadDeBloques * 2;
+
+	for (unsigned int nroBloque = this->cantidadDeBloques + 1; nroBloque <= nuevaCantidadDeBloques; nroBloque++)
 	{
 		uint32_t offsetNuevoBloqueTabla = this->calcularOffsetBloqueEnTabla( nroBloque );
 		DatoTablaHash nuevoDatoTabla;
 
+		//Bloque al que se direccionarÃ­an los elementos del actual con la funciÃ³n de hash nueva (segÃºn cantidad de bloques vieja).
+		unsigned int nroBloqueAnteriorEquivalente = nroBloque % this->cantidadDeBloques;
+		uint32_t offsetBloqueEquivalenteAnterior = this->calcularOffsetBloqueEnTabla( nroBloqueAnteriorEquivalente );
+		DatoTablaHash* datoTablaEquivalenteAnterior = this->levantarDatoTabla( offsetBloqueEquivalenteAnterior );
 
-		//offsetCubeta = cubeta de la entrada del bloque pariente anterior... lalala
-		//nuevoDatoTabla.setCantidadDeElementos(sumatoria de cubetas... esta en el bloque del primo anterior);
+		nuevoDatoTabla.setOffsetCubeta( datoTablaEquivalenteAnterior->getOffsetCubeta() );
+		nuevoDatoTabla.setCantidadDeElementos( datoTablaEquivalenteAnterior->getCantidadDeElementos());
 
+		//No se usa ahora, pero vale la pena recordar esta relaciÃ³n: [X mod 2N] mod N = X mod N
+
+		//Nota: no se actualiza (ni se debe hacerlo) la cantidad de bloques hasta terminar de duplicar toda la tabla.
 		this->escribirDatoTabla(&nuevoDatoTabla, offsetNuevoBloqueTabla);
 	}
 
-	this->cantidadDeBloques = this->cantidadDeBloques * 2;
+	this->cantidadDeBloques = nuevaCantidadDeBloques;
 }
 
 void Hash::manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCubeta, DatoTablaHash* datoTabla, uint32_t offsetDatoTabla)
 {
-	//Si llegamos hasta acá sabemos que el dato no cabe en la cubeta que nos llega por parámetro
+	//Si llegamos hasta acï¿½ sabemos que el dato no cabe en la cubeta que nos llega por parï¿½metro
 
-	//En este vector se guardan consecutivamente los offsets de las cubetas que extienden la cubeta inicial.
+	//En este vector se guardan consecutivamente los offsets de la cubeta inicial, y luego los offsets de las cubetas que la extienden.
 	std::vector<uint32_t> offsetsDeExtensionesDeCubeta;
+	offsetsDeExtensionesDeCubeta.push_back( datoTabla->getOffsetCubeta()); //1er elemento: offset de la cubetaActual.
 	offsetsDeExtensionesDeCubeta.push_back( datoCubeta->getOffsetCubetaContinuacion() ); //1er offset de cubeta que extiende.
 	bool elementoInsertado = false;
 
-	//Si la cubeta ya tenía abierta otra cubeta que la extendía, probamos insertar el dato en esa cubeta
+	//Si la cubeta ya tenï¿½a abierta otra cubeta que la extendï¿½a, probamos insertar el dato en esa cubeta
 	//y recursivamente en sus extensiones, si las hubiere.
-	//NOTA: La cubeta con offset 0 siempre es inicializada y no continúua otras anteriores.
+	//NOTA: La cubeta con offset 0 siempre es inicializada y no continï¿½ua otras anteriores.
 	while (offsetsDeExtensionesDeCubeta.back() != 0 && !elementoInsertado)
 	{
 		delete datoCubeta;
@@ -254,15 +264,15 @@ void Hash::manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCub
 		elementoInsertado = datoCubeta->insertarElementoHash(*elemento); //Lo inserta si puede.
 	}
 
-	//Si no se ingresó el dato en alguna cubeta extendida anteriormente, se hace lo siguiente:
+	//Si no se ingresï¿½ el dato en alguna cubeta extendida anteriormente, se hace lo siguiente:
 	//
-	// * Se duplica el tamaño de la tabla y se redispersan todos los elementos contenidos en la cubeta (o bloque de cubetas
+	// * Se duplica el tamaï¿½o de la tabla y se redispersan todos los elementos contenidos en la cubeta (o bloque de cubetas
 	// agrupadas por la entrada de la tabla) desbordada.
 	//
-	// * En caso de que aún haciendo lo anterior siga habiendo desborde, se repite el proceso hasta 3 veces.
+	// * En caso de que aï¿½n haciendo lo anterior siga habiendo desborde, se repite el proceso hasta 3 veces.
 	//
 	// * Si luego de duplicar la tabla 3 veces la cubeta sigue desbordada, se asume que el desborde se debe a que muchas palabras
-	// tienen exactamente el mismo valor de hash, y por lo tanto la única manera de agregar la nueva entrada es extendiendo una cubeta.
+	// tienen exactamente el mismo valor de hash, y por lo tanto la ï¿½nica manera de agregar la nueva entrada es extendiendo una cubeta.
 	// Para esto se indica en la cubeta el offset de la nueva cubeta que la extiende.
 
 	for (int intentos = 0; intentos < 3 && !elementoInsertado; intentos++)
@@ -276,10 +286,10 @@ void Hash::manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCub
 		//insertar elemento con tabla extendida.
 	}
 
-	//registramos el incremento en la entrada también de la tabla.
+	//registramos el incremento en la entrada tambiï¿½n de la tabla.
 	datoTabla->setCantidadDeElementos(datoTabla->getCantidadDeElementos() + 1);
 	this->escribirDatoTabla( datoTabla, offsetDatoTabla);
-	//los delete finales de datoCubeta y datoTabla se hace afuera, en el método que invoca a este.
+	//los delete finales de datoCubeta y datoTabla se hace afuera, en el mï¿½todo que invoca a este.
 }
 
 void Hash::insertarClaveLibro(Libro* libro)
@@ -293,9 +303,10 @@ void Hash::insertarClave(std::pair<std::string, uint32_t> registroHash)
 	uint32_t offsetALibro = registroHash.second;
 	std::string palabraClave = registroHash.first;
 
+	//TODO separar en dos metodos, el que implementa recibe un elemento a insertar. (?)
 	ElementoHash elementoAInsertar(palabraClave, offsetALibro);
 
-	//Primero obtenemos el bloque al que iría la palabra
+	//Primero obtenemos el bloque al que irï¿½a la palabra
 	unsigned int numeroDeBLoqueAPriori = this->obtenerNumeroDeBloque(palabraClave);
 	uint32_t offsetDatoTabla = this->calcularOffsetBloqueEnTabla(numeroDeBLoqueAPriori);
 
@@ -317,7 +328,7 @@ void Hash::insertarClave(std::pair<std::string, uint32_t> registroHash)
 	}
 	else
 	{
-		//Delegamos el manejo del desborde a otro método
+		//Delegamos el manejo del desborde a otro mï¿½todo
 		this->manejarDesbordeCubeta(&elementoAInsertar, datoCubeta, datoTablaAPriori, offsetDatoTabla);
 	}
 
@@ -359,14 +370,14 @@ std::vector<uint32_t> Hash::buscarFraseEnHash(std::string fraseConPalabrasClave)
 		//resultados de la primera palabra
 		resultadosParciales = buscarPalabraEnHash( listaPalabrasClave.at(0) );
 
-		//Lo pasamos a una lista para que sea más eficiente la eliminación de claves no comunes.
+		//Lo pasamos a una lista para que sea mï¿½s eficiente la eliminaciï¿½n de claves no comunes.
 		for (unsigned int nroResultado = 0; nroResultado < listaResultadosAcumulados.size(); nroResultado++)
 		{
 			listaResultadosAcumulados.insert(listaResultadosAcumulados.begin(), resultadosParciales.at(nroResultado));
 		}
 
 		//Mientras queden palabras por procesar y no se hayan descartado todos los resultados...
-		unsigned int nroPalabraClave = 1; //(la palabra nro cero se procesó arriba)
+		unsigned int nroPalabraClave = 1; //(la palabra nro cero se procesï¿½ arriba)
 		while (nroPalabraClave < listaPalabrasClave.size() && listaResultadosAcumulados.size() > 0)
 		{
 			//Buscamos resultados de las palabras clave
@@ -388,7 +399,7 @@ std::vector<uint32_t> Hash::buscarFraseEnHash(std::string fraseConPalabrasClave)
 						resultadoAcumuladoExisteTambienEnBusquedaActual = true;
 				}
 
-				//Si el resultado no estaba en la búsqueda actual, se elimina de resultados acumulados.
+				//Si el resultado no estaba en la bï¿½squeda actual, se elimina de resultados acumulados.
 				if (!resultadoAcumuladoExisteTambienEnBusquedaActual)
 				{
 					std::list<uint32_t>::iterator it_elimiacion = it_resultados;
