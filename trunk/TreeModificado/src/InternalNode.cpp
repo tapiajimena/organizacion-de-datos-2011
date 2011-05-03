@@ -616,38 +616,37 @@ bool InternalNode::isUnderFlowded(int blockSize) {
 }
 
 void InternalNode::toString(iostream* ios, int rootLevel, int sizeOffset, fstream* fs){
-/*
- * DEPROCATED!
- */
-	/*
 	string tabs = setTabs(rootLevel - this->level);
 
 	string keys = "";
-	list<int>::iterator it = this->keys.begin();
+	string ids = "";
 	stringstream ss;
 	ss.str("");
-	while (it != this->keys.end())
+
+	list<string>::const_iterator it_keys = this->keys.begin();
+	while (it_keys != this->keys.end())
 	{
-		ss << (*it) << ",";
-		it++;
+		ss << "(" << (*it_keys) << ")";
+		it_keys++;
 	}
 	keys = ss.str();
 
-	it = this->childIds.begin();
 	ss.str("");
-	while (it != this->childIds.end()){
-		ss << (*it) << ",";
-		it++;
+
+	list<int>::const_iterator it_ids = this->childIds.begin();
+	while (it_ids != this->childIds.end()){
+		ss << "(" << (*it_ids) << ")";
+		it_ids++;
 	}
 
-	string ids = ss.str();
+	ids = ss.str();
 
 	(*ios) << tabs << "|----- [node id= [" << getNodeId() << "] level=[" << getLevel()
-				 << "] keys=[" << keys << "] ids=[" << ids  <<  "]  nodeSize=["
+				 << "] keys=[" << keys << "] ids=[" << ids <<  "]  nodeSize=["
 				 			<< this->getSize() << "] controlDataSize=[" << this->getCtrlDataSize()
 				 			<< "]  nodeDataSize=[" << this->getDataSize() << "] ]" << endl;
 	nodesToString(ios, rootLevel, sizeOffset, fs);
-	*/
+
 }
 
 void InternalNode::toStringXML(iostream* ios, int rootLevel, int sizeOffset, fstream* fs){
@@ -698,6 +697,7 @@ void InternalNode::nodesToString(iostream* ios, int rootLevel, int sizeOffset, f
 }
 
 void InternalNode::nodesToStringXML(iostream* ios, int rootLevel, int sizeOffset, fstream* fs){
+	/*
 	list<int>::iterator it = this->childIds.begin();
 	while (it != this->childIds.end())
 	{
@@ -706,6 +706,7 @@ void InternalNode::nodesToStringXML(iostream* ios, int rootLevel, int sizeOffset
 		it++;
 		delete pNode;
 	}
+	*/
 }
 
 

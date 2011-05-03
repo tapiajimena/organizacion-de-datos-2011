@@ -509,10 +509,10 @@ void testEscribirElemento(){
 	FileManager::writeData(file,0,12,ios);
 }
 
-
+/*
 
 int main2(int argc, char* argv[]) {
-/*
+
 	if (argc < 3) {
 		cout << "Missing arguments. " << endl;
 		printUsage();
@@ -552,8 +552,9 @@ int main2(int argc, char* argv[]) {
 		default :
 			abort();
 	}
-*/
+
 	BPlusTree* tree = new BPlusTree("AAA_myFile.dat", BLOCKSIZE);
 
 	return EXIT_SUCCESS;
 }
+*/

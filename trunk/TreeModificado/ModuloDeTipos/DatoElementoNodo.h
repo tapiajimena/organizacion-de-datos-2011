@@ -59,6 +59,10 @@ public:
 
 	void quitarLibro(uint32_t idLibro);
 
+	void toString(iostream* ios, int rootLevel);
+
+	string setTabs(int level);
+
 	virtual ~DatoElementoNodo();
 };
 
