@@ -168,20 +168,25 @@ int main() {
 			"jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj", 32);
 	DatoElementoNodo* elemento9 = new DatoElementoNodo(
 			"iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", 91);
-
-	tree->insert(elemento4);
-
-	delete tree;
-	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
+	DatoElementoNodo* elemento10 = new DatoElementoNodo(
+			"iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", 92);
+	DatoElementoNodo* elemento11 = new DatoElementoNodo(
+			"iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", 95);
+	DatoElementoNodo* elemento12 = new DatoElementoNodo(
+			"iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", 97);
+	DatoElementoNodo* elemento13 = new DatoElementoNodo(
+			"iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", 191);
+	DatoElementoNodo* elemento14 = new DatoElementoNodo(
+			"iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", 91111);
 
 	tree->insert(elemento1);
 
 	delete tree;
+
 	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
-
 	tree->insert(elemento2);
-
 	delete tree;
+
 	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
 
 	tree->insert(elemento3);
@@ -189,32 +194,12 @@ int main() {
 	delete tree;
 	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
 
-	tree->insert(elemento);
-
-	delete tree;
-	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
-
-	tree->insert(elemento);
-
-	delete tree;
-	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
-
-	tree->insert(elemento6);
+	tree->insert(elemento4);
 
 	delete tree;
 	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
 
 	tree->insert(elemento5);
-
-	delete tree;
-	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
-
-	tree->insert(elemento9);
-
-	delete tree;
-	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
-
-	tree->insert(elemento8);
 
 	delete tree;
 	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
@@ -225,6 +210,31 @@ int main() {
 	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
 
 	tree->insert(elemento7);
+
+	delete tree;
+	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
+
+	tree->insert(elemento8);
+
+	delete tree;
+	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
+
+	tree->insert(elemento9);
+
+	delete tree;
+	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
+
+	tree->insert(elemento10);
+
+	delete tree;
+	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
+
+	tree->insert(elemento11);
+
+	delete tree;
+	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
+
+	tree->insert(elemento12);
 
 	delete tree;
 	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
