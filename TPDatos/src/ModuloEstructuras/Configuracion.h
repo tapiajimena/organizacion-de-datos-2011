@@ -29,6 +29,7 @@ class Configuracion
 private:
 	static 	Configuracion* pInstancia;
 	string	pathCarpetaTrabajo;
+	string	pathCarpetaReportes;
 	string	pathArchivoStopWords;
 
 
@@ -43,6 +44,8 @@ public:
     string getPathCarpetaTrabajo() const;
     void setPathArchivoStopWords(string pathArchivoStopWords);
     void setPathCarpetaTrabajo(string pathCarpetaTrabajo);
+    string getPathCarpetaReportes() const;
+    void setPathCarpetaReportes(string pathCarpetaReportes);
 
 private:
 
