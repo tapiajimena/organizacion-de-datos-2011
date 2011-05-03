@@ -42,10 +42,6 @@ void Instruccion_VerEstructura::crearArchivos() {
 	}
 	Crear(archivoEstructura.c_str(), this->archivoEstructuras, true);
 
-	string archivoEspaciosLibres = this->nombreArchivo
-			+ ARCHIVO_ESPACIOSLIBRES_SUFIX;
-	Crear(archivoEspaciosLibres.c_str(), this->archivoEspaciosLibres, true);
-
 	string archivoBloques = this->nombreArchivo + ARCHIVO_BLOQUES_SUFIX;
 	Crear(archivoBloques.c_str(), this->archivoBloques, true);
 }
@@ -57,7 +53,14 @@ void Instruccion_VerEstructura::ejecutar() {
 
 	//genero el indice correspondiente
 	//FIXME aca que se quizo hacer?
-	//indexador->indexar(ServiceClass::toUppercase(this->tipoEstructura));
+
+	stringstream mayuscula;
+	string aux;
+	mayuscula << this->tipoEstructura;
+	mayuscula >> aux;
+	char char_Aux = ServiceClass::toUppercase(aux)[0];
+
+	indexador->indexar(char_Aux);
 
 	//armo los archivos.
 	crearArchivos();
