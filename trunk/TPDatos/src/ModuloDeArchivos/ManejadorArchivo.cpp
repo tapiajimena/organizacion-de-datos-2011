@@ -60,6 +60,20 @@ bool ManejadorArchivo::CrearDirectorios(string pathCarpeta)
 }
 
 
+bool ManejadorArchivo::CopiarArchivo(string origenArchivo, string destino)
+{
+	system(("cp -p " + origenArchivo+ " " + destino).c_str());
+	return true;
+}
+
+
+bool ManejadorArchivo::RenombrarArchivo(string nombreInicial, string nombreFinal)
+{
+	system(("mv " + nombreInicial + " " + nombreFinal).c_str());
+	return true;
+}
+
+
 bool ManejadorArchivo::EscribirDato(fstream &arc, Dato* d) {
 	stringstream aux;
 	aux << d->getDato();

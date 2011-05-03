@@ -61,6 +61,19 @@ namespace ManejadorArchivo
 	 bool CrearDirectorios(string pathCarpeta);
 
 
+	 /*
+	  * Copia un archivo desde un origen a un destino
+	  *@param origen ruta mas nombre del archivo a copiar
+	  *@param destino ruta mas nombre donde se desea copiar
+	  */
+	 bool CopiarArchivo(string origen, string destino);
+
+
+	 /*
+	  *	Renombra el archivo con nombre nombreInicial a nombreFinal
+	  */
+	 bool RenombrarArchivo(string nombreInicial, string nombreFinal);
+
 	/**
 	 * se escriben los datos contenido al final del archivo arc
 	 * arc debe estar abierto
