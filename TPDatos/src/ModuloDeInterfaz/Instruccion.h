@@ -27,6 +27,7 @@
 #include "../ModuloDeIndices/Indexador.h"
 
 #include "../ModuloEstructuras/Libro.h"
+#include "../ModuloEstructuras/Configuracion.h"
 #include "../ModuloParser/ParserDeTitulo.h"
 #include "../ModuloParser/ParserDeAutor.h"
 #include "../ModuloParser/ParserDeEditorial.h"
