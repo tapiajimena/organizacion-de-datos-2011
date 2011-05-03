@@ -54,6 +54,7 @@ private:
      * Interpreta este archivo de la siguiente forma:
      *Ej:
      * 		#CARPETA_TRABAJO=/Indices
+     * 		#CARPETA_TRABAJO=/home/usuario/escritorio/reportes
 	 *		#ARCHIVO_STOPWORDS=stopwordstest.txt
 	 *@param pathConfiguracion ruta al archivo de configuracion
      */
