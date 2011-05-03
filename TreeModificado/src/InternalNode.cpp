@@ -556,6 +556,7 @@ long InternalNode::getDataSize() {
 	while(ci != this->keys.end())
 	{
 		dataSize += (*ci).length();//sumo el tamanio de las claves que guarda
+		++ci;
 	}
 
 

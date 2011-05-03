@@ -10,7 +10,7 @@
 
 /* Constantes de tamaño */
 
-#define BLOCKSIZE			512
+#define BLOCKSIZE			256
 #define MAX_PERCENTAGE 		0.8
 #define MIN_PERCENTAGE 		0.5
 #define MAX_RECORD_PERCENTAGE 	0.25
