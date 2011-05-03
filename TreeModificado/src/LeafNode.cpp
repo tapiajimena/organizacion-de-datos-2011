@@ -501,6 +501,7 @@ string LeafNode::getMinKey(){
 }
 
 void LeafNode::toStringXML(iostream* ios, int rootLevel, int sizeOffset, fstream* fs){
+	/*
 	string tabs = setTabsXML(rootLevel - this->level);
 
 	(*ios) << tabs << "<node id=\"" << getNodeId() << "\" level=\"" << getLevel()
@@ -509,6 +510,7 @@ void LeafNode::toStringXML(iostream* ios, int rootLevel, int sizeOffset, fstream
 
 	elementosToStringXML(ios, rootLevel);
 	(*ios) << tabs << "</node>" << endl;
+	*/
 }
 
 void LeafNode::toString(iostream* ios, int rootLevel, int sizeOffset, fstream* fs){
@@ -522,16 +524,15 @@ void LeafNode::toString(iostream* ios, int rootLevel, int sizeOffset, fstream* f
 
 void LeafNode::elementosToString(iostream* ios, int rootLevel){
 
-	/*
-	 //DEPROCATED!
+	DatoElementoNodo* elemento;
 	list<DatoElementoNodo*>::iterator it = this->elementos.begin();
 	while (it != this->elementos.end())
 	{
-		DatoElementoNodo* pRecord = *it;
-		pRecord->toString(ios, rootLevel);
+		elemento = *it;
+		elemento->toString(ios, rootLevel);
 		it++;
 	}
-	*/
+
 }
 
 void LeafNode::elementosToStringXML(iostream* ios, int rootLevel){
