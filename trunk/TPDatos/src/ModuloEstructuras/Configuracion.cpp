@@ -49,6 +49,11 @@ Configuracion::Configuracion(string pathConfiguracion)
 				aux = strtok(NULL, "=");
 				setPathCarpetaTrabajo(aux);
 			}
+			else if (strcmp(aux, IDENTIFICADOR_CARPETA_REPORTES)== 0)
+			{
+				aux = strtok(NULL, "=");
+				setPathCarpetaReportes(aux);
+			}
 			else if  (strcmp(aux, IDENTIFICADOR_ARCHIVO_STOPWORDS)==0)
 			{
 				aux = strtok(NULL, "=");
@@ -83,6 +88,16 @@ void Configuracion::setPathArchivoStopWords(string pathArchivoStopWords)
 void Configuracion::setPathCarpetaTrabajo(string pathCarpetaTrabajo)
 {
     this->pathCarpetaTrabajo = pathCarpetaTrabajo;
+}
+
+string Configuracion::getPathCarpetaReportes() const
+{
+    return pathCarpetaReportes;
+}
+
+void Configuracion::setPathCarpetaReportes(string pathCarpetaReportes)
+{
+    this->pathCarpetaReportes = pathCarpetaReportes;
 }
 
 Configuracion::~Configuracion()
