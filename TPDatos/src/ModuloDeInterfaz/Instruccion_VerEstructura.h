@@ -15,6 +15,9 @@
 
 #include "Instruccion.h"
 
+
+
+using namespace ManejadorArchivo;
 class Instruccion_VerEstructura: public Instruccion {
 private:
 	char tipoEstructura;
@@ -30,6 +33,15 @@ public:
 
 	void crearArchivos();
 
+private:
+
+	/*
+	 * Crea el reporte de archivo control de estructuras de la biblioteca.
+	 *@param nombreArchivo el nombre del archivo de reporte
+	 */
+	void crearReporteArchivoControl(string nombreArchivo);
+
+public:
 	virtual ~Instruccion_VerEstructura();
 };
 
