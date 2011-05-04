@@ -87,9 +87,10 @@ private:
 
 	/*
 	 * Devuelve todas las entradas de la tabla que apuntan a la misma cubeta de datos que el bloque indicado por parámetro.
-	 * Se deben destruir todas las cubetas del vector desupés de usar.
+	 * Las devuelve en un std::pair en que el 1er elemento es el puntero al datoTabla y el segundo el número de dicho dato en la tabla.
+	 * Se deben destruir todos los DatoTablaHash* del vector desupés de usar.
 	 */
-	std::vector<DatoTablaHash*> obtenerBloquesConMismaCubeta(unsigned int nroDeBloque, unsigned int offsetCubeta);
+	std::vector< std::pair<DatoTablaHash*, unsigned int> > obtenerBloquesConMismaCubeta(unsigned int nroDeBloque, unsigned int offsetCubeta);
 
 	//Agrega una nueva cubeta en el archivo de cubetas, le escribe la informaciï¿½n contenida en datoCubeta y devuelve
 	//el offset a esta nueva cubeta.

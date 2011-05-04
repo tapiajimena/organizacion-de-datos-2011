@@ -50,7 +50,12 @@ public:
 	//devuelve false y no hace nada.
 	bool insertarElementoHash(ElementoHash elemento);
 
+	//Borra los elementos de adentro, pero no pierde el offset a la próxima cubeta (si se quiere resetear eso se puede setear a mano en cero).
+	void vaciarCubeta();
+
 	uint32_t getOffsetCubetaContinuacion();
+
+	void setOffsetCubetaContinacion(uint32_t offsetCubetaContinuacion);
 
 	unsigned int getCantidadDeElementos();
 

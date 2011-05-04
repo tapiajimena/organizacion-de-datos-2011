@@ -97,11 +97,22 @@ bool DatoCubetaHash::insertarElementoHash(ElementoHash elemento)
 	return false;
 }
 
+void DatoCubetaHash::vaciarCubeta()
+{
+	this->bytesLibres = TAMANIOCUBETA - METADATACUBETA;
+	this->cantidadElementos = 0;
+	this->ElementosHash.clear();
+}
+
 uint32_t DatoCubetaHash::getOffsetCubetaContinuacion()
 {
 	return this->offsetProxCubeta;
 }
 
+void DatoCubetaHash::setOffsetCubetaContinacion(uint32_t offsetCubetaContinuacion)
+{
+	this->offsetProxCubeta = offsetCubetaContinuacion;
+}
 unsigned int DatoCubetaHash::getCantidadDeElementos()
 {
 	return this->cantidadElementos;
