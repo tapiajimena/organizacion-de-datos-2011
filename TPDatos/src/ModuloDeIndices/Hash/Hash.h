@@ -18,6 +18,7 @@
 #include <stdint.h>
 #include <vector>
 #include <string>
+#include <algorithm>
 
 #include "ElementoHash.h"
 #include "../../ModuloEstructuras/Libro.h"
@@ -84,6 +85,12 @@ private:
 
 	uint32_t calcularOffsetBloqueEnTabla(unsigned int numeroBloque);
 
+	/*
+	 * Devuelve todas las entradas de la tabla que apuntan a la misma cubeta de datos que el bloque indicado por parámetro.
+	 * Se deben destruir todas las cubetas del vector desupés de usar.
+	 */
+	std::vector<DatoTablaHash*> obtenerBloquesConMismaCubeta(unsigned int nroDeBloque, unsigned int offsetCubeta);
+
 	//Agrega una nueva cubeta en el archivo de cubetas, le escribe la informaciï¿½n contenida en datoCubeta y devuelve
 	//el offset a esta nueva cubeta.
 	uint32_t nuevaCubetaAlFinal(DatoCubetaHash* datoCubeta);
@@ -93,7 +100,7 @@ private:
 	//Luego se modifica el valor "cantidadDeBloques" que determina el direccionamiento de la funciï¿½n de hash.
 	void duplicarTablaHash();
 
-	void manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCubetaDesbordada, DatoTablaHash* datoTablaDesbordada, uint32_t offsetDatoTabla);
+	void manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCubetaDesbordada, DatoTablaHash* datoTablaDesbordada, unsigned int numeroDeBloque);
 
 public:
 	//Hash();
