@@ -358,6 +358,7 @@ void Hash::manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCub
 
 		for( std::vector<DatoTablaHash*>::iterator it_bloques = bloquesConMismaCubeta.begin(); it_bloques != bloquesConMismaCubeta.end(); it_bloques++)
 		{
+			DatoCubetaHash datoCubeta();
 
 		}
 
