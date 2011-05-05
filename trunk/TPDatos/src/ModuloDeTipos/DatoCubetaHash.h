@@ -33,7 +33,7 @@ private:
 	//alcance su espacio para sus datos. Si no se usa se setea en cero ('0').
 	uint32_t offsetProxCubeta;
 
-	std::vector<ElementoHash> ElementosHash;
+	std::vector<ElementoHash> elementosHash;
 
 
 public:
@@ -49,6 +49,9 @@ public:
 	//Si tiene lugar disponible, inserta el elemento y devuelve true, caso contrario,
 	//devuelve false y no hace nada.
 	bool insertarElementoHash(ElementoHash elemento);
+
+	//Si existe el elemento ingresado
+	void eliminarElementoHash(ElementoHash elemento);
 
 	//Borra los elementos de adentro, pero no pierde el offset a la próxima cubeta (si se quiere resetear eso se puede setear a mano en cero).
 	void vaciarCubeta();
