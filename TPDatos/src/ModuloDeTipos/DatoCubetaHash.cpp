@@ -32,9 +32,9 @@ DatoCubetaHash::DatoCubetaHash(std::stringstream* datoStream)
 	//std::cout<<"CantidadElementos: "<<this->cantidadElementos<<std::endl;
 
 	//Si se usó la cubeta antes, se liberan recursos. No debería usarse de esa manera.
-	if (!this->ElementosHash.empty())
+	if (!this->elementosHash.empty())
 	{
-		this->ElementosHash.clear();
+		this->elementosHash.clear();
 	}
 
 	unsigned int posicionActual = 12; //Desde posición 12.
@@ -65,7 +65,7 @@ DatoCubetaHash::DatoCubetaHash(std::stringstream* datoStream)
 		//longitud de su palabra + 4 bytes del offset, por lo tanto no se le pasa. Al persistir, lo escribe.
 		ElementoHash elementoHash(aux, offsetALibro);
 
-		this->ElementosHash.push_back(elementoHash);
+		this->elementosHash.push_back(elementoHash);
 
 		posicionActual = posicionActual + tamanioElemento;
 		numeroElemento++;
@@ -78,7 +78,7 @@ DatoCubetaHash::~DatoCubetaHash() {
 
 std::vector<ElementoHash> DatoCubetaHash::getElementos()
 {
-	return this->ElementosHash;
+	return this->elementosHash;
 }
 
 bool DatoCubetaHash::insertarElementoHash(ElementoHash elemento)
@@ -87,7 +87,7 @@ bool DatoCubetaHash::insertarElementoHash(ElementoHash elemento)
 
 	if ( tamanioElemento < this->bytesLibres)
 	{
-		this->ElementosHash.push_back(elemento);
+		this->elementosHash.push_back(elemento);
 		this->cantidadElementos++;
 		this->bytesLibres = this->bytesLibres - tamanioElemento;
 
@@ -97,11 +97,26 @@ bool DatoCubetaHash::insertarElementoHash(ElementoHash elemento)
 	return false;
 }
 
+void DatoCubetaHash::eliminarElementoHash(ElementoHash elemento)
+{
+	bool encontrado = false;
+	for(std::vector<ElementoHash>::iterator it_elementos = this->elementosHash.begin(); it_elementos != this->elementosHash.end() && !encontrado ; it_elementos++)
+	{
+		if( it_elementos->esIgualAElemento(elemento) )
+		{
+			encontrado = true;
+			this->elementosHash.erase(it_elementos);
+			this->cantidadElementos = this->cantidadElementos - 1;
+			this->bytesLibres = this->bytesLibres + elemento.getTamanioBytesEnDisco();
+		}
+	}
+}
+
 void DatoCubetaHash::vaciarCubeta()
 {
 	this->bytesLibres = TAMANIOCUBETA - METADATACUBETA;
 	this->cantidadElementos = 0;
-	this->ElementosHash.clear();
+	this->elementosHash.clear();
 }
 
 uint32_t DatoCubetaHash::getOffsetCubetaContinuacion()
@@ -135,7 +150,7 @@ void DatoCubetaHash::serializarCubeta(std::iostream* ios)
 	ios->write(reinterpret_cast<char *> (&this->cantidadElementos), sizeof(this->cantidadElementos));
 
 	std::vector<ElementoHash>::iterator it_elementos;
-	for( it_elementos = this->ElementosHash.begin(); it_elementos != this->ElementosHash.end(); it_elementos++)
+	for( it_elementos = this->elementosHash.begin(); it_elementos != this->elementosHash.end(); it_elementos++)
 	{
 		stringstream ssElemento;
 		it_elementos->serializarElementoHash(&ssElemento);
