@@ -101,7 +101,10 @@ private:
 	//Luego se modifica el valor "cantidadDeBloques" que determina el direccionamiento de la funciï¿½n de hash.
 	void duplicarTablaHash();
 
-	void redispersarSucesionCubetas();
+	//Redispersa en la tabla todos los elementos de una serie de cubetas enganchada (o sea, que pertenecen a un mismo bloque o entrada de la tabla.
+	//Cuando una tabla no se reorganiza toda, sino sólo el bloque que rebalsó, por lo tanto los otros bloques comparten cubetas. Con esto se
+	//hace que cada bloque abra su cubeta y reciba sus datos.
+	void redispersarSucesionCubetas(std::vector<DatoCubetaHash*> cubetasSucesivas, unsigned int numeroDeBloque, DatoTablaHash* datoTabla);
 
 	void manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCubetaDesbordada, DatoTablaHash* datoTablaDesbordada, unsigned int numeroDeBloque);
 
