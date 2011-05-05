@@ -111,7 +111,7 @@ int DatoElementoNodo::getSize() {
 	size += sizeof(int);//tamanioClave
 	size += this->clave.length();
 	size += sizeof(int);//cantidadLibros
-	size += (sizeof(uint32_t) * this->idLibros.size());
+	size += (sizeof(uint32_t) * (this->idLibros.size()));
 
 	return size;
 }

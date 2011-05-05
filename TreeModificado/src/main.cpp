@@ -179,64 +179,94 @@ int main() {
 	DatoElementoNodo* elemento14 = new DatoElementoNodo(
 			"iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii", 91111);
 
+	tree->insert(elemento);
+
+	delete tree;
+	delete (elemento);
+	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
+
 	tree->insert(elemento1);
 
 	delete tree;
-
+	delete (elemento1);
 	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
-	tree->insert(elemento2);
-	delete tree;
 
+	tree->insert(elemento2);
+
+	delete tree;
+	delete (elemento2);
 	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
 
 	tree->insert(elemento3);
 
 	delete tree;
+	delete (elemento3);
 	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
 
 	tree->insert(elemento4);
 
 	delete tree;
+	delete (elemento4);
 	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
 
 	tree->insert(elemento5);
 
 	delete tree;
+	delete (elemento5);
 	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
 
 	tree->insert(elemento6);
 
 	delete tree;
+	delete (elemento6);
 	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
 
 	tree->insert(elemento7);
 
 	delete tree;
+	delete (elemento7);
 	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
 
 	tree->insert(elemento8);
 
 	delete tree;
+	delete (elemento8);
 	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
 
 	tree->insert(elemento9);
 
 	delete tree;
+	delete (elemento9);
 	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
 
 	tree->insert(elemento10);
 
 	delete tree;
+	delete (elemento10);
 	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
 
 	tree->insert(elemento11);
 
 	delete tree;
+	delete (elemento11);
 	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
 
 	tree->insert(elemento12);
 
 	delete tree;
+	delete (elemento12);
+	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
+
+	tree->insert(elemento13);
+
+	delete tree;
+	delete (elemento13);
+	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
+
+	tree->insert(elemento14);
+
+	delete tree;
+	delete (elemento14);
 	tree = new BPlusTree("arbolito.dat", BLOCKSIZE);
 
 	string dumpFileName = "text-tree.txt";

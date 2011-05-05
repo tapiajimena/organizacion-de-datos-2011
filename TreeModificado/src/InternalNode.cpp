@@ -476,8 +476,8 @@ void InternalNode::deserialize(iostream* ios)
 	 * <Nivel><IdNodo><CantidadClaves>[<SizeClave><Clave>]...[<SizeClave><Clave>]<idHijo>...<idHijo>
 	 * */
 	int sizeClave =0, cantidadClaves = 0, hijo= 0;
-	char* claveAux = (char*)malloc(0);
-	string clave;
+	char* claveAux;
+	string clave="";
 
 
 	//el nivel se carga desde afuera
@@ -488,13 +488,15 @@ void InternalNode::deserialize(iostream* ios)
 	for(int i =0; i < cantidadClaves; i++)
 	{
 		ios->read(reinterpret_cast<char *>(&sizeClave), sizeof(sizeClave));//sizeClave
-		claveAux= (char*)realloc(claveAux, sizeClave);
+		claveAux = new char[sizeClave];
 		ios->read(claveAux, sizeClave);//clave
 
-		clave = claveAux;
-		clave = clave.substr(0,sizeClave);
+		clave.assign(claveAux,sizeClave);
+
 
 		this->keys.push_back(clave);
+
+		delete[] claveAux;
 
 	}
 
