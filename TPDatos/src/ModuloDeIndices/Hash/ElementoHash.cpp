@@ -18,6 +18,11 @@ ElementoHash::ElementoHash(std::string palabra, uint32_t offsetALibro) {
 ElementoHash::~ElementoHash() {
 }
 
+bool ElementoHash::esIgualAElemento(ElementoHash elemento)
+{
+	return (strcmp(this->palabra.c_str(), elemento.getPalabra().c_str()) == 0 && this->offsetALibro == elemento.getOffsetALibro() );
+}
+
 unsigned int ElementoHash::getTamanioBytesEnDisco()
 {
 	return this->tamanioBytes;
