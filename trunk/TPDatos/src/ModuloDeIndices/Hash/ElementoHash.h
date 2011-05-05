@@ -23,6 +23,8 @@ private:
 
 public:
 
+	bool esIgualAElemento(ElementoHash elemento);
+
 	ElementoHash(std::string palabra, uint32_t offsetALibro);
 	virtual ~ElementoHash();
 

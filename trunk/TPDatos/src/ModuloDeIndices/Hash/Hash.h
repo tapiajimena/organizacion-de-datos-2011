@@ -90,7 +90,7 @@ private:
 	 * Las devuelve en un std::pair en que el 1er elemento es el puntero al datoTabla y el segundo el número de dicho dato en la tabla.
 	 * Se deben destruir todos los DatoTablaHash* del vector desupés de usar.
 	 */
-	std::vector< std::pair<DatoTablaHash*, unsigned int> > obtenerBloquesConMismaCubeta(unsigned int nroDeBloque, unsigned int offsetCubeta);
+	std::vector< unsigned int > obtenerBloquesConMismaCubeta(unsigned int nroDeBloque, unsigned int offsetCubeta);
 
 	//Agrega una nueva cubeta en el archivo de cubetas, le escribe la informaciï¿½n contenida en datoCubeta y devuelve
 	//el offset a esta nueva cubeta.
@@ -101,7 +101,12 @@ private:
 	//Luego se modifica el valor "cantidadDeBloques" que determina el direccionamiento de la funciï¿½n de hash.
 	void duplicarTablaHash();
 
+	void redispersarSucesionCubetas();
+
 	void manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCubetaDesbordada, DatoTablaHash* datoTablaDesbordada, unsigned int numeroDeBloque);
+
+	//Inserta un elemento de hash.
+	void insertarElemento(ElementoHash elemento);
 
 public:
 	//Hash();
