@@ -4,7 +4,6 @@ QT += core
 HEADERS += src/ModuloDeArchivos/TestArchivos.h \
     src/ModuloDeIndices/Hash/ElementoHash.h \
     src/ModuloDeIndices/Hash/Hash.h \
-    src/ModuloDeIndices/Indexador.h \
     src/ModuloDeTipos/DatoCubetaHash.h \
     src/ModuloDeTipos/DatoTablaHash.h \
     src/ModuloEstructuras/Libro.h \
@@ -14,9 +13,16 @@ HEADERS += src/ModuloDeArchivos/TestArchivos.h \
     src/ModuloParser/ParserDePalabras.h \
     src/ModuloParser/ParserDeTitulo.h \
     Pruebas/TestArchivoControlLibro.h \
+    src/ModuloDeIndices/Indexador.h \
+    src/ModuloDeIndices/ArbolBMas/src/ArbolBMas.h \
+    src/ModuloDeIndices/ArbolBMas/src/NodoArbol.h \
+    src/ModuloDeIndices/ArbolBMas/src/NodoHojaArbol.h \
+    src/ModuloDeIndices/ArbolBMas/src/NodoInternoArbol.h \
     src/ModuloControladores/ControladorBiblioteca.h \
+    src/ModuloControladores/ControladorIndice.h \
     src/ModuloDeTipos/DatoElementoNodo.h \
     src/ModuloDeInterfaz/Instruccion_VerEstructura.h \
+    src/ModuloEstructuras/Configuracion.cpp \
     src/ModuloDeInterfaz/Instruccion_QuitarArchivo.h \
     src/ModuloDeInterfaz/Instruccion_ObtenerArchivo.h \
     src/ModuloDeInterfaz/Instruccion_ListarArchivosTomados.h \
@@ -26,6 +32,7 @@ HEADERS += src/ModuloDeArchivos/TestArchivos.h \
     src/ModuloDeInterfaz/Instruccion_ProcesarAutor.h \
     src/ModuloDeInterfaz/Instruccion_ProcesarEditorial.h \
     src/ModuloDeInterfaz/Instruccion.h \
+    src/ModuloEstructuras/Configuracion.h \
     src/ModuloDeInterfaz/ManejadorInstrucciones.h \
     src/ModuloDeTipos/FrontCodedString.h \
     src/ModuloParser/ParserAuxiliar.h \
@@ -52,8 +59,10 @@ SOURCES += src/ModuloDeIndices/Hash/ElementoHash.cpp \
     src/ModuloParser/ParserDeEditorial.cpp \
     src/ModuloParser/ParserDePalabras.cpp \
     src/ModuloParser/ParserDeTitulo.cpp \
+    src/ModuloEstructuras/Configuracion.cpp \
     Pruebas/TestArchivoControlLibro.cpp \
     src/ModuloControladores/ControladorBiblioteca.cpp \
+    src/ModuloControladores/ControladorIndice.cpp \
     src/ModuloDeTipos/DatoElementoNodo.cpp \
     src/ModuloDeInterfaz/Instruccion_VerEstructura.cpp \
     src/ModuloDeInterfaz/Instruccion_QuitarArchivo.cpp \
@@ -77,6 +86,11 @@ SOURCES += src/ModuloDeIndices/Hash/ElementoHash.cpp \
     src/ModuloDeTipos/Dato.cpp \
     src/ModuloDeTipos/DatoControlLibro.cpp \
     src/ModuloDeArchivos/ManejadorArchivo.cpp \
+    src/ModuloDeIndices/ArbolBMas/src/ArbolBMas.cpp \
+    src/ModuloDeIndices/ArbolBMas/src/NodoArbol.cpp \
+    src/ModuloDeIndices/ArbolBMas/src/NodoHojaArbol.cpp \
+    src/ModuloDeIndices/ArbolBMas/src/NodoInternoArbol.cpp \
+    src/ModuloDeTipos/DatoNodo.cpp \
     Common/Utilitarios/Logger.cpp \
     Common/Utilitarios/ServiceClass.cpp \
     src/ModuloEstructuras/Diccionario.cpp \
