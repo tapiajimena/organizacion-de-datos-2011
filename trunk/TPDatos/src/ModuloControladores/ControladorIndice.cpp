@@ -119,7 +119,7 @@ void ControladorIndice::indexarPorAutorOEditorial(pair<Libro*,uint32_t> parLibro
 	DatoElementoNodo* ele = new DatoElementoNodo(parLibroOffset.first->getAutor(),
 								parLibroOffset.second);
 
-	//cout<<endl<<"EL ELEMENTOOOOoo: "<<ele->getClave()<<endl;
+	cout<<endl<<"EL ELEMENTOOOOoo: "<<ele->getClave()<<endl;
 
 	indiceArbol->insert(ele);
 	//indiceArbol->dump("pirulo.txt");
