@@ -521,11 +521,6 @@ void Hash::insertarElemento(ElementoHash elemento)
 	this->insertarClave(registroHash);
 }
 
-void Hash::insertarClaveLibro(Libro* libro)
-{
-	//DEPRECATED
-}
-
 void Hash::insertarClave(std::pair<std::string, uint32_t> registroHash)
 {
 	//Elementos a insertar
@@ -654,6 +649,161 @@ std::vector<uint32_t> Hash::buscarFraseEnHash(std::string fraseConPalabrasClave)
 	}
 
 	return resultadosFinales;
+}
+
+void Hash::escribirArchivoIndice(fstream &archivoSalidaIndice)
+{
+	stringstream ssIndice;
+	ssIndice << "INDICE HASH\n\n";
+	ssIndice << "Nombre de archivo de tabla de hash: " << this->nombreArchivoTabla << "\n";
+	ssIndice << "Nombre de archivo de cubetas de hash (datos): " << this->nombreArchivoCubetas << "\n";
+	ssIndice << "Cantidad de entradas de la tabla (bloques direccionables): " << this->cantidadDeBloques << "\n";
+	ssIndice << "Cantidad de cubetas (unidades de almacenamiento de datos) efectivas: " << this->cantidadDeCubetas << "\n";
+
+	archivoSalidaIndice<<ssIndice.str();
+}
+
+void Hash::escribirArchivosTablaDatosYEspaciosLibres(fstream &archivoSalidaTabla, fstream &archivoSalidaDatos, fstream &archivoSalidaEspaciosLibres)
+{
+
+
+	archivoSalidaTabla << "TABLA DE HASH\n\n";
+	archivoSalidaDatos << "CUBETAS DE HASH\n\n";
+	archivoSalidaEspaciosLibres << "REGISTRO DE ESPACIOS LIBRES\n";
+
+	archivoSalidaEspaciosLibres << "Se muestran las cubetas que no tienen Elementos (claves) guardados, aunque están siempre incializadas y prestas a recibirlos\n\n";
+
+	//Se recorren en orden las entradas de la tabla, y las cubetas a medida que son direccionadas.
+	for( unsigned int numeroDeBloque = 0; numeroDeBloque < this->cantidadDeBloques; numeroDeBloque++)
+	{
+		DatoTablaHash* datoTabla = this->levantarDatoTabla( this->calcularOffsetBloqueEnTabla(numeroDeBloque));
+		stringstream ssTabla;
+
+		//Escribimos archivo de tabla
+		ssTabla << "Número de Bloque: " << numeroDeBloque << "\n";
+		ssTabla << "*** Cantidad de Elementos del bloque: " << datoTabla->getCantidadDeElementos() << "\n";
+		ssTabla << "*** Offset a la Cubeta de Datos Inicial del bloque: " << datoTabla->getOffsetCubeta() << "\n";
+		ssTabla << "\n";
+
+		//Escribimos cubetas de la entrada de la tabla en archivo de salida de cubetas.
+		bool quedanCubetas = true;
+		uint32_t offsetCubeta = datoTabla->getOffsetCubeta();
+		unsigned int numeroDeCubetaSucesiva = 1;
+		while (quedanCubetas)
+		{
+			DatoCubetaHash* datoCubeta = this->levantarDatoCubeta( offsetCubeta );
+			stringstream ssCubetas;
+
+			ssCubetas << "Cubeta del Bloque Número " << numeroDeBloque << "\n";
+			ssCubetas << "Número de cubeta del mismo bloque: " << numeroDeCubetaSucesiva << "\n";
+			ssCubetas << "Cantidad de Elementos (Claves) almacenados en la cubeta: " << datoCubeta->getCantidadDeElementos() << "\n";
+			ssCubetas << "Bytes libres en la cubeta: " << datoCubeta->getBytesLibres() <<"\n";
+			ssCubetas << "Offset en disco de la cubeta Actual: " << offsetCubeta << "		";
+			ssCubetas << "Offset de cubeta continuación: " << datoCubeta->getOffsetCubetaContinuacion() << "\n";
+
+			//Registro de cubetas libres:
+			if (datoCubeta->getCantidadDeElementos() == 0)// && numeroDeCubetaSucesiva > 1)
+			{
+				stringstream ssLibre;
+				ssLibre << "Bloque que contiene la cubeta libre: " << numeroDeBloque << "\n";
+				ssLibre << "Número de cubeta sucesiva del bloque: " << numeroDeCubetaSucesiva << "\n";
+				ssLibre << "Offset de la cubeta en el archivo: " << offsetCubeta << "\n";
+
+				archivoSalidaEspaciosLibres << ssLibre.str();
+			}
+
+			delete datoCubeta;
+
+			archivoSalidaDatos << ssCubetas.str();
+			archivoSalidaDatos<< "\n";
+			quedanCubetas = (offsetCubeta != 0);
+			offsetCubeta = datoCubeta->getOffsetCubetaContinuacion();
+			numeroDeCubetaSucesiva++;
+		}
+		archivoSalidaDatos<< "\n\n";
+
+
+		delete datoTabla;
+
+		//Reiniciamos flujo de datos
+		archivoSalidaTabla<<ssTabla.str();
+		ssTabla.str("");
+		ssTabla.clear();
+	}
+}
+
+void Hash::escribirEstructuraEnArchivos(std::string baseNombreArchivo)
+{
+	//TODO tomar el path en que deben ponerse estos archivos de la clase de paulus...
+
+	//Se generan los archivos según especificaciones del enunciado del TP.
+	std::string nombreArchivoSalidaIndice;
+	nombreArchivoSalidaIndice.append(baseNombreArchivo);
+	nombreArchivoSalidaIndice.append("_indice.txt");
+
+	std::string nombreArchivoSalidaTabla;
+	nombreArchivoSalidaTabla.append(baseNombreArchivo);
+	nombreArchivoSalidaTabla.append("_tabla.txt");
+
+	std::string nombreArchivoSalidaLibres;
+	nombreArchivoSalidaLibres.append(baseNombreArchivo);
+	nombreArchivoSalidaLibres.append("_libres.txt");
+
+	std::string nombreArchivoSalidaDatos;
+	nombreArchivoSalidaDatos.append(baseNombreArchivo);
+	nombreArchivoSalidaDatos.append("_datos.txt");
+
+	//ABRIMOS ARCHIVOS
+	//***************
+	fstream archivoSalidaIndice;
+	bool arcIndiceOk = ManejadorArchivo::Crear(nombreArchivoSalidaIndice.c_str(), archivoSalidaIndice, false);
+
+	fstream archivoSalidaTabla;
+	bool arcTablaOk = ManejadorArchivo::Crear(nombreArchivoSalidaTabla.c_str(), archivoSalidaTabla, false);
+
+	fstream archivoSalidaLibres;
+	bool arcLibresOk = ManejadorArchivo::Crear(nombreArchivoSalidaLibres.c_str(), archivoSalidaLibres, false);
+
+	fstream archivoSalidaDatos;
+	bool arcDatosOk = ManejadorArchivo::Crear(nombreArchivoSalidaDatos.c_str(), archivoSalidaDatos, false);
+
+	if ( arcIndiceOk && arcTablaOk && arcLibresOk && arcDatosOk)
+	{
+		//ESCRITURA DE ARCHIVOS
+		//*********************
+
+		//ARCHIVO DE INDICE
+		this->escribirArchivoIndice(archivoSalidaIndice);
+
+		//ARCHIVOs DE TABLA Y DE DATOS
+		this->escribirArchivosTablaDatosYEspaciosLibres(archivoSalidaTabla, archivoSalidaDatos, archivoSalidaLibres);
+
+		//SALIDA POR PANTALLA Y CIERRE DE ARCHIVOS
+		//****************************************
+		std::cout<<"Generados los siguientes archivos: "<<std::endl;
+		std::cout<<"********* *** *******************"<<std::endl<<std::endl;
+		std::cout<<nombreArchivoSalidaIndice<<std::endl;
+		std::cout<<nombreArchivoSalidaTabla<<std::endl;
+		std::cout<<nombreArchivoSalidaLibres<<std::endl;
+		std::cout<<nombreArchivoSalidaDatos<<std::endl;
+
+		ManejadorArchivo::Cerrar(archivoSalidaIndice);
+		ManejadorArchivo::Cerrar(archivoSalidaTabla);
+		ManejadorArchivo::Cerrar(archivoSalidaLibres);
+		ManejadorArchivo::Cerrar(archivoSalidaDatos);
+	}
+	else
+	{
+		if(arcIndiceOk)
+			ManejadorArchivo::Cerrar(archivoSalidaIndice);
+		if(arcTablaOk)
+			ManejadorArchivo::Cerrar(archivoSalidaTabla);
+		if(arcLibresOk)
+			ManejadorArchivo::Cerrar(archivoSalidaLibres);
+		if(arcDatosOk)
+			ManejadorArchivo::Cerrar(archivoSalidaDatos);
+		std::cout<<"ERROR EN LA GENERACIÓN DE ARCHIVOS DE SALIDA"<<std::endl;
+	}
 }
 
 Hash::~Hash()

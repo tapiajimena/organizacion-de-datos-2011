@@ -111,15 +111,16 @@ private:
 	//Inserta un elemento de hash.
 	void insertarElemento(ElementoHash elemento);
 
+	void escribirArchivoIndice(fstream &archivoSalidaIndice);
+
+	void escribirArchivosTablaDatosYEspaciosLibres(fstream &archivoSalidaTabla, fstream &archivoSalidaDatos, fstream &archivoSalidaEspaciosLibres);
+
 public:
 	//Hash();
 
 	Hash(std::string nombreArchivoTabla, std::string nombreArchivoCubetas);
 
 	virtual ~Hash();
-
-	//Ingresa un libro por su clave. El libro de
-	void insertarClaveLibro(Libro* libro);
 
 	//Agrega la palabra
 	void insertarClave(std::pair<std::string, uint32_t> registroHash);
@@ -136,6 +137,10 @@ public:
 	std::string getNombreArchivoTabla();
 
 	std::string getNombreArchivoCubetas();
+
+	//Pasar sólo las 1eras letras que identifican a los archivos generados. Se termina de formar sus nombres
+	//en el algoritmo.
+	void escribirEstructuraEnArchivos(std::string baseNombreArchivo);
 };
 
 #endif /* HASH_H_ */
