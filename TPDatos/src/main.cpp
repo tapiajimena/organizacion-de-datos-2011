@@ -12,12 +12,12 @@
 
 #include <iostream>
 
-#include "./Common/Constantes.h"
-#include "./Common/Utilitarios/Logger.h"
+#include "../Common/Constantes.h"
+#include "../Common/Utilitarios/Logger.h"
 
+#include "ModuloEstructuras/Configuracion.h"
 #include "ModuloEstructuras/Diccionario.h"
 
-#include "ModuloDeTipos/DatoNodo.h"
 #include "ModuloDeTipos/DatoLibro.h"
 #include "ModuloDeTipos/DatoTablaHash.h"
 #include "ModuloDeTipos/DatoCubetaHash.h"
@@ -28,9 +28,9 @@
 #include "ModuloControladores/ControladorBiblioteca.h"
 
 #include "ModuloDeIndices/Indexador.h"
-#include "ModuloDeIndices/ArbolBMas/src/ArbolBMas.h"
-#include "ModuloDeIndices/ArbolBMas/src/NodoInternoArbol.h"
-#include "ModuloDeIndices/ArbolBMas/src/NodoInternoArbol.h"
+#include "ModuloDeIndices/ArbolBMas/BPlusTree.h"
+#include "ModuloDeIndices/ArbolBMas/InternalNode.h"
+#include "ModuloDeIndices/ArbolBMas/LeafNode.h"
 //#include "ModuloDeIndices/ArbolBMas/src/TestArbol.h"
 
 #include "ModuloEstructuras/Libro.h"
@@ -43,64 +43,91 @@
 #include "ModuloDeIndices/Hash/Hash.h"
 #include "ModuloDeIndices/Hash/ElementoHash.h"
 
-using namespace std;
+
+#include <locale>
+#include <string>
+#include <cstdio>
+#include <QString>
+//#include <gtk/gtk.h>
+#include <qtextstream.h>
+#include <unicode/uchar.h>
+#include <unicode/ustring.h>
+#include <unicode/normalizer2.h>
+#include <unicode/unistr.h>
 
 
-void testAgregarLibros()
+int main(int cantidad, char* argumentos[])
 {
-	//FIXME cuando se intentan agregar archivos que no existen hay sigsegv
-	ControladorBiblioteca* controlBiblioteca = new ControladorBiblioteca(((string)"Indices/")+ARCHIVO_BIBLIOTECA,
-																	((string)"Indices/")+ARCHIVO_CONTROL_BIBLIOTECA);
-	controlBiblioteca->ingresarLibro("librotest.txt");
-	controlBiblioteca->ingresarLibro("librotest.txt");
-	controlBiblioteca->ingresarLibro("librotest.txt");
+	string str;
+	QByteArray vec;
+	QString rdo, latin,rdo2;
+	QString aux("Páulo miguel -Fernández123456789&-*/+|1!||@·~½¬{[]}=}\¸¸¿+´}}-_.,,");
+	QChar qChar;
 
-	delete (controlBiblioteca);
-}
+	//rdo = aux.normalized(QString::NormalizationForm_C);
 
-void testListarLibrosDeBiblioteca()
-{
-	ControladorBiblioteca* controlBiblioteca = new ControladorBiblioteca(((string)"Indices/")+ARCHIVO_BIBLIOTECA,
-																	((string)"Indices/")+ARCHIVO_CONTROL_BIBLIOTECA);
-
-	list<uint32_t>::iterator it;
-	list<uint32_t> biblioteca = controlBiblioteca->recuperarLibrosDeBiblioteca();
-
-	for(it=biblioteca.begin(); it != biblioteca.end(); ++it)
-		cout<<"ID LIBRO: "<<*it<<endl;
+	/*
+    for (UChar32 c = UCHAR_MIN_VALUE; c <= UCHAR_MAX_VALUE; ++ c)
+    {
+        cout<<"El car "<<(char)c<<" es " <<c<<endl;
+    }
+    */
 
 
-	delete (controlBiblioteca);
+/*
+	rdo = aux.normalized(QString::NormalizationForm_D,QChar::Unicode_5_0);
+	rdo = rdo.toCaseFolded();
 
-}
+    latin = aux.normalized(QString::NormalizationForm_D,QChar::Unicode_5_0);
+    vec = aux.toUtf8();
 
-void testIndexar(char tipoIndice)
-{
+
+    cout<<"AUX: " <<aux.toStdString()<<endl;
+
+    //cout<<"NORMALIZADO+CASE: " <<rdo.at(0).toAscii()<<endl;
+    //cout<<"EN LATIN: " <<latin.toStdString()<<endl;
+    for (int i=0; i < rdo.size(); i++)
+    {
+    	qChar = rdo.at(i);
+    	if ( (qChar.isLetterOrNumber()) || (qChar.isSpace()) || (qChar =='-')|| (qChar =='&'))
+    		str+= qChar.toAscii();
+    }
+    cout<<"RDO: " <<str<<endl;
+    */
+
+/*
+    ManejadorInstrucciones* instrucciones = new ManejadorInstrucciones(argumentos, cantidad);
+    instrucciones->ejecutarInstruccionElegida();
+    delete(instrucciones);
+*/
+	Configuracion* conf = Configuracion::GetInstancia();
+
 	Indexador* indexador = new Indexador();
 
-	indexador->indexar(tipoIndice);
-	delete (indexador);
+	indexador->indexar(INDICE_AUTOR);
+
+	Logger::log("Instruccion_ProcesarAutor", "ejecutar",
+			"Se indexa por autor.");
+
+	delete(indexador);
+
+
+/*
+	Configuracion* conf = Configuracion::GetInstancia("conf.ini");
+	//Indexador* indexador = new Indexador(conf->getPathCarpetaTrabajo());
+	//delete(indexador);
+
+	string nombreArchivo = "Reportes";
+	ManejadorArchivo::CrearDirectorios(conf->getPathCarpetaReportes());
+	ManejadorArchivo::CopiarArchivo(conf->getPathCarpetaTrabajo() + ARCHIVO_CONTROL_BIBLIOTECA,
+						conf->getPathCarpetaReportes());
+	ManejadorArchivo::RenombrarArchivo( conf->getPathCarpetaReportes() + ARCHIVO_CONTROL_BIBLIOTECA,
+									conf->getPathCarpetaReportes() + nombreArchivo +
+									ARCHIVO_ESPACIOSLIBRES_SUFIX + EXTENSION_ARCHIVO_REPORTE);
+*/
+	cout<<"Chau mundo"<<endl;
 }
 
-void testEliminarIndexado(uint32_t idLibro)
-{
-	Indexador* indexador = new Indexador();
-
-	//tambien lo elimina de la biblioteca
-	indexador->eliminarIndexado(idLibro);
-	delete (indexador);
-}
-
-int main(int argc, char *argv[])
-{
-	//testAgregarLibros();
-
-	ManejadorInstrucciones* m = new ManejadorInstrucciones(argv,argc);
-
-	m->ejecutarInstruccionElegida();
-
-    return 0;
-}
 
 
 
