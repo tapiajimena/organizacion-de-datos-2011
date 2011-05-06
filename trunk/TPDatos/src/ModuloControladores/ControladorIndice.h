@@ -24,7 +24,7 @@
 #include "../ModuloEstructuras/Configuracion.h"
 #include "../ModuloEstructuras/Libro.h"
 #include "../ModuloDeIndices/Hash/Hash.h"
-#include "../ModuloDeIndices/ArbolBMas/src/ArbolBMas.h"
+#include "../ModuloDeIndices/ArbolBMas/BPlusTree.h"
 
 
 using namespace std;
@@ -32,7 +32,7 @@ class ControladorIndice
 {
 private:
 	Hash* 		indiceHash;
-	ArbolBMas* 	indiceArbol;
+	BPlusTree* 	indiceArbol;
 	string		pathCarpeta;//path de trabajo
 
 

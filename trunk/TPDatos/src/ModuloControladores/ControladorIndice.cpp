@@ -28,15 +28,15 @@ ControladorIndice::ControladorIndice(string pathCarpeta)
 
 void ControladorIndice::nuevoIndiceAutor()
 {
-		this->indiceArbol = new ArbolBMas(
-				pathCarpeta + ARCHIVO_INDICE_AUTOR + EXTENSION_ARCHIVO_INDICE,
-				SIZE_BLOQUE);
+	this->indiceArbol = new BPlusTree(
+			pathCarpeta + ARCHIVO_INDICE_AUTOR + EXTENSION_ARCHIVO_INDICE,
+			SIZE_BLOQUE);
 }
 
 
 void ControladorIndice::nuevoIndiceEditorial()
 {
-	this->indiceArbol = new ArbolBMas(
+	this->indiceArbol = new BPlusTree(
 			pathCarpeta + ARCHIVO_INDICE_EDITORIAL + EXTENSION_ARCHIVO_INDICE,
 			SIZE_BLOQUE);
 }
@@ -76,14 +76,14 @@ void ControladorIndice::eliminarIndexado(Libro* libroRemover)
 {
 
 	//se remueven los indices de autor del arbol
-	ArbolBMas* indiceAutorArbol = new ArbolBMas(
+	BPlusTree* indiceAutorArbol = new BPlusTree(
 			pathCarpeta + ARCHIVO_INDICE_AUTOR + EXTENSION_ARCHIVO_INDICE,
 			SIZE_BLOQUE);
 	//indiceAutorArbol->eliminar(libroRemover->getAutor());
 	delete(indiceAutorArbol);
 
 	//se remueven los indices de editorial del arbol
-	ArbolBMas* indiceEditorialArbol = new ArbolBMas(
+	BPlusTree* indiceEditorialArbol = new BPlusTree(
 			pathCarpeta + ARCHIVO_INDICE_EDITORIAL + EXTENSION_ARCHIVO_INDICE,
 			SIZE_BLOQUE);
 	//indiceEditorialArbol->eliminar(libroRemover->getEditorial());
@@ -111,12 +111,20 @@ void ControladorIndice::eliminarIndexado(Libro* libroRemover)
 
 void ControladorIndice::indexarPorAutorOEditorial(pair<Libro*,uint32_t> parLibroOffset)
 {
-	DatoElementoNodo* ele = new DatoElementoNodo();
+/*
+ 	BPlusTree* arbol= new BPlusTree(
+			pathCarpeta + ARCHIVO_INDICE_AUTOR + EXTENSION_ARCHIVO_INDICE,
+			SIZE_BLOQUE);
+*/
+	DatoElementoNodo* ele = new DatoElementoNodo(parLibroOffset.first->getAutor(),
+								parLibroOffset.second);
 
-	ele->setClave(((Libro*)(parLibroOffset.first))->getAutor());
-	ele->agregarLibro(parLibroOffset.second);
+	//cout<<endl<<"EL ELEMENTOOOOoo: "<<ele->getClave()<<endl;
 
-	//this->indiceArbol->insertar(ele);
+	indiceArbol->insert(ele);
+	//indiceArbol->dump("pirulo.txt");
+
+	//delete(arbol);
 	delete(ele);
 }
 
@@ -146,8 +154,10 @@ void ControladorIndice::indexarPorPalabras(pair<Libro*,uint32_t> parLibroOffset)
 
 ControladorIndice::~ControladorIndice()
 {
+
 	//delete (indiceHash);
-	//delete (indiceArbol);
+	//indiceArbol->dump("pirulo");
+	delete (indiceArbol);
 }
 
 

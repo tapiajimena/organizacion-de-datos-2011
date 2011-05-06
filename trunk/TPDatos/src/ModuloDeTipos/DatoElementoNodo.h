@@ -49,6 +49,8 @@ public:
 
 	int comparar(DatoElementoNodo* ele);
 
+	int comparar(string clave);
+
 	string getClave();
 
 	list<uint32_t> getLibros();

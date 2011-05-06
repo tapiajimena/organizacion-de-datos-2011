@@ -104,6 +104,8 @@ void Indexador::eliminarIndexado(uint32_t idLibro)
 
 Indexador::~Indexador()
 {
+
+
 	delete(controlBiblioteca);
 	delete(controlIndice);
 
