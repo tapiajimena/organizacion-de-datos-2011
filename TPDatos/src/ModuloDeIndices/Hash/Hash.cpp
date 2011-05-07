@@ -148,42 +148,50 @@ void Hash::escribirDatoTabla(DatoTablaHash* datoTabla, uint32_t offsetDatoTabla)
 			TAMANIODATOTABLA);
 }
 
-std::vector<uint32_t> Hash::acumularResultados(DatoCubetaHash* datoCubeta,
-		std::string palabra) {
+std::vector<uint32_t> Hash::acumularResultados(DatoCubetaHash* datoCubeta, std::string palabra)
+{
 	std::vector<uint32_t> resultados;
 
 	bool siguienteCubeta = true; //indica si hay siguiente cubeta donde continuan los datos de la presente.
 	uint32_t offsetSiguienteCubeta;
 
-	while (siguienteCubeta) {
-		if (datoCubeta->getOffsetCubetaContinuacion() == 0) {
+	while (siguienteCubeta)
+	{
+		if (datoCubeta->getOffsetCubetaContinuacion() == 0)
+		{
 			siguienteCubeta = false;
 		}
 
 		offsetSiguienteCubeta = datoCubeta->getOffsetCubetaContinuacion();
+		std::vector<ElementoHash> elementosDeCubeta = datoCubeta->getElementos();
 
-		for (unsigned int x = 0; x < datoCubeta->getElementos().size(); x++) {
-			ElementoHash elemento = datoCubeta->getElementos().at(x);
+		for (unsigned int x = 0; x < elementosDeCubeta.size(); x++)
+		{
+			ElementoHash elemento = elementosDeCubeta.at(x);
 
-			if (elemento.getPalabra() == palabra) {
+			if (elemento.getPalabra() == palabra)
+			{
 				//Verificamos si el offset de ese libro ya fue ingresado. Si as� fue, no se vuelve a ingresar.
 				bool yaFueIngresado = false;
 				std::vector<uint32_t>::iterator it;
 
-				for (it = resultados.begin(); it != resultados.end()
-						&& yaFueIngresado == false; it++) {
+				for (it = resultados.begin(); it != resultados.end() && !yaFueIngresado; it++)
+				{
 					if ((*it) == elemento.getOffsetALibro())
 						yaFueIngresado = true;
 				}
 
-				if (!yaFueIngresado) {
+				if (!yaFueIngresado)
+				{
+					std::cout<<"Elemento que se agrega: "<<elemento.getOffsetALibro()<<std::endl;
 					resultados.push_back(elemento.getOffsetALibro());
 				}
 
 			}
 		}
 
-		if (siguienteCubeta) {
+		if (siguienteCubeta)
+		{
 			delete datoCubeta;
 			datoCubeta = this->levantarDatoCubeta(offsetSiguienteCubeta);
 		}
@@ -921,8 +929,7 @@ std::vector<uint32_t> Hash::buscarPalabraEnHash(std::string palabraClave) {
 
 	DatoTablaHash* datoTabla = this->levantarDatoTabla(offsetDatoTabla);
 
-	DatoCubetaHash* datoCubeta = this->levantarDatoCubeta(
-			datoTabla->getOffsetCubeta());
+	DatoCubetaHash* datoCubeta = this->levantarDatoCubeta(datoTabla->getOffsetCubeta());
 
 	std::vector<uint32_t> resultadosBusqueda = this->acumularResultados(datoCubeta, palabraClave);
 
