@@ -34,10 +34,14 @@ Configuracion* Configuracion::GetInstancia(string pathConfiguracion)
 
 Configuracion::Configuracion(string pathConfiguracion)
 {
-	char linea[512],*aux;
+	char linea[512];
+	char* aux;
 	fstream arcConf;
 
-	Abrir(pathConfiguracion.c_str(), arcConf, false);
+	char* cstrPath = new char [pathConfiguracion.size()+1];
+	strcpy(cstrPath,pathConfiguracion.c_str());
+
+	Abrir(cstrPath, arcConf, false);
 	while (!arcConf.eof())
 	{
 		arcConf.getline(linea,sizeof(linea));
@@ -67,6 +71,8 @@ Configuracion::Configuracion(string pathConfiguracion)
 	Cerrar(arcConf);
 
 	CrearDirectorios(getPathCarpetaTrabajo());
+
+	delete[] cstrPath;
 
 }
 
