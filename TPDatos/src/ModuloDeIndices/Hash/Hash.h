@@ -54,7 +54,7 @@ public: //solo para debuggear, esto es private.
 	//direccionar a una misma cubeta en el archivo de cubetas.
 	unsigned int cantidadDeBloques;
 
-	//Cantidad de bloques efectivamente creados y que contienen alguna informaciï¿½n (incluye cubetas de extensión).
+	//Cantidad de bloques efectivamente creados y que contienen alguna informaciï¿½n (incluye cubetas de extensiï¿½n).
 	unsigned int cantidadDeCubetas;
 
 	//Estructuras de archivo
@@ -87,9 +87,9 @@ public: //solo para debuggear, esto es private.
 	uint32_t calcularOffsetBloqueEnTabla(unsigned int numeroBloque);
 
 	/*
-	 * Devuelve todas las entradas de la tabla que apuntan a la misma cubeta de datos que el bloque indicado por parámetro.
-	 * Las devuelve en un std::pair en que el 1er elemento es el puntero al datoTabla y el segundo el número de dicho dato en la tabla.
-	 * Se deben destruir todos los DatoTablaHash* del vector desupés de usar.
+	 * Devuelve todas las entradas de la tabla que apuntan a la misma cubeta de datos que el bloque indicado por parï¿½metro.
+	 * Las devuelve en un std::pair en que el 1er elemento es el puntero al datoTabla y el segundo el nï¿½mero de dicho dato en la tabla.
+	 * Se deben destruir todos los DatoTablaHash* del vector desupï¿½s de usar.
 	 */
 	std::vector< unsigned int > obtenerBloquesConMismaCubeta(unsigned int nroDeBloque, unsigned int offsetCubeta);
 
@@ -103,7 +103,7 @@ public: //solo para debuggear, esto es private.
 	void duplicarTablaHash();
 
 	//Redispersa en la tabla todos los elementos de una serie de cubetas enganchada (o sea, que pertenecen a un mismo bloque o entrada de la tabla.
-	//Cuando una tabla no se reorganiza toda, sino sólo el bloque que rebalsó, por lo tanto los otros bloques comparten cubetas. Con esto se
+	//Cuando una tabla no se reorganiza toda, sino sï¿½lo el bloque que rebalsï¿½, por lo tanto los otros bloques comparten cubetas. Con esto se
 	//hace que cada bloque abra su cubeta y reciba sus datos.
 	void redispersarSucesionCubetas(std::vector<DatoCubetaHash*> cubetasSucesivas, unsigned int numeroDeBloque, DatoTablaHash* datoTabla);
 
@@ -115,6 +115,9 @@ public: //solo para debuggear, esto es private.
 	void escribirArchivoIndice(fstream &archivoSalidaIndice);
 
 	void escribirArchivosTablaDatosYEspaciosLibres(fstream &archivoSalidaTabla, fstream &archivoSalidaDatos, fstream &archivoSalidaEspaciosLibres);
+
+	void eliminarElemento(ElementoHash elemento);
+	void eliminarElementoCubetaEnDisco(uint32_t offsetCubetaActual, DatoCubetaHash* datoCubetaActual);
 
 public:
 	//Hash();
@@ -139,7 +142,7 @@ public:
 
 	std::string getNombreArchivoCubetas();
 
-	//Pasar sólo las 1eras letras que identifican a los archivos generados. Se termina de formar sus nombres
+	//Pasar sï¿½lo las 1eras letras que identifican a los archivos generados. Se termina de formar sus nombres
 	//en el algoritmo.
 	void escribirEstructuraEnArchivos(std::string baseNombreArchivo);
 };
