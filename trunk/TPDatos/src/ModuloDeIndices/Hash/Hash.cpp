@@ -375,12 +375,21 @@ void Hash::redispersarSucesionCubetas(std::vector<DatoCubetaHash*> cubetasSucesi
 	this->escribirDatoTabla(datoTabla, this->calcularOffsetBloqueEnTabla( numeroDeBloque ));
 }
 
-/*
-bool Hash::probarInsertarEnExtensionesDeCubeta(std::vector<DatoCubetaHash*> &cubetasSucesivas, uint32_t offsetCubetaActual, )
+/*Refactorizando metodo... (voy a dividir en metodos mas chiquitos)
+void Hash::manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCubeta, DatoTablaHash* datoTabla, unsigned int numeroDeBloque)
 {
+
+	bool elementoInsertado = false;
+
+	std::vector<DatoCubetaHash*> cubetasSucesivas;
+
+	cubetasSucesivas.push_back(datoCubeta); //Al 1er elemento no se le debe hacer delete en este método.
+
+
 
 }
 */
+
 
 void Hash::manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCubeta, DatoTablaHash* datoTabla, unsigned int numeroDeBloque)
 {
@@ -474,18 +483,46 @@ void Hash::manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCub
 		//...duplicamos la tabla hasta 5 veces.
 		//Si luego de duplicar 5 veces la tabla no se pudo insertar, asumimos que la función de hash es mala y que hay muchas palabras con un valor,
 		//y por lo tanto debemos extender la cubeta correspondiente.
+		std::vector<DatoCubetaHash*> nuevasCubetasSucesivas;
+
 		if( !elementoInsertado)
 		{
 			int cantidadIntentosMax = 1;
-			for (int intentos = 0; intentos < cantidadIntentosMax && !elementoInsertado; intentos++)
+			for (int intento = 0; intento < cantidadIntentosMax && !elementoInsertado; intento++)
 			{
 				//insertar elemento con tabla extendida...
 				std::cout<<numeroDeBloque<<std::endl; //debug
 				this->duplicarTablaHash();
 
 				std::cout<<cubetasSucesivas.size()<<std::endl;
-				//Usamos numero de bloque y entrada a la tabla "vieja" que contiene cubetas rebalsadas.
-				this->redispersarSucesionCubetas(cubetasSucesivas, numeroDeBloque, datoTabla);
+				this->archivoCubetas.flush();
+				this->archivoTabla.flush();
+
+				if( intento == 0)
+				{
+					//Usamos numero de bloque y entrada a la tabla "vieja" que contiene cubetas rebalsadas.
+					this->redispersarSucesionCubetas(cubetasSucesivas, numeroDeBloque, datoTabla); //contiene a la cubeta que llega como parametro
+				}
+				else
+				{
+					this->redispersarSucesionCubetas(nuevasCubetasSucesivas, numeroDeBloque, datoTabla);
+				}
+				this->archivoCubetas.flush();
+				this->archivoTabla.flush();
+
+				while ( cubetasSucesivas.size() > 1 && intento == 0)
+				{
+					DatoCubetaHash* cubeta  = cubetasSucesivas.back();
+					delete cubeta;
+					cubetasSucesivas.pop_back();
+				} //Este vector cubetasSucesivas NO SE DEBE USAR MAS. No se hace delete de la cubeta original.
+
+				while ( !nuevasCubetasSucesivas.empty() )
+				{
+					DatoCubetaHash* cubeta = nuevasCubetasSucesivas.back();
+					delete cubeta;
+					nuevasCubetasSucesivas.pop_back();
+				}
 
 				unsigned int nuevoNumeroDeBloque = this->obtenerNumeroDeBloque(elemento->getPalabra());
 
@@ -494,28 +531,20 @@ void Hash::manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCub
 				uint32_t offsetCubeta = datoTablaNuevo->getOffsetCubeta();
 				bool primerCubeta = true;
 
-				while ( cubetasSucesivas.size() > 1)
-				{
-					DatoCubetaHash* cubeta  = cubetasSucesivas.back();
-					delete cubeta;
-					cubetasSucesivas.pop_back();
-				}
-				//cubetasSucesivas.clear();//reciclamos este vector
-
 				while ( (offsetCubeta != 0 || primerCubeta) && !elementoInsertado )
 				{
-					cubetasSucesivas.push_back( this->levantarDatoCubeta( offsetCubeta ));
-					elementoInsertado = cubetasSucesivas.back()->insertarElementoHash(*elemento);
+					nuevasCubetasSucesivas.push_back( this->levantarDatoCubeta( offsetCubeta ));
+					elementoInsertado = nuevasCubetasSucesivas.back()->insertarElementoHash(*elemento);
 
 					if(elementoInsertado)
 					{
 						datoTablaNuevo->setCantidadDeElementos( datoTablaNuevo->getCantidadDeElementos() + 1);
 						this->escribirDatoTabla(datoTablaNuevo, this->calcularOffsetBloqueEnTabla( nuevoNumeroDeBloque));
-						this->escribirDatoCubeta(cubetasSucesivas.back(), offsetCubeta);
+						this->escribirDatoCubeta(nuevasCubetasSucesivas.back(), offsetCubeta);
 					}
 					else
 					{
-						offsetCubeta = cubetasSucesivas.back()->getOffsetCubetaContinuacion();
+						offsetCubeta = nuevasCubetasSucesivas.back()->getOffsetCubetaContinuacion();
 					}
 					primerCubeta = false;
 				}
@@ -536,13 +565,13 @@ void Hash::manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCub
 				elementoInsertado = datoCubetaExtension->insertarElementoHash(*elemento);
 				uint32_t offsetNuevaCubeta = this->nuevaCubetaAlFinal(datoCubetaExtension);
 
-				//Encadenamos la anterior ultima cubeta con la recien escrita.
+				//Encadenamos la anterior ultima cubeta con la recien escrita (ahora ultima).
 				uint32_t offsetUltimaCubetaDeSerie; //ultima cubeta de la sucesion anterior de cubetas.
 
-				if (cubetasSucesivas.size() > 1)
+				if (nuevasCubetasSucesivas.size() > 1)
 				{
 					//tomamos el offset de la ultima, que es apuntada por la anterior (penultima).
-					offsetUltimaCubetaDeSerie = cubetasSucesivas.at( cubetasSucesivas.size() - 2)->getOffsetCubetaContinuacion();
+					offsetUltimaCubetaDeSerie = nuevasCubetasSucesivas.at( cubetasSucesivas.size() - 2)->getOffsetCubetaContinuacion();
 				}
 				else
 				{
@@ -550,8 +579,8 @@ void Hash::manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCub
 				}
 
 				//Escribimos cubeta que quedo penultima
-				cubetasSucesivas.back()->setOffsetCubetaContinacion(offsetNuevaCubeta);
-				this->escribirDatoCubeta( cubetasSucesivas.back(), offsetUltimaCubetaDeSerie);
+				nuevasCubetasSucesivas.back()->setOffsetCubetaContinacion(offsetNuevaCubeta);
+				this->escribirDatoCubeta( nuevasCubetasSucesivas.back(), offsetUltimaCubetaDeSerie);
 
 				//Actualizamos cantidad de elementos del bloque
 				datoTablaPosCrecimiento->setCantidadDeElementos( datoTablaPosCrecimiento->getCantidadDeElementos() + 1);
@@ -563,13 +592,13 @@ void Hash::manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCub
 
 			//liberamos recursos
 			//delete datoTabla; en metodo invocador
-			while ( cubetasSucesivas.size() > 1 )
+			while ( !nuevasCubetasSucesivas.empty() )
 			{
-				DatoCubetaHash* cubeta = cubetasSucesivas.back();
+				DatoCubetaHash* cubeta = nuevasCubetasSucesivas.back();
 				delete cubeta;
-				cubetasSucesivas.pop_back();
+				nuevasCubetasSucesivas.pop_back();
 			}
-			//cubetasSucesivas.clear();
+
 		}
 	}
 
@@ -873,3 +902,4 @@ Hash::~Hash()
 	Cerrar(archivoTabla);
 	Cerrar(archivoCubetas);
 }
+
