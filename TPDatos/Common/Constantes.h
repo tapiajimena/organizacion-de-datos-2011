@@ -106,6 +106,7 @@
 #define EXTENSION_ARCHIVO_INDICE ".dat"
 #define EXTENSION_ARCHIVO_REPORTE ".txt"
 
+#define ARCHIVO_TABLA 	"ArchivoTabla"
 #define ARCHIVO_CUBETAS "ArchivoCubetas"
 #define ARCHIVO_BIBLIOTECA "Biblioteca"
 #define ARCHIVO_CONTROL_BIBLIOTECA "BibliotecaControl.txt"
