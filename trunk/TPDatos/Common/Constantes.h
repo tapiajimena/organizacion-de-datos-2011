@@ -122,8 +122,8 @@
 #define ARCHIVO_BLOQUES_SUFIX "_Bloques"
 
 
-
-
+/* MANEJADOR INSTRUCCIONES */
+#define MAX_COMANDOS 10
 
 
 
