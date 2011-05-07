@@ -81,20 +81,39 @@ std::vector<ElementoHash> DatoCubetaHash::getElementos()
 	return this->elementosHash;
 }
 
-bool DatoCubetaHash::insertarElementoHash(ElementoHash elemento)
+bool DatoCubetaHash::contieneElemento(ElementoHash elemento)
 {
-	unsigned int tamanioElemento = elemento.getTamanioBytesEnDisco();
-
-	if ( tamanioElemento < this->bytesLibres)
+	bool elementoYaIngresado = false;
+	for( std::vector<ElementoHash>::iterator it_elementos = this->elementosHash.begin(); it_elementos != this->elementosHash.end() && !elementoYaIngresado; it_elementos++)
 	{
-		this->elementosHash.push_back(elemento);
-		this->cantidadElementos++;
-		this->bytesLibres = this->bytesLibres - tamanioElemento;
-
-		return true;
+		elementoYaIngresado = elemento.esIgualAElemento(*it_elementos);
 	}
 
-	return false;
+	return elementoYaIngresado;
+}
+
+bool DatoCubetaHash::insertarElementoHash(ElementoHash elemento)
+{
+
+	if ( this->contieneElemento(elemento) )
+	{
+		return true;
+	}
+	else
+	{
+		unsigned int tamanioElemento = elemento.getTamanioBytesEnDisco();
+
+		if ( tamanioElemento < this->bytesLibres)
+		{
+			this->elementosHash.push_back(elemento);
+			this->cantidadElementos++;
+			this->bytesLibres = this->bytesLibres - tamanioElemento;
+
+			return true;
+		}
+
+		return false;
+	}
 }
 
 void DatoCubetaHash::eliminarElementoHash(ElementoHash elemento)
