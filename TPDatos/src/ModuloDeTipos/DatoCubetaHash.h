@@ -62,6 +62,8 @@ public:
 
 	unsigned int getCantidadDeElementos();
 
+	bool contieneElemento(ElementoHash elemento);
+
 	unsigned int getBytesLibres();
 
 	virtual ~DatoCubetaHash();
