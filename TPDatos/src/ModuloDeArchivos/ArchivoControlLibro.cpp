@@ -18,19 +18,23 @@ ArchivoControlLibro::ArchivoControlLibro(string path) {
 	this->archivoFragmentado = true;
 	this->libros = new map<uint32_t, DatoControlLibro*> ();
 
-	if (Existe(this->pathArchivoControlLibro.c_str(), this->archivoControlLibro)) {
-		Abrir(this->pathArchivoControlLibro.c_str(), this->archivoControlLibro,
+	char* cstrPath = new char [path.size()+1];
+	strcpy(cstrPath,path.c_str());
+
+	if (Existe(cstrPath, this->archivoControlLibro)) {
+		Abrir(cstrPath, this->archivoControlLibro,
 				false);
 		Logger::log("ArchivoControlLibro", "ArchivoControlLibro",
 				"Se abre el archivo de control.");
 	} else {
 		Logger::log("ArchivoControlLibro", "ArchivoControlLibro",
 				"El archivo no existe.");
-		CrearSiNoExiste(this->pathArchivoControlLibro.c_str(),
+		CrearSiNoExiste(cstrPath,
 				this->archivoControlLibro);
 		Logger::log("ArchivoControlLibro", "ArchivoControlLibro",
 				"Se crea un archivo nuevo.");
 	}
+	delete[] cstrPath;
 }
 
 DatoControlLibro* ArchivoControlLibro::buscarEnMap(uint32_t idLibro) {
@@ -273,7 +277,8 @@ void ArchivoControlLibro::actualizarArchivo() {
 			"Se comienza a actualizar el archivo de control.");
 
 	Cerrar(this->archivoControlLibro);
-	Crear(this->pathArchivoControlLibro.c_str(), this->archivoControlLibro,
+	fstream arc;
+	Crear(this->pathArchivoControlLibro.c_str(), arc,
 			true);
 
 	stringstream ss;
@@ -288,7 +293,7 @@ void ArchivoControlLibro::actualizarArchivo() {
 	stringstream ss1;
 	ss1 << aux;
 
-	Escribir(this->archivoControlLibro, &ss1, 0);
+	Escribir(arc, &ss1, 0);
 
 	Logger::log("ArchivoControlLibro", "actualizarArchivo",
 			"Se termina de actualizar el archivo de control.");
