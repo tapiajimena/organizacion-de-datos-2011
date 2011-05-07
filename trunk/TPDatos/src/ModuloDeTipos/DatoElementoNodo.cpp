@@ -74,31 +74,10 @@ void DatoElementoNodo::hidratar(iostream* stream) {
 
 DatoElementoNodo* DatoElementoNodo::clonar() {
 	DatoElementoNodo* aux = new DatoElementoNodo(this->clave, this->idLibros);
-	//stringstream ss(ios_base::in | ios_base::out);
-	/*
-
-	 ss.write(this->data,this->dataSize);
-	 aux->edit(this->clave,&ss);
-	 */
 	return aux;
 }
 
 void DatoElementoNodo::editar(string clave, iostream* ios) {
-	//TODO terminar edicion
-	/*
-	 this->clave = clave;
-	 this->dato = NULL;
-
-
-
-	 this->dataSize = 0;
-	 while(!ios->eof())
-	 {
-	 this->data = (char*)realloc(this->data,this->dataSize + 0x000f);
-	 ios->read(this->data + this->dataSize, 0x000f);
-	 this->dataSize += ios->gcount();
-	 }
-	 */
 }
 
 int DatoElementoNodo::getSize() {
@@ -137,7 +116,6 @@ int DatoElementoNodo::comparar(DatoElementoNodo* ele) {
 	delete[] cstrThisClave;
 	delete[] cstrThatClave;
 
-	Logger::log("DatoElementoNodo","comparar","se compara " + ele->getClave() );
 	return resultado;
 }
 
@@ -165,17 +143,6 @@ void DatoElementoNodo::agregarLibro(uint32_t idLibro) {
 void DatoElementoNodo::quitarLibro(uint32_t idLibro) {
 
 	this->idLibros.remove(idLibro);
-
-	//	this->it = this->idLibros.begin();
-	//	while(this->it!=this->idLibros.end())
-	//	{
-	//		if((*it) == idLibro)
-	//		{
-	//			this->idLibros.erase(it);
-	//		}
-	//		++it;
-	//	}
-
 }
 
 void DatoElementoNodo::toString(iostream* ios, int rootLevel) {
