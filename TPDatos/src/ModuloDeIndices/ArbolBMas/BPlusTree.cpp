@@ -47,12 +47,10 @@ BPlusTree::BPlusTree(string fileName, long blockSize) {
 }
 
 BPlusTree::~BPlusTree() {
-	dump("albol.txt");
+	//dump("albol.txt");
 	writeControlData();
 	FileManager::closeFile(&file);
 	FileManager::closeFile(&freeNodesFile);
-	//delete root;//FIXME Now!! da segfault en el insert tambien se borra la raiz
-
 }
 
 int BPlusTree::readControlData() {
@@ -276,7 +274,6 @@ Node* BPlusTree::readNode(int nodeId) {
 	Node* node = NULL;
 	stringstream ios(ios_base::in | ios_base::out | ios_base::binary);
 	long offset = this->controlDataSize + (nodeId * this->blockSize);
-	stringstream ss;
 	FileManager::readData(&file, offset, blockSize, &ios);
 
 	ios.read(reinterpret_cast<char *> (&level), sizeof(int));
