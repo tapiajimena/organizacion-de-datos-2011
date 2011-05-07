@@ -124,7 +124,9 @@ namespace ManejadorArchivo
 	 string LeerCaracteres(fstream &arc, int tamanio);
 
 
+	 //el archivo debe existir
 	 uint32_t GetSizeArchivo(fstream & arc);
+
 	 uint32_t GetSizeArchivo(string path);
 
 	/**
