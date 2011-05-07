@@ -1,8 +1,13 @@
 /*
  * Serializable.h
  *
- *  Created on: Apr 7, 2010
- *      Author: igor
+ *	Autor	: GRUPO 1 - Fernandez, Gallinal, Maraggi, Tapia
+ *	Catedra	: SERVETTO-FERRER-FERNANDEZ
+ *	Materia	: Organizacion de Datos (75.06) - FIUBA
+ *
+ *
+ *
+ *
  */
 
 #ifndef SERIALIZABLE_H_
