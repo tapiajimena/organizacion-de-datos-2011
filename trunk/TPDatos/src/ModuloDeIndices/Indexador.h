@@ -45,6 +45,16 @@ public:
 	 */
 	void indexar(char tipoIndice);
 
+
+	/*
+	 * Da la orden a un indice para que genere el reporte segun el tipo.
+	 * @param tipo de estructura la indexacion deseada puede ser A,E,T o P
+	 * Ver tipos Indices definidos como ctes INDICE_
+	 */
+	void generarReporte(char tipoIndice, string nombreArchivo);
+
+	void crearTipoIndice(char tipoIndice);
+
 	/*
 	 * Da la orden a un indice para que elimine la indexacion de un libro.
 	 * Incluyendo la eliminacion del libro de la biblioteca
