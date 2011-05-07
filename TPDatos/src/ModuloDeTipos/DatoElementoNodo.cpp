@@ -121,8 +121,24 @@ void DatoElementoNodo::setClave(string clave) {
 }
 
 int DatoElementoNodo::comparar(DatoElementoNodo* ele) {
-	string aux = ele->getClave();
-	return strcmp(this->clave.c_str(), aux.c_str());
+	int resultado = 0;
+	char* cstrThisClave;
+	char* cstrThatClave;
+
+	cstrThisClave = new char [this->clave.size()+1];
+	strcpy(cstrThisClave,this->clave.c_str());
+
+	cstrThatClave = new char [ele->getClave().size()+1];
+	strcpy(cstrThatClave,ele->getClave().c_str());
+
+	resultado = strcmp(cstrThisClave, cstrThatClave);
+
+
+	delete[] cstrThisClave;
+	delete[] cstrThatClave;
+
+	Logger::log("DatoElementoNodo","comparar","se compara " + ele->getClave() );
+	return resultado;
 }
 
 int DatoElementoNodo::comparar(string clave) {

@@ -9,6 +9,7 @@
 #define DATOELEMENTONODO_H_
 
 #include "Dato.h"
+#include "../Common/Utilitarios/Logger.h"
 #include "../Common/Utilitarios/ServiceClass.h"
 #include <list>
 #include <fstream>
