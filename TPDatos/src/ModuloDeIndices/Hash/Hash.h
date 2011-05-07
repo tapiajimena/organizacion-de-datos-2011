@@ -137,6 +137,8 @@ public:
 	//Agrega la palabra
 	void insertarClave(std::pair<std::string, uint32_t> registroHash);
 
+	void eliminarElemento(std::pair<std::string, uint32_t> registroHash);
+
 	//Devuelve el resultado de la b�squeda con la clave contenida en el libro
 	std::vector<uint32_t> buscarPalabraEnHash(std::string palabraClave);
 
