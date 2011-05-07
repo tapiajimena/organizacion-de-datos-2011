@@ -107,6 +107,14 @@ public: //solo para debuggear, esto es private.
 	//hace que cada bloque abra su cubeta y reciba sus datos.
 	void redispersarSucesionCubetas(std::vector<DatoCubetaHash*> cubetasSucesivas, unsigned int numeroDeBloque, DatoTablaHash* datoTabla);
 
+	bool insertarEnNuevaCubetaYExtenderCubetaAnterior(std::vector<DatoCubetaHash*> nuevasCubetasSucesivas, ElementoHash* elemento);
+
+	bool probarInsertarTrasDuplicarTamanioDeTabla(std::vector<DatoCubetaHash*> nuevasCubetasSucesivas, ElementoHash* elemento, DatoTablaHash* datoTabla, unsigned int numeroDeBloqueOriginal);
+
+	bool probarInsertarEnSucesionDeCubetasTrasRedispersion(std::vector<DatoCubetaHash*> &cubetasSucesivas, ElementoHash* elemento, DatoTablaHash* datoTabla, unsigned int numeroDeBloque);
+
+	bool probarInsertarEnSucesionDeCubetas(std::vector<DatoCubetaHash*> &cubetasSucesivas, ElementoHash* elemento, DatoTablaHash* datoTabla, unsigned int numeroDeBloque);
+
 	void manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCubetaDesbordada, DatoTablaHash* datoTablaDesbordada, unsigned int numeroDeBloque);
 
 	//Inserta un elemento de hash.
