@@ -15,6 +15,7 @@
 
 #include <fstream>
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <iostream>
 #include "ManejadorArchivo.h"
@@ -102,6 +103,8 @@ private:
 	 *escribe el dato de rv en la posicion offset
 	 */
 	void escribir(DatoLibro & d, uint32_t offset);
+
+	void escribir(char* contrnidoLibro, uint32_t sizeLibro, uint32_t idLibro);
 
 	/**
 	 * escribe el contenido al final del archivo prueba.dat abriendo y cerrando el archivo
