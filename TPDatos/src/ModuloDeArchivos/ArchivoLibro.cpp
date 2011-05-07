@@ -22,24 +22,26 @@ ArchivoLibro::ArchivoLibro(string pathArchivo) {
 void ArchivoLibro::abrir() {
 	//se abre el archivo de forma binaria, si no existe lo crea
 	//si existe lo borra...
-	if (Existe(path.c_str(), archivoVariable)) {
-		Abrir(path.c_str(), archivoVariable, true);
+	char* cStrPath = new char [path.size()+1];
+	strcpy(cStrPath, path.c_str());
+	if (Existe(cStrPath, archivoVariable)) {
+		Abrir(cStrPath, archivoVariable, true);
 
 		Logger::log("ArchivoLibro", "abrir",
 				"Se abre el archivo de registros variables.");
 	} else {
-		Crear(path.c_str(), archivoVariable, true);
+		Crear(cStrPath, archivoVariable, true);
 
 		Logger::log("ArchivoLibro", "abrir",
 				"Se creo el archivo de registros variables.");
 
 	}
+	delete[] cStrPath;
 }
 
 void ArchivoLibro::agregarLibro(char* pathLibro, uint32_t nuevoOffset) {
-	string rdo;
-	DatoLibro* dato = new DatoLibro();
-	uint32_t sizeAux;
+
+	uint32_t sizeLibro;
 	fstream arcLibro;
 
 	Abrir(pathLibro, arcLibro, true);
@@ -47,26 +49,20 @@ void ArchivoLibro::agregarLibro(char* pathLibro, uint32_t nuevoOffset) {
 	Logger::log("ArchivoLibro", "agregarLibro",
 			"Se abre el archivo con el libro a agregar.");
 
-	//se lee en contenidoLibro el libro completo
-	char* contenidoLibro = leer(arcLibro, sizeAux);
-
-	//se procesa
-	rdo = contenidoLibro;
-	rdo = rdo.substr(0, sizeAux);
-	dato->setDato(rdo);
-
-	Logger::log("ArchivoLibro", "agregarLibro",
-			"Se lee el archivo y se procesa.");
-
+	//se lee en contenidoLibro el libro completo y se cierra
+	char* contenidoLibro = leer(arcLibro, sizeLibro);
 	Cerrar(arcLibro);//se cierra el arcLibro
 
+	//se procesa
 	Logger::log("ArchivoLibro", "agregarLibro",
 			"Se crea el nuevo dato libro.");
 
-	escribir(*dato, nuevoOffset);
+	escribir(contenidoLibro, sizeLibro, nuevoOffset);
 
 	Logger::log("ArchivoLibro", "agregarLibro",
 			"Se escribe el dato en el archivo de registros variables.");
+
+	delete[] contenidoLibro;
 }
 
 DatoLibro ArchivoLibro::recuperarLibro(uint32_t idLibro) {
@@ -89,13 +85,14 @@ string ArchivoLibro::recuperarBiblioteca() {
 }
 
 char* ArchivoLibro::leer(fstream & arcLibro, uint32_t & size) {
-	char* contenidoLibro = (char*) (malloc(0));
+	char* contenidoLibro;
 
 	size = GetSizeArchivo(arcLibro);
 	arcLibro.seekp(0, ios_base::beg);
 
+	contenidoLibro = new char[size];
+
 	//se lee
-	contenidoLibro = (char*) (realloc(contenidoLibro, size));
 	arcLibro.read(contenidoLibro, size);
 
 	Logger::log("ArchivoLibro", "leer","");
@@ -111,6 +108,18 @@ void ArchivoLibro::escribir(DatoLibro & d, uint32_t offset) {
 
 	archivoVariable.write(reinterpret_cast<char *> (&size), sizeof(size));
 	archivoVariable.write(buffer.c_str(), size);
+	this->archivoVariable.flush();
+
+	Logger::log("ArchivoLibro", "escribir","");
+}
+
+
+void ArchivoLibro::escribir(char* contenidoLibro, uint32_t sizeLibro, uint32_t idLibro)
+{
+	this->archivoVariable.seekp(idLibro, ios_base::beg);
+
+	archivoVariable.write(reinterpret_cast<char *> (&sizeLibro), sizeof(sizeLibro));
+	archivoVariable.write(contenidoLibro, sizeLibro);
 	this->archivoVariable.flush();
 
 	Logger::log("ArchivoLibro", "escribir","");
