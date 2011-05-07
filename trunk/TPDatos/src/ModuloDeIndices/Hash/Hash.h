@@ -109,7 +109,7 @@ public: //solo para debuggear, esto es private.
 
 	bool insertarEnNuevaCubetaYExtenderCubetaAnterior(std::vector<DatoCubetaHash*> nuevasCubetasSucesivas, ElementoHash* elemento);
 
-	bool probarInsertarTrasDuplicarTamanioDeTabla(std::vector<DatoCubetaHash*> nuevasCubetasSucesivas, ElementoHash* elemento, DatoTablaHash* datoTabla, unsigned int numeroDeBloqueOriginal);
+	bool probarInsertarTrasDuplicarTamanioDeTabla(std::vector<DatoCubetaHash*> &nuevasCubetasSucesivas, ElementoHash* elemento, DatoTablaHash* datoTabla, unsigned int numeroDeBloqueOriginal);
 
 	bool probarInsertarEnSucesionDeCubetasTrasRedispersion(std::vector<DatoCubetaHash*> &cubetasSucesivas, ElementoHash* elemento, DatoTablaHash* datoTabla, unsigned int numeroDeBloque);
 

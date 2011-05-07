@@ -416,7 +416,7 @@ bool Hash::insertarEnNuevaCubetaYExtenderCubetaAnterior(std::vector<DatoCubetaHa
 }
 
 //Tercera instancia de resolución de desborde
-bool Hash::probarInsertarTrasDuplicarTamanioDeTabla(std::vector<DatoCubetaHash*> nuevasCubetasSucesivas, ElementoHash* elemento, DatoTablaHash* datoTabla, unsigned int numeroDeBloqueOriginal)
+bool Hash::probarInsertarTrasDuplicarTamanioDeTabla(std::vector<DatoCubetaHash*> &nuevasCubetasSucesivas, ElementoHash* elemento, DatoTablaHash* datoTabla, unsigned int numeroDeBloqueOriginal)
 {
 	bool elementoInsertado = false;
 
@@ -585,7 +585,7 @@ bool Hash::probarInsertarEnSucesionDeCubetas(std::vector<DatoCubetaHash*> &cubet
 		cubetasSucesivas.pop_back();
 	}
 
-	//cubetasSucesivas.clear();
+	delete datoTabla;
 }
 
 /*
