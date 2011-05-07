@@ -1,8 +1,13 @@
 /*
  * FileManager.cpp
  *
- *  Created on: 18/04/2010
- *      Author: marcelo
+ *	Autor	: GRUPO 1 - Fernandez, Gallinal, Maraggi, Tapia
+ *	Catedra	: SERVETTO-FERRER-FERNANDEZ
+ *	Materia	: Organizacion de Datos (75.06) - FIUBA
+ *
+ *
+ *
+ *
  */
 
 #include "FileManager.h"
