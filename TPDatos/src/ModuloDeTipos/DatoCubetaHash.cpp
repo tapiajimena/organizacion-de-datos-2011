@@ -94,26 +94,18 @@ bool DatoCubetaHash::contieneElemento(ElementoHash elemento)
 
 bool DatoCubetaHash::insertarElementoHash(ElementoHash elemento)
 {
+	unsigned int tamanioElemento = elemento.getTamanioBytesEnDisco();
 
-	if ( this->contieneElemento(elemento) )
+	if ( tamanioElemento < this->bytesLibres)
 	{
+		this->elementosHash.push_back(elemento);
+		this->cantidadElementos++;
+		this->bytesLibres = this->bytesLibres - tamanioElemento;
+
 		return true;
 	}
-	else
-	{
-		unsigned int tamanioElemento = elemento.getTamanioBytesEnDisco();
 
-		if ( tamanioElemento < this->bytesLibres)
-		{
-			this->elementosHash.push_back(elemento);
-			this->cantidadElementos++;
-			this->bytesLibres = this->bytesLibres - tamanioElemento;
-
-			return true;
-		}
-
-		return false;
-	}
+	return false;
 }
 
 void DatoCubetaHash::eliminarElementoHash(ElementoHash elemento)
