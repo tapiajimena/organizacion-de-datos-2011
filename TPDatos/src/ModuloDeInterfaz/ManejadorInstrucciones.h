@@ -34,7 +34,7 @@ using namespace std;
 class ManejadorInstrucciones {
 private:
 	Instruccion* instruccion;
-	string comando[10];
+	string comando[MAX_COMANDOS];
 public:
 	ManejadorInstrucciones(char* argumentos[], int cantidad);
 
