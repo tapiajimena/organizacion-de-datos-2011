@@ -13,11 +13,14 @@
 #ifndef LEAFNODE_H_
 #define LEAFNODE_H_
 
+#include <stdio.h>
+#include <string.h>
 #include "Node.h"
 #include "BPlusTree_CONST.h"
 #include "../../../Common/Utilitarios/Logger.h"
 #include "../../ModuloDeTipos/DatoElementoNodo.h"
 #include "InternalNode.h"
+
 
 class LeafNode: public Node {
 

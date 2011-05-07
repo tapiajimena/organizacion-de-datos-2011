@@ -17,11 +17,13 @@ BPlusTree::BPlusTree() {
 }
 
 BPlusTree::BPlusTree(string fileName, long blockSize) {
+
 	this->fileName = fileName;
 	this->blockSize = blockSize;
 	//long: blockSize unsigned int: elementoCounter, nodeCounter, freeNodeCounter
 	this->controlDataSize = sizeof(long) + 3 * sizeof(unsigned int);
 	if (FileManager::fileExists(fileName)) { // si el archivo existe
+		Logger::log("BPlusTree","BPlusTree","se abre el archivo del arbol");
 		FileManager::openFile(&file, fileName); // abre el archivo
 		FileManager::openFile(&freeNodesFile, getFreeNodesFileName(fileName));
 		if (this->readControlData() == EXIT_SUCCESS) {// si pudo leer el header
@@ -31,6 +33,7 @@ BPlusTree::BPlusTree(string fileName, long blockSize) {
 		}
 	} else {
 		if (FileManager::createFile(&file, fileName)) {
+			Logger::log("BPlusTree","BPlusTree","se crea el archivo del arbol");
 			FileManager::createFile(&freeNodesFile,
 					getFreeNodesFileName(fileName));
 			root = new LeafNode();
@@ -44,6 +47,7 @@ BPlusTree::BPlusTree(string fileName, long blockSize) {
 }
 
 BPlusTree::~BPlusTree() {
+	dump("albol.txt");
 	writeControlData();
 	FileManager::closeFile(&file);
 	FileManager::closeFile(&freeNodesFile);

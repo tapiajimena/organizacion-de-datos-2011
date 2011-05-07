@@ -113,7 +113,6 @@ int LeafNode::insert(DatoElementoNodo* elemento) {
 
 	list<DatoElementoNodo*>::iterator it;
 	int posicion = elementoIndex(elemento);
-
 	if (posicion ==-1)
 	{
 		elementos.push_front(elemento);
@@ -128,9 +127,11 @@ int LeafNode::insert(DatoElementoNodo* elemento) {
 		}
 		(*it)->agregarLibro(elemento->getLibros().front());
 	}
-	if (isOverFlowded(BLOCKSIZE)) {
-			return OVERFLOWDED;
-		}
+
+	if (isOverFlowded(BLOCKSIZE))
+	{
+		return OVERFLOWDED;
+	}
 	return EXIT_SUCCESS;
 }
 
@@ -409,7 +410,7 @@ int LeafNode::elementoIndex(DatoElementoNodo* elemento) {
 		if (elementoActual != NULL)
 		{
 			cout<<"EL ELEMENTO ACTUAL A COMPARAR ES:"<<elementoActual->getClave()<<endl;
-			comparison = elemento->comparar(elementoActual->getClave());
+			comparison = elemento->comparar(elementoActual);
 			switch (comparison) {
 			case 1:
 				counter++;
@@ -495,7 +496,16 @@ long LeafNode::getSize() {
  * TRUE: Si el maximo porcentaje de la CAPACIDAD (BLOCKSIZE-data de control) del bloque es MENOR que el tamaño de la data
  * FALSE: Si sucede lo contrario
  */
-bool LeafNode::isOverFlowded(int blockSize){
+bool LeafNode::isOverFlowded(int blockSize)
+{
+//	long int controlDataSize =getCtrlDataSize();
+//	cout<< endl<<"CONTROL DATA SIZE "<<controlDataSize<<endl;
+//
+//	long int dataSize =getDataSize();
+//	cout<< endl<<"DATA SIZE "<<dataSize<<endl;
+
+
+//	cout<< endl<<"ESTA EN OVERFLOW"<<endl;
 	return (getDataSize()>(BLOCKSIZE-getCtrlDataSize())*MAX_PERCENTAGE);
 }
 
