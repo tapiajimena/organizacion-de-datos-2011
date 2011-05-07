@@ -659,7 +659,7 @@ void Hash::eliminarElemento(ElementoHash elemento) {
 }
 
 void Hash::eliminarElementoCubetaEnDisco(uint32_t offsetCubetaActual, DatoCubetaHash* datoCubetaActual) {
-	this->escribirDatoCubeta(datoCubetaAcual,offsetCubetaActual);
+	escribirDatoCubeta(datoCubetaActual,offsetCubetaActual);
 }
 
 void Hash::insertarElemento(ElementoHash elemento) {
