@@ -33,6 +33,7 @@ class ControladorIndice
 private:
 	Hash* 		indiceHash;
 	BPlusTree* 	indiceArbol;
+	DatoElementoNodo* datoElementoNodo;
 	string		pathCarpeta;//path de trabajo
 
 
