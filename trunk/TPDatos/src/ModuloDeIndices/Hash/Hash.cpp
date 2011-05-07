@@ -148,7 +148,7 @@ void Hash::escribirDatoTabla(DatoTablaHash* datoTabla, uint32_t offsetDatoTabla)
 			TAMANIODATOTABLA);
 }
 
-std::vector<uint32_t> Hash::acumularResultados(DatoCubetaHash* datoCubeta, std::string palabra)
+std::vector<uint32_t> Hash::acumularResultados(DatoCubetaHash* &datoCubeta, std::string palabra)
 {
 	std::vector<uint32_t> resultados;
 
@@ -183,7 +183,6 @@ std::vector<uint32_t> Hash::acumularResultados(DatoCubetaHash* datoCubeta, std::
 
 				if (!yaFueIngresado)
 				{
-					std::cout<<"Elemento que se agrega: "<<elemento.getOffsetALibro()<<std::endl;
 					resultados.push_back(elemento.getOffsetALibro());
 				}
 
