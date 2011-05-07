@@ -47,13 +47,14 @@ using namespace ManejadorArchivo;
 
 //Clase que administra una tabla de dispersiï¿½n dinï¿½mica y almacena los valores dispersados.
 class Hash {
-private:
+//private:
+public: //solo para debuggear, esto es private.
 
 	//Cantidad de bloques direccionables por la funciï¿½n de HASH. Dos bloques distintos pueden
 	//direccionar a una misma cubeta en el archivo de cubetas.
 	unsigned int cantidadDeBloques;
 
-	//Cantidad de bloques efectivamente creados y que contienen alguna informaciï¿½n
+	//Cantidad de bloques efectivamente creados y que contienen alguna informaciï¿½n (incluye cubetas de extensión).
 	unsigned int cantidadDeCubetas;
 
 	//Estructuras de archivo
