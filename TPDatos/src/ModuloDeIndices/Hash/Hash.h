@@ -82,7 +82,7 @@ public: //solo para debuggear, esto es private.
 
 	void escribirDatoTabla(DatoTablaHash* datoTabla, uint32_t offsetDatoTabla);
 
-	std::vector<uint32_t> acumularResultados(DatoCubetaHash* datoCubeta, std::string palabra);
+	std::vector<uint32_t> acumularResultados(DatoCubetaHash* &datoCubeta, std::string palabra);
 
 	uint32_t calcularOffsetBloqueEnTabla(unsigned int numeroBloque);
 
