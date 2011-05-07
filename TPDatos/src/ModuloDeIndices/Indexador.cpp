@@ -32,15 +32,8 @@ Indexador::Indexador(string pathCarpeta)
 			pathCarpeta + ARCHIVO_CONTROL_BIBLIOTECA);
 }
 
-
-void Indexador::indexar(char tipoIndice)
+void Indexador::crearTipoIndice(char tipoIndice)
 {
-	Libro*					libro;
-	DatoLibro*				dLibro;
-	list<uint32_t> 			idLibros;
-	pair<Libro*,uint32_t>	parLibroOffset;
-
-
 	switch(tipoIndice)
 	{
 		case INDICE_AUTOR:
@@ -60,6 +53,18 @@ void Indexador::indexar(char tipoIndice)
 			controlIndice->nuevoIndiceTitulo();
 		break;
 	}
+}
+
+
+void Indexador::indexar(char tipoIndice)
+{
+	Libro*					libro;
+	DatoLibro*				dLibro;
+	list<uint32_t> 			idLibros;
+	pair<Libro*,uint32_t>	parLibroOffset;
+
+
+	crearTipoIndice(tipoIndice);
 
 	idLibros = controlBiblioteca->recuperarLibrosNoIndexadosPor(tipoIndice);
 
@@ -89,6 +94,14 @@ void Indexador::indexar(char tipoIndice)
 	delete(parser);
 }
 
+void Indexador::generarReporte(char tipoIndice, string nombreArchivo)
+{
+	crearTipoIndice(tipoIndice);
+	this->controlIndice->generarReporte(tipoIndice, nombreArchivo);
+
+	delete (parser);
+
+}
 
 void Indexador::eliminarIndexado(uint32_t idLibro)
 {
