@@ -409,7 +409,6 @@ int LeafNode::elementoIndex(DatoElementoNodo* elemento) {
 		elementoActual = (DatoElementoNodo*) *it;
 		if (elementoActual != NULL)
 		{
-			cout<<"EL ELEMENTO ACTUAL A COMPARAR ES:"<<elementoActual->getClave()<<endl;
 			comparison = elemento->comparar(elementoActual);
 			switch (comparison) {
 			case 1:
