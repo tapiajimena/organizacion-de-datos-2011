@@ -26,6 +26,8 @@ void Instruccion_TomarTexto::ejecutar() {
 
 	Logger::log("Instruccion_TomarTexto", "ejecutar",
 			"Se toma el archivo correspondiente.");
+
+	delete(controladorBiblioteca);
 }
 
 Instruccion_TomarTexto::~Instruccion_TomarTexto() {
