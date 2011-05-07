@@ -898,6 +898,13 @@ void Hash::insertarClave(std::pair<std::string, uint32_t> registroHash) {
 	//recursos liberados.
 }
 
+void Hash::eliminarElemento(std::pair<std::string, uint32_t> registroHash)
+{
+	ElementoHash elemento(registroHash.first, registroHash.second);
+
+	this->eliminarElemento(elemento);
+}
+
 std::vector<uint32_t> Hash::buscarPalabraEnHash(std::string palabraClave) {
 
 	unsigned int numeroBloque = this->obtenerNumeroDeBloque(palabraClave);
