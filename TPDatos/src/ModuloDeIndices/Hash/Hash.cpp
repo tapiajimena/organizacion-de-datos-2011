@@ -543,6 +543,7 @@ bool Hash::probarInsertarEnSucesionDeCubetas(std::vector<DatoCubetaHash*> &cubet
 
 	//1er intento: si la cubeta tiene extensiones, probamos insertar en esas extensiones.
 	elementoInsertado = probarInsertarEnSucesionDeCubetas( cubetasSucesivas, elemento, datoTabla, numeroDeBloque);
+	std::cout<<"sucesion de cubetas previa..."<<std::endl;
 
 	if(!elementoInsertado)
 	{
@@ -552,24 +553,28 @@ bool Hash::probarInsertarEnSucesionDeCubetas(std::vector<DatoCubetaHash*> &cubet
 			// probamos inicializar cubetas vacías para todos los bloques que comparten la sucesión de cubetas
 			// y redispersar todos los elementos y luego volvemos a tratar de insertar nuestro elemento.
 			elementoInsertado = this->probarInsertarEnSucesionDeCubetasTrasRedispersion(cubetasSucesivas, elemento, datoTabla, numeroDeBloque);
+			std::cout<<"redispersion de sucesion de cubetas previa..."<<std::endl;
+		}
 
-			if( !elementoInsertado)
+		if( !elementoInsertado)
+		{
+			//3er intento: duplicamos el tamaño de tabla y tratamos de insertar el elemento nuevamente.
+			elementoInsertado = this->probarInsertarTrasDuplicarTamanioDeTabla(cubetasSucesivas, elemento, datoTabla, numeroDeBloque);
+			std::cout<<"duplique tabla..."<<std::endl;
+
+			tablaDuplicada = true;
+
+			if( !elementoInsertado )
 			{
-				//3er intento: duplicamos el tamaño de tabla y tratamos de insertar el elemento nuevamente.
-				elementoInsertado = this->probarInsertarTrasDuplicarTamanioDeTabla(cubetasSucesivas, elemento, datoTabla, numeroDeBloque);
+				//4to intento y último: creamos una cubeta nueva al final y extendemos el bloque al que
+				//corresponde la clave del elemento a ingresar. Asumimos que un elemento siempre cabe en una cubeta nueva.
+				elementoInsertado = this->insertarEnNuevaCubetaYExtenderCubetaAnterior(cubetasSucesivas, elemento);
+				std::cout<<"insertado en nueva cubeta extendida..."<<std::endl;
 
-				tablaDuplicada = true;
-
-				if( !elementoInsertado )
-				{
-					//4to intento y último: creamos una cubeta nueva al final y extendemos el bloque al que
-					//corresponde la clave del elemento a ingresar. Asumimos que un elemento siempre cabe en una cubeta nueva.
-					elementoInsertado = this->insertarEnNuevaCubetaYExtenderCubetaAnterior(cubetasSucesivas, elemento);
-
-					//en esta instancia elementoInsertado debe ser siempre true.
-				}
+				//en esta instancia elementoInsertado debe ser siempre true.
 			}
 		}
+
 	}
 
 	//liberación de recursos...
