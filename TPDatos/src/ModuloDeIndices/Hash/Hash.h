@@ -47,8 +47,7 @@ using namespace ManejadorArchivo;
 
 //Clase que administra una tabla de dispersi�n din�mica y almacena los valores dispersados.
 class Hash {
-//private:
-public: //solo para debuggear, esto es private.
+private:
 
 	//Cantidad de bloques direccionables por la funci�n de HASH. Dos bloques distintos pueden
 	//direccionar a una misma cubeta en el archivo de cubetas.
@@ -116,6 +115,9 @@ public: //solo para debuggear, esto es private.
 	bool probarInsertarEnSucesionDeCubetas(std::vector<DatoCubetaHash*> &cubetasSucesivas, ElementoHash* elemento, DatoTablaHash* datoTabla, unsigned int numeroDeBloque);
 
 	void manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCubetaDesbordada, DatoTablaHash* datoTablaDesbordada, unsigned int numeroDeBloque);
+
+	//Para sumar o restar de a un elemento.
+	void actualizarCantidadDeElementosDeBloquesQueCompartenCubeta(std::vector<unsigned int> numerosDeBloqueQueCompartenCubeta, int diferenciaElementos);
 
 	//Inserta un elemento de hash.
 	void insertarElemento(ElementoHash elemento);
