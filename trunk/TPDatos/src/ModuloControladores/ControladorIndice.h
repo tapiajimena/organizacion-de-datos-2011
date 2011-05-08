@@ -20,6 +20,7 @@
 #include <stdint.h>
 
 #include "../../Common/Utilitarios/ServiceClass.h"
+#include "../ModuloDeTipos/CaseFoldedString.h"
 #include "../ModuloDeArchivos/ManejadorArchivo.h"
 #include "../ModuloEstructuras/Configuracion.h"
 #include "../ModuloEstructuras/Libro.h"
@@ -69,7 +70,9 @@ public:
 	 * @param libro con las claves a eliminar offset de biblioteca donde se encuentra el archivo a
 	 * 	eliminar los indices
 	 */
-	void eliminarIndexado(Libro* libroRemover);
+	void eliminarIndexado(Libro* libroRemover, uint32_t idLibro, list<char>* tiposIndices);
+
+	void generarReporte(char tipo, string nombreArchivo);
 
 private:
 
@@ -85,6 +88,8 @@ private:
 	 */
 	void indexarPorTitulo(pair<Libro*,uint32_t> parLibroOffset);
 	void indexarPorPalabras(pair<Libro*,uint32_t> parLibroOffset);
+
+	void eliminarIndexadoPorTipo(char tipo, Libro* libroRemover,uint32_t idLibro);
 
 public:
 	virtual ~ControladorIndice();

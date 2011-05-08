@@ -56,10 +56,12 @@ bool ControladorBiblioteca::ingresarLibro(string pathLibro) {
 bool ControladorBiblioteca::eliminarLibro(uint32_t offset) {
 	DatoLibro datoLibro = recuperarLibro(offset);
 
+	cout<<endl<<"Se elimina el libro l.60"<<endl;
 	/* Actualiza el estado del archivo de control */
 	arcControl->eliminarLibro(offset, datoLibro.getSize());
 
 	arcControl->actualizarArchivo();
+	cout<<endl<<"Se actualiza el archivo control l.63"<<endl;
 
 	Logger::log("ControladorBiblioteca", "eliminarLibro",
 			"Se actualiza el archivo de control.");
@@ -170,18 +172,17 @@ Libro* ControladorBiblioteca::cargarNuevoLibroParseado(uint32_t idLibro)
 	delete(libroTitulo);
 	delete(parserTitulo);
 
-/*
  	 //TODO terminar de eliminar la lista de palabras
 	parserPalabras	= new ParserDePalabras(ARCHIVO_STOPWORDS);
 	libroPalabras 	= new Libro();
 	libroPalabras 	= parserPalabras->parsear(dLibro);
 
-	libroNuevo->setPalabras(libroAutor->getAutor());
-	delete(libroAutor);
-	delete(parserAutor);
+	libroNuevo->setPalabrasClave(libroPalabras->getPalabrasClave());
+	delete(libroPalabras);
+	delete(parserPalabras);
 
-	cout<<"LIBRO PARSEADO IMPRIME: "<<libroPalabras->getPalabrasClave()->back()<<endl;
-*/
+	//cout<<"LIBRO PARSEADO IMPRIME: "<<libroPalabras->getPalabrasClave()->back()<<endl;
+
 
 	return libroNuevo;
 }
@@ -189,6 +190,11 @@ Libro* ControladorBiblioteca::cargarNuevoLibroParseado(uint32_t idLibro)
 void ControladorBiblioteca::actualizarArchivoDeControl()
 {
 	arcControl->actualizarArchivo();
+}
+
+list<char>* ControladorBiblioteca::chequearIndexado(uint32_t idLibro)
+{
+	return arcControl->chequearIndexado(idLibro);
 }
 
 void ControladorBiblioteca::registrarIndexadoArchivoControl(uint32_t idLibro, char tipoClave)
