@@ -328,14 +328,97 @@ void LeafNode::serialize(iostream* stream) {
 	stream->write(reinterpret_cast<char *> (&cantidadElementos),
 			sizeof(cantidadElementos));
 
-	DatoElementoNodo* elemento;
-	list<DatoElementoNodo*>::iterator it;
-	for (it = this->elementos.begin(); it != this->elementos.end(); ++it) {
-		elemento = *it;
-		elemento->serializar(stream);
+	//	DatoElementoNodo* elemento;
+	//	list<DatoElementoNodo*>::iterator it;
+	//	for (it = this->elementos.begin(); it != this->elementos.end(); ++it) {
+	//		elemento = *it;
+	//		elemento->serializar(stream);
+	//	}
+
+	if (cantidadElementos > 0) {
+
+		DatoElementoNodo* aux = NULL;
+		list<DatoElementoNodo*>::iterator it;
+
+		list<DatoElementoNodo*>* frontDecodedElements = new list<
+				DatoElementoNodo*> ();
+		for (it = this->elementos.begin(); it != this->elementos.end(); ++it) {
+			aux = new DatoElementoNodo((*it)->getClave(), (*it)->getLibros());
+			frontDecodedElements->push_back(aux);
+
+		}
+
+		list<DatoElementoNodo*>* frontCodedElements = frontCode(
+				frontDecodedElements);
+		for (it = frontCodedElements->begin(); it != frontCodedElements->end(); ++it) {
+			aux = (*it);
+			aux->serializar(stream);
+		}
 	}
+
 	stream->write(reinterpret_cast<char *> (&(this->nextLeafNodeId)),
 			sizeof(this->nextLeafNodeId));
+
+}
+
+list<DatoElementoNodo*>* LeafNode::frontCode(
+		list<DatoElementoNodo*>* frontDecodedElements) {
+
+	list<DatoElementoNodo*>* resultado = new list<DatoElementoNodo*> ();
+
+	DatoElementoNodo* aux = frontDecodedElements->front();
+
+	//quito a la palabraInicial de la lista
+	//para empezar a encodear a partir de la segunda
+	frontDecodedElements->pop_front();
+
+	//la palabraInicial se guarda sin encodear
+	resultado->push_back(aux);
+
+	DatoElementoNodo* datoAnterior = aux;
+	for (list<DatoElementoNodo*>::iterator it = (frontDecodedElements->begin()); it
+			!= frontDecodedElements->end(); ++it) {
+
+		aux = frontCode(datoAnterior, (*it));
+
+		datoAnterior = (*it);
+		resultado->push_back(aux);
+	}
+
+	return resultado;
+
+}
+
+DatoElementoNodo* LeafNode::frontCode(DatoElementoNodo* anterior,
+		DatoElementoNodo* actual) {
+
+	cout << "Frontcodeando: " << anterior->getClave() << " con: "
+			<< actual->getClave() << endl;
+
+	DatoElementoNodo* resultado = new DatoElementoNodo(actual->getClave(),
+			actual->getLibros());
+
+	//short int sizePalabraActual = actual->getCantidadLetrasClaveActual();
+	short int sizePalabraActual = resultado->getCantidadLetrasClaveActual();
+
+	short int i = 0;
+	while ((i + 1) <= anterior->getCantidadLetrasClaveActual() && (i + 1)
+			<= sizePalabraActual) {
+		if (((actual->getClave())[i]) == (anterior->getClave())[i]) {
+			i++;
+		} else
+			break;
+	}
+	resultado->setCantidadLetrasClaveAnterior(i);
+	resultado->setCantidadLetrasClaveActual(sizePalabraActual - i);
+	resultado->setClave(
+			actual->getClave().substr(
+					resultado->getCantidadLetrasClaveAnterior(),
+					resultado->getCantidadLetrasClaveActual()));
+
+	cout << resultado->getClave() << endl;
+
+	return resultado;
 
 }
 
@@ -352,14 +435,79 @@ void LeafNode::deserialize(iostream* stream) {
 	stream->read(reinterpret_cast<char *> (&(cantidadElementos)),
 			sizeof(cantidadElementos));
 
-	DatoElementoNodo* elemento;
+	//	DatoElementoNodo* elemento;
+	//	for (int i = 0; i < cantidadElementos; i++) {
+	//		elemento = new DatoElementoNodo();
+	//		elemento->hidratar(stream);
+	//		elementos.push_back(elemento);
+	//	}
+
+	DatoElementoNodo* frontCodedElement;
+	list<DatoElementoNodo*>* frontCodedElements =
+			new list<DatoElementoNodo*> ();
 	for (int i = 0; i < cantidadElementos; i++) {
-		elemento = new DatoElementoNodo();
-		elemento->hidratar(stream);
-		elementos.push_back(elemento);
+		frontCodedElement = new DatoElementoNodo();
+		frontCodedElement->hidratar(stream);
+		frontCodedElements->push_back(frontCodedElement);
+
+		cout << "Recuperando DatoElementoNodo FrontCodeado, clave: "
+				<< frontCodedElement->getCantidadLetrasClaveAnterior() << " "
+				<< frontCodedElement->getCantidadLetrasClaveActual() << " "
+				<< frontCodedElement->getClave() << endl;
 	}
+
+	list<DatoElementoNodo*>* frontDecodedElements = frontDecode(
+			frontCodedElements);
+	list<DatoElementoNodo*>::iterator it;
+	for (it = frontDecodedElements->begin(); it != frontDecodedElements->end(); ++it) {
+		this->elementos.push_back((*it));
+	}
+
 	stream->read(reinterpret_cast<char *> (&(this->nextLeafNodeId)),
 			sizeof(this->nextLeafNodeId));
+}
+
+list<DatoElementoNodo*>* LeafNode::frontDecode(
+		list<DatoElementoNodo*>* elementos) {
+
+	list<DatoElementoNodo*>* resultado = new list<DatoElementoNodo*> ();
+
+	//tomo el primer elemento no encodeado
+	//para comenzar a realizar las comparaciones
+	DatoElementoNodo* aux = elementos->front();
+
+	//quito el primer elemento de la lista para empezar a iterar
+	//por el segundo
+	elementos->pop_front();
+
+	//guardo la primera palabra que no estaba encodeada.
+	resultado->push_back(aux);
+
+	string claveAux = "";
+	DatoElementoNodo* datoAnterior = aux;
+	list<DatoElementoNodo*>::const_iterator ci;
+	for (ci = elementos->begin(); ci != elementos->end(); ++ci) {
+
+		aux = new DatoElementoNodo("", (*ci)->getLibros());
+
+		claveAux.append(
+				datoAnterior->getClave().substr(0,
+						(*ci)->getCantidadLetrasClaveAnterior()));
+		claveAux.append((*ci)->getClave());
+		aux->setClave(claveAux);
+
+		//palabraDecodificada->append(palabraDecodificadaAnterior->substr(0,(*ci)->cantidadLetrasPalabraAnterior));
+		//palabraDecodificada->append((*ci)->palabraEncodeada);
+
+		claveAux = "";
+		datoAnterior = aux;
+		resultado->push_back(aux);
+		cout << "Resultado decoding: " << aux->getClave() << endl;
+
+	}
+
+	return resultado;
+
 }
 
 list<DatoElementoNodo*>* LeafNode::getElementos() {
@@ -418,12 +566,44 @@ int LeafNode::getCtrlDataSize() {
 long LeafNode::getDataSize() {
 	// Sumo el tamaño de los registros que contiene.
 	long dataSize = 0;
-	DatoElementoNodo* aux;
+
+	/*
+	 * Genero una copia de los elementos para
+	 * calcular espacio en el archivo
+	 * (front coding)
+	 */
+	DatoElementoNodo* aux = NULL;
 	list<DatoElementoNodo*>::iterator it;
-	for (it = elementos.begin(); it != elementos.end(); it++) {
+	list<DatoElementoNodo*>* frontDecodedElements =
+			new list<DatoElementoNodo*> ();
+	for (it = this->elementos.begin(); it != this->elementos.end(); ++it) {
+		aux = new DatoElementoNodo((*it)->getClave(), (*it)->getLibros());
+		frontDecodedElements->push_back(aux);
+	}
+
+	/*
+	 * frontcodeo los elementos
+	 */
+	list<DatoElementoNodo*>* frontCodedElements = frontCode(
+			frontDecodedElements);
+
+	/*
+	 * realizo el calculo
+	 */
+	for (it = frontCodedElements->begin(); it != frontCodedElements->end(); it++) {
 		aux = (DatoElementoNodo*) *it;
 		dataSize += aux->getSize();
 	}
+
+	/*
+	 * libero la memoria auxiliar
+	 */
+	for (it = frontCodedElements->begin(); it != frontCodedElements->end(); ++it) {
+		aux = *it;
+		delete (aux);
+	}
+	delete (frontCodedElements);
+
 	return dataSize;
 }
 
@@ -432,14 +612,45 @@ long LeafNode::getFreeDataSizeOnRight() {
 	long freeDataSize = 0;
 	long dataSize = 0;
 
-	DatoElementoNodo* aux;
+	/*
+	 * Genero una copia de los elementos para
+	 * calcular espacio en el archivo
+	 * (front coding)
+	 */
+	DatoElementoNodo* aux = NULL;
 	list<DatoElementoNodo*>::iterator it;
-	for (it = elementos.begin(); it != elementos.end(); it++) {
+	list<DatoElementoNodo*>* frontDecodedElements =
+			new list<DatoElementoNodo*> ();
+	for (it = this->elementos.begin(); it != this->elementos.end(); ++it) {
+		aux = new DatoElementoNodo((*it)->getClave(), (*it)->getLibros());
+		frontDecodedElements->push_back(aux);
+	}
+
+	/*
+	 * frontcodeo los elementos
+	 */
+	list<DatoElementoNodo*>* frontCodedElements = frontCode(
+			frontDecodedElements);
+
+	/*
+	 * realizo el calculo
+	 */
+	for (it = frontCodedElements->begin(); it != frontCodedElements->end(); it++) {
 		aux = (DatoElementoNodo*) *it;
 		if (dataSize >= minSize)
 			freeDataSize += aux->getSize();
 		dataSize += aux->getSize();
 	}
+
+	/*
+	 * libero la memoria auxiliar
+	 */
+	for (it = frontCodedElements->begin(); it != frontCodedElements->end(); ++it) {
+		aux = *it;
+		delete (aux);
+	}
+	delete (frontCodedElements);
+
 	return freeDataSize;
 }
 
@@ -448,14 +659,44 @@ long LeafNode::getFreeDataSizeOnLeft() {
 	long freeDataSize = 0;
 	long dataSize = 0;
 
-	DatoElementoNodo* aux;
+	/*
+	 * Genero una copia de los elementos para
+	 * calcular espacio en el archivo
+	 * (front coding)
+	 */
+	DatoElementoNodo* aux = NULL;
 	list<DatoElementoNodo*>::iterator it;
-	for (it = elementos.begin(); it != elementos.end(); it++) {
+	list<DatoElementoNodo*>* frontDecodedElements =
+			new list<DatoElementoNodo*> ();
+	for (it = this->elementos.begin(); it != this->elementos.end(); ++it) {
+		aux = new DatoElementoNodo((*it)->getClave(), (*it)->getLibros());
+		frontDecodedElements->push_back(aux);
+	}
+
+	/*
+	 * frontcodeo los elementos
+	 */
+	list<DatoElementoNodo*>* frontCodedElements = frontCode(
+			frontDecodedElements);
+
+	/*
+	 * realizo el calculo
+	 */
+	for (it = frontCodedElements->begin(); it != frontCodedElements->end(); it++) {
 		aux = (DatoElementoNodo*) *it;
 		if (getDataSize() - dataSize > minSize)
 			freeDataSize += aux->getSize();
 		dataSize += aux->getSize();
 	}
+
+	/*
+	 * libero la memoria auxiliar
+	 */
+	for (it = frontCodedElements->begin(); it != frontCodedElements->end(); ++it) {
+		aux = *it;
+		delete (aux);
+	}
+	delete (frontCodedElements);
 
 	return freeDataSize;
 }
@@ -505,13 +746,46 @@ void LeafNode::toString(iostream* ios, int rootLevel, int sizeOffset,
 
 void LeafNode::elementosToString(iostream* ios, int rootLevel) {
 
-	DatoElementoNodo* elemento;
-	list<DatoElementoNodo*>::iterator it = this->elementos.begin();
-	while (it != this->elementos.end()) {
-		elemento = *it;
-		elemento->toString(ios, rootLevel);
-		it++;
+	/*
+	 * Genero una copia de los elementos para
+	 * mostrar como queda persistido en el archivo
+	 * (front coding)
+	 */
+	DatoElementoNodo* aux = NULL;
+	list<DatoElementoNodo*>::iterator it;
+	list<DatoElementoNodo*>* frontDecodedElements =
+			new list<DatoElementoNodo*> ();
+	for (it = this->elementos.begin(); it != this->elementos.end(); ++it) {
+		aux = new DatoElementoNodo((*it)->getClave(), (*it)->getLibros());
+		frontDecodedElements->push_back(aux);
 	}
+
+	/*
+	 * frontcodeo los elementos
+	 */
+	list<DatoElementoNodo*>* frontCodedElements = frontCode(
+			frontDecodedElements);
+	for (it = frontCodedElements->begin(); it != frontCodedElements->end(); ++it) {
+		aux = *it;
+		aux->toString(ios, rootLevel);
+	}
+
+	/*
+	 * libero la memoria auxiliar
+	 */
+	for (it = frontCodedElements->begin(); it != frontCodedElements->end(); ++it) {
+		aux = *it;
+		delete (aux);
+	}
+	delete (frontCodedElements);
+
+	//	DatoElementoNodo* elemento;
+	//	list<DatoElementoNodo*>::iterator it = this->elementos.begin();
+	//	while (it != this->elementos.end()) {
+	//		elemento = *it;
+	//		elemento->toString(ios, rootLevel);
+	//		it++;
+	//	}
 
 }
 
