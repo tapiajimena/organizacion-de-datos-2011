@@ -375,10 +375,11 @@ uint32_t ArchivoControlLibro::registrarLibro(uint32_t size, uint32_t finArcLibro
 
 void ArchivoControlLibro::eliminarLibro(uint32_t idLibro, uint32_t size) {
 	archivoFragmentado = true;
-	cargarLibros();
+	//cargarLibros();
 
 	if (buscarEnMap(idLibro) != NULL) {
 		(buscarEnMap(idLibro))->setEspacioLibre(size);
+		((DatoControlLibro*)buscarEnMap(idLibro))->setIndexadoNulo();
 		Logger::log("ArchivoControlLibro", "eliminarLibro",
 				"Se elimina el libro.");
 	} else {
