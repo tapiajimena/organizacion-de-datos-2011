@@ -10,8 +10,9 @@
 
 #include "Diccionario.h"
 
-Diccionario::Diccionario(string nombreArchivo) {
-	this->nombreArchivo = nombreArchivo;
+Diccionario::Diccionario() {
+	Configuracion* conf = Configuracion::GetInstancia();
+	this->nombreArchivo = conf->getPathArchivoStopWords();
 	this->parser = new ParserDiccionario(STOPWORDS_TOKEN);
 	cargarDiccionario();
 
