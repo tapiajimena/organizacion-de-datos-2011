@@ -19,6 +19,12 @@
 class DatoElementoNodo: public Dato {
 
 private:
+	/*
+	 * used for front coding
+	 */
+	short int cantidadLetrasClaveAnterior;
+	short int cantidadLetrasClaveActual;
+
 	string clave;
 	list<uint32_t> idLibros;
 	list<uint32_t>::iterator it;
@@ -33,10 +39,11 @@ public:
 	DatoElementoNodo(string clave, list<uint32_t> idLibros);
 
 	//se llama en las hojas
+	//<CantidadLetrasClaveAnterior><CantidadLetrasClaveActual><Clave><Cantidad_Id_Libros><Id_Libro>[]
 	void serializar(iostream* stream);
 
 	//se llama en las hojas
-	//<TamanioClave><Clave><Cantidad_Id_Libros><Id_Libro>[]
+	//<CantidadLetrasClaveAnterior><CantidadLetrasClaveActual><Clave><Cantidad_Id_Libros><Id_Libro>[]
 	void hidratar(iostream* stream);
 
 	//obtiene el tamanio que ocuparia en disco
@@ -44,13 +51,9 @@ public:
 
 	DatoElementoNodo* clonar();
 
-	void editar(string clave, iostream* ios);
-
 	void setClave(string clave);
 
 	int comparar(DatoElementoNodo* ele);
-
-	int comparar(string clave);
 
 	string getClave();
 
@@ -63,6 +66,14 @@ public:
 	void quitarLibro(uint32_t idLibro);
 
 	void toString(iostream* ios, int rootLevel);
+
+	short int getCantidadLetrasClaveAnterior();
+
+	short int getCantidadLetrasClaveActual();
+
+	void setCantidadLetrasClaveAnterior(short int cant);
+
+	void setCantidadLetrasClaveActual(short int cant);
 
 	string setTabs(int level);
 

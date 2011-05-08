@@ -14,31 +14,44 @@
 
 DatoElementoNodo::DatoElementoNodo() {
 	this->clave = "";
+	this->cantidadLetrasClaveAnterior = 0;
+	this->cantidadLetrasClaveActual = 0;
 }
 
 DatoElementoNodo::DatoElementoNodo(string clave) {
 	this->clave = clave;
+	this->cantidadLetrasClaveAnterior = 0;
+	this->cantidadLetrasClaveActual = clave.size();
 }
 
 DatoElementoNodo::DatoElementoNodo(string clave, uint32_t idLibro) {
 	this->clave = clave;
 	this->idLibros.push_back(idLibro);
+	this->cantidadLetrasClaveAnterior = 0;
+	this->cantidadLetrasClaveActual = clave.size();
 }
 
 DatoElementoNodo::DatoElementoNodo(string clave, list<uint32_t> idLibros) {
 	this->clave = clave;
 	this->idLibros = idLibros;
+	this->cantidadLetrasClaveAnterior = 0;
+	this->cantidadLetrasClaveActual = clave.size();
 }
 
 void DatoElementoNodo::serializar(iostream* stream) {
 
-	int tamanioClave = clave.length();
+	char* cstrClave = new char[this->cantidadLetrasClaveActual + 1];
+	strcpy(cstrClave, this->clave.c_str());
 	int cantidadLibros = idLibros.size();
 	uint32_t idLibro = 0;
 
-	stream->write(reinterpret_cast<char *> (&tamanioClave),
-			sizeof(tamanioClave));
-	stream->write(clave.c_str(), tamanioClave);
+	stream->write(
+			reinterpret_cast<char *> (&(this->cantidadLetrasClaveAnterior)),
+			sizeof(this->cantidadLetrasClaveAnterior));
+	stream->write(
+			reinterpret_cast<char *> (&(this->cantidadLetrasClaveActual)),
+			sizeof(this->cantidadLetrasClaveActual));
+	stream->write(cstrClave, (this->cantidadLetrasClaveActual));
 	stream->write(reinterpret_cast<char *> (&cantidadLibros),
 			sizeof(cantidadLibros));
 
@@ -47,22 +60,29 @@ void DatoElementoNodo::serializar(iostream* stream) {
 		idLibro = *it;
 		stream->write(reinterpret_cast<char *> (&idLibro), sizeof(idLibro));
 	}
+
+	delete[] cstrClave;
 }
 
 void DatoElementoNodo::hidratar(iostream* stream) {
 
-	int tamanioClave = 0;
 	int cantidadLibros = 0;
 	uint32_t aux = 0;
 	char* buffer;
 
-	stream->read(reinterpret_cast<char *> (&tamanioClave), sizeof(tamanioClave));
-	buffer = new char[tamanioClave];
-	stream->read(buffer, tamanioClave);
+	stream->read(
+			reinterpret_cast<char *> (&(this->cantidadLetrasClaveAnterior)),
+			sizeof(this->cantidadLetrasClaveAnterior));
+	stream->read(reinterpret_cast<char *> (&(this->cantidadLetrasClaveActual)),
+			sizeof(this->cantidadLetrasClaveActual));
+
+	buffer = new char[this->cantidadLetrasClaveActual];
+
+	stream->read(buffer, this->cantidadLetrasClaveActual);
 	stream->read(reinterpret_cast<char *> (&cantidadLibros),
 			sizeof(cantidadLibros));
 
-	clave.append(buffer, tamanioClave);
+	this->clave.append(buffer, this->cantidadLetrasClaveActual);
 
 	for (int i = 0; i < cantidadLibros; i++) {
 		stream->read(reinterpret_cast<char *> (&aux), sizeof(aux));
@@ -77,9 +97,6 @@ DatoElementoNodo* DatoElementoNodo::clonar() {
 	return aux;
 }
 
-void DatoElementoNodo::editar(string clave, iostream* ios) {
-}
-
 int DatoElementoNodo::getSize() {
 	/*
 	 * cuanto ocupa en disco
@@ -87,8 +104,9 @@ int DatoElementoNodo::getSize() {
 	 */
 
 	int size = 0;
-	size += sizeof(int);//tamanioClave
-	size += this->clave.length();
+	size += sizeof(this->cantidadLetrasClaveAnterior);
+	size += sizeof(this->cantidadLetrasClaveActual);
+	size += this->cantidadLetrasClaveActual;
 	size += sizeof(int);//cantidadLibros
 	size += (sizeof(uint32_t) * (this->idLibros.size()));
 
@@ -97,6 +115,7 @@ int DatoElementoNodo::getSize() {
 
 void DatoElementoNodo::setClave(string clave) {
 	this->clave = clave;
+	this->cantidadLetrasClaveActual = clave.size();
 }
 
 int DatoElementoNodo::comparar(DatoElementoNodo* ele) {
@@ -104,23 +123,18 @@ int DatoElementoNodo::comparar(DatoElementoNodo* ele) {
 	char* cstrThisClave;
 	char* cstrThatClave;
 
-	cstrThisClave = new char [this->clave.size()+1];
-	strcpy(cstrThisClave,this->clave.c_str());
+	cstrThisClave = new char[this->clave.size() + 1];
+	strcpy(cstrThisClave, this->clave.c_str());
 
-	cstrThatClave = new char [ele->getClave().size()+1];
-	strcpy(cstrThatClave,ele->getClave().c_str());
+	cstrThatClave = new char[ele->getClave().size() + 1];
+	strcpy(cstrThatClave, ele->getClave().c_str());
 
 	resultado = strcmp(cstrThisClave, cstrThatClave);
-
 
 	delete[] cstrThisClave;
 	delete[] cstrThatClave;
 
 	return resultado;
-}
-
-int DatoElementoNodo::comparar(string clave) {
-	return strcmp(this->clave.c_str(), clave.c_str());
 }
 
 string DatoElementoNodo::getClave() {
@@ -136,6 +150,10 @@ int DatoElementoNodo::getCantidadLibros() {
 
 void DatoElementoNodo::agregarLibro(uint32_t idLibro) {
 	this->idLibros.push_back(idLibro);
+
+	/*
+	 * en caso de que se inserte repetido
+	 */
 	this->idLibros.sort();
 	this->idLibros.unique();
 }
@@ -149,9 +167,11 @@ void DatoElementoNodo::toString(iostream* ios, int rootLevel) {
 	string tabs = setTabs(rootLevel + 1);
 	this->it = this->idLibros.begin();
 
-	(*ios) << tabs << "|----- [elemento" << " KEY= [" << getClave() << "] LIBROS= [";
-	while(this->it!=this->idLibros.end())
-	{
+	(*ios) << tabs << "|----- [elemento" << " KEY= [("
+			<< this->cantidadLetrasClaveAnterior << ")("
+			<< this->cantidadLetrasClaveActual << ")" << getClave()
+			<< "] LIBROS= [";
+	while (this->it != this->idLibros.end()) {
 		(*ios) << "(" << *it << ")";
 		++it;
 	}
@@ -166,6 +186,22 @@ string DatoElementoNodo::setTabs(int level) {
 		tabs += "| \t";
 	}
 	return tabs;
+}
+
+short int DatoElementoNodo::getCantidadLetrasClaveAnterior() {
+	return this->cantidadLetrasClaveAnterior;
+}
+
+short int DatoElementoNodo::getCantidadLetrasClaveActual() {
+	return this->cantidadLetrasClaveActual;
+}
+
+void DatoElementoNodo::setCantidadLetrasClaveAnterior(short int cant) {
+	this->cantidadLetrasClaveAnterior = cant;
+}
+
+void DatoElementoNodo::setCantidadLetrasClaveActual(short int cant) {
+	this->cantidadLetrasClaveActual = cant;
 }
 
 DatoElementoNodo::~DatoElementoNodo() {
