@@ -47,7 +47,8 @@ string DatoControlLibro::serializar() {
 
 	string datosControl[] = { ServiceClass::toString(this->id_Libro),
 			ServiceClass::toString(this->espacioLibre),
-			ServiceClass::toStringData(&datos, CONTROL_TOKEN).substr(0,
+			ServiceClass::toStringData(&datos, CONTROL_TOKEN).substr(
+					0,
 					ServiceClass::toStringData(&datos, CONTROL_TOKEN).size()
 							- 1), ServiceClass::toString(this->offset) };
 
@@ -75,19 +76,24 @@ list<char> * DatoControlLibro::getIndexado() const {
 	return indexado;
 }
 
-bool DatoControlLibro::isIndexadoPor(char tipo)
-{
+bool DatoControlLibro::isIndexadoPor(char tipo) {
 	bool rdo = false;
 
 	list<char>::iterator it;
-	for (it = indexado->begin(); it != indexado->end(); it++)
-	{
+	for (it = indexado->begin(); it != indexado->end(); it++) {
 		char aux = *it;
 		if (aux == tipo)
 			rdo = true;
 	}
 
 	return rdo;
+}
+
+void DatoControlLibro::setIndexadoNulo() {
+	list<char>::iterator it;
+	for (it = indexado->begin(); it != indexado->end(); it++) {
+		*it = '-';
+	}
 }
 
 uint32_t DatoControlLibro::getOffset() const {

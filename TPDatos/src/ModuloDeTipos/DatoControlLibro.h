@@ -44,6 +44,8 @@ public:
 
 	string serializar();
 
+	void setIndexadoNulo();
+
 	/* Getters y Setters */
 	uint32_t getEspacioLibre() const;
 	uint32_t getId_Libro() const;
