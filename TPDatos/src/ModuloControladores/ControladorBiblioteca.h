@@ -86,6 +86,12 @@ public:
 
 
 	/*
+	 *
+	 */
+	list<char>* chequearIndexado(uint32_t idLibro);
+
+
+	/*
 	 * elimina un libro a la biblioteca y su data de control en el archivo de control
 	 * @param offset id del libro a eliminar
 	 */
