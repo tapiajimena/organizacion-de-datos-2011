@@ -46,13 +46,9 @@ void Instruccion_VerEstructura::crearArchivos() {
 	Crear(archivoBloques.c_str(), this->archivoBloques, true);
 }
 
-void Instruccion_VerEstructura::ejecutar() {
-	Configuracion* conf = Configuracion::GetInstancia();
-
+void Instruccion_VerEstructura::ejecutar()
+{
 	Indexador* indexador = new Indexador();
-
-	//genero el indice correspondiente
-	//FIXME aca que se quizo hacer?
 
 	stringstream mayuscula;
 	string aux;
@@ -60,7 +56,7 @@ void Instruccion_VerEstructura::ejecutar() {
 	mayuscula >> aux;
 	char char_Aux = ServiceClass::toUppercase(aux)[0];
 
-	indexador->indexar(char_Aux);
+	indexador->generarReporte(char_Aux, this->nombreArchivo);
 
 	//armo los archivos.
 	crearArchivos();

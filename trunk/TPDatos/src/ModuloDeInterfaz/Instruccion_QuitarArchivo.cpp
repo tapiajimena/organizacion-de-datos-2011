@@ -18,17 +18,17 @@ Instruccion_QuitarArchivo::Instruccion_QuitarArchivo(char id,
 
 void Instruccion_QuitarArchivo::ejecutar()
 {
-	Indexador* 	indexador 	= new Indexador();
+	Indexador* indexador = new Indexador();
 
 	//se lo elimina de los indices y biblioteca
 	indexador->eliminarIndexado(idArchivo);
 
 	Logger::log("Instruccion_QuitarArchivo", "ejecutar","Se elimina el archivo.");
+	delete(indexador);
 
-	delete (indexador);
 }
 
 Instruccion_QuitarArchivo::~Instruccion_QuitarArchivo()
 {
-	delete this->controladorBiblioteca;
+
 }
