@@ -1,8 +1,11 @@
 /*
  * ParserDeTitulo.cpp
  *
- *  Created on: 12/04/2011
- *      Author: santi
+ *    Autor		 : GRUPO 1 - Fernandez, Gallinal, Maraggi, Tapia
+ *    Catedra    : SERVETTO-FERRER-FERNANDEZ
+ *    Materia    : Organizacion de Datos (75.06) - FIUBA
+ *
+ *	Clase que ofrece el servicio de parseo de titulo para los libros. Hereda de ParserDeAtributo.
  */
 
 #include "ParserDeTitulo.h"

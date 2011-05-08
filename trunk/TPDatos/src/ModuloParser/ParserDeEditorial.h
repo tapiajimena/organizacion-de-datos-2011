@@ -1,12 +1,11 @@
 /*
- * ParserDeLibros.h
+ * ParserDeEditorial.h
  *
  *    Autor		 : GRUPO 1 - Fernandez, Gallinal, Maraggi, Tapia
  *    Catedra    : SERVETTO-FERRER-FERNANDEZ
  *    Materia    : Organizacion de Datos (75.06) - FIUBA
  *
- *	Clase que ofrece el servicio de parseo de los libros. Sirve para cargar los registros de la
- *	estructura libro desde un archivo de libro en formato .txt
+ *	Clase que ofrece el servicio de parseo de editorial para los libros. Hereda de ParserDeAtributo.
  */
 
 #ifndef PARSERDEEDITORIAL_H_
