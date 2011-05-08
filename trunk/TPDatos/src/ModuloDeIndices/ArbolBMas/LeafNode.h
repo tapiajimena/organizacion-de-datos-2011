@@ -30,6 +30,13 @@ private:
 	void elementosToString(iostream* ios, int rootLevel);
 	void elementosToStringXML(iostream* ios, int rootLevel);
 
+	/*
+	 * front coding
+	 */
+	list<DatoElementoNodo*>* frontCode(list<DatoElementoNodo*>* elementos);
+	list<DatoElementoNodo*>* frontDecode(list<DatoElementoNodo*>* elementos);
+	DatoElementoNodo* frontCode(DatoElementoNodo* anterior, DatoElementoNodo* actual);
+
 public:
 
 	LeafNode();
