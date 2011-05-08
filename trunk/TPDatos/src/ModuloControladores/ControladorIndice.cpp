@@ -109,9 +109,6 @@ void ControladorIndice::eliminarIndexadoPorTipo(char tipo, Libro* libroRemover,u
 				pathCarpeta + ARCHIVO_INDICE_AUTOR + EXTENSION_ARCHIVO_INDICE,
 				SIZE_BLOQUE);
 
-		//cout<<endl<<"Se remueve del arbol: "<<elementoNodo->getClave();
-		//cout<<endl<<"Se remueve del arbol: "<<elementoNodo->getLibros().front()<<endl;
-
 		indiceAutorArbol->remove(elementoNodo);
 		delete(indiceAutorArbol);
 	}
@@ -130,7 +127,7 @@ void ControladorIndice::eliminarIndexadoPorTipo(char tipo, Libro* libroRemover,u
 		//se remueven los indices de titulo del hash
 		Hash* indiceTituloHash= new Hash(
 				pathCarpeta + ARCHIVO_INDICE_TITULO + EXTENSION_ARCHIVO_INDICE,
-				pathCarpeta + ARCHIVO_CUBETAS + EXTENSION_ARCHIVO_INDICE);
+				pathCarpeta + ARCHIVO_INDICE_TITULO + "_Cubetas" + EXTENSION_ARCHIVO_INDICE);
 		parClaveIdLibro.first = libroRemover->getTitulo();
 		parClaveIdLibro.second= idLibro;
 		indiceTituloHash->eliminarElemento(parClaveIdLibro);
@@ -139,27 +136,27 @@ void ControladorIndice::eliminarIndexadoPorTipo(char tipo, Libro* libroRemover,u
 	else if (tipo == INDICE_PALABRAS)
 	{
 		//se remueven los indices de palabras el hash
-		Hash* indicePalabrasHash= new Hash(pathCarpeta + ARCHIVO_INDICE_PALABRAS + EXTENSION_ARCHIVO_INDICE,
-									 pathCarpeta + ARCHIVO_TABLA + EXTENSION_ARCHIVO_INDICE);
-
+		Hash* indicePalabrasHash= new Hash(
+							pathCarpeta + ARCHIVO_INDICE_PALABRAS + EXTENSION_ARCHIVO_INDICE,
+							pathCarpeta + ARCHIVO_INDICE_PALABRAS + "_Cubetas" + EXTENSION_ARCHIVO_INDICE);
 
 		libroRemover->getPalabrasClave();
 		if ((libroRemover->getPalabrasClave() != NULL) && (!libroRemover->getPalabrasClave()->empty()))
 		{
-			cout<<"Hola Mundo!!"<<endl;
 			EstructuraPalabrasClave::iterator it_mapaPalabras;
-			for(it_mapaPalabras = libroRemover->getPalabrasClave()->begin(); it_mapaPalabras != libroRemover->getPalabrasClave()->end(); it_mapaPalabras++)
+			EstructuraPalabrasClave* palabras = libroRemover->getPalabrasClave();
+			for(it_mapaPalabras = palabras->begin(); it_mapaPalabras != palabras->end(); it_mapaPalabras++)
 			{
-				//cout<<endl<<"SE VA A ELIMINAR "<< (*it_mapaPalabras).first<<endl;
-				//cout<<endl<<"SE VA A ELIMINAR id "<< idLibro<<endl;
 				parClaveIdLibro.first = (*it_mapaPalabras).first;
 				parClaveIdLibro.second= idLibro;
+
 				indicePalabrasHash->eliminarElemento(parClaveIdLibro);
 			}
-			delete(indicePalabrasHash);
 		}
 		else
-			cout<<endl<<"EST NULL"<<endl;
+			Logger::log("ControladorIndice","eliminarIndexadoPorTipo","La lista de palabras a eliminar es nula");
+
+		delete(indicePalabrasHash);
 	}
 	else
 		Logger::log("ControladorIndice","eliminarIndexadoPorTipo", "El tipo de indice no existe.");
@@ -171,19 +168,24 @@ void ControladorIndice::eliminarIndexadoPorTipo(char tipo, Libro* libroRemover,u
 void ControladorIndice::generarReporte(char tipoIndice, string nombreArchivo)
 {
 	Configuracion* conf = Configuracion::GetInstancia();
-	if ((tipoIndice == 'A')||(tipoIndice == 'E'))
+	if (tipoIndice == 'A')
 		this->indiceArbol->dump(conf->getPathCarpetaReportes() + nombreArchivo
-								+ tipoIndice + EXTENSION_ARCHIVO_REPORTE);
-	else
+								+ "_Autor" + EXTENSION_ARCHIVO_REPORTE);
+	else if (tipoIndice == 'E')
+		this->indiceArbol->dump(conf->getPathCarpetaReportes() + nombreArchivo
+								+ "_Editorial" + EXTENSION_ARCHIVO_REPORTE);
+	else if (tipoIndice == 'T')
 		this->indiceHash->escribirEstructuraEnArchivos(conf->getPathCarpetaReportes()
-								+ nombreArchivo	+ tipoIndice + EXTENSION_ARCHIVO_REPORTE);
+						+ nombreArchivo	+ "_Titulo" + EXTENSION_ARCHIVO_REPORTE);
+	else if (tipoIndice == 'P')
+		this->indiceHash->escribirEstructuraEnArchivos(conf->getPathCarpetaReportes()
+						+ nombreArchivo	+ "_Palabras" + EXTENSION_ARCHIVO_REPORTE);
 }
 
 void ControladorIndice::indexarPorAutorOEditorial(pair<Libro*,uint32_t> parLibroOffset)
 {
 	CaseFoldedString caseFold;
 
-	cout<<endl<<"EL ELEMENTOOOOoo: "<<caseFold.caseFoldWord(parLibroOffset.first->getAutor())<<endl ;
 	indiceArbol->insert(new DatoElementoNodo(caseFold.caseFoldWord(parLibroOffset.first->getAutor()),
 						parLibroOffset.second));
 }
@@ -205,8 +207,10 @@ void ControladorIndice::indexarPorPalabras(pair<Libro*,uint32_t> parLibroOffset)
 	for(it =parLibroOffset.first->getPalabrasClave()->begin();it!=parLibroOffset.first->getPalabrasClave()->end();++it)
 	{
 		aux = ServiceClass::normalizarString((*it).first);
-		//cout<<endl<<"SE ENVIA: "<<aux<<endl;
-		//cout<<endl<<"SE ENVIA: "<<parLibroOffset.second<<endl;
+
+		cout<<endl<<"SE ENVIA: "<<aux<<endl;
+		cout<<endl<<"SE ENVIA: "<<parLibroOffset.second<<endl;
+
 		registroHash.first = aux;
 		registroHash.second= parLibroOffset.second;
 		this->indiceHash->insertarClave(registroHash);
