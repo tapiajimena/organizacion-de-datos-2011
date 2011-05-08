@@ -1,8 +1,13 @@
 /*
  * DatoCubetaHash.h
  *
- *  Created on: 22/04/2011
- *      Author: santi
+ *	Autor	: GRUPO 1 - Fernandez, Gallinal, Maraggi, Tapia
+ *	Catedra	: SERVETTO-FERRER-FERNANDEZ
+ *	Materia	: Organizacion de Datos (75.06) - FIUBA
+ *
+ *	Estructura encargada de la persistencia de una cubeta, de su serialización y de proveer servicios
+ *	para operar con ella.
+ *
  */
 
 #ifndef DATOCUBETAHASH_H_
@@ -34,7 +39,6 @@ private:
 	uint32_t offsetProxCubeta;
 
 	std::vector<ElementoHash> elementosHash;
-
 
 public:
 
