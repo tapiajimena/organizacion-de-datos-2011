@@ -237,8 +237,6 @@ void ArchivoControlLibro::actualizarEspaciosLibres(
 }
 
 void ArchivoControlLibro::registrarIndexado(uint32_t idLibro, char tipoClave) {
-	//FIXME se comento el cargarLibros() ya que se cargan los libros en un nivel superior
-	//cargarLibros();
 	DatoControlLibro* d = buscarEnMap(idLibro);
 
 	if (d != NULL) {
@@ -304,14 +302,7 @@ uint32_t ArchivoControlLibro::calcularNuevoOffset(uint32_t espacioLibre, uint32_
 	/* nuevoOffset = espacio libre viejo -
 	 * ( id libro recien asignado + meta + tamanio del libro
 	 */
-
-	cout << "espacio libre viejo: " << espacioLibre << endl;
-	cout << "idLibro viejo: " << idLibro << endl;
-	cout << "size: " << size << endl;
-
 	uint32_t nuevoOffset = idLibro + METADATA_SIZE_BOOK + size;
-
-	cout <<"calculo offset: " << nuevoOffset << endl;
 
 	return nuevoOffset;
 }
@@ -338,7 +329,6 @@ uint32_t ArchivoControlLibro::registrarLibro(uint32_t size, uint32_t finArcLibro
 
 	uint32_t id_Libro = dondeEscribo(size);
 
-	cout << "lo que devuelve el donde escribo: " << id_Libro << endl;
 
 	DatoControlLibro* buscado = buscarEnMap(id_Libro);
 
@@ -352,16 +342,12 @@ uint32_t ArchivoControlLibro::registrarLibro(uint32_t size, uint32_t finArcLibro
 
 	} else {
 		nuevoLibro->setId_Libro((calcularNuevoOffset(buscado->getEspacioLibre(),size,id_Libro)));
-		cout << "nuevo Id: " << nuevoLibro->getId_Libro() << endl;
-
 		nuevoLibro->setEspacioLibre(calcularNuevoEspacioLibre(buscado->getEspacioLibre(),size));
 
 		nuevoLibro->setOffset(this->parser->getOffsetArchivo());
-		cout << "nuevo offset: " << nuevoLibro->getOffset() << endl;
 
 		this->libros->insert(pair<uint32_t, DatoControlLibro*> (nuevoLibro->getId_Libro(),nuevoLibro));
 		buscado->setEspacioLibre(0);
-		cout << "nuevo espacio libre: " << buscado->getEspacioLibre() << endl;
 
 		Logger::log("ArchivoControlLibro", "registrarLibro",
 				"Se agrega nuevo libro.");
