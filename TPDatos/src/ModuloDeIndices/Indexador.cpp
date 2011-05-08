@@ -80,6 +80,7 @@ void Indexador::indexar(char tipoIndice)
 
 			parLibroOffset.first 	= libro;
 			parLibroOffset.second 	= *it;
+			//cout<<"LAS PALABRAS SON: "<<libro->getPalabrasClave()<<endl;
 			controlIndice->indexar(parLibroOffset, tipoIndice);
 			controlBiblioteca->registrarIndexadoArchivoControl(*it, tipoIndice);
 
@@ -107,8 +108,9 @@ void Indexador::eliminarIndexado(uint32_t idLibro)
 {
 	Libro *libroRemover = controlBiblioteca->cargarNuevoLibroParseado(idLibro);
 
-	controlIndice->eliminarIndexado(libroRemover);
+	controlIndice->eliminarIndexado(libroRemover, idLibro,controlBiblioteca->chequearIndexado(idLibro));
 
+	Logger::log("Indexador","eliminarIndexado","Se eliminaron los indices");
 	//por ultimo se elimina el libro de control biblioteca
 	controlBiblioteca->eliminarLibro(idLibro);
 	delete(libroRemover);
@@ -117,11 +119,8 @@ void Indexador::eliminarIndexado(uint32_t idLibro)
 
 Indexador::~Indexador()
 {
-
-
 	delete(controlBiblioteca);
 	delete(controlIndice);
-
 }
 
 
