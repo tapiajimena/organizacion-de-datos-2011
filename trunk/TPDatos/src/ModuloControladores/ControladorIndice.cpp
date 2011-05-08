@@ -87,7 +87,6 @@ void ControladorIndice::eliminarIndexado(Libro* libroRemover, uint32_t idLibro, 
 
 	for(it = tiposIndices->begin(); it != tiposIndices->end(); it++)
 	{
-		cout<<endl<<"LA PORQUERIA ES INDICE DE: "<< *it<<endl;
 		//Logger::log("ControladorIndice","eliminarIndexado","Elminando indice tipo " + *it );
 		eliminarIndexadoPorTipo(*it,libroRemover, idLibro);
 	}
@@ -207,9 +206,6 @@ void ControladorIndice::indexarPorPalabras(pair<Libro*,uint32_t> parLibroOffset)
 	for(it =parLibroOffset.first->getPalabrasClave()->begin();it!=parLibroOffset.first->getPalabrasClave()->end();++it)
 	{
 		aux = ServiceClass::normalizarString((*it).first);
-
-		cout<<endl<<"SE ENVIA: "<<aux<<endl;
-		cout<<endl<<"SE ENVIA: "<<parLibroOffset.second<<endl;
 
 		registroHash.first = aux;
 		registroHash.second= parLibroOffset.second;

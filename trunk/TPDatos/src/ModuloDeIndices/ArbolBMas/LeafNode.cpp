@@ -274,9 +274,6 @@ int LeafNode::modify(DatoElementoNodo* elemento) {
 			if (overflowded) {
 				return OVERFLOWDED;
 			}
-			/*
-			 * TODO se encargaba de modificar la data del registro
-			 */
 			//ss.write(record->getData(),record->getDataSize());
 			//currentRecord->edit(record->getKey(),&ss);
 			if (isUnderFlowded(BLOCKSIZE)) {
@@ -392,8 +389,8 @@ list<DatoElementoNodo*>* LeafNode::frontCode(
 DatoElementoNodo* LeafNode::frontCode(DatoElementoNodo* anterior,
 		DatoElementoNodo* actual) {
 
-	cout << "Frontcodeando: " << anterior->getClave() << " con: "
-			<< actual->getClave() << endl;
+	//cout << "Frontcodeando: " << anterior->getClave() << " con: "
+		//	<< actual->getClave() << endl;
 
 	DatoElementoNodo* resultado = new DatoElementoNodo(actual->getClave(),
 			actual->getLibros());
@@ -416,7 +413,7 @@ DatoElementoNodo* LeafNode::frontCode(DatoElementoNodo* anterior,
 					resultado->getCantidadLetrasClaveAnterior(),
 					resultado->getCantidadLetrasClaveActual()));
 
-	cout << resultado->getClave() << endl;
+	//cout << resultado->getClave() << endl;
 
 	return resultado;
 
@@ -450,10 +447,10 @@ void LeafNode::deserialize(iostream* stream) {
 		frontCodedElement->hidratar(stream);
 		frontCodedElements->push_back(frontCodedElement);
 
-		cout << "Recuperando DatoElementoNodo FrontCodeado, clave: "
-				<< frontCodedElement->getCantidadLetrasClaveAnterior() << " "
-				<< frontCodedElement->getCantidadLetrasClaveActual() << " "
-				<< frontCodedElement->getClave() << endl;
+//		cout << "Recuperando DatoElementoNodo FrontCodeado, clave: "
+//				<< frontCodedElement->getCantidadLetrasClaveAnterior() << " "
+//				<< frontCodedElement->getCantidadLetrasClaveActual() << " "
+//				<< frontCodedElement->getClave() << endl;
 	}
 
 	list<DatoElementoNodo*>* frontDecodedElements = frontDecode(
@@ -502,7 +499,7 @@ list<DatoElementoNodo*>* LeafNode::frontDecode(
 		claveAux = "";
 		datoAnterior = aux;
 		resultado->push_back(aux);
-		cout << "Resultado decoding: " << aux->getClave() << endl;
+		//cout << "Resultado decoding: " << aux->getClave() << endl;
 
 	}
 

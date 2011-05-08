@@ -13,7 +13,7 @@ Instruccion_QuitarArchivo::Instruccion_QuitarArchivo(char id,
 		uint32_t idArchivo) :
 	Instruccion(id) {
 	this->idArchivo = idArchivo;
-	cout << "idArchivo: " << idArchivo << endl;
+	cout << "Id Archivo: " << idArchivo << endl;
 }
 
 void Instruccion_QuitarArchivo::ejecutar()
@@ -23,6 +23,7 @@ void Instruccion_QuitarArchivo::ejecutar()
 	//se lo elimina de los indices y biblioteca
 	indexador->eliminarIndexado(idArchivo);
 
+	cout<<"Se eliminan los registros del indice."<<endl;
 	Logger::log("Instruccion_QuitarArchivo", "ejecutar","Se elimina el archivo.");
 	delete(indexador);
 

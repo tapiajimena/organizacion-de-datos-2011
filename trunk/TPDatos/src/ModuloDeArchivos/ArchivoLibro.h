@@ -112,7 +112,7 @@ private:
 	void escribirAlFinal(DatoLibro & d);
 
 	/**
-	 * TODO implementar
+	 *
 	 * eliminar el numero de registro nroRegistro de la biblioteca
 	 */
 	void eliminar(int nroRegistro);

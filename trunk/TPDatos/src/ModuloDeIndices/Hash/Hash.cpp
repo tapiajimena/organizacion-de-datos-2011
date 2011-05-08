@@ -136,8 +136,6 @@ void Hash::escribirDatoCubeta(DatoCubetaHash* datoCubeta, uint32_t offsetCubeta)
 
 	ManejadorArchivo::Escribir(archivoCubetas, &ss, offsetCubeta);
 
-	//este m�todo de abajo no reserva espacio adicional... no me sirve.
-	//ManejadorArchivo::Escribir(&archivoCubetas, &ss, offsetCubeta, TAMANIOCUBETA);
 }
 
 void Hash::escribirDatoTabla(DatoTablaHash* datoTabla, uint32_t offsetDatoTabla) {
@@ -845,7 +843,6 @@ void Hash::escribirArchivosTablaDatosYEspaciosLibres(
 }
 
 void Hash::escribirEstructuraEnArchivos(std::string baseNombreArchivo) {
-	//TODO tomar el path en que deben ponerse estos archivos de la clase de paulus...
 
 	//Se generan los archivos seg�n especificaciones del enunciado del TP.
 	std::string nombreArchivoSalidaIndice;

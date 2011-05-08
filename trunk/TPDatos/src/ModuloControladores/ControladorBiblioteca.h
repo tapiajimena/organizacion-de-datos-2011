@@ -79,7 +79,7 @@ public:
 
 
 	/*
-	 * TODO implementar
+	 *
 	 * deberia recorrer a lista e ir insertando el tag en el archvio de control
 	 */
 	void registrarIndexado(list<DatoLibro> dLibros);

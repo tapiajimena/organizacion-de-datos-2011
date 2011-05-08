@@ -13,7 +13,6 @@
 #include "Dato.h"
 
 Dato::Dato() {
-	// TODO Auto-generated constructor stub
 
 }
 

@@ -34,7 +34,6 @@ void ParserDiccionario::leerArchivo(fstream* archivo) {
 		Logger::log("parserDiccionario", "leerArchivo",
 				"No se pudo abrir el archivo de stopworkds");
 	}
-
 }
 
 set<string>* ParserDiccionario::getLista() {

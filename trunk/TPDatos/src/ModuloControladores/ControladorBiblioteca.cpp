@@ -48,20 +48,22 @@ bool ControladorBiblioteca::ingresarLibro(string pathLibro) {
 
 		Logger::log("ControladorBiblioteca", "ingresarLibro",
 				"Se actualiza el archivo de control.");
+		cout<< "Se ingresó el libro correctamente. Se le asigna id "<<nuevoOffset<<"."<<endl;
 	}
 	else
+	{
 		Logger::log("ControladorBiblioteca", "ingresarLibro","El libro a ingresar no existe, verifique.");
+		cout<< "El libro a ingresar no existe, verifique. "<<endl;
+	}
 }
 
 bool ControladorBiblioteca::eliminarLibro(uint32_t offset) {
 	DatoLibro datoLibro = recuperarLibro(offset);
 
-	cout<<endl<<"Se elimina el libro l.60"<<endl;
 	/* Actualiza el estado del archivo de control */
 	arcControl->eliminarLibro(offset, datoLibro.getSize());
 
 	arcControl->actualizarArchivo();
-	cout<<endl<<"Se actualiza el archivo control l.63"<<endl;
 
 	Logger::log("ControladorBiblioteca", "eliminarLibro",
 			"Se actualiza el archivo de control.");
@@ -74,7 +76,6 @@ DatoLibro ControladorBiblioteca::recuperarLibro(uint32_t offset) {
 
 list<uint32_t> ControladorBiblioteca::recuperarLibrosNoIndexadosPor(char tipoIndice)
 {
-	//TODO como se hace para obtener el offset a libro del controlBiblioteca
 	list<uint32_t> idLibros;
 	DatoControlLibro* dControlLibro;
 	map<uint32_t,DatoControlLibro*>::iterator it;
@@ -104,8 +105,6 @@ list<uint32_t> ControladorBiblioteca::recuperarLibrosNoIndexadosPor(char tipoInd
 
 list<uint32_t> ControladorBiblioteca::recuperarLibrosDeBiblioteca()
 {
-	//TODO como se hace para obtener el offset a libro del controlBiblioteca
-	//TODO REFACTORIZAR CON RECUPERARLIBROSNOINDEXADOSPOR
 	list<uint32_t> idLibros;
 	DatoControlLibro* dControlLibro;
 	map<uint32_t,DatoControlLibro*>::iterator it;
@@ -144,7 +143,6 @@ Libro* ControladorBiblioteca::cargarNuevoLibroParseado(uint32_t idLibro)
 	libroNuevo = new Libro();
 
 
-	//TODO refactorizar y modularizar estaria bueno poder parser en el mismo libro distintos parsers
 	//se parsea para obtener la clave y luego eliminarla del indice
 	parserAutor = new ParserDeAutor();
 	libroAutor 	= new Libro();
@@ -172,7 +170,6 @@ Libro* ControladorBiblioteca::cargarNuevoLibroParseado(uint32_t idLibro)
 	delete(libroTitulo);
 	delete(parserTitulo);
 
- 	 //TODO terminar de eliminar la lista de palabras
 	parserPalabras	= new ParserDePalabras(ARCHIVO_STOPWORDS);
 	libroPalabras 	= new Libro();
 	libroPalabras 	= parserPalabras->parsear(dLibro);
