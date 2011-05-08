@@ -13,7 +13,7 @@
 
 ParserDePalabras::ParserDePalabras(std::string nombreArchivoStopWords) {
 
-	this->diccionarioStopWords = new Diccionario(nombreArchivoStopWords);
+	this->diccionarioStopWords = new Diccionario();
 
 	this->diccionarioStopWords->cargarDiccionario();
 }
