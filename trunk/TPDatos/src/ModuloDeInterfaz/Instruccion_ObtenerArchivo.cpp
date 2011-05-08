@@ -23,6 +23,8 @@ void Instruccion_ObtenerArchivo::ejecutar(){
 
 	Logger::log("Instruccion_ObtenerArchivo", "ejecutar",
 			"Se levanta el archivo de texto.");
+
+	delete (controladorBiblioteca);
 }
 
 Instruccion_ObtenerArchivo::~Instruccion_ObtenerArchivo() {
