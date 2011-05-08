@@ -23,7 +23,7 @@ void Libro::setPalabrasClave(EstructuraPalabrasClave *_palabrasClave)
 
 Libro::~Libro()
 {
-	delete this->_palabrasClave;
+	//delete this->_palabrasClave;
 };
 
 std::string Libro::getTitulo()

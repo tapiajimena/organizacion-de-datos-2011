@@ -17,6 +17,7 @@
 #include <iostream>
 
 #include "../../Common/Constantes.h"
+#include "../ModuloEstructuras/Configuracion.h"
 #include "../ModuloParser/ParserDiccionario.h"
 #include "../../Common/Utilitarios/Logger.h"
 
@@ -28,7 +29,7 @@ private:
 	string nombreArchivo;
 	ParserDiccionario* parser;
 public:
-	Diccionario(string nombreArchivo);
+	Diccionario();
 
 	//usar el manejador de archivo para levantar un archivo en .txt
 	void cargarDiccionario();
