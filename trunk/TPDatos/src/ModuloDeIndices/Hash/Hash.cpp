@@ -202,76 +202,22 @@ std::vector<unsigned int> Hash::obtenerBloquesConMismaCubeta(
 		unsigned int nroDeBloque, unsigned int offsetCubeta) {
 	std::vector<unsigned int> entradasDeTabla;
 
-	/* Se procede de la siguiente manera:
-	 *
-	 * Dado el tamaï¿½o actual de la tabla, la cuenta para determinar el nro de bloque al que se entra es:
-	 *
-	 * nroBloque = X mod N
-	 *
-	 * ...donde X es el nï¿½mero dispersado del dato por la funciï¿½n de Hash y N la cantidad de bloques de la tabla.
-	 *
-	 * Ahora tenemos que a medida que la tabla fue creciendo, bloques que cuando la tabla tenï¿½a menos "resoluciï¿½n" de nï¿½meros de bloque agruparon datos, que luego de expandirse
-	 * la tabla corresponderï¿½an a distintas entradas. Las nuevas entradas direccionan a la cubeta de la anterior... ï¿½ok? Lo que relaciona a estas dos entradas de tabla, que antes
-	 * eran la misma y luego de duplicar la tabla se separaron, por hacer X mod 2N en vez de X mod N, tienen en comï¿½n justamente eso, el resto que dan segï¿½n el tamaï¿½o de la tabla.
-	 *
-	 * Si tenemos X = 31 y la tabla tiene tamaï¿½o N = 16 (crece en potencias de dos)
-	 *
-	 * Nro de bloque actual, al que irï¿½a el dato con valor X = 31 es
-	 *
-	 * 31 mod 16 = 15
-	 *
-	 * Sin embargo antes, con N = 8 otro dato con mismo X podrï¿½a haber ido
-	 *
-	 * 31 mod 8 = 7, pero tambiï¿½n tenemos que 15 mod 8 = 7, y asï¿½ sucesivamente...
-	 * 31 mod 4 = 3... 3 = 7 mod 4
-	 * 31 mod 2 = 1... 1 = 3 mod 2
-	 *
-	 * Vinculamos todas estas entradas de tabla, que son candidatas a estar compartiendo una cubeta a travï¿½s de cï¿½lculo recursivo de mï¿½dulo para los N que fue teniendo la tabla.
-	 * (si de entrada tenemos un nï¿½mero bajo, ese nï¿½mero se repite hasta que la tabla sea menor que el nï¿½mero obtenido... por ejemplo, de ser X mod N = 0 o 1, ese valor serï¿½a igual
-	 * para todos los tamaï¿½os de la tabla.
-	 *
-	 * Podemos usar esta propiedad del ï¿½lgebra modular:
-	 *
-	 * a = b mod c <=> c = a mod b (el igual en sentido de congruencia del ï¿½lgebra modular).
-	 */
-
-	/*
-	 std::vector<unsigned int> numerosDeBloqueParientes;
-
-	 unsigned int nroDeBloqueEquivalenteTemporal = nroDeBloque; //ver funciï¿½n obtener nï¿½mero de bloque.
-
-	 //Como la tabla nos viene con el tamaï¿½o actualizado, sï¿½lo hay que buscar equivalencias hacia atrï¿½s.
-	 //TamanioTablaEnesimo representa cantidad de bloques.
-	 for( unsigned int tamanioTablaEnesimo = this->cantidadDeBloques; tamanioTablaEnesimo > 1; tamanioTablaEnesimo = (unsigned int)(tamanioTablaEnesimo / 2) )
-	 {
-	 nroDeBloqueEquivalenteTemporal = (unsigned int) nroDeBloqueEquivalenteTemporal % tamanioTablaEnesimo; //en la 1er iteraciï¿½n da igual a nroDeBloque.
-
-	 if( std::find(numerosDeBloqueParientes.begin(), numerosDeBloqueParientes.end(), nroDeBloqueEquivalenteTemporal) !=  numerosDeBloqueParientes.end()
-	 &&
-	 nroDeBloqueEquivalenteTemporal != nroDeBloque)
-	 {
-	 //si el equivalente no habï¿½a sido ingresado, lo ingresamos, salvo que sea igual al nroDeBloque parï¿½metro
-	 numerosDeBloqueParientes.push_back(nroDeBloqueEquivalenteTemporal);
-	 }
-	 }
-
-	 //return numerosDeBloqueParientes;
-	 */
-
 	std::vector<unsigned int> numerosDeBloqueCompartiendoCubeta;
 	//Ahora levantamos todos los bloques parientes que apunten a la misma cubeta.
 	//for( std::vector<unsigned int>::iterator it_nrosBloque = numerosDeBloqueParientes.begin(); it_nrosBloque != numerosDeBloqueParientes.end(); it_nrosBloque++)
-	for (unsigned int numeroBloqueTemporal = 0; numeroBloqueTemporal
-			< this->getCantidadDeBloques(); numeroBloqueTemporal++) {
-		uint32_t offsetDatoTabla = this->calcularOffsetBloqueEnTabla(
-				numeroBloqueTemporal);//*it_nrosBloque );
+	for (unsigned int numeroBloqueTemporal = 0;
+			numeroBloqueTemporal < this->getCantidadDeBloques();
+			numeroBloqueTemporal++)
+	{
+		uint32_t offsetDatoTabla = this->calcularOffsetBloqueEnTabla(numeroBloqueTemporal);//*it_nrosBloque );
 		DatoTablaHash* datoTabla = this->levantarDatoTabla(offsetDatoTabla); //recordar que datoTabla equivale a bloque. La tabla contiene bloques que direccionan cubetas.
 
-		if (datoTabla->getOffsetCubeta() == offsetCubeta
-				&& numeroBloqueTemporal != nroDeBloque) {
-			//TODO hacer esto...
+		if (datoTabla->getOffsetCubeta() == offsetCubeta && numeroBloqueTemporal != nroDeBloque)
+		{
+			//TODO eventualmente se puede hacer esto para ahorrar lecturas en disco...
 			//std::pair<DatoTablaHash*, unsigned int> datoTablaYNroBloque( datoTabla, *it_nrosBloque);
 			//entradasDeTabla.push_back( datoTablaYNroBloque );
+			//y devolver las cosas leidas...
 			numerosDeBloqueCompartiendoCubeta.push_back(numeroBloqueTemporal);//*it_nrosBloque );
 		}
 
@@ -322,7 +268,6 @@ void Hash::duplicarTablaHash()
 void Hash::redispersarSucesionCubetas(std::vector<DatoCubetaHash*> cubetasSucesivas, unsigned int numeroDeBloque, DatoTablaHash* datoTabla)
 {
 	std::vector<unsigned int> bloquesConMismaCubeta = this->obtenerBloquesConMismaCubeta(numeroDeBloque, datoTabla->getOffsetCubeta());
-	std::cout << "Bloques que comparten cubeta..." << bloquesConMismaCubeta.size() << std::endl;
 
 	//Inicializamos cubetas vacías para los bloques que compartían la cubeta desbordada.
 	for (std::vector<unsigned int>::iterator it_bloques = bloquesConMismaCubeta.begin();
@@ -545,7 +490,6 @@ bool Hash::probarInsertarEnSucesionDeCubetas(std::vector<DatoCubetaHash*> &cubet
 
 	//1er intento: si la cubeta tiene extensiones, probamos insertar en esas extensiones.
 	elementoInsertado = probarInsertarEnSucesionDeCubetas( cubetasSucesivas, elemento, datoTabla, numeroDeBloque);
-	std::cout<<"sucesion de cubetas previa..."<<std::endl;
 
 	if(!elementoInsertado)
 	{
@@ -555,14 +499,12 @@ bool Hash::probarInsertarEnSucesionDeCubetas(std::vector<DatoCubetaHash*> &cubet
 			// probamos inicializar cubetas vacías para todos los bloques que comparten la sucesión de cubetas
 			// y redispersar todos los elementos y luego volvemos a tratar de insertar nuestro elemento.
 			elementoInsertado = this->probarInsertarEnSucesionDeCubetasTrasRedispersion(cubetasSucesivas, elemento, datoTabla, numeroDeBloque);
-			std::cout<<"redispersion de sucesion de cubetas previa..."<<std::endl;
 		}
 
 		if( !elementoInsertado)
 		{
 			//3er intento: duplicamos el tamaño de tabla y tratamos de insertar el elemento nuevamente.
 			elementoInsertado = this->probarInsertarTrasDuplicarTamanioDeTabla(cubetasSucesivas, elemento, datoTabla, numeroDeBloque);
-			std::cout<<"duplique tabla..."<<std::endl;
 
 			tablaDuplicada = true;
 
@@ -571,7 +513,6 @@ bool Hash::probarInsertarEnSucesionDeCubetas(std::vector<DatoCubetaHash*> &cubet
 				//4to intento y último: creamos una cubeta nueva al final y extendemos el bloque al que
 				//corresponde la clave del elemento a ingresar. Asumimos que un elemento siempre cabe en una cubeta nueva.
 				elementoInsertado = this->insertarEnNuevaCubetaYExtenderCubetaAnterior(cubetasSucesivas, elemento);
-				std::cout<<"insertado en nueva cubeta extendida..."<<std::endl;
 
 				//en esta instancia elementoInsertado debe ser siempre true.
 			}
@@ -590,229 +531,23 @@ bool Hash::probarInsertarEnSucesionDeCubetas(std::vector<DatoCubetaHash*> &cubet
 	delete datoTabla;
 }
 
-/*
-void Hash::manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCubeta, DatoTablaHash* datoTabla, unsigned int numeroDeBloque)
-{
-
-	//Si llegamos hasta acï¿½ sabemos que el dato no cabe en la cubeta que nos llega por parï¿½metro
-
-	std::vector<DatoCubetaHash*> cubetasSucesivas; //Vector que guarda puntero a cubeta junto con su offset.
-
-	bool elementoInsertado = false;
-
-	cubetasSucesivas.push_back(datoCubeta);
-
-	//Se intenta insertar el elemento sucesivamente en las extensiones de la cubeta actual, si las hubiere (si no, se carga la sucesiï¿½n de cubetas).
-	//NOTA: La cubeta con offset 0 siempre es inicializada y no continï¿½ua otras anteriores
-	//PRIMERO...
-	uint32_t offsetCubetaActual = datoTabla->getOffsetCubeta();
-
-	while (cubetasSucesivas.back()->getOffsetCubetaContinuacion() != 0
-			&& !elementoInsertado) {
-		offsetCubetaActual
-				= cubetasSucesivas.back()->getOffsetCubetaContinuacion();
-		cubetasSucesivas.push_back(this->levantarDatoCubeta(offsetCubetaActual));
-
-		elementoInsertado = cubetasSucesivas.back()->insertarElementoHash(
-				*elemento); //Lo inserta si puede.
-	}
-
-	if (elementoInsertado)
+ void Hash::actualizarCantidadDeElementosDeBloquesQueCompartenCubeta(std::vector<unsigned int> numerosDeBloqueQueCompartenCubeta, int diferenciaElementos)
+ {
+	for( std::vector<unsigned int>::iterator it_nrosDeBloque = numerosDeBloqueQueCompartenCubeta.begin();
+					it_nrosDeBloque != numerosDeBloqueQueCompartenCubeta.end();
+					it_nrosDeBloque++)
 	{
-		datoTabla->setCantidadDeElementos(datoTabla->getCantidadDeElementos()+ 1);
-		this->escribirDatoTabla(datoTabla, this->calcularOffsetBloqueEnTabla(numeroDeBloque));
-		this->escribirDatoCubeta(cubetasSucesivas.back(), offsetCubetaActual);
-
-		//liberaciï¿½n de recursos...
-		//delete datoTabla;
-		while (cubetasSucesivas.size() > 1)
-		{
-			DatoCubetaHash* cubeta = cubetasSucesivas.back();
-			delete cubeta;
-			cubetasSucesivas.pop_back();
-		}
-		//cubetasSucesivas.clear();
+		DatoTablaHash* datoTablaCubetaCompartida = this->levantarDatoTabla( this->calcularOffsetBloqueEnTabla(*it_nrosDeBloque));
+		datoTablaCubetaCompartida->setCantidadDeElementos( datoTablaCubetaCompartida->getCantidadDeElementos() + diferenciaElementos);
+		this->escribirDatoTabla(datoTablaCubetaCompartida, this->calcularOffsetBloqueEnTabla(*it_nrosDeBloque));
+		delete datoTablaCubetaCompartida;
 	}
 
-	if (!elementoInsertado) {
-		//---------------------------------------------------------------------------------------------------------------------------------------
-		//Si no hubo ï¿½xito... -------------------------------------------------------------------------------------------------------------------
-		//SEGUNDO...
+ }
 
-		//...intentamos esto: todos los bloques que compartï¿½an la cubeta inicial inicializan una cubeta vacï¿½a y se redispersan los elementos de la cubeta compartida.
-		if (cubetasSucesivas.size() > 1)
-		{
-			this->redispersarSucesionCubetas(cubetasSucesivas, numeroDeBloque, datoTabla);
-
-			//intentamos meter el dato en alguna cubeta de la sucesiï¿½n, a ver si se hizo lugar...
-			offsetCubetaActual = datoTabla->getOffsetCubeta();
-			for (std::vector<DatoCubetaHash*>::iterator it_cubetasSucesivas = cubetasSucesivas.begin();
-				it_cubetasSucesivas != cubetasSucesivas.end() && !elementoInsertado;
-				it_cubetasSucesivas++)
-			{
-
-				elementoInsertado = (*it_cubetasSucesivas)->insertarElementoHash(*elemento);
-
-				if (elementoInsertado)
-				{
-					this->escribirDatoCubeta((*it_cubetasSucesivas), offsetCubetaActual);
-					datoTabla->setCantidadDeElementos(datoTabla->getCantidadDeElementos() + 1);
-					this->escribirDatoTabla(datoTabla, this->calcularOffsetBloqueEnTabla(numeroDeBloque));
-
-					//liberamos recursos.
-					//delete datoTabla; (en metodo invocador)
-
-					while (cubetasSucesivas.size() > 1)
-					{
-						DatoCubetaHash* cubeta = cubetasSucesivas.back();
-						delete cubeta;
-						cubetasSucesivas.pop_back();
-					}
-					//cubetasSucesivas.clear();
-
-				}
-				else
-				{
-					offsetCubetaActual= (*it_cubetasSucesivas)->getOffsetCubetaContinuacion();
-				}
-			}
-
-		}
-
-		//---------------------------------------------------------------------------------------------------------------------------------------
-		//Si todavï¿½a no hubo ï¿½xito... -------------------------------------------------------------------------------------------------------------------
-		//TERCERO...
-
-		//...duplicamos la tabla hasta 5 veces.
-		//Si luego de duplicar 5 veces la tabla no se pudo insertar, asumimos que la funciï¿½n de hash es mala y que hay muchas palabras con un valor,
-		//y por lo tanto debemos extender la cubeta correspondiente.
-		std::vector<DatoCubetaHash*> nuevasCubetasSucesivas;
-
-		if (!elementoInsertado) {
-			int cantidadIntentosMax = 1;
-			for (int intento = 0; intento < cantidadIntentosMax
-					&& !elementoInsertado; intento++) {
-				//insertar elemento con tabla extendida...
-				std::cout << numeroDeBloque << std::endl; //debug
-				this->duplicarTablaHash();
-
-				std::cout << cubetasSucesivas.size() << std::endl;
-				this->archivoCubetas.flush();
-				this->archivoTabla.flush();
-
-				if (intento == 0) {
-					//Usamos numero de bloque y entrada a la tabla "vieja" que contiene cubetas rebalsadas.
-					this->redispersarSucesionCubetas(cubetasSucesivas,
-							numeroDeBloque, datoTabla); //contiene a la cubeta que llega como parametro
-				} else {
-					this->redispersarSucesionCubetas(nuevasCubetasSucesivas,
-							numeroDeBloque, datoTabla);
-				}
-				this->archivoCubetas.flush();
-				this->archivoTabla.flush();
-
-				while (cubetasSucesivas.size() > 1 && intento == 0) {
-					DatoCubetaHash* cubeta = cubetasSucesivas.back();
-					delete cubeta;
-					cubetasSucesivas.pop_back();
-				} //Este vector cubetasSucesivas NO SE DEBE USAR MAS. No se hace delete de la cubeta original.
-
-				while (!nuevasCubetasSucesivas.empty()) {
-					DatoCubetaHash* cubeta = nuevasCubetasSucesivas.back();
-					delete cubeta;
-					nuevasCubetasSucesivas.pop_back();
-				}
-
-				unsigned int nuevoNumeroDeBloque = this->obtenerNumeroDeBloque(
-						elemento->getPalabra());
-
-				DatoTablaHash* datoTablaNuevo = this->levantarDatoTabla(
-						this->calcularOffsetBloqueEnTabla(nuevoNumeroDeBloque));
-
-				uint32_t offsetCubeta = datoTablaNuevo->getOffsetCubeta();
-				bool primerCubeta = true;
-
-				while ((offsetCubeta != 0 || primerCubeta)
-						&& !elementoInsertado) {
-					nuevasCubetasSucesivas.push_back(this->levantarDatoCubeta(
-							offsetCubeta));
-					elementoInsertado
-							= nuevasCubetasSucesivas.back()->insertarElementoHash(
-									*elemento);
-
-					if (elementoInsertado) {
-						datoTablaNuevo->setCantidadDeElementos(
-								datoTablaNuevo->getCantidadDeElementos() + 1);
-						this->escribirDatoTabla(datoTablaNuevo,
-								this->calcularOffsetBloqueEnTabla(
-										nuevoNumeroDeBloque));
-						this->escribirDatoCubeta(nuevasCubetasSucesivas.back(),
-								offsetCubeta);
-					} else {
-						offsetCubeta
-								= nuevasCubetasSucesivas.back()->getOffsetCubetaContinuacion();
-					}
-					primerCubeta = false;
-				}
-
-				delete datoTablaNuevo;
-			}
-
-			//Si aï¿½n no se pudo insertar, extendemos la cubeta
-			//CUARTO...
-			if (!elementoInsertado)
-			{
-				unsigned int numeroBloqueConTablaExtendida = this->obtenerNumeroDeBloque(elemento->getPalabra());
-				uint32_t offsetDatoTablaPosCrecimiento = this->calcularOffsetBloqueEnTabla(	numeroBloqueConTablaExtendida);
-				DatoTablaHash* datoTablaPosCrecimiento = this->levantarDatoTabla(offsetDatoTablaPosCrecimiento);
-
-				DatoCubetaHash* datoCubetaExtension = new DatoCubetaHash();
-				elementoInsertado = datoCubetaExtension->insertarElementoHash(*elemento);
-				uint32_t offsetNuevaCubeta = this->nuevaCubetaAlFinal(datoCubetaExtension);
-
-				//Encadenamos la anterior ultima cubeta con la recien escrita (ahora ultima).
-				uint32_t offsetUltimaCubetaDeSerie; //ultima cubeta de la sucesion anterior de cubetas.
-
-				if (nuevasCubetasSucesivas.size() > 1)
-				{
-					//tomamos el offset de la ultima, que es apuntada por la anterior (penultima).
-					offsetUltimaCubetaDeSerie = nuevasCubetasSucesivas.at(cubetasSucesivas.size()- 2)->getOffsetCubetaContinuacion();
-				}
-				else
-				{
-					offsetUltimaCubetaDeSerie = datoTablaPosCrecimiento->getOffsetCubeta();
-				}
-
-				//Escribimos cubeta que quedo penultima
-				nuevasCubetasSucesivas.back()->setOffsetCubetaContinacion(offsetNuevaCubeta);
-				this->escribirDatoCubeta(nuevasCubetasSucesivas.back(),	offsetUltimaCubetaDeSerie);
-
-				//Actualizamos cantidad de elementos del bloque
-				datoTablaPosCrecimiento->setCantidadDeElementos(datoTablaPosCrecimiento->getCantidadDeElementos() + 1);
-				this->escribirDatoTabla(datoTablaPosCrecimiento, offsetDatoTablaPosCrecimiento);
-
-				delete datoCubetaExtension;
-				delete datoTablaPosCrecimiento;
-			}
-
-			//liberamos recursos
-			//delete datoTabla; en metodo invocador
-			while (!nuevasCubetasSucesivas.empty()) {
-				DatoCubetaHash* cubeta = nuevasCubetasSucesivas.back();
-				delete cubeta;
-				nuevasCubetasSucesivas.pop_back();
-			}
-
-		}
-	}
-
-	//liberaciï¿½n de recursos.
-}
-*/
-
-void Hash::eliminarElemento(ElementoHash elemento) {
-	unsigned int numeroBloque = this->obtenerNumeroDeBloque(
-			elemento.getPalabra());
+void Hash::eliminarElemento(ElementoHash elemento)
+{
+	unsigned int numeroBloque = this->obtenerNumeroDeBloque(elemento.getPalabra());
 
 	uint32_t offsetDatoTabla = this->calcularOffsetBloqueEnTabla(numeroBloque);
 
@@ -820,23 +555,38 @@ void Hash::eliminarElemento(ElementoHash elemento) {
 
 	uint32_t offsetCubetaActual = datoTabla->getOffsetCubeta();
 
+	std::vector<unsigned int> nrosDeBloqueCompartiendoCubeta = this->obtenerBloquesConMismaCubeta( numeroBloque, offsetCubetaActual);
+
 	DatoCubetaHash* datoCubeta = this->levantarDatoCubeta(offsetCubetaActual);
 
 	bool encontrado = false;
 	bool siguienteCubeta = true; //indica si hay siguiente cubeta donde continuan los datos de la presente.
 	uint32_t offsetSiguienteCubeta;
 
-	while (siguienteCubeta && !encontrado) {
-		if (datoCubeta->contieneElemento(elemento)) {
+	while (siguienteCubeta && !encontrado)
+	{
+		if (datoCubeta->contieneElemento(elemento))
+		{
 			datoCubeta->eliminarElementoHash(elemento);
 			eliminarElementoCubetaEnDisco(offsetCubetaActual,datoCubeta);
+
+			//eliminamos el dato de la tabla...
+			this->actualizarCantidadDeElementosDeBloquesQueCompartenCubeta(nrosDeBloqueCompartiendoCubeta, -1);
+			datoTabla->setCantidadDeElementos( datoTabla->getCantidadDeElementos() - 1);
+			this->escribirDatoTabla(datoTabla, offsetDatoTabla);
+
 			encontrado = true;
-		} else {
+		}
+		else
+		{
 			offsetSiguienteCubeta = datoCubeta->getOffsetCubetaContinuacion();
-			if (offsetSiguienteCubeta != 0) {
+			if (offsetSiguienteCubeta != 0)
+			{
 				delete datoCubeta;
 				datoCubeta = this->levantarDatoCubeta(offsetSiguienteCubeta);
-			} else {
+			}
+			else
+			{
 				siguienteCubeta = false;
 			}
 		}
@@ -885,17 +635,9 @@ void Hash::insertarClave(std::pair<std::string, uint32_t> registroHash) {
 		datoTablaAPriori->setCantidadDeElementos(datoTablaAPriori->getCantidadDeElementos() + 1);
 
 		//Actualizamos todos los bloques que compartan cubeta.
+
 		std::vector<unsigned int> numerosDeBloqueConMismaCubeta = this->obtenerBloquesConMismaCubeta(numeroDeBloqueAPriori, offsetCubeta);
-		for( std::vector<unsigned int>::iterator it_nrosDeBloque = numerosDeBloqueConMismaCubeta.begin();
-				it_nrosDeBloque != numerosDeBloqueConMismaCubeta.end();
-				it_nrosDeBloque++)
-		{
-			std::cout<<"numero que comparte cubeta: "<<*it_nrosDeBloque<<std::endl;
-			DatoTablaHash* datoTablaCubetaCompartida = this->levantarDatoTabla( this->calcularOffsetBloqueEnTabla(*it_nrosDeBloque));
-			datoTablaCubetaCompartida->setCantidadDeElementos( datoTablaCubetaCompartida->getCantidadDeElementos() + 1);
-			this->escribirDatoTabla(datoTablaCubetaCompartida, this->calcularOffsetBloqueEnTabla(*it_nrosDeBloque));
-			delete datoTablaCubetaCompartida;
-		}
+		this->actualizarCantidadDeElementosDeBloquesQueCompartenCubeta(numerosDeBloqueConMismaCubeta, 1);
 
 		this->escribirDatoTabla(datoTablaAPriori, offsetDatoTabla);
 		delete datoCubeta;
@@ -905,7 +647,6 @@ void Hash::insertarClave(std::pair<std::string, uint32_t> registroHash) {
 	else
 	{
 		//Delegamos el manejo del desborde a otro método
-		std::cout << "redispersoooooo.." << std::endl;
 		this->manejarDesbordeCubeta(&elementoAInsertar, datoCubeta,	datoTablaAPriori, numeroDeBloqueAPriori);
 
 		//este método libera los recursos de datoCubeta y datoTabla.
