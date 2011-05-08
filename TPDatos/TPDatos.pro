@@ -2,6 +2,7 @@ TEMPLATE = app
 TARGET = TPDatos
 QT += core
 HEADERS += Common/Comparable.h \
+    Common/Constantes.h \
     Common/Serializable.h \
     Common/FileManager.h \
     src/ModuloDeIndices/ArbolBMas/BPlusTree.h \
@@ -50,11 +51,10 @@ HEADERS += Common/Comparable.h \
     src/ModuloDeTipos/DatoControlLibro.h \
     src/ModuloDeTipos/Dato.h \
     src/ModuloDeArchivos/ManejadorArchivo.h \
-    Common/Constantes.h \
-    Common/Utilitarios/Logger.h \
-    Common/Utilitarios/ServiceClass.h \
     src/ModuloEstructuras/Diccionario.h
 SOURCES += Common/FileManager.cpp \
+    Common/Utilitarios/Logger.cpp \
+    Common/Utilitarios/ServiceClass.cpp \
     src/ModuloDeIndices/ArbolBMas/BPlusTree.cpp \
     src/ModuloDeIndices/ArbolBMas/InternalNode.cpp \
     src/ModuloDeIndices/ArbolBMas/LeafNode.cpp \
@@ -99,8 +99,6 @@ SOURCES += Common/FileManager.cpp \
     src/ModuloDeTipos/Dato.cpp \
     src/ModuloDeTipos/DatoControlLibro.cpp \
     src/ModuloDeArchivos/ManejadorArchivo.cpp \
-    Common/Utilitarios/Logger.cpp \
-    Common/Utilitarios/ServiceClass.cpp \
     src/ModuloEstructuras/Diccionario.cpp \
     src/main.cpp
 FORMS += 

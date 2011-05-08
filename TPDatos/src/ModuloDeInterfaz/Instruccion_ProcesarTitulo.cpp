@@ -22,6 +22,7 @@ void Instruccion_ProcesarTitulo::ejecutar() {
 
 	indexador->indexar(INDICE_TITULO);
 
+	cout<<"Se indexan nuevos registros indice de titulo."<<endl;
 	Logger::log("Instruccion_ProcesarTitulo", "ejecutar",
 			"Se indexa por titulo.");
 

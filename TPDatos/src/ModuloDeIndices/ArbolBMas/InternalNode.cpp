@@ -434,44 +434,13 @@ void InternalNode::serialize(iostream* ios)
 		ios->write(claveAux.c_str(), sizeClave);//clave
 	}
 
-	//se serializan los hijos TODO -5 encapsular cada for
+
 	list<int> hijos = this->childIds;
 	for (list<int>::const_iterator ci = hijos.begin(); ci != hijos.end(); ++ci)
 	{
 		hijoAux = *ci;
 		ios->write(reinterpret_cast<char *>(&hijoAux), sizeof(hijoAux));//hijo
 	}
-
-
-
-
-	/*
-	 //ANTES
-	 *  Serialización de InternalNode:
-	 * <Nivel><Id><CantKeys><Key>...<Key><ChildId>...<ChildId>
-
-	int keyCount = keys.size();
-	stringstream ss;
-	ss << keyCount;
-	string key, childId;
-
-	list<string>::iterator keyIterator;
-	list<int>::iterator childIdIterator;
-
-	(*ios).write(reinterpret_cast<char *> (&level), sizeof(int));
-	(*ios).write(reinterpret_cast<char *> (&nodeId), sizeof(int));
-	(*ios).write(reinterpret_cast<char *> (&keyCount), sizeof(int));
-
-	for (keyIterator = keys.begin(); keyIterator != keys.end(); keyIterator++) {
-		key = *keyIterator;
-		(*ios).write(reinterpret_cast<char *> (&key), sizeof(int));
-	}
-
-	for (childIdIterator = childIds.begin(); childIdIterator != childIds.end(); childIdIterator++) {
-		childId = (int) *childIdIterator;
-		(*ios).write(reinterpret_cast<char *> (&childId), sizeof(int));
-	}
-	*/
 }
 
 void InternalNode::deserialize(iostream* ios)
@@ -512,36 +481,6 @@ void InternalNode::deserialize(iostream* ios)
 			this->childIds.push_back(hijo);
 		}
 	}
-
-
-
-
-
-	/*
-	 //ANTES
-	 * Deserialización de InternalNode:
-	 * Se carga de acuerdo a cómo está serializado, excepto por el nivel, que se lee desde afuera
-	string keyCount;
-	int currentKey;
-	int currentChildId;
-
-	//TODO PONER EL HIDRATAR DE NODOINTERNOARBOL
-
-	(*ios).read(reinterpret_cast<char *> (&nodeId), sizeof(int));
-	(*ios).read(reinterpret_cast<char *> (&keyCount), sizeof(int));
-	stringstream ss;
-	ss << keyCount;
-/*
-	for (int i = 0; i < keyCount; i++) {
-		(*ios).read(reinterpret_cast<char *> (&currentKey), sizeof(currentKey));
-		keys.push_back(currentKey);
-	}
-
-	for (int i = 0; i < (keyCount + 1); i++) {
-		(*ios).read(reinterpret_cast<char *> (&currentChildId),	sizeof(currentChildId));
-		childIds.push_back(currentChildId);
-	}
-	*/
 }
 
 int InternalNode::getCtrlDataSize(){

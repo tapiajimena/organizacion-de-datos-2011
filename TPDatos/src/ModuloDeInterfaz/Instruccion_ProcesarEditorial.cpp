@@ -21,6 +21,7 @@ void Instruccion_ProcesarEditorial::ejecutar(){
 
 	indexador->indexar(INDICE_EDITORIAL);
 
+	cout<<"Se indexan nuevos registros indice de editorial."<<endl;
 	Logger::log("Instruccion_ProcesarEditorial", "ejecutar",
 			"Se indexa por editorial.");
 

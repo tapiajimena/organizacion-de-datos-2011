@@ -21,6 +21,7 @@ void Instruccion_ProcesarPalabras::ejecutar(){
 
 	indexador->indexar(INDICE_PALABRAS);
 
+	cout<<"Se indexan nuevos registros indice de palabras."<<endl;
 	Logger::log("Instruccion_ProcesarPalabras", "ejecutar",
 			"Se indexa por palabras.");
 

@@ -21,6 +21,7 @@ void Instruccion_ProcesarAutor::ejecutar(){
 
 	indexador->indexar(INDICE_AUTOR);
 
+	cout<<"Se indexan nuevos registros indice de autor."<<endl;
 	Logger::log("Instruccion_ProcesarAutor", "ejecutar",
 			"Se indexa por autor.");
 

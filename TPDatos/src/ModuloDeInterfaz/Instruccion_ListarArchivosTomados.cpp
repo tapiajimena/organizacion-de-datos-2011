@@ -23,10 +23,11 @@ void Instruccion_ListarArchivosTomados::getLibro(uint32_t idLibro)
 			conf->getPathCarpetaTrabajo()+"/"+ARCHIVO_CONTROL_BIBLIOTECA);
 	Libro* libro = this->controladorBiblioteca->cargarNuevoLibroParseado(idLibro);
 
-	cout<<"LIBRO IMPRIME TITULO: "<<libro->getTitulo()<<endl;
-	cout<<"LIBRO IMPRIME AUTOR: "<<libro->getAutor()<<endl;
-	cout<<"LIBRO IMPRIME EDITORIAL: "<<libro->getEditorial()<<endl;
-	cout<<"LIBRO IMPRIME CANTIDAD PALABRAS REGISTRADAS: "<<libro->getPalabrasClave()->size()<<endl;
+	cout<<endl<<"ID LIBRO: "<<idLibro<<endl;
+	cout<<"TITULO: "<<libro->getTitulo()<<endl;
+	cout<<"AUTOR: "<<libro->getAutor()<<endl;
+	cout<<"EDITORIAL: "<<libro->getEditorial()<<endl;
+	cout<<"CANTIDAD PALABRAS REGISTRADAS: "<<libro->getPalabrasClave()->size()<<endl<<endl;
 
 	delete(libro);
 }
@@ -44,7 +45,6 @@ void Instruccion_ListarArchivosTomados::ejecutar(){
 
 	for(it=biblioteca.begin(); it != biblioteca.end(); ++it)
 	{
-		cout<<"ID LIBRO: "<<*it<<endl;
 		getLibro(*it);
 	}
 	delete (controlBiblioteca);
