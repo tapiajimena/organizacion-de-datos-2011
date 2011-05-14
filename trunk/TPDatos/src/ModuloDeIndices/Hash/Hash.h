@@ -77,6 +77,11 @@ private:
 
 	DatoCubetaHash* levantarDatoCubeta(uint32_t offsetCubeta);
 
+	//Devuelve una cadena de cubetas enganchadas, que pertenecen todas a un mismo bloque (sería levantar toda la info de un bloque)
+	std::vector< std::pair<DatoCubetaHash*, unsigned int> > levantarSucesionDeCubetas(uint32_t offsetPrimerCubeta);
+
+	bool elementoYaInsertado(std::vector<std::pair<DatoCubetaHash*, unsigned int> >sucesionDeCubetas, ElementoHash elemento);
+
 	void escribirDatoCubeta(DatoCubetaHash* datoCubeta, uint32_t offsetCubeta);
 
 	void escribirDatoTabla(DatoTablaHash* datoTabla, uint32_t offsetDatoTabla);
@@ -90,7 +95,9 @@ private:
 	 * Las devuelve en un std::pair en que el 1er elemento es el puntero al datoTabla y el segundo el nï¿½mero de dicho dato en la tabla.
 	 * Se deben destruir todos los DatoTablaHash* del vector desupï¿½s de usar.
 	 */
-	std::vector< unsigned int > obtenerBloquesConMismaCubeta(unsigned int nroDeBloque, unsigned int offsetCubeta);
+	//std::vector< unsigned int > obtenerBloquesConMismaCubeta(unsigned int nroDeBloque, unsigned int offsetCubeta);
+	std::vector< std::pair<DatoTablaHash*, unsigned int> > obtenerBloquesConMismaCubeta(unsigned int nroDeBloque, unsigned int offsetCubeta);
+
 
 	//Agrega una nueva cubeta en el archivo de cubetas, le escribe la informaciï¿½n contenida en datoCubeta y devuelve
 	//el offset a esta nueva cubeta.
@@ -117,7 +124,7 @@ private:
 	void manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCubetaDesbordada, DatoTablaHash* datoTablaDesbordada, unsigned int numeroDeBloque);
 
 	//Para sumar o restar de a un elemento.
-	void actualizarCantidadDeElementosDeBloquesQueCompartenCubeta(std::vector<unsigned int> numerosDeBloqueQueCompartenCubeta, int diferenciaElementos);
+	void actualizarCantidadDeElementosDeBloquesQueCompartenCubeta(std::vector< std::pair<DatoTablaHash*, unsigned int> > bloquesQueCompartenCubeta, int diferenciaElementos);
 
 	//Inserta un elemento de hash.
 	void insertarElemento(ElementoHash elemento);
