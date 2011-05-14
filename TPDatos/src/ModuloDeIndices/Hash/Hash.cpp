@@ -124,6 +124,41 @@ DatoCubetaHash* Hash::levantarDatoCubeta(uint32_t offsetCubeta) {
 	return datoCubeta;
 }
 
+std::vector< std::pair<DatoCubetaHash*, unsigned int> > Hash::levantarSucesionDeCubetas(uint32_t offsetPrimerCubeta)
+{
+	std::vector< std::pair<DatoCubetaHash*, unsigned int> > sucesionDeCubetas;
+	std::pair<DatoCubetaHash*, unsigned int> parCubetaOffset( this->levantarDatoCubeta(offsetPrimerCubeta), offsetPrimerCubeta);
+	sucesionDeCubetas.push_back( parCubetaOffset);
+
+	uint32_t offsetProximaCubeta = sucesionDeCubetas.back().first->getOffsetCubetaContinuacion();
+
+	while (offsetProximaCubeta != 0)
+	{
+		parCubetaOffset.first = this->levantarDatoCubeta( offsetProximaCubeta);
+		parCubetaOffset.second = offsetProximaCubeta;
+
+		sucesionDeCubetas.push_back( parCubetaOffset );
+
+		offsetProximaCubeta = sucesionDeCubetas.back().first->getOffsetCubetaContinuacion();
+	}
+
+	return sucesionDeCubetas;
+}
+
+bool Hash::elementoYaInsertado(std::vector< std::pair<DatoCubetaHash*, unsigned int> >sucesionDeCubetas, ElementoHash elemento)
+{
+	bool encontrado = false;
+	std::vector< std::pair<DatoCubetaHash*, unsigned int> >::iterator it_cubetas = sucesionDeCubetas.begin();
+
+	while (!encontrado && it_cubetas!=sucesionDeCubetas.end())
+	{
+		encontrado = it_cubetas->first->contieneElemento(elemento);
+		it_cubetas++;
+	}
+
+	return encontrado;
+}
+
 void Hash::escribirDatoCubeta(DatoCubetaHash* datoCubeta, uint32_t offsetCubeta) {
 	stringstream ss;//(ios_base::in | ios_base::out);
 	datoCubeta->serializarCubeta(&ss);
@@ -135,6 +170,9 @@ void Hash::escribirDatoCubeta(DatoCubetaHash* datoCubeta, uint32_t offsetCubeta)
 	}
 
 	ManejadorArchivo::Escribir(archivoCubetas, &ss, offsetCubeta);
+
+	//este método Escribir de abajo no reserva espacio adicional en disco para alcanzar TAMANIOCUBETA, no me sirve.
+	//ManejadorArchivo::Escribir(&archivoCubetas, &ss, offsetCubeta, TAMANIOCUBETA);
 
 }
 
@@ -196,13 +234,12 @@ std::vector<uint32_t> Hash::acumularResultados(DatoCubetaHash* &datoCubeta, std:
 	return resultados;
 }
 
-std::vector<unsigned int> Hash::obtenerBloquesConMismaCubeta(
-		unsigned int nroDeBloque, unsigned int offsetCubeta) {
-	std::vector<unsigned int> entradasDeTabla;
+//std::vector<unsigned int> Hash::obtenerBloquesConMismaCubeta(
+std::vector< std::pair<DatoTablaHash*, unsigned int> > Hash::obtenerBloquesConMismaCubeta( unsigned int nroDeBloque, unsigned int offsetCubeta)
+{
+	std::vector< std::pair<DatoTablaHash*, unsigned int> > entradasDeTabla; // Par: datoTablaHash leído y su offset en disco
 
-	std::vector<unsigned int> numerosDeBloqueCompartiendoCubeta;
 	//Ahora levantamos todos los bloques parientes que apunten a la misma cubeta.
-	//for( std::vector<unsigned int>::iterator it_nrosBloque = numerosDeBloqueParientes.begin(); it_nrosBloque != numerosDeBloqueParientes.end(); it_nrosBloque++)
 	for (unsigned int numeroBloqueTemporal = 0;
 			numeroBloqueTemporal < this->getCantidadDeBloques();
 			numeroBloqueTemporal++)
@@ -212,17 +249,16 @@ std::vector<unsigned int> Hash::obtenerBloquesConMismaCubeta(
 
 		if (datoTabla->getOffsetCubeta() == offsetCubeta && numeroBloqueTemporal != nroDeBloque)
 		{
-			//TODO eventualmente se puede hacer esto para ahorrar lecturas en disco...
-			//std::pair<DatoTablaHash*, unsigned int> datoTablaYNroBloque( datoTabla, *it_nrosBloque);
-			//entradasDeTabla.push_back( datoTablaYNroBloque );
-			//y devolver las cosas leidas...
-			numerosDeBloqueCompartiendoCubeta.push_back(numeroBloqueTemporal);//*it_nrosBloque );
+			std::pair<DatoTablaHash*, unsigned int> datoTablaYNroBloque( datoTabla, numeroBloqueTemporal);
+			entradasDeTabla.push_back( datoTablaYNroBloque );
 		}
-
-		delete datoTabla;
+		else
+		{
+			delete datoTabla;
+		}
 	}
-	return numerosDeBloqueCompartiendoCubeta;
-	//return entradasDeTabla;
+
+	return entradasDeTabla;
 }
 
 uint32_t Hash::nuevaCubetaAlFinal(DatoCubetaHash* datoCubeta) {
@@ -265,21 +301,21 @@ void Hash::duplicarTablaHash()
 
 void Hash::redispersarSucesionCubetas(std::vector<DatoCubetaHash*> cubetasSucesivas, unsigned int numeroDeBloque, DatoTablaHash* datoTabla)
 {
-	std::vector<unsigned int> bloquesConMismaCubeta = this->obtenerBloquesConMismaCubeta(numeroDeBloque, datoTabla->getOffsetCubeta());
+	std::vector< std::pair<DatoTablaHash*, unsigned int> > bloquesConMismaCubeta = this->obtenerBloquesConMismaCubeta(numeroDeBloque, datoTabla->getOffsetCubeta());
 
 	//Inicializamos cubetas vacías para los bloques que compartían la cubeta desbordada.
-	for (std::vector<unsigned int>::iterator it_bloques = bloquesConMismaCubeta.begin();
+	for (std::vector< std::pair<DatoTablaHash*, unsigned int> >::iterator it_bloques = bloquesConMismaCubeta.begin();
 			it_bloques != bloquesConMismaCubeta.end();
 			it_bloques++)
 	{
 		DatoCubetaHash* datoCubeta = new DatoCubetaHash();
 		uint32_t offsetCubeta = this->nuevaCubetaAlFinal(datoCubeta);
 
-		DatoTablaHash* datoTablaInicializado = this->levantarDatoTabla(	this->calcularOffsetBloqueEnTabla(*it_bloques));
+		DatoTablaHash* datoTablaInicializado = it_bloques->first;
 		datoTablaInicializado->setCantidadDeElementos(0);
 		datoTablaInicializado->setOffsetCubeta(offsetCubeta);
 
-		this->escribirDatoTabla(datoTablaInicializado, this->calcularOffsetBloqueEnTabla(*it_bloques));
+		this->escribirDatoTabla(datoTablaInicializado, it_bloques->second);
 		delete datoTablaInicializado;
 		delete datoCubeta;
 	}
@@ -529,15 +565,15 @@ bool Hash::probarInsertarEnSucesionDeCubetas(std::vector<DatoCubetaHash*> &cubet
 	delete datoTabla;
 }
 
- void Hash::actualizarCantidadDeElementosDeBloquesQueCompartenCubeta(std::vector<unsigned int> numerosDeBloqueQueCompartenCubeta, int diferenciaElementos)
+ void Hash::actualizarCantidadDeElementosDeBloquesQueCompartenCubeta(std::vector< std::pair<DatoTablaHash*, unsigned int> > bloquesQueCompartenCubeta, int diferenciaElementos)
  {
-	for( std::vector<unsigned int>::iterator it_nrosDeBloque = numerosDeBloqueQueCompartenCubeta.begin();
-					it_nrosDeBloque != numerosDeBloqueQueCompartenCubeta.end();
-					it_nrosDeBloque++)
+	for( std::vector< std::pair<DatoTablaHash*, unsigned int> >::iterator it_bloques = bloquesQueCompartenCubeta.begin();
+			it_bloques != bloquesQueCompartenCubeta.end();
+			it_bloques++)
 	{
-		DatoTablaHash* datoTablaCubetaCompartida = this->levantarDatoTabla( this->calcularOffsetBloqueEnTabla(*it_nrosDeBloque));
+		DatoTablaHash* datoTablaCubetaCompartida = it_bloques->first;
 		datoTablaCubetaCompartida->setCantidadDeElementos( datoTablaCubetaCompartida->getCantidadDeElementos() + diferenciaElementos);
-		this->escribirDatoTabla(datoTablaCubetaCompartida, this->calcularOffsetBloqueEnTabla(*it_nrosDeBloque));
+		this->escribirDatoTabla(datoTablaCubetaCompartida, it_bloques->second);
 		delete datoTablaCubetaCompartida;
 	}
 
@@ -553,7 +589,7 @@ void Hash::eliminarElemento(ElementoHash elemento)
 
 	uint32_t offsetCubetaActual = datoTabla->getOffsetCubeta();
 
-	std::vector<unsigned int> nrosDeBloqueCompartiendoCubeta = this->obtenerBloquesConMismaCubeta( numeroBloque, offsetCubetaActual);
+	std::vector< std::pair<DatoTablaHash*, unsigned int> > bloquesCompartiendoCubeta = this->obtenerBloquesConMismaCubeta( numeroBloque, offsetCubetaActual);
 
 	DatoCubetaHash* datoCubeta = this->levantarDatoCubeta(offsetCubetaActual);
 
@@ -566,10 +602,10 @@ void Hash::eliminarElemento(ElementoHash elemento)
 		if (datoCubeta->contieneElemento(elemento))
 		{
 			datoCubeta->eliminarElementoHash(elemento);
-			eliminarElementoCubetaEnDisco(offsetCubetaActual,datoCubeta);
+			this->eliminarElementoCubetaEnDisco(offsetCubetaActual,datoCubeta);
 
 			//eliminamos el dato de la tabla...
-			this->actualizarCantidadDeElementosDeBloquesQueCompartenCubeta(nrosDeBloqueCompartiendoCubeta, -1);
+			this->actualizarCantidadDeElementosDeBloquesQueCompartenCubeta(bloquesCompartiendoCubeta, -1);
 			datoTabla->setCantidadDeElementos( datoTabla->getCantidadDeElementos() - 1);
 			this->escribirDatoTabla(datoTabla, offsetDatoTabla);
 
@@ -624,33 +660,38 @@ void Hash::insertarClave(std::pair<std::string, uint32_t> registroHash) {
 
 	DatoCubetaHash* datoCubeta = this->levantarDatoCubeta(offsetCubeta);
 
-	bool datoInsertado = datoCubeta->insertarElementoHash(elementoAInsertar); //Lo inserta si puede.
+	std::vector< std::pair<DatoCubetaHash*, unsigned int> > sucesionDeCubetas = this->levantarSucesionDeCubetas(offsetCubeta);
 
-	if (datoInsertado)
+	if ( !elementoYaInsertado(sucesionDeCubetas, elementoAInsertar))
 	{
-		//Reescribimos la cubeta en disco
-		this->escribirDatoCubeta(datoCubeta, offsetCubeta);
-		datoTablaAPriori->setCantidadDeElementos(datoTablaAPriori->getCantidadDeElementos() + 1);
+		bool datoInsertado = datoCubeta->insertarElementoHash(elementoAInsertar); //Lo inserta si puede.
 
-		//Actualizamos todos los bloques que compartan cubeta.
+		if (datoInsertado)
+		{
+			//Reescribimos la cubeta en disco
+			this->escribirDatoCubeta(datoCubeta, offsetCubeta);
+			datoTablaAPriori->setCantidadDeElementos(datoTablaAPriori->getCantidadDeElementos() + 1);
 
-		std::vector<unsigned int> numerosDeBloqueConMismaCubeta = this->obtenerBloquesConMismaCubeta(numeroDeBloqueAPriori, offsetCubeta);
-		this->actualizarCantidadDeElementosDeBloquesQueCompartenCubeta(numerosDeBloqueConMismaCubeta, 1);
+			//Actualizamos todos los bloques que compartan cubeta.
 
-		this->escribirDatoTabla(datoTablaAPriori, offsetDatoTabla);
-		delete datoCubeta;
-		delete datoTablaAPriori;
+			std::vector< std::pair<DatoTablaHash*, unsigned int> > numerosDeBloqueConMismaCubeta = this->obtenerBloquesConMismaCubeta(numeroDeBloqueAPriori, offsetCubeta);
+			this->actualizarCantidadDeElementosDeBloquesQueCompartenCubeta(numerosDeBloqueConMismaCubeta, 1);
 
+			this->escribirDatoTabla(datoTablaAPriori, offsetDatoTabla);
+			delete datoCubeta;
+			delete datoTablaAPriori;
+
+		}
+		else
+		{
+			//Delegamos el manejo del desborde a otro método
+			this->manejarDesbordeCubeta(&elementoAInsertar, datoCubeta,	datoTablaAPriori, numeroDeBloqueAPriori);
+
+			//este método libera los recursos de datoCubeta y datoTabla.
+		}
+
+		//recursos liberados.
 	}
-	else
-	{
-		//Delegamos el manejo del desborde a otro método
-		this->manejarDesbordeCubeta(&elementoAInsertar, datoCubeta,	datoTablaAPriori, numeroDeBloqueAPriori);
-
-		//este método libera los recursos de datoCubeta y datoTabla.
-	}
-
-	//recursos liberados.
 }
 
 void Hash::eliminarElemento(std::pair<std::string, uint32_t> registroHash)
