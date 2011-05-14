@@ -125,8 +125,8 @@ private:
 
 	//Administra las estructuras y graba en ellas la información
 	void insertarElementoEnCubeta(ElementoHash* elemento,
-										std::vector< std::pair<DatoCubetaHash*, unsigned int> > sucesionDeCubetas,
-										DatoTablaHash* datoTabla,
+										std::vector< std::pair<DatoCubetaHash*, unsigned int> > &sucesionDeCubetas,
+										DatoTablaHash* &datoTabla,
 										unsigned int numeroDeBloque);
 
 	void manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCubetaDesbordada, DatoTablaHash* datoTablaDesbordada, unsigned int numeroDeBloque);
