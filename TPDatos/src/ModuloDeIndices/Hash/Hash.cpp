@@ -71,7 +71,10 @@ std::string Hash::getNombreArchivoTabla() {
 std::string Hash::getNombreArchivoCubetas() {
 	return this->nombreArchivoCubetas;
 }
+//FUNCIONES DE HASH ************************************************
 
+//Suma del valor ASCII de los caracteres (deprecated). Andar anda, pero dispersa muy mal.
+/*
 unsigned int Hash::funcionHash(std::string claveADispersar) {
 	unsigned int valorHash = 0;
 	for (unsigned int x = 0; x < claveADispersar.size(); x++) {
@@ -80,7 +83,30 @@ unsigned int Hash::funcionHash(std::string claveADispersar) {
 
 	return valorHash;
 }
+*/
 
+//Algoritmo DJB2 ( http://www.cse.yorku.ca/~oz/hash.html , es muy conocido)
+unsigned int Hash::funcionHash(std::string claveADispersar)
+{
+	//char* str = new char[claveADispersar.size()];
+	//copy(claveADispersar.begin(), claveADispersar.end(), str);
+
+	unsigned int hash = 5381;
+	int nroCaracter = 0;
+	int c;
+
+	while (nroCaracter < claveADispersar.size()) //c = *str++)
+	{
+		c = (int)claveADispersar.at(nroCaracter);
+		hash = ((hash << 5) + hash) + c; // hash * 33 + c
+		nroCaracter++;
+	}
+
+	//delete []str;
+	return hash;
+}
+
+// ************************************************
 unsigned int Hash::obtenerNumeroDeBloque(unsigned int valorDispersado,
 		unsigned int cantidadDeBloques) {
 	unsigned int valorRetorno = (unsigned int) valorDispersado
@@ -537,8 +563,6 @@ void Hash::insertarElementoEnCubeta(ElementoHash* elemento,
 
 	if(!elementoInsertado)
 	{
-
-
 		if( sucesionDeCubetas.size() >= 1)
 		{
 			//2do intento: si la cubeta tiene extensiones (pero no se pudo insertar en ellas),
@@ -735,6 +759,10 @@ void Hash::insertarClave(std::pair<std::string, uint32_t> registroHash) {
 	}
 
 	delete datoTablaAPriori;
+
+	//Debug:
+	this->archivoCubetas.flush();
+	this->archivoTabla.flush();
 }
 
 void Hash::eliminarElemento(std::pair<std::string, uint32_t> registroHash)
