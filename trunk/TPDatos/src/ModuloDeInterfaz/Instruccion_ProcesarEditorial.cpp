@@ -15,8 +15,6 @@ Instruccion_ProcesarEditorial::Instruccion_ProcesarEditorial(char id) : Instrucc
 }
 
 void Instruccion_ProcesarEditorial::ejecutar(){
-	Configuracion* conf = Configuracion::GetInstancia();
-
 	Indexador* indexador = new Indexador();
 
 	indexador->indexar(INDICE_EDITORIAL);
