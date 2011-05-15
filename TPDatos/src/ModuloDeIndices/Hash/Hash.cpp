@@ -382,7 +382,8 @@ bool Hash::insertarEnNuevaCubetaYExtenderCubetaAnterior(std::vector<std::pair<Da
 }
 
 //Tercera instancia de resolución de desborde
-bool Hash::probarInsertarTrasDuplicarTamanioDeTabla(std::vector<std::pair<DatoCubetaHash*, unsigned int> > &sucesionDeCubetas, ElementoHash* elemento, DatoTablaHash* &datoTabla, unsigned int &numeroDeBloque)
+bool Hash::probarInsertarTrasDuplicarTamanioDeTabla(std::vector<std::pair<DatoCubetaHash*, unsigned int> > &sucesionDeCubetas,
+													ElementoHash* elemento, DatoTablaHash* &datoTabla, unsigned int &numeroDeBloque)
 {
 	bool elementoInsertado = false;
 
@@ -408,7 +409,7 @@ bool Hash::probarInsertarTrasDuplicarTamanioDeTabla(std::vector<std::pair<DatoCu
 		}
 
 		//Calculamos la nueva entrada en la tabla con el nuevo tamaño de hash...
-		unsigned int numeroDeBloque = this->obtenerNumeroDeBloque(elemento->getPalabra());
+		numeroDeBloque = this->obtenerNumeroDeBloque(elemento->getPalabra());
 
 		DatoTablaHash* datoTablaNuevo = this->levantarDatoTabla(this->calcularOffsetBloqueEnTabla(numeroDeBloque));
 
@@ -448,7 +449,8 @@ bool Hash::probarInsertarTrasDuplicarTamanioDeTabla(std::vector<std::pair<DatoCu
 }
 
 //Segunda instancia de resolución de desborde
-bool Hash::probarInsertarEnSucesionDeCubetasTrasRedispersion(std::vector<std::pair<DatoCubetaHash*, unsigned int> > &sucesionDeCubetas, ElementoHash* elemento, DatoTablaHash* datoTabla, unsigned int numeroDeBloque)
+bool Hash::probarInsertarEnSucesionDeCubetasTrasRedispersion(std::vector<std::pair<DatoCubetaHash*, unsigned int> > &sucesionDeCubetas,
+															ElementoHash* elemento, DatoTablaHash* datoTabla, unsigned int numeroDeBloque)
 {
 	bool elementoInsertado = false;
 
@@ -462,8 +464,8 @@ bool Hash::probarInsertarEnSucesionDeCubetasTrasRedispersion(std::vector<std::pa
 	{
 
 		//todo sacar
-		this->archivoCubetas.flush();
-		this->archivoTabla.flush();
+		//this->archivoCubetas.flush();
+		//this->archivoTabla.flush();
 
 
 		elementoInsertado = it_sucesionDeCubetas->first->insertarElementoHash(*elemento);
@@ -537,7 +539,7 @@ void Hash::insertarElementoEnCubeta(ElementoHash* elemento,
 	{
 
 
-		if( sucesionDeCubetas.size() > 1)
+		if( sucesionDeCubetas.size() >= 1)
 		{
 			//2do intento: si la cubeta tiene extensiones (pero no se pudo insertar en ellas),
 			// probamos inicializar cubetas vacías para todos los bloques que comparten la sucesión de cubetas
@@ -559,6 +561,7 @@ void Hash::insertarElementoEnCubeta(ElementoHash* elemento,
 				elementoInsertado = this->insertarEnNuevaCubetaYExtenderCubetaAnterior(sucesionDeCubetas, datoTabla, numeroDeBloque, elemento);
 
 				//en esta instancia elementoInsertado debe ser siempre true.
+				//elementoInsertado = true;
 			}
 		}
 	}
