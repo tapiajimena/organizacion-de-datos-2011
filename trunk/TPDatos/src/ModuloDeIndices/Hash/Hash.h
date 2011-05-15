@@ -77,9 +77,9 @@ private:
 	DatoCubetaHash* levantarDatoCubeta(uint32_t offsetCubeta);
 
 	//Devuelve una cadena de cubetas enganchadas, que pertenecen todas a un mismo bloque (sería levantar toda la info de un bloque)
-	std::vector< std::pair<DatoCubetaHash*, unsigned int> > levantarSucesionDeCubetas(uint32_t offsetPrimerCubeta);
+	std::vector< std::pair<DatoCubetaHash*, uint32_t> > levantarSucesionDeCubetas(uint32_t offsetPrimerCubeta);
 
-	bool elementoYaInsertado(std::vector<std::pair<DatoCubetaHash*, unsigned int> >sucesionDeCubetas, ElementoHash elemento);
+	bool elementoYaInsertado(std::vector<std::pair<DatoCubetaHash*, uint32_t> >sucesionDeCubetas, ElementoHash elemento);
 
 	void escribirDatoCubeta(DatoCubetaHash* datoCubeta, uint32_t offsetCubeta);
 
@@ -95,7 +95,7 @@ private:
 	 * Se deben destruir todos los DatoTablaHash* del vector desupï¿½s de usar.
 	 */
 	//std::vector< unsigned int > obtenerBloquesConMismaCubeta(unsigned int nroDeBloque, unsigned int offsetCubeta);
-	std::vector< std::pair<DatoTablaHash*, unsigned int> > obtenerBloquesConMismaCubeta(unsigned int nroDeBloque, unsigned int offsetCubeta);
+	std::vector< std::pair<DatoTablaHash*, uint32_t> > obtenerBloquesConMismaCubeta(unsigned int nroDeBloque, uint32_t offsetCubeta);
 
 
 	//Agrega una nueva cubeta en el archivo de cubetas, le escribe la informaciï¿½n contenida en datoCubeta y devuelve
@@ -110,28 +110,26 @@ private:
 	//Redispersa en la tabla todos los elementos de una serie de cubetas enganchada (o sea, que pertenecen a un mismo bloque o entrada de la tabla.
 	//Cuando una tabla no se reorganiza toda, sino sï¿½lo el bloque que rebalsï¿½, por lo tanto los otros bloques comparten cubetas. Con esto se
 	//hace que cada bloque abra su cubeta y reciba sus datos.
-	void redispersarSucesionCubetas(std::vector<std::pair<DatoCubetaHash*, unsigned int> > sucesionDeCubetas, unsigned int numeroDeBloque, DatoTablaHash* datoTabla);
+	void redispersarSucesionCubetas(std::vector<std::pair<DatoCubetaHash*, uint32_t> > sucesionDeCubetas, unsigned int numeroDeBloque, DatoTablaHash* datoTabla);
 
-	bool insertarEnNuevaCubetaYExtenderCubetaAnterior(std::vector<std::pair<DatoCubetaHash*, unsigned int> > sucesionDeCubetas, DatoTablaHash* datoTabla, unsigned int numeroDeBloque, ElementoHash* elemento);
+	bool insertarEnNuevaCubetaYExtenderCubetaAnterior(std::vector<std::pair<DatoCubetaHash*, uint32_t> > sucesionDeCubetas, DatoTablaHash* datoTabla, unsigned int numeroDeBloque, ElementoHash* elemento);
 
 	//Duplica la tabla, redispera las cubetas del bloque con tabla duplicada e intenta insertar el dato.
 	//Actualiza los valores datoTabla y numeroDeBLoque para que sigan apuntando a donde se tiene que insertar el dato.
-	bool probarInsertarTrasDuplicarTamanioDeTabla(std::vector<std::pair<DatoCubetaHash*, unsigned int> > &sucesionDeCubetas, ElementoHash* elemento, DatoTablaHash* &datoTabla, unsigned int &numeroDeBloque);
+	bool probarInsertarTrasDuplicarTamanioDeTabla(std::vector<std::pair<DatoCubetaHash*, uint32_t> > &sucesionDeCubetas, ElementoHash* elemento, DatoTablaHash* &datoTabla, unsigned int &numeroDeBloque);
 
-	bool probarInsertarEnSucesionDeCubetasTrasRedispersion(std::vector<std::pair<DatoCubetaHash*, unsigned int> > &sucesionDeCubetas, ElementoHash* elemento, DatoTablaHash* datoTabla, unsigned int numeroDeBloque);
+	bool probarInsertarEnSucesionDeCubetasTrasRedispersion(std::vector<std::pair<DatoCubetaHash*, uint32_t> > &sucesionDeCubetas, ElementoHash* elemento, DatoTablaHash* datoTabla, unsigned int numeroDeBloque);
 
-	bool probarInsertarEnSucesionDeCubetas(std::vector< std::pair<DatoCubetaHash*, unsigned int> > cubetasSucesivas, ElementoHash* elemento, DatoTablaHash* datoTabla, unsigned int numeroDeBloque);
+	bool probarInsertarEnSucesionDeCubetas(std::vector< std::pair<DatoCubetaHash*, uint32_t> > cubetasSucesivas, ElementoHash* elemento, DatoTablaHash* datoTabla, unsigned int numeroDeBloque);
 
 	//Administra las estructuras y graba en ellas la información
 	void insertarElementoEnCubeta(ElementoHash* elemento,
-										std::vector< std::pair<DatoCubetaHash*, unsigned int> > &sucesionDeCubetas,
+										std::vector< std::pair<DatoCubetaHash*, uint32_t> > &sucesionDeCubetas,
 										DatoTablaHash* &datoTabla,
 										unsigned int numeroDeBloque);
 
-	void manejarDesbordeCubeta(ElementoHash* elemento, DatoCubetaHash* datoCubetaDesbordada, DatoTablaHash* datoTablaDesbordada, unsigned int numeroDeBloque);
-
 	//Para sumar o restar de a un elemento.
-	void actualizarCantidadDeElementosDeBloquesQueCompartenCubeta(std::vector< std::pair<DatoTablaHash*, unsigned int> > bloquesQueCompartenCubeta, int diferenciaElementos);
+	void actualizarCantidadDeElementosDeBloquesQueCompartenCubeta(std::vector< std::pair<DatoTablaHash*, uint32_t> > bloquesQueCompartenCubeta, int diferenciaElementos);
 
 	//Inserta un elemento de hash.
 	void insertarElemento(ElementoHash elemento);
