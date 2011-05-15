@@ -19,7 +19,6 @@
 #include <vector>
 #include <string>
 #include <algorithm>
-
 #include "ElementoHash.h"
 #include "../../ModuloEstructuras/Libro.h"
 #include "../../ModuloDeTipos/Dato.h"
