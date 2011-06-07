@@ -209,6 +209,10 @@ void ControladorIndice::indexarPorPalabras(pair<Libro*,uint32_t> parLibroOffset)
 
 		registroHash.first = aux;
 		registroHash.second= parLibroOffset.second;
+
+		//cout<<"Se envia Clave: "<<aux<<endl;
+		//cout<<"Se envia id: "<<parLibroOffset.second<<endl;
+
 		this->indiceHash->insertarClave(registroHash);
 	}
 }
