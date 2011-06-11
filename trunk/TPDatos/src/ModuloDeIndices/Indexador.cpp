@@ -34,6 +34,7 @@ Indexador::Indexador(string pathCarpeta)
 
 void Indexador::crearTipoIndice(char tipoIndice)
 {
+	//TODO dar diseño y usar el mismo case y usar clases por c/indice
 	switch(tipoIndice)
 	{
 		case INDICE_AUTOR:
