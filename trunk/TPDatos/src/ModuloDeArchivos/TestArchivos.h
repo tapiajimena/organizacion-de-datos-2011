@@ -13,7 +13,7 @@
 #ifndef TESTARCHIVO_H_
 #define TESTARCHIVO_H_
 void cargarLibros(ArchivoLibro* arcReg, ArchivoControlLibro* arcControl)
-{
+{#include <iostream>
 	arcControl->registrarLibro(arcReg->getPosicionActual());
 	arcReg->agregarLibro("doc/libros/Arthur Conan Doyle - El signo de los cuatro.txt");
 
