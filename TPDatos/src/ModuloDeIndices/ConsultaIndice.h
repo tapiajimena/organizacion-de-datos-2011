@@ -1,5 +1,5 @@
 /*
- * Indexador.h
+ * ConsultaIndice.h
  *  
  *	Autor	: GRUPO 1 - Fernandez, Gallinal, Maraggi, Tapia
  *	Catedra	: SERVETTO-FERRER-FERNANDEZ
@@ -10,8 +10,8 @@
  *      
  */
 
-#ifndef INDEXADOR_H_
-#define INDEXADOR_H_
+#ifndef CONSULTAINDICE_H_
+#define CONSULTAINDICE_H_
 
 #include "../ModuloEstructuras/Configuracion.h"
 #include "../ModuloDeArchivos/ManejadorArchivo.h"
@@ -19,16 +19,15 @@
 #include "../ModuloControladores/ControladorBiblioteca.h"
 
 
-class Indexador
+class ConsultaIndice
 {
 private:
 	string					pathCarpeta;//path de trabajo
-	ParserDeAtributo*		parser;
 	ControladorIndice* 		controlIndice;
 	ControladorBiblioteca* 	controlBiblioteca;
 
 public:
-	Indexador();
+	ConsultaIndice();
 
 	/*
 	 * Crea el ambiente necesario para poder registrar una indexacion de
@@ -36,15 +35,19 @@ public:
 	 * @param pathDeTrabajo la ruta a la carpeta que se va a usar para
 	 * almacenar los archivos.
 	 */
-	Indexador(string pathDeTrabajo);
+	ConsultaIndice(string pathDeTrabajo);
 
 	/*
-	 * Da la orden a un indice para que indexe segun el tipo de indice.
-	 * @param tipoIndice la indexacion deseada puede ser A,E,T o P
-	 * Ver tipos Indices definidos como ctes INDICE_
+	 *  Da la orden a un indice para que consulte segun el tipo.
+	 * @param tipo de estructura la indexacion deseada puede ser QA,QE,QT o QP
+	 * Ver tipos Indices definidos como ctes CONSULTA_INDICE_
 	 */
-	void indexar(char tipoIndice);
+	void consultar(char tipoIndice, string consulta);
 
+	void consultarAutor(string consulta);
+	void consultarTitulo(string consulta);
+	void consultarPalabras(string consulta);
+	void consultarEditorial(string consulta);
 
 	/*
 	 * Da la orden a un indice para que genere el reporte segun el tipo.
@@ -54,17 +57,10 @@ public:
 	void generarReporte(char tipoIndice, string nombreArchivo);
 
 
-	void crearTipoIndice(char tipoIndice);
+	void crearTipoConsulta(char tipoIndice, string consulta);
 
-	/*
-	 * Da la orden a un indice para que elimine la indexacion de un libro.
-	 * Incluyendo la eliminacion del libro de la biblioteca
-	 * @param tipoIndice la indexacion deseada puede ser A,E,T o P
-	 * Ver tipos Indices definidos como ctes INDICE_
-	 */
-	void eliminarIndexado(uint32_t idLibro);
 
-	virtual ~Indexador();
+	virtual ~ConsultaIndice();
 };
 
-#endif /* INDEXADOR_H_ */
+#endif /* CONSULTAINDICE_H_ */
