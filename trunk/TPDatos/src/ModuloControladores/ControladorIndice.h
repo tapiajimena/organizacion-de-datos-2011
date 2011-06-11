@@ -12,6 +12,8 @@
  *  		-Editorial (usa un arbol)
  *  		-Titulo (usa un hash)
  *  		-Palabras (Usa  hash)
+ *  Crear instancias concretas del COntroladorIndice (una para cada tipo de indice)
+ *  asi se disminuye el tiempo en indexar y consultar
  */
 
 #ifndef CONTROLADORINDICE_H_
@@ -59,6 +61,16 @@ public:
 	void nuevoIndicePalabras();
 
 	/*
+	 * Analizan una consulta del tipo autor,
+	 * editorial, titulo y palabras.
+	 * autor si es true se indexa por autor sino
+	 * por editorial
+	 */
+	void consultarPorAutorOEditorial(string consulta);
+	void consultarPorTitulo(string consulta);
+	void consultarPorPalabras(string consulta);
+
+	/*
 	 * Indexan en un indice Arbol el autor o editorial
 	 *@param parLibroOffset contiene el libro parseado y su id (offset) en la biblioteca
 	 *@param tipoIndice la clase de indexacion a realizar
@@ -80,7 +92,7 @@ private:
 	 * Indexan en un indice Arbol el autor o editorial
 	 *
 	 */
-	void indexarPorAutorOEditorial(pair<Libro*,uint32_t> parLibroOffset);
+	void indexarPorAutorOEditorial(pair<Libro*,uint32_t> parLibroOffset, bool autor);
 
 	/*
 	 * Indexan en un indice Hash el titulo o palabras.
