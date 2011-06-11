@@ -25,7 +25,7 @@ list<DatoTriada*>* ParserArchivoTriadas::getTriadas(fstream* archivo, uint32_t i
 	return this->triadas;
 }
 
-void ParserArchivoTriadas::leerArchivo(fstream* archivo, uint32_t id) {
+void ParserArchivoTriadas::leerArchivo(fstream* archivo, uint32_t offset) {
 	char  buffer[CONTROL_LENGTH];
 
 	if (GetSizeArchivo(*archivo) > 0) {
@@ -33,7 +33,7 @@ void ParserArchivoTriadas::leerArchivo(fstream* archivo, uint32_t id) {
 			Logger::log("parserArchivoTriadas", "leerArchivo",
 					"Se comienza a leer el archivo de control");
 			this->it = this->triadas->begin();
-			//archivo->seek(id);
+			//archivo->seek(offset);
 			//archivo->get(buffer,MAX_SIZE_TRIADA,SEPARADOR_TRIADA);
 			cargarEstructura(buffer);
 			this->contadorLinea++;
@@ -78,14 +78,11 @@ void ParserArchivoTriadas::cargarEstructura(string dato) {
 
 	/* Dado que el orden de los datos es id|espacioLibre|indice */
 
-	//id_Libro, espacioLibre, indexado, offset
-//	this->datoNuevo->setEspacioLibre(
-//			ServiceClass::convertirAUint32(datos.at(1)));
-//	this->datoNuevo->setId_Libro(ServiceClass::convertirAUint32(datos.at(0)));
-//	setTipoIndice(datos);
-//	this->datoNuevo->setOffset(this->contadorLinea);
-
-	//setTipoIndice(datos);
+	//TODO confirmar el orden de los datos en la triada
+	//id_Libro, idTermino, posicionRelativa
+	this->datoNuevo->setIdLibro(ServiceClass::convertirAUint32(datos.at(0));
+	this->datoNuevo->setIdTermino(ServiceClass::convertirAUint32(datos.at(1));
+	this->datoNuevo->setPosicion(2);
 
 	Logger::log("parserArchivoControl", "cargarEstructura",
 			"Se obtiene el dato de control.");

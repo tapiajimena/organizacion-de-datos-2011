@@ -18,6 +18,7 @@
 #include "../ModuloDeTipos/DatoTriada.h"
 #include "../ModuloDeArchivos/ManejadorArchivo.h"
 #include "../Common/Utilitarios/Logger.h"
+#include "../Common/Utilitarios/ServiceClass.h"
 #include "../ModuloParser/ParserAuxiliar.h"
 #include "../ModuloDeTipos/DatoControlTriada.h"
 #include "../ModuloDeArchivos/ManejadorArchivo.h"
@@ -37,12 +38,12 @@ public:
 	ParserArchivoTriadas(string token);
 
 	virtual void leerArchivo(fstream* archivo);
-	void leerArchivo(fstream* archivo, uint32_t id);
+	void leerArchivo(fstream* archivo, uint32_t offset);
 	virtual void cargarEstructura(string dato);
 
 	/*Getters y Setters */
 	list<DatoTriada*>* getTriadas(fstream* archivo);
-	list<DatoTriada*>* getTriadas(fstream* archivo, uint32_t id);
+	list<DatoTriada*>* getTriadas(fstream* archivo, uint32_t offset);
 
 	virtual ~ParserArchivoTriadas();
 };
