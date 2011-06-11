@@ -6,7 +6,7 @@
  *	Materia	: Organizacion de Datos (75.06) - FIUBA
  *
  *
- *  Parseador de archivos del tipo texto. Que representen la estructura
+ *  Parser de archivos del tipo texto que representen la estructura
  *  de control del archivo de control.
  *
  */
