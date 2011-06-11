@@ -20,7 +20,7 @@ ArchivoTriadas::ArchivoTriadas(string path) {
 	strcpy(cstrPath,path.c_str());
 
 	if (Existe(cstrPath, this->archivoTriadas)) {
-		Abrir(cstrPath, this->archivoTriadas,false);
+		Abrir(cstrPath, this->archivoTriadas,true);
 		Logger::log("ArchivoTriadas", "ArchivoTriadas",
 				"Se abre el archivo de control.");
 	} else {
