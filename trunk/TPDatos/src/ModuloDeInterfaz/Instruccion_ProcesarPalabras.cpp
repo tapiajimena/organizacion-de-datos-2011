@@ -23,6 +23,7 @@ void Instruccion_ProcesarPalabras::ejecutar(){
 	Logger::log("Instruccion_ProcesarPalabras", "ejecutar",
 			"Se indexa por palabras.");
 
+
 	delete(indexador);
 }
 

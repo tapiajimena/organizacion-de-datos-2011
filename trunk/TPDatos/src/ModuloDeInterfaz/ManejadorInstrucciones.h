@@ -28,6 +28,10 @@
 #include "../ModuloDeInterfaz/Instruccion_QuitarArchivo.h"
 #include "../ModuloDeInterfaz/Instruccion_TomarTexto.h"
 #include "../ModuloDeInterfaz/Instruccion_VerEstructura.h"
+#include "../ModuloDeInterfaz/Instruccion_ConsultarTitulo.h"
+#include "../ModuloDeInterfaz/Instruccion_ConsultarAutor.h"
+#include "../ModuloDeInterfaz/Instruccion_ConsultarEditorial.h"
+
 
 using namespace std;
 
@@ -56,6 +60,8 @@ public:
 	 * al parametro pasado.
 	 */
 	char obtenerIDinstruccion(string id);
+
+	string obtenerConsulta();
 
 	/**
 	 * Metodo principal de la clase que elige y ejecuta la
