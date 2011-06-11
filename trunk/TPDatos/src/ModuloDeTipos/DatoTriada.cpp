@@ -11,7 +11,10 @@
 
 DatoTriada::DatoTriada() {
 	// TODO Auto-generated constructor stub
+}
 
+DatoTriada::DatoTriada(DatoTriada* d) {
+	// TODO Auto-generated constructor stub
 }
 
 uint32_t DatoTriada::getId() const {

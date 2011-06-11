@@ -28,6 +28,7 @@ private:
 
 public:
 	DatoTriada();
+	DatoTriada(DatoTriada* d);
 
 	/* Setter y Getters */
     uint32_t getId() const;
