@@ -25,6 +25,7 @@ char ManejadorInstrucciones::armarInstruccion() {
 }
 
 void ManejadorInstrucciones::ejecutarInstruccion(char id) {
+
 	switch (id) {
 	case 'i':
 		this->instruccion = new Instruccion_TomarTexto(id,
@@ -67,6 +68,24 @@ void ManejadorInstrucciones::ejecutarInstruccion(char id) {
 				ServiceClass::normalizarString(this->comando[3]));
 		this->instruccion->ejecutar();
 		break;
+	case (CONSULTA_INDICE_TITULO):
+			this->instruccion = new Instruccion_ConsultarTitulo(CONSULTA_INDICE_TITULO,obtenerConsulta());
+			this->instruccion->ejecutar();
+		break;
+	case (CONSULTA_INDICE_AUTOR):
+			this->instruccion = new Instruccion_ConsultarAutor(CONSULTA_INDICE_AUTOR,obtenerConsulta());
+			this->instruccion->ejecutar();
+		break;
+	case (CONSULTA_INDICE_EDITORIAL):
+			this->instruccion = new Instruccion_ConsultarEditorial(CONSULTA_INDICE_EDITORIAL,obtenerConsulta());
+			this->instruccion->ejecutar();
+		break;
+		/*
+	case (CONSULTA_INDICE_PALABRAS):
+			this->instruccion = new Instruccion_ConsultarTitulo(id);
+			this->instruccion->ejecutar();
+		break;
+		*/
 	default:
 		Logger::log("ManejadorInstrucciones", "ejecutarInstruccion",
 				"Comando no valido.");
@@ -79,13 +98,40 @@ char ManejadorInstrucciones::obtenerIDinstruccion(string id) {
 
 	for (int i = 0; i < id.size(); i++) {
 		if (id[i] == '-')
+		{
 			idInstruccion = id[i + 1];
+			if ((id[i + 2] != ' ') && (idInstruccion == 'q'))
+			{
+				if (id[i + 2] == 'a')
+					idInstruccion =  CONSULTA_INDICE_AUTOR;
+				else if (id[i + 2] == 'e')
+					idInstruccion =  CONSULTA_INDICE_EDITORIAL;
+				else if (id[i + 2] == 't')
+					idInstruccion =  CONSULTA_INDICE_TITULO;
+				else if (id[i + 2] == 'p')
+					idInstruccion =  CONSULTA_INDICE_PALABRAS;
+			}
+		}
+
 	}
 
 	Logger::log("ManejadorInstrucciones", "obtenerIDInstruccion",
 			"Se codifica.");
 
 	return idInstruccion;
+}
+
+string ManejadorInstrucciones::obtenerConsulta() {
+	string rdo = "";
+
+	//TODO CAMBIAR a algo que realmente sea util
+	for (int i = 2; i < MAX_COMANDOS; i++)
+		rdo+=this->comando[i];
+
+	Logger::log("ManejadorInstrucciones", "obtenerIDInstruccion",
+			"Se codifica.");
+
+	return rdo;
 }
 
 void ManejadorInstrucciones::ejecutarInstruccionElegida() {

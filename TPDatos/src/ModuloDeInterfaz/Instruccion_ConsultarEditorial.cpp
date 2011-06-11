@@ -1,0 +1,40 @@
+/*
+ * Instruccion_ConsultarEditorial.cpp
+ *
+ *	Editorial	: GRUPO 1 - Fernandez, Gallinal, Maraggi, Tapia
+ *	Catedra	: SERVETTO-FERRER-FERNANDEZ
+ *	Materia	: Organizacion de Datos (75.06) - FIUBA
+ *
+ */
+
+#include "Instruccion_ConsultarEditorial.h"
+
+
+Instruccion_ConsultarEditorial::Instruccion_ConsultarEditorial(char id, string consulta):Instruccion(id)
+{
+	this->editorial = consulta;
+}
+
+
+void Instruccion_ConsultarEditorial::ejecutar()
+{
+	Configuracion* conf = Configuracion::GetInstancia();
+	ConsultaIndice* consulta = new ConsultaIndice(conf->getPathCarpetaTrabajo());
+
+	Logger::log("Instruccion_ConsultarEditorial", "ejecutar",
+			"Se ejecuta la consulta.");
+
+	cout<<"Se devuelven los datos consultados de editorial "<< editorial<<": "<<endl;
+	consulta->consultarEditorial(editorial);
+
+
+	Logger::log("Instruccion_ConsultarEditorial", "ejecutar",
+			"Se devuelve la consulta.");
+
+	delete(consulta);
+
+}
+
+Instruccion_ConsultarEditorial::~Instruccion_ConsultarEditorial() {
+	// TODO Auto-generated destructor stub
+}
