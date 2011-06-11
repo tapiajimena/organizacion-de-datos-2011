@@ -70,8 +70,10 @@ void ControladorIndice::nuevoIndicePalabras()
 void ControladorIndice::indexar(pair<Libro*,uint32_t> parLibroOffset, char tipoIndice)
 {
 	//si queda tiempo crear clases
-	if ((tipoIndice == INDICE_AUTOR)||(tipoIndice == INDICE_EDITORIAL))
-		indexarPorAutorOEditorial(parLibroOffset);
+	if (tipoIndice == INDICE_AUTOR)
+		indexarPorAutorOEditorial(parLibroOffset,true);
+	else if(tipoIndice == INDICE_EDITORIAL)
+		indexarPorAutorOEditorial(parLibroOffset,false);
 	else if(tipoIndice == INDICE_TITULO)
 		indexarPorTitulo(parLibroOffset);
 	else if(tipoIndice == INDICE_PALABRAS)
@@ -167,25 +169,106 @@ void ControladorIndice::eliminarIndexadoPorTipo(char tipo, Libro* libroRemover,u
 void ControladorIndice::generarReporte(char tipoIndice, string nombreArchivo)
 {
 	Configuracion* conf = Configuracion::GetInstancia();
-	if (tipoIndice == 'A')
+	if (tipoIndice == INDICE_AUTOR)
 		this->indiceArbol->dump(conf->getPathCarpetaReportes() + nombreArchivo
 								+ "_Autor" + EXTENSION_ARCHIVO_REPORTE);
-	else if (tipoIndice == 'E')
+	else if (tipoIndice == INDICE_EDITORIAL)
 		this->indiceArbol->dump(conf->getPathCarpetaReportes() + nombreArchivo
 								+ "_Editorial" + EXTENSION_ARCHIVO_REPORTE);
-	else if (tipoIndice == 'T')
+	else if (tipoIndice == INDICE_TITULO)
 		this->indiceHash->escribirEstructuraEnArchivos(conf->getPathCarpetaReportes()
 						+ nombreArchivo	+ "_Titulo" + EXTENSION_ARCHIVO_REPORTE);
-	else if (tipoIndice == 'P')
+	else if (tipoIndice == INDICE_PALABRAS)
 		this->indiceHash->escribirEstructuraEnArchivos(conf->getPathCarpetaReportes()
 						+ nombreArchivo	+ "_Palabras" + EXTENSION_ARCHIVO_REPORTE);
 }
 
-void ControladorIndice::indexarPorAutorOEditorial(pair<Libro*,uint32_t> parLibroOffset)
+
+void ControladorIndice::consultarPorAutorOEditorial(string consulta)
 {
 	CaseFoldedString caseFold;
 
-	indiceArbol->insert(new DatoElementoNodo(caseFold.caseFoldWord(parLibroOffset.first->getAutor()),
+	DatoElementoNodo* encontrado = NULL;
+	string consultaCaseFold = caseFold.caseFoldWord(consulta);
+
+	Logger::log("ControladorIndice","consultarPorAutorOEditorial", "Se busca la consulta");
+	encontrado = indiceArbol->find(new DatoElementoNodo(consultaCaseFold,0));
+	if ((encontrado) && (encontrado->getClave()!="")
+			&& (consultaCaseFold.compare(encontrado->getClave()) == 0))
+	{
+		uint32_t idLibro = NULL;
+		list<uint32_t>::iterator it;
+		list<uint32_t> aux = encontrado->getLibros();
+		for (it = aux.begin(); it != aux.end(); ++it) {
+			idLibro = *it;
+			cout<< "\t *Libro: "<<idLibro<<endl;
+		}
+	}
+	else
+	{
+		Logger::log("ControladorIndice","consultarPorAutorOEditorial", "No se obtuvieron resultados");
+		cout<<"No se obtuvieron resultados"<<endl;
+	}
+}
+
+
+void ControladorIndice::consultarPorTitulo(string consulta)
+{
+	Logger::log("ControladorIndice","consultarPorTitulo", "Se realiza una consulta por titulo");
+	vector<uint32_t> aux = this->indiceHash->buscarPalabraEnHash(consulta);
+
+	if (!aux.empty())
+	{
+		uint32_t idLibro = NULL;
+		vector<uint32_t>::iterator it;
+		for (it = aux.begin(); it != aux.end(); ++it)
+		{
+			idLibro = *it;
+			cout<< "\t *Libro: "<<idLibro<<endl;
+		}
+	}
+	else
+	{
+		Logger::log("ControladorIndice","consultarPorTitulo", "No se obtuvieron resultados");
+		cout<<"No se obtuvieron resultados"<<endl;
+	}
+}
+
+
+void ControladorIndice::consultarPorPalabras(string consulta)
+{
+	/*
+	string 	aux;
+	pair<string,uint32_t> 				registroHash;
+	EstructuraPalabrasClave::iterator 	it;
+
+	for(it =parLibroOffset.first->getPalabrasClave()->begin();it!=parLibroOffset.first->getPalabrasClave()->end();++it)
+	{
+		aux = ServiceClass::normalizarString((*it).first);
+
+		registroHash.first = aux;
+		registroHash.second= parLibroOffset.second;
+
+		//cout<<"Se envia Clave: "<<aux<<endl;
+		//cout<<"Se envia id: "<<parLibroOffset.second<<endl;
+
+		this->indiceHash->insertarClave(registroHash);
+
+	}*/
+}
+
+
+
+void ControladorIndice::indexarPorAutorOEditorial(pair<Libro*,uint32_t> parLibroOffset, bool autor)
+{
+	//FIXME revisar que no siempre se este insertando el autor
+	CaseFoldedString caseFold;
+
+	if (autor)
+		indiceArbol->insert(new DatoElementoNodo(caseFold.caseFoldWord(parLibroOffset.first->getAutor()),
+						parLibroOffset.second));
+	else
+		indiceArbol->insert(new DatoElementoNodo(caseFold.caseFoldWord(parLibroOffset.first->getEditorial()),
 						parLibroOffset.second));
 }
 
@@ -195,6 +278,8 @@ void ControladorIndice::indexarPorTitulo(pair<Libro*,uint32_t> parLibroOffset)
 	pair<string,uint32_t> registroHash(parLibroOffset.first->getTitulo(), parLibroOffset.second);
 	this->indiceHash->insertarClave(registroHash);
 }
+
+
 
 
 void ControladorIndice::indexarPorPalabras(pair<Libro*,uint32_t> parLibroOffset)
@@ -216,6 +301,7 @@ void ControladorIndice::indexarPorPalabras(pair<Libro*,uint32_t> parLibroOffset)
 		this->indiceHash->insertarClave(registroHash);
 	}
 }
+
 
 
 ControladorIndice::~ControladorIndice()
