@@ -6,7 +6,8 @@
  *	Materia	: Organizacion de Datos (75.06) - FIUBA
  *
  *
- *      Lee, escribe, maneja y controla los registros variables en archivos.
+ *	Contiene las triadas con la informacion que relaciona documentos,
+ *	terminos y posiciones relativas.
  *
  */
 
