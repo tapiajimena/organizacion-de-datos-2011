@@ -80,17 +80,16 @@ void ParserArchivoTriadas::cargarEstructura(string dato) {
 
 	//TODO confirmar el orden de los datos en la triada
 	//id_Libro, idTermino, posicionRelativa
-	this->datoNuevo->setIdLibro(ServiceClass::convertirAUint32(datos.at(0));
-	this->datoNuevo->setIdTermino(ServiceClass::convertirAUint32(datos.at(1));
+	this->datoNuevo->setIdLibro(ServiceClass::convertirAUint32(datos.at(0)));
+	this->datoNuevo->setIdTermino(ServiceClass::convertirAUint32(datos.at(1)));
 	this->datoNuevo->setPosicion(2);
 
 	Logger::log("parserArchivoControl", "cargarEstructura",
 			"Se obtiene el dato de control.");
 
-	//DatoControlTriada* d = new DatoControlTriada(this->datoNuevo);
+	DatoTriada* d = new DatoTriada(this->datoNuevo);
 
-//	this->triadas->insert(pair<uint32_t, DatoControlTriada*> (
-	//		ServiceClass::convertirAUint32(datos.at(0)), d));
+	this->triadas->push_back(d);
 
 	Logger::log("parserArchivoControl", "cargarEstructura",
 			"Se le agrega al map un nuevo dato.");
