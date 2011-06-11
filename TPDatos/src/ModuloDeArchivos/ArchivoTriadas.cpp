@@ -10,9 +10,30 @@
 
 #include "ArchivoTriadas.h"
 
-ArchivoTriadas::ArchivoTriadas() {
+ArchivoTriadas::ArchivoTriadas(string path) {
 	// TODO Auto-generated constructor stub
 
+	this->pathArchivoTriadas = path;
+	this->triadas = new list<DatoTriada*> ();
+
+	char* cstrPath = new char [path.size()+1];
+	strcpy(cstrPath,path.c_str());
+
+	if (Existe(cstrPath, this->archivoTriadas)) {
+		Abrir(cstrPath, this->archivoTriadas,false);
+		Logger::log("ArchivoTriadas", "ArchivoTriadas",
+				"Se abre el archivo de control.");
+	} else {
+		Logger::log("ArchivoTriadas", "ArchivoTriadas",
+				"El archivo no existe.");
+		CrearSiNoExiste(cstrPath,
+				this->archivoTriadas);
+		Logger::log("ArchivoControlLibro", "ArchivoControlLibro",
+				"Se crea un archivo nuevo.");
+	}
+	delete[] cstrPath;
+
+	this->parser = new ParserArchivoTriadas(CONTROL_TOKEN);
 }
 
 list<DatoTriada*>* ArchivoTriadas::getTriadas(){

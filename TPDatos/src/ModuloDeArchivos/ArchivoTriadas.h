@@ -28,7 +28,7 @@ private:
 	string pathArchivoTriadas;
 	fstream archivoTriadas;
 public:
-	ArchivoTriadas();
+	ArchivoTriadas(string path);
 
 	list<DatoTriada*>* getTriadas();
 	list<DatoTriada*>* getTriadas(uint32_t id);
