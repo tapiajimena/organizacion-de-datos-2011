@@ -54,6 +54,11 @@
 /* Define la cantidad de bytes utilizada para la metadata del tamanio del libro */
 #define METADATA_SIZE_BOOK 4
 
+/* CONSTANTES DEFINIDAS PARA ARCHIVO DE TERMINOS */
+
+/* Define el fin de una palabra en el archivo de términos*/
+#define FIN_DE_TERMINO "|"
+
 /* CONSTANTES DEFINIDAS PARA ARCHIVO DE CONTROL */
 
 /* En caso que no se haya podido encontrar un offset con tamanio libre suficiente
