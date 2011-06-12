@@ -35,11 +35,11 @@ ArchivoTriadas::ArchivoTriadas(string path) {
 }
 
 list<DatoTriada*>* ArchivoTriadas::getTriadas() {
-	return this->parser->getTriadas(&archivoTriadas);
+	//return this->parser->getTriadas(&archivoTriadas);
 }
 
 list<DatoTriada*>* ArchivoTriadas::getTriadas(uint32_t id) {
-	return this->parser->getTriadas(&archivoTriadas, id);
+	//return this->parser->getTriadas(&archivoTriadas, id);
 }
 
 ArchivoTriadas::~ArchivoTriadas() {
