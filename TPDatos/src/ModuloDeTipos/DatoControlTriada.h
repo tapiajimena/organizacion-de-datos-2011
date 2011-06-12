@@ -28,9 +28,12 @@ private:
 	bool eliminado;
 public:
 	DatoControlTriada();
+	DatoControlTriada(DatoControlTriada* d);
+
+    bool estaBorrado();
+    void borrarLibro();
 
 	/* Setters y Getters */
-	bool getEliminado() const;
     uint32_t getIdLibro() const;
     uint32_t getIdTriadaFinal() const;
     uint32_t getIdTriadaInicial() const;

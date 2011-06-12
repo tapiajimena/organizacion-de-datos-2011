@@ -14,8 +14,8 @@ DatoControlTriada::DatoControlTriada() {
 
 }
 
-bool DatoControlTriada::getEliminado() const {
-	return eliminado;
+DatoControlTriada::DatoControlTriada(DatoControlTriada* d){
+	;
 }
 
 uint32_t DatoControlTriada::getIdLibro() const {
@@ -44,6 +44,14 @@ void DatoControlTriada::setIdTriadaFinal(uint32_t idTriadaFinal) {
 
 void DatoControlTriada::setIdTriadaInicial(uint32_t idTriadaInicial) {
 	this->idTriadaInicial = idTriadaInicial;
+}
+
+bool DatoControlTriada::estaBorrado() {
+	return this->eliminado;
+}
+
+void DatoControlTriada::borrarLibro() {
+	this->eliminado = true;
 }
 
 DatoControlTriada::~DatoControlTriada() {
