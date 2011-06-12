@@ -8,24 +8,27 @@
  *  Mantiene en un archivo el control de las triadas almacenadas.
  *  La estructura del archivo de control sera:
  *
- * TODO
- *  idLibro|sizeLibre|TagAutor|TagEditorial|TagTitulo|TagPalabras (se inicializan en 0 los tags)
+ *
+ *  idLibro|offsetInicial|offsetFinal|borrado|
  *      Donde:
- *      	-idLibro: offset a la biblioteca
- *      	-sizeLibre: espacio libre en el bloque.
- *      	-flags: un char de 4 donde cada uno represente un tipo de clave (editorial, autor, tit, palabra)
+ *      	-idLibro: offset a la biblioteca - identificador de libro.
+ *      	-offsetInicial: Limite inferior del rango de triadas que pertenecen al mismo libro.
+ *      	-offsetSuperior: Limite superior del rango de triadas que pertenecen al mismo libro.
+ *      	-borrado: flag que permite saber si ese termino/libro fue eliminado.
  *
  */
 
 #ifndef ARCHICOCONTROLTRIADAS_H_
 #define ARCHICOCONTROLTRIADAS_H_
 
+#include "../ModuloParser/ParserArchivoControlTriadas.h"
+
 class ArchicoControlTriadas {
-//private:
-//	ParserArchivoControl* parser;
-//	string pathArchivoControlTriadaas;
-//	fstream archivoControlTriadas;
-//public:
+private:
+	ParserArchivoControlTriadas* parser;
+	string pathArchivoControlTriadaas;
+	fstream archivoControlTriadas;
+public:
 //
 //	uint32_t dondeEscribo(uint32_t sizeAlmacenar);
 //
