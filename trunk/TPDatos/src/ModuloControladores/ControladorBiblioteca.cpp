@@ -200,6 +200,12 @@ void ControladorBiblioteca::registrarIndexadoArchivoControl(uint32_t idLibro, ch
 }
 
 
+long int ControladorBiblioteca::getSizeBiblioteca()
+{
+	return arcLibro->getSizeArchivo();
+}
+
+
 string ControladorBiblioteca::getPathControlBiblioteca() {
 	return arcControl->getPathArchivoControlLibro();
 }

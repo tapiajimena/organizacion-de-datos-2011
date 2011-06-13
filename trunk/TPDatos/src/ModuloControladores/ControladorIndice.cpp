@@ -49,6 +49,19 @@ void ControladorIndice::nuevoIndiceEditorial()
 }
 
 
+void ControladorIndice::nuevoIndiceOcurrenciaTerminos()
+{
+	this->indiceArbol = new BPlusTree(
+			pathCarpeta + ARCHIVO_INDICE_OCURRENCIA_TERMINOS + EXTENSION_ARCHIVO_INDICE,
+			SIZE_BLOQUE);
+
+	this->indiceHash = new Hash(
+			pathCarpeta + ARCHIVO_INDICE_TERMINOS_ID + EXTENSION_ARCHIVO_INDICE,
+			pathCarpeta + ARCHIVO_INDICE_TERMINOS_ID + "_Cubetas" + EXTENSION_ARCHIVO_INDICE);
+
+}
+
+
 void ControladorIndice::nuevoIndiceTitulo()
 {
 	this->indiceHash = new Hash(
@@ -78,6 +91,8 @@ void ControladorIndice::indexar(pair<Libro*,uint32_t> parLibroOffset, char tipoI
 		indexarPorTitulo(parLibroOffset);
 	else if(tipoIndice == INDICE_PALABRAS)
 		indexarPorPalabras(parLibroOffset);
+	else if(tipoIndice == INDICE_OCURRENCIA_TERMINOS)
+		indexarPorOcurrenciaTerminos(parLibroOffset);
 	else
 		Logger::log("ControladorIndice","indexar","El tipo de indice no existe, verifique que sea A,E,T,P");
 }
@@ -261,7 +276,7 @@ void ControladorIndice::consultarPorPalabras(string consulta)
 
 void ControladorIndice::indexarPorAutorOEditorial(pair<Libro*,uint32_t> parLibroOffset, bool autor)
 {
-	//FIXME revisar que no siempre se este insertando el autor
+	//FIXME revisar que no siempre se este insertando el autor (ARREGLADO RUSTICAMENTE)
 	CaseFoldedString caseFold;
 
 	if (autor)
@@ -278,8 +293,6 @@ void ControladorIndice::indexarPorTitulo(pair<Libro*,uint32_t> parLibroOffset)
 	pair<string,uint32_t> registroHash(parLibroOffset.first->getTitulo(), parLibroOffset.second);
 	this->indiceHash->insertarClave(registroHash);
 }
-
-
 
 
 void ControladorIndice::indexarPorPalabras(pair<Libro*,uint32_t> parLibroOffset)
@@ -302,6 +315,22 @@ void ControladorIndice::indexarPorPalabras(pair<Libro*,uint32_t> parLibroOffset)
 	}
 }
 
+
+void ControladorIndice::indexarPorOcurrenciaTerminos(pair<Libro*,uint32_t> parLibroOffset)
+{
+	CaseFoldedString caseFold;
+	indiceArbol->insert(new DatoElementoNodo(caseFold.caseFoldWord(parLibroOffset.first->getAutor()),
+						parLibroOffset.second));
+}
+
+void ControladorIndice::indexarPorTerminosId(pair<string,uint32_t> parTerminoId)
+{
+	string 	aux;
+
+
+
+
+}
 
 
 ControladorIndice::~ControladorIndice()
