@@ -1,8 +1,16 @@
 TEMPLATE = app
 TARGET = TPDatos
 QT += core
-HEADERS += Common/Comparable.h \
-    Common/Constantes.h \
+HEADERS += src/ModuloDeArchivos/ArchicoControlTriadas.h \
+    src/ModuloDeArchivos/ArchivoTriadas.h \
+    src/ModuloDeTipos/DatoControlTriada.h \
+    src/ModuloDeTipos/DatoTriada.h \
+    src/ModuloParser/ParserArchivoTriadas.h \
+    src/ModuloDeInterfaz/Instruccion_ConsultarEditorial.h \
+    src/ModuloDeInterfaz/Instruccion_ConsultarAutor.h \
+    src/ModuloDeIndices/ConsultaIndice.h \
+    src/ModuloDeInterfaz/Instruccion_ConsultarTitulo.h \
+    Common/Comparable.h \
     Common/Serializable.h \
     Common/FileManager.h \
     src/ModuloDeIndices/ArbolBMas/BPlusTree.h \
@@ -51,10 +59,20 @@ HEADERS += Common/Comparable.h \
     src/ModuloDeTipos/DatoControlLibro.h \
     src/ModuloDeTipos/Dato.h \
     src/ModuloDeArchivos/ManejadorArchivo.h \
+    Common/Constantes.h \
+    Common/Utilitarios/Logger.h \
+    Common/Utilitarios/ServiceClass.h \
     src/ModuloEstructuras/Diccionario.h
-SOURCES += Common/FileManager.cpp \
-    Common/Utilitarios/Logger.cpp \
-    Common/Utilitarios/ServiceClass.cpp \
+SOURCES += src/ModuloDeArchivos/ArchicoControlTriadas.cpp \
+    src/ModuloDeArchivos/ArchivoTriadas.cpp \
+    src/ModuloDeTipos/DatoControlTriada.cpp \
+    src/ModuloDeTipos/DatoTriada.cpp \
+    src/ModuloParser/ParserArchivoTriadas.cpp \
+    src/ModuloDeInterfaz/Instruccion_ConsultarEditorial.cpp \
+    src/ModuloDeInterfaz/Instruccion_ConsultarAutor.cpp \
+    src/ModuloDeIndices/ConsultaIndice.cpp \
+    src/ModuloDeInterfaz/Instruccion_ConsultarTitulo.cpp \
+    Common/FileManager.cpp \
     src/ModuloDeIndices/ArbolBMas/BPlusTree.cpp \
     src/ModuloDeIndices/ArbolBMas/InternalNode.cpp \
     src/ModuloDeIndices/ArbolBMas/LeafNode.cpp \
@@ -99,6 +117,8 @@ SOURCES += Common/FileManager.cpp \
     src/ModuloDeTipos/Dato.cpp \
     src/ModuloDeTipos/DatoControlLibro.cpp \
     src/ModuloDeArchivos/ManejadorArchivo.cpp \
+    Common/Utilitarios/Logger.cpp \
+    Common/Utilitarios/ServiceClass.cpp \
     src/ModuloEstructuras/Diccionario.cpp \
     src/main.cpp
 FORMS += 
