@@ -1,139 +1,140 @@
 TEMPLATE = app
 TARGET = TPDatos
 QT += core
-HEADERS += src/ModuloControladores/ControladorIndice.h \
-	src/ModuloControladores/ControladorBiblioteca.h \
+HEADERS += src/ModuloControladores/ControladorTriadas.h \
+    src/ModuloControladores/ControladorIndice.h \
+    src/ModuloControladores/ControladorBiblioteca.h \
     src/ModuloDeArchivos/ArchivoTerminos.h \
-    src/ModuloDeArchivos/ArchicoControlTriadas.h \
-	src/ModuloDeArchivos/TestArchivos.h \
-	src/ModuloDeArchivos/ArchivoLibro.h \
-	src/ModuloDeArchivos/ArchivoControlLibro.h \
-	src/ModuloDeArchivos/ManejadorArchivo.h \
+    src/ModuloDeArchivos/ArchivoControlTriadas.h \
+    src/ModuloDeArchivos/TestArchivos.h \
+    src/ModuloDeArchivos/ArchivoLibro.h \
+    src/ModuloDeArchivos/ArchivoControlLibro.h \
+    src/ModuloDeArchivos/ManejadorArchivo.h \
     src/ModuloDeArchivos/ArchivoTriadas.h \
     src/ModuloDeIndices/ConsultaIndice.h \
-	src/ModuloDeIndices/ArbolBMas/BPlusTree.h \
-	src/ModuloDeIndices/ArbolBMas/BPlusTree_CONST.h \
-	src/ModuloDeIndices/ArbolBMas/InternalNode.h \
-	src/ModuloDeIndices/ArbolBMas/LeafNode.h \
-	src/ModuloDeIndices/ArbolBMas/Node.h \
-	src/ModuloDeIndices/ArbolBMas/NodeFactory.h \
-	src/ModuloDeIndices/Indexador.h \
-	src/ModuloDeIndices/Hash/ElementoHash.h \
-	src/ModuloDeIndices/Hash/Hash.h \
+    src/ModuloDeIndices/ArbolBMas/BPlusTree.h \
+    src/ModuloDeIndices/ArbolBMas/BPlusTree_CONST.h \
+    src/ModuloDeIndices/ArbolBMas/InternalNode.h \
+    src/ModuloDeIndices/ArbolBMas/LeafNode.h \
+    src/ModuloDeIndices/ArbolBMas/Node.h \
+    src/ModuloDeIndices/ArbolBMas/NodeFactory.h \
+    src/ModuloDeIndices/Indexador.h \
+    src/ModuloDeIndices/Hash/ElementoHash.h \
+    src/ModuloDeIndices/Hash/Hash.h \
     src/ModuloDeInterfaz/Instruccion_ConsultarAutor.h \
     src/ModuloDeInterfaz/Instruccion_ConsultarTitulo.h \
     src/ModuloDeInterfaz/Instruccion_ConsultarEditorial.h \
-	src/ModuloDeInterfaz/Instruccion_VerEstructura.h \
-	src/ModuloDeInterfaz/Instruccion_QuitarArchivo.h \
-	src/ModuloDeInterfaz/Instruccion_ObtenerArchivo.h \
-	src/ModuloDeInterfaz/Instruccion_ListarArchivosTomados.h \
-	src/ModuloDeInterfaz/Instruccion_ProcesarPalabras.h \
-	src/ModuloDeInterfaz/Instruccion_ProcesarTitulo.h \
-	src/ModuloDeInterfaz/Instruccion_TomarTexto.h \
-	src/ModuloDeInterfaz/Instruccion_ProcesarAutor.h \
-	src/ModuloDeInterfaz/Instruccion_ProcesarEditorial.h \
-	src/ModuloDeInterfaz/Instruccion.h \
-	src/ModuloDeInterfaz/ManejadorInstrucciones.h \
-	src/ModuloDeTipos/TestDato.h \
-	src/ModuloDeTipos/DatoElementoNodo.h \
-	src/ModuloDeTipos/DatoTablaHash.h \
-	src/ModuloDeTipos/DatoCubetaHash.h \
-	src/ModuloDeTipos/DatoElementoNodo.h \
-	src/ModuloDeTipos/FrontCodedString.h \
-	src/ModuloDeTipos/DatoLibro.h \
-	src/ModuloDeTipos/DatoControlLibro.h \
-	src/ModuloDeTipos/Dato.h \
+    src/ModuloDeInterfaz/Instruccion_VerEstructura.h \
+    src/ModuloDeInterfaz/Instruccion_QuitarArchivo.h \
+    src/ModuloDeInterfaz/Instruccion_ObtenerArchivo.h \
+    src/ModuloDeInterfaz/Instruccion_ListarArchivosTomados.h \
+    src/ModuloDeInterfaz/Instruccion_ProcesarPalabras.h \
+    src/ModuloDeInterfaz/Instruccion_ProcesarTitulo.h \
+    src/ModuloDeInterfaz/Instruccion_TomarTexto.h \
+    src/ModuloDeInterfaz/Instruccion_ProcesarAutor.h \
+    src/ModuloDeInterfaz/Instruccion_ProcesarEditorial.h \
+    src/ModuloDeInterfaz/Instruccion.h \
+    src/ModuloDeInterfaz/ManejadorInstrucciones.h \
+    src/ModuloDeTipos/TestDato.h \
+    src/ModuloDeTipos/DatoElementoNodo.h \
+    src/ModuloDeTipos/DatoTablaHash.h \
+    src/ModuloDeTipos/DatoCubetaHash.h \
+    src/ModuloDeTipos/DatoElementoNodo.h \
+    src/ModuloDeTipos/FrontCodedString.h \
+    src/ModuloDeTipos/DatoLibro.h \
+    src/ModuloDeTipos/DatoControlLibro.h \
+    src/ModuloDeTipos/Dato.h \
     src/ModuloDeTipos/DatoControlTriada.h \
     src/ModuloDeTipos/DatoTriada.h \
-	src/ModuloDeTipos/CaseFoldedString.h \
-	src/ModuloEstructuras/Diccionario.h \
-	src/ModuloEstructuras/Configuracion.h \
-	src/ModuloEstructuras/Libro.h \
+    src/ModuloDeTipos/CaseFoldedString.h \
+    src/ModuloEstructuras/Diccionario.h \
+    src/ModuloEstructuras/Configuracion.h \
+    src/ModuloEstructuras/Libro.h \
     src/ModuloParser/ParserArchivoControlTriadas.h \
     src/ModuloParser/ParserArchivoTriadas.h \
     src/ModuloParser/ParserTriadas.h \
-	src/ModuloParser/ParserDeAtributo.h \
-	src/ModuloParser/ParserDeAutor.h \
-	src/ModuloParser/ParserDeEditorial.h \
-	src/ModuloParser/ParserDePalabras.h \
-	src/ModuloParser/ParserDeTitulo.h \
-	src/ModuloParser/ParserAuxiliar.h \
-	src/ModuloParser/ParserArchivoControl.h \
-	src/ModuloParser/ParserDiccionario.h \
+    src/ModuloParser/ParserDeAtributo.h \
+    src/ModuloParser/ParserDeAutor.h \
+    src/ModuloParser/ParserDeEditorial.h \
+    src/ModuloParser/ParserDePalabras.h \
+    src/ModuloParser/ParserDeTitulo.h \
+    src/ModuloParser/ParserAuxiliar.h \
+    src/ModuloParser/ParserArchivoControl.h \
+    src/ModuloParser/ParserDiccionario.h \
     Common/Comparable.h \
     Common/Constantes.h \
-	Common/Serializable.h \
-	Common/FileManager.h \
-	Common/Constantes.h \
-	Common/Utilitarios/Logger.h \
-	Common/Utilitarios/ServiceClass.h
+    Common/Serializable.h \
+    Common/FileManager.h \
+    Common/Constantes.h \
+    Common/Utilitarios/Logger.h \
+    Common/Utilitarios/ServiceClass.h
 SOURCES += src/main.cpp \
-	src/ModuloControladores/ControladorIndice.cpp \
-	src/ModuloControladores/ControladorBiblioteca.cpp \
+	src/ModuloControladores/ControladorTriadas.cpp \
+    src/ModuloControladores/ControladorIndice.cpp \
+    src/ModuloControladores/ControladorBiblioteca.cpp \
     src/ModuloDeArchivos/ArchivoTerminos.cpp \
-    src/ModuloDeArchivos/ArchicoControlTriadas.cpp \
-	src/ModuloDeArchivos/TestArchivos.cpp \
-	src/ModuloDeArchivos/ArchivoLibro.cpp \
-	src/ModuloDeArchivos/ArchivoControlLibro.cpp \
-	src/ModuloDeArchivos/ManejadorArchivo.cpp \
+    src/ModuloDeArchivos/ArchivoControlTriadas.cpp \
+    src/ModuloDeArchivos/TestArchivos.cpp \
+    src/ModuloDeArchivos/ArchivoLibro.cpp \
+    src/ModuloDeArchivos/ArchivoControlLibro.cpp \
+    src/ModuloDeArchivos/ManejadorArchivo.cpp \
     src/ModuloDeArchivos/ArchivoTriadas.cpp \
     src/ModuloDeIndices/ConsultaIndice.cpp \
-	src/ModuloDeIndices/ArbolBMas/BPlusTree.cpp \
-	src/ModuloDeIndices/ArbolBMas/BPlusTree_CONST.cpp \
-	src/ModuloDeIndices/ArbolBMas/InternalNode.cpp \
-	src/ModuloDeIndices/ArbolBMas/LeafNode.cpp \
-	src/ModuloDeIndices/ArbolBMas/Node.cpp \
-	src/ModuloDeIndices/ArbolBMas/NodeFactory.cpp \
-	src/ModuloDeIndices/Indexador.cpp \
-	src/ModuloDeIndices/Hash/ElementoHash.cpp \
-	src/ModuloDeIndices/Hash/Hash.cpp \
+    src/ModuloDeIndices/ArbolBMas/BPlusTree.cpp \
+    src/ModuloDeIndices/ArbolBMas/BPlusTree_CONST.cpp \
+    src/ModuloDeIndices/ArbolBMas/InternalNode.cpp \
+    src/ModuloDeIndices/ArbolBMas/LeafNode.cpp \
+    src/ModuloDeIndices/ArbolBMas/Node.cpp \
+    src/ModuloDeIndices/ArbolBMas/NodeFactory.cpp \
+    src/ModuloDeIndices/Indexador.cpp \
+    src/ModuloDeIndices/Hash/ElementoHash.cpp \
+    src/ModuloDeIndices/Hash/Hash.cpp \
     src/ModuloDeInterfaz/Instruccion_ConsultarAutor.cpp \
     src/ModuloDeInterfaz/Instruccion_ConsultarTitulo.cpp \
     src/ModuloDeInterfaz/Instruccion_ConsultarEditorial.cpp \
-	src/ModuloDeInterfaz/Instruccion_VerEstructura.cpp \
-	src/ModuloDeInterfaz/Instruccion_QuitarArchivo.cpp \
-	src/ModuloDeInterfaz/Instruccion_ObtenerArchivo.cpp \
-	src/ModuloDeInterfaz/Instruccion_ListarArchivosTomados.cpp \
-	src/ModuloDeInterfaz/Instruccion_ProcesarPalabras.cpp \
-	src/ModuloDeInterfaz/Instruccion_ProcesarTitulo.cpp \
-	src/ModuloDeInterfaz/Instruccion_TomarTexto.cpp \
-	src/ModuloDeInterfaz/Instruccion_ProcesarAutor.cpp \
-	src/ModuloDeInterfaz/Instruccion_ProcesarEditorial.cpp \
-	src/ModuloDeInterfaz/Instruccion.cpp \
-	src/ModuloDeInterfaz/ManejadorInstrucciones.cpp \
-	src/ModuloDeTipos/TestDato.cpp \
-	src/ModuloDeTipos/DatoElementoNodo.cpp \
-	src/ModuloDeTipos/DatoTablaHash.cpp \
-	src/ModuloDeTipos/DatoCubetaHash.cpp \
-	src/ModuloDeTipos/DatoElementoNodo.cpp \
-	src/ModuloDeTipos/FrontCodedString.cpp \
-	src/ModuloDeTipos/DatoLibro.cpp \
-	src/ModuloDeTipos/DatoControlLibro.cpp \
-	src/ModuloDeTipos/Dato.cpp \
+    src/ModuloDeInterfaz/Instruccion_VerEstructura.cpp \
+    src/ModuloDeInterfaz/Instruccion_QuitarArchivo.cpp \
+    src/ModuloDeInterfaz/Instruccion_ObtenerArchivo.cpp \
+    src/ModuloDeInterfaz/Instruccion_ListarArchivosTomados.cpp \
+    src/ModuloDeInterfaz/Instruccion_ProcesarPalabras.cpp \
+    src/ModuloDeInterfaz/Instruccion_ProcesarTitulo.cpp \
+    src/ModuloDeInterfaz/Instruccion_TomarTexto.cpp \
+    src/ModuloDeInterfaz/Instruccion_ProcesarAutor.cpp \
+    src/ModuloDeInterfaz/Instruccion_ProcesarEditorial.cpp \
+    src/ModuloDeInterfaz/Instruccion.cpp \
+    src/ModuloDeInterfaz/ManejadorInstrucciones.cpp \
+    src/ModuloDeTipos/TestDato.cpp \
+    src/ModuloDeTipos/DatoElementoNodo.cpp \
+    src/ModuloDeTipos/DatoTablaHash.cpp \
+    src/ModuloDeTipos/DatoCubetaHash.cpp \
+    src/ModuloDeTipos/DatoElementoNodo.cpp \
+    src/ModuloDeTipos/FrontCodedString.cpp \
+    src/ModuloDeTipos/DatoLibro.cpp \
+    src/ModuloDeTipos/DatoControlLibro.cpp \
+    src/ModuloDeTipos/Dato.cpp \
     src/ModuloDeTipos/DatoControlTriada.cpp \
     src/ModuloDeTipos/DatoTriada.cpp \
-	src/ModuloDeTipos/CaseFoldedString.cpp \
-	src/ModuloEstructuras/Diccionario.cpp \
-	src/ModuloEstructuras/Configuracion.cpp \
-	src/ModuloEstructuras/Libro.cpp \
+    src/ModuloDeTipos/CaseFoldedString.cpp \
+    src/ModuloEstructuras/Diccionario.cpp \
+    src/ModuloEstructuras/Configuracion.cpp \
+    src/ModuloEstructuras/Libro.cpp \
     src/ModuloParser/ParserArchivoControlTriadas.cpp \
     src/ModuloParser/ParserArchivoTriadas.cpp \
     src/ModuloParser/ParserTriadas.cpp \
-	src/ModuloParser/ParserDeAtributo.cpp \
-	src/ModuloParser/ParserDeAutor.cpp \
-	src/ModuloParser/ParserDeEditorial.cpp \
-	src/ModuloParser/ParserDePalabras.cpp \
-	src/ModuloParser/ParserDeTitulo.cpp \
-	src/ModuloParser/ParserAuxiliar.cpp \
-	src/ModuloParser/ParserArchivoControl.cpp \
-	src/ModuloParser/ParserDiccionario.cpp \
+    src/ModuloParser/ParserDeAtributo.cpp \
+    src/ModuloParser/ParserDeAutor.cpp \
+    src/ModuloParser/ParserDeEditorial.cpp \
+    src/ModuloParser/ParserDePalabras.cpp \
+    src/ModuloParser/ParserDeTitulo.cpp \
+    src/ModuloParser/ParserAuxiliar.cpp \
+    src/ModuloParser/ParserArchivoControl.cpp \
+    src/ModuloParser/ParserDiccionario.cpp \
     Common/Comparable.cpp \
     Common/Constantes.cpp \
-	Common/Serializable.cpp \
-	Common/FileManager.cpp \
-	Common/Constantes.cpp \
-	Common/Utilitarios/Logger.cpp \
-	Common/Utilitarios/ServiceClass.cpp
+    Common/Serializable.cpp \
+    Common/FileManager.cpp \
+    Common/Constantes.cpp \
+    Common/Utilitarios/Logger.cpp \
+    Common/Utilitarios/ServiceClass.cpp
 FORMS += 
 RESOURCES += 
-

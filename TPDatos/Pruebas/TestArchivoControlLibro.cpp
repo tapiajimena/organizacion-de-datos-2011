@@ -35,7 +35,7 @@ void TestArchivoControlLibro::testEliminarLibro() {
 }
 
 void TestArchivoControlLibro::testRegistrarLibro(){
-	acl->registrarLibro(45);
+	//acl->registrarLibro(45);
 	acl->actualizarArchivo();
 }
 
