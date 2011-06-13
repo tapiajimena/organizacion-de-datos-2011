@@ -105,6 +105,7 @@
 #define INDICE_EDITORIAL  'E'
 #define INDICE_TITULO  'T'
 #define INDICE_PALABRAS  'P'
+#define INDICE_OCURRENCIA_TERMINOS 'O'
 
 #define CONSULTA_INDICE_AUTOR  'Z'
 #define CONSULTA_INDICE_EDITORIAL  'Y'
@@ -125,6 +126,8 @@
 #define ARCHIVO_INDICE_EDITORIAL "IndiceEditorial"
 #define ARCHIVO_INDICE_PALABRAS "IndicePalabra"
 #define ARCHIVO_INDICE_TITULO "IndiceTitulo"
+#define ARCHIVO_INDICE_OCURRENCIA_TERMINOS "IndiceOcurrenciaTerminos"
+#define ARCHIVO_INDICE_TERMINOS_ID "IndiceTerminosId"
 
 #define ARCHIVO_TABLA_SUFIX "_Tabla"
 #define ARCHIVO_INDICE_SUFIX "_Indice"
