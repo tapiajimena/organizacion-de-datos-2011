@@ -98,6 +98,7 @@ public:
 	bool eliminarLibro(uint32_t offset);
 
 
+	long int getSizeBiblioteca();
 	string getPathBiblioteca();
 	string getPathControlBiblioteca();
 

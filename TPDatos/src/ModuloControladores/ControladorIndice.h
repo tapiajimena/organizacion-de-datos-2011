@@ -59,6 +59,7 @@ public:
 	void nuevoIndiceEditorial();
 	void nuevoIndiceTitulo();
 	void nuevoIndicePalabras();
+	void nuevoIndiceOcurrenciaTerminos();
 
 	/*
 	 * Analizan una consulta del tipo autor,
@@ -100,6 +101,8 @@ private:
 	 */
 	void indexarPorTitulo(pair<Libro*,uint32_t> parLibroOffset);
 	void indexarPorPalabras(pair<Libro*,uint32_t> parLibroOffset);
+	void indexarPorOcurrenciaTerminos(pair<Libro*,uint32_t> parLibroOffset);
+	void indexarPorTerminosId(pair<string,uint32_t> parTerminoId);
 
 	void eliminarIndexadoPorTipo(char tipo, Libro* libroRemover,uint32_t idLibro);
 
