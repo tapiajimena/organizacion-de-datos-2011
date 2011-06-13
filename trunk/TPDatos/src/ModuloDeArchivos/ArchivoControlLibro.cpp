@@ -18,19 +18,17 @@ ArchivoControlLibro::ArchivoControlLibro(string path) {
 	this->archivoFragmentado = true;
 	this->libros = new map<uint32_t, DatoControlLibro*> ();
 
-	char* cstrPath = new char [path.size()+1];
-	strcpy(cstrPath,path.c_str());
+	char* cstrPath = new char[path.size() + 1];
+	strcpy(cstrPath, path.c_str());
 
 	if (Existe(cstrPath, this->archivoControlLibro)) {
-		Abrir(cstrPath, this->archivoControlLibro,
-				false);
+		Abrir(cstrPath, this->archivoControlLibro, false);
 		Logger::log("ArchivoControlLibro", "ArchivoControlLibro",
 				"Se abre el archivo de control.");
 	} else {
 		Logger::log("ArchivoControlLibro", "ArchivoControlLibro",
 				"El archivo no existe.");
-		CrearSiNoExiste(cstrPath,
-				this->archivoControlLibro);
+		CrearSiNoExiste(cstrPath, this->archivoControlLibro);
 		Logger::log("ArchivoControlLibro", "ArchivoControlLibro",
 				"Se crea un archivo nuevo.");
 	}
@@ -122,7 +120,8 @@ uint32_t ArchivoControlLibro::dondeEscribo(uint32_t sizeAlmacenar) {
 		}
 	}
 
-	Logger::log("ArchivoControlLibro", "dondeEscribo",ServiceClass::toString(mejorAjuste));
+	Logger::log("ArchivoControlLibro", "dondeEscribo", ServiceClass::toString(
+			mejorAjuste));
 
 	return mejorAjuste;
 }
@@ -244,7 +243,7 @@ void ArchivoControlLibro::registrarIndexado(uint32_t idLibro, char tipoClave) {
 				"Obtengo el libro a indexar.");
 
 		Logger::log("ArchivoControlLibro", "registrarIndexado",
-						ServiceClass::toString(idLibro));
+				ServiceClass::toString(idLibro));
 
 		list<char>::iterator it;
 		bool encontrado = false;
@@ -262,7 +261,7 @@ void ArchivoControlLibro::registrarIndexado(uint32_t idLibro, char tipoClave) {
 				"Se registra una nueva indexacion.");
 
 		Logger::log("ArchivoControlLibro", "registrarIndexado",
-								ServiceClass::toString(idLibro));
+				ServiceClass::toString(idLibro));
 
 	} else {
 		Logger::log("ArchivoControlLibro", "registrarIndexado",
@@ -276,8 +275,7 @@ void ArchivoControlLibro::actualizarArchivo() {
 
 	Cerrar(this->archivoControlLibro);
 	fstream arc;
-	Crear(this->pathArchivoControlLibro.c_str(), arc,
-			true);
+	Crear(this->pathArchivoControlLibro.c_str(), arc, true);
 
 	stringstream ss;
 	for (it = this->libros->begin(); it != this->libros->end(); it++) {
@@ -298,7 +296,8 @@ void ArchivoControlLibro::actualizarArchivo() {
 
 }
 
-uint32_t ArchivoControlLibro::calcularNuevoOffset(uint32_t espacioLibre, uint32_t size, uint32_t idLibro){
+uint32_t ArchivoControlLibro::calcularNuevoOffset(uint32_t espacioLibre,
+		uint32_t size, uint32_t idLibro) {
 	/* nuevoOffset = espacio libre viejo -
 	 * ( id libro recien asignado + meta + tamanio del libro
 	 */
@@ -307,16 +306,18 @@ uint32_t ArchivoControlLibro::calcularNuevoOffset(uint32_t espacioLibre, uint32_
 	return nuevoOffset;
 }
 
-uint32_t ArchivoControlLibro::calcularNuevoEspacioLibre(uint32_t espacioLibre, uint32_t size){
+uint32_t ArchivoControlLibro::calcularNuevoEspacioLibre(uint32_t espacioLibre,
+		uint32_t size) {
 	/* nuevoEspacioLibre =
 	 * espacio libre viejo - (proximo id libro + meta)
 	 */
-	uint32_t nuevoEspacioLibre =  espacioLibre - size - METADATA_SIZE_BOOK;
+	uint32_t nuevoEspacioLibre = espacioLibre - size - METADATA_SIZE_BOOK;
 
 	return nuevoEspacioLibre;
 }
 
-uint32_t ArchivoControlLibro::registrarLibro(uint32_t size, uint32_t finArcLibros) {
+uint32_t ArchivoControlLibro::registrarLibro(uint32_t size,
+		uint32_t finArcLibros) {
 	//cargar una lista inicial de indices.
 	list<char>* indexado = new list<char> ();
 	indexado->push_back('-');
@@ -324,29 +325,32 @@ uint32_t ArchivoControlLibro::registrarLibro(uint32_t size, uint32_t finArcLibro
 	indexado->push_back('-');
 	indexado->push_back('-');
 
-	DatoControlLibro* nuevoLibro = new DatoControlLibro(0,0,indexado,0);
+	DatoControlLibro* nuevoLibro = new DatoControlLibro(0, 0, indexado, 0);
 	uint32_t nuevoOffset;
 
 	uint32_t id_Libro = dondeEscribo(size);
 
-
 	DatoControlLibro* buscado = buscarEnMap(id_Libro);
 
-	if((buscado == NULL) || (id_Libro == FIN_DE_ARCHIVO)){
+	if ((buscado == NULL) || (id_Libro == FIN_DE_ARCHIVO)) {
 		nuevoLibro->setId_Libro(finArcLibros);
-		this->libros->insert(pair<uint32_t, DatoControlLibro*> (finArcLibros,nuevoLibro));
+		this->libros->insert(pair<uint32_t, DatoControlLibro*> (finArcLibros,
+				nuevoLibro));
 
 		Logger::log("ArchivoControlLibro", "registrarLibro",
 				"Se agrega nuevo libro al final.");
 		nuevoOffset = nuevoLibro->getId_Libro();
 
 	} else {
-		nuevoLibro->setId_Libro((calcularNuevoOffset(buscado->getEspacioLibre(),size,id_Libro)));
-		nuevoLibro->setEspacioLibre(calcularNuevoEspacioLibre(buscado->getEspacioLibre(),size));
+		nuevoLibro->setId_Libro((calcularNuevoOffset(
+				buscado->getEspacioLibre(), size, id_Libro)));
+		nuevoLibro->setEspacioLibre(calcularNuevoEspacioLibre(
+				buscado->getEspacioLibre(), size));
 
 		nuevoLibro->setOffset(this->parser->getOffsetArchivo());
 
-		this->libros->insert(pair<uint32_t, DatoControlLibro*> (nuevoLibro->getId_Libro(),nuevoLibro));
+		this->libros->insert(pair<uint32_t, DatoControlLibro*> (
+				nuevoLibro->getId_Libro(), nuevoLibro));
 		buscado->setEspacioLibre(0);
 
 		Logger::log("ArchivoControlLibro", "registrarLibro",
@@ -354,7 +358,7 @@ uint32_t ArchivoControlLibro::registrarLibro(uint32_t size, uint32_t finArcLibro
 		Logger::log("ArchivoControlLibro", "registrarLibro",
 				ServiceClass::toString(nuevoLibro->getId_Libro()));
 		nuevoOffset = nuevoLibro->getId_Libro();
-		}
+	}
 
 	return nuevoOffset;
 }
@@ -365,7 +369,7 @@ void ArchivoControlLibro::eliminarLibro(uint32_t idLibro, uint32_t size) {
 
 	if (buscarEnMap(idLibro) != NULL) {
 		(buscarEnMap(idLibro))->setEspacioLibre(size);
-		((DatoControlLibro*)buscarEnMap(idLibro))->setIndexadoNulo();
+		((DatoControlLibro*) buscarEnMap(idLibro))->setIndexadoNulo();
 		Logger::log("ArchivoControlLibro", "eliminarLibro",
 				"Se elimina el libro.");
 	} else {
@@ -375,18 +379,14 @@ void ArchivoControlLibro::eliminarLibro(uint32_t idLibro, uint32_t size) {
 
 }
 
-map<uint32_t,DatoControlLibro*> *ArchivoControlLibro::getLibros()
-{
+map<uint32_t, DatoControlLibro*> *ArchivoControlLibro::getLibros() {
 	cargarLibros();
 	return libros;
 }
 
-void ArchivoControlLibro::setLibros(map<uint32_t,DatoControlLibro*> *libros)
-{
-    this->libros = libros;
+void ArchivoControlLibro::setLibros(map<uint32_t, DatoControlLibro*> *libros) {
+	this->libros = libros;
 }
-
-
 
 ArchivoControlLibro::~ArchivoControlLibro() {
 	// TODO Auto-generated destructor stub
