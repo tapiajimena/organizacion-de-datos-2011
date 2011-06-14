@@ -12,6 +12,10 @@
 #ifndef DATOCONTROLTRIADA_H_
 #define DATOCONTROLTRIADA_H_
 
+
+#include "../Common/Constantes.h"
+#include "../Common/Utilitarios/Logger.h"
+#include "../Common/Utilitarios/ServiceClass.h"
 #include "Dato.h"
 
 class DatoControlTriada: public Dato {

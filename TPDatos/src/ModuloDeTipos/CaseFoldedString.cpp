@@ -17,7 +17,8 @@ CaseFoldedString::CaseFoldedString() {
 
 }
 
-
+/*
+//USANDO QT
 string CaseFoldedString::caseFoldWord(string word)
 {
 	string str;
@@ -40,7 +41,15 @@ string CaseFoldedString::caseFoldWord(string word)
 
     return str;
 }
+*/
 
+string CaseFoldedString::caseFoldWord(string word)
+{
+	word = ServiceClass::toDowncase(word);
+	word = ServiceClass::normalizarString(word);
+
+	return word;
+}
 
 CaseFoldedString::~CaseFoldedString()
 {
