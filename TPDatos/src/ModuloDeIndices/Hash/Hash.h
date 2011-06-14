@@ -79,7 +79,11 @@ private:
 	//Devuelve una cadena de cubetas enganchadas, que pertenecen todas a un mismo bloque (sería levantar toda la info de un bloque)
 	std::vector< std::pair<DatoCubetaHash*, uint32_t> > levantarSucesionDeCubetas(uint32_t offsetPrimerCubeta);
 
+	//Devuelve true si encuentra un elemento exactamente igual al que se quiere ingresar
 	bool elementoYaInsertado(std::vector<std::pair<DatoCubetaHash*, uint32_t> >sucesionDeCubetas, ElementoHash elemento);
+
+	//Devuelve true si encuentra un elemento con la misma clave (palabra) que el que se quiere ingresar
+	bool claveYaIngresada(std::vector<std::pair<DatoCubetaHash*, uint32_t> >sucesionDeCubetas, ElementoHash elemento);
 
 	void escribirDatoCubeta(DatoCubetaHash* datoCubeta, uint32_t offsetCubeta);
 

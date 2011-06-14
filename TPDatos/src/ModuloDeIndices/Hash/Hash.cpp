@@ -185,6 +185,20 @@ bool Hash::elementoYaInsertado(std::vector< std::pair<DatoCubetaHash*, uint32_t>
 	return encontrado;
 }
 
+bool Hash::claveYaIngresada(std::vector<std::pair<DatoCubetaHash*, uint32_t> >sucesionDeCubetas, ElementoHash elemento)
+{
+	bool encontrado = false;
+	std::vector< std::pair<DatoCubetaHash*, uint32_t> >::iterator it_cubetas = sucesionDeCubetas.begin();
+
+	while (!encontrado && it_cubetas!=sucesionDeCubetas.end())
+	{
+		encontrado = it_cubetas->first->contieneElementoConIgualClave(elemento);
+		it_cubetas++;
+	}
+
+	return encontrado;
+}
+
 void Hash::escribirDatoCubeta(DatoCubetaHash* datoCubeta, uint32_t offsetCubeta) {
 	stringstream ss;//(ios_base::in | ios_base::out);
 	datoCubeta->serializarCubeta(&ss);
@@ -686,11 +700,11 @@ void Hash::insertarClave(std::pair<std::string, uint32_t> registroHash) {
 
 	std::vector< std::pair<DatoCubetaHash*, uint32_t> > sucesionDeCubetas = this->levantarSucesionDeCubetas(offsetCubeta);
 
-	if ( !elementoYaInsertado(sucesionDeCubetas, elementoAInsertar))
+	//if ( !elementoYaInsertado(sucesionDeCubetas, elementoAInsertar)) //Antes se permitia multiples elementos para una clave
+	if(!this->claveYaIngresada(sucesionDeCubetas, elementoAInsertar)) //Ahora no se quiere que se pueda repetir la clave.
 	{
 		//Método mágico...
 		this->insertarElementoEnCubeta(&elementoAInsertar, sucesionDeCubetas, datoTablaAPriori, numeroDeBloqueAPriori);
-
 	}
 
 	//liberación de recursos...
