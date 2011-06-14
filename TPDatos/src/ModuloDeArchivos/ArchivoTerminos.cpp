@@ -48,7 +48,7 @@ std::string ArchivoTerminos::obtenerTermino(uint32_t idTermino)
 
 	stringstream ss;
 
-	if( PRR < tamanioDeArchivo && PRR > 0)
+	if( PRR < tamanioDeArchivo && PRR >= 0)
 	{
 		ManejadorArchivo::PosicionarPunteroLecturaEn(this->archivoTerminos, PRR);
 
