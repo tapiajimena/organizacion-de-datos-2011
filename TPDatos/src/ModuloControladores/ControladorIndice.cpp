@@ -109,6 +109,7 @@ void ControladorIndice::eliminarIndexado(Libro* libroRemover, uint32_t idLibro, 
 	}
 }
 
+
 void ControladorIndice::eliminarIndexadoPorTipo(char tipo, Libro* libroRemover,uint32_t idLibro)
 {
 	CaseFoldedString caseFold;
@@ -180,6 +181,7 @@ void ControladorIndice::eliminarIndexadoPorTipo(char tipo, Libro* libroRemover,u
 	delete (elementoNodo);
 
 }
+
 
 void ControladorIndice::generarReporte(char tipoIndice, string nombreArchivo)
 {
@@ -273,7 +275,6 @@ void ControladorIndice::consultarPorPalabras(string consulta)
 }
 
 
-
 void ControladorIndice::indexarPorAutorOEditorial(pair<Libro*,uint32_t> parLibroOffset, bool autor)
 {
 	//FIXME revisar que no siempre se este insertando el autor (ARREGLADO RUSTICAMENTE)
@@ -321,8 +322,12 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(pair<Libro*,uint32_t> parLi
 	string 	termino;
 	CaseFoldedString caseFold;
 	pair<string,uint32_t> registroHash;
-	ArchivoTerminos* arcTerminos = new ArchivoTerminos(ARCHIVO_TERMINOS);
+	Configuracion* conf = Configuracion::GetInstancia();
 
+	Logger::log("ControladorIndice","indexarPorOcurrenciaTerminos", "Se indexan terminos.");
+	ArchivoTerminos* arcTerminos = new ArchivoTerminos(conf->getPathCarpetaTrabajo()
+													+ ARCHIVO_TERMINOS
+													+ EXTENSION_ARCHIVO_INDICE);
 
 	EstructuraPalabrasClave::iterator 	it;
 	for(it =parLibroOffset.first->getPalabrasClave()->begin();it!=parLibroOffset.first->getPalabrasClave()->end();++it)
@@ -339,12 +344,14 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(pair<Libro*,uint32_t> parLi
 		vector<uint32_t> resultadoBusqueda = this->indiceHash->buscarPalabraEnHash(termino);
 		if (resultadoBusqueda.empty())
 		{
+			cout<< endl<<"Se indexa el termino: "<<termino<<endl;
+			//se le pasa el termino a indexar
 			registroHash.first = termino;
+			//se inserta en el arc de terminos y devuelve el id del termino.
 			registroHash.second = arcTerminos->ingresarTermino(termino);
+
 			this->indiceHash->insertarClave(registroHash);
 		}
-
-
 	}
 
 	indiceArbol->insert(new DatoElementoNodo(caseFold.caseFoldWord(parLibroOffset.first->getAutor()),
