@@ -20,7 +20,7 @@ private:
 public:
 	ParserArchivoControlTriadas(string token);
 
-	bool determinarEliminado();
+	bool determinarEliminado(uint32_t eliminado);
 	virtual void cargarEstructura(string dato);
 
 	map<uint32_t,DatoControlTriada*>* getDatosControl(fstream* archivo);
