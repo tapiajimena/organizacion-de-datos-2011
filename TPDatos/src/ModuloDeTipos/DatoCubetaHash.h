@@ -66,7 +66,11 @@ public:
 
 	unsigned int getCantidadDeElementos();
 
+	//Indica si contiene un elemento exactamente igual
 	bool contieneElemento(ElementoHash elemento);
+
+	//Indica si contiene un elemento con la misma clave
+	bool contieneElementoConIgualClave(ElementoHash elemento);
 
 	unsigned int getBytesLibres();
 
