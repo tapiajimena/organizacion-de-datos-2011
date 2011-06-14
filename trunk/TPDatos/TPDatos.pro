@@ -40,6 +40,7 @@ HEADERS += src/ModuloDeArchivos/ArchivoControlTriadas.h \
     src/ModuloDeIndices/Hash/ElementoHash.h \
     src/ModuloDeTipos/DatoTablaHash.h \
     src/ModuloDeTipos/DatoCubetaHash.h \
+    src/ModuloDeTipos/DatoControlTriadas.h \
     src/ModuloDeIndices/Hash/Hash.h \
     src/ModuloDeTipos/DatoElementoNodo.h \
     src/ModuloDeInterfaz/Instruccion_VerEstructura.h \
@@ -97,14 +98,19 @@ SOURCES += src/ModuloDeArchivos/ArchivoControlTriadas.cpp \
     src/ModuloParser/ParserDePalabras.cpp \
     src/ModuloParser/ParserDeTitulo.cpp \
     src/ModuloDeIndices/Indexador.cpp \
+    src/ModuloDeIndices/Hash/Hash.cpp \    
     src/ModuloControladores/ControladorIndice.cpp \
     src/ModuloControladores/ControladorBiblioteca.cpp \
     src/ModuloDeIndices/Hash/ElementoHash.cpp \
     src/ModuloDeTipos/DatoTablaHash.cpp \
     src/ModuloDeTipos/DatoCubetaHash.cpp \
-    src/ModuloDeIndices/Hash/Hash.cpp \
-    src/ModuloDeInterfaz/Instruccion_VerEstructura.cpp \
+    src/ModuloDeTipos/DatoControlTriadas.cpp \
     src/ModuloDeTipos/DatoElementoNodo.cpp \
+    src/ModuloDeTipos/FrontCodedString.cpp \
+    src/ModuloDeTipos/DatoLibro.cpp \
+    src/ModuloDeTipos/Dato.cpp \
+    src/ModuloDeTipos/DatoControlLibro.cpp \
+    src/ModuloDeInterfaz/Instruccion_VerEstructura.cpp \
     src/ModuloDeInterfaz/Instruccion_QuitarArchivo.cpp \
     src/ModuloDeInterfaz/Instruccion_ObtenerArchivo.cpp \
     src/ModuloDeInterfaz/Instruccion_ListarArchivosTomados.cpp \
@@ -115,15 +121,11 @@ SOURCES += src/ModuloDeArchivos/ArchivoControlTriadas.cpp \
     src/ModuloDeInterfaz/Instruccion_ProcesarEditorial.cpp \
     src/ModuloDeInterfaz/Instruccion.cpp \
     src/ModuloDeInterfaz/ManejadorInstrucciones.cpp \
-    src/ModuloDeTipos/FrontCodedString.cpp \
     src/ModuloParser/ParserAuxiliar.cpp \
     src/ModuloParser/ParserArchivoControl.cpp \
     src/ModuloParser/ParserDiccionario.cpp \
     src/ModuloDeArchivos/ArchivoLibro.cpp \
     src/ModuloDeArchivos/ArchivoControlLibro.cpp \
-    src/ModuloDeTipos/DatoLibro.cpp \
-    src/ModuloDeTipos/Dato.cpp \
-    src/ModuloDeTipos/DatoControlLibro.cpp \
     src/ModuloDeArchivos/ManejadorArchivo.cpp \
     Common/Utilitarios/Logger.cpp \
     Common/Utilitarios/ServiceClass.cpp \
