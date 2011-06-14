@@ -14,13 +14,16 @@
 #ifndef ARCHIVOTRIADAS_H_
 #define ARCHIVOTRIADAS_H_
 
-#include "../ModuloDeTipos/DatoTriada.h"
-#include "../ModuloParser/ParserArchivoTriadas.h"
-
 #include <fstream>
 #include <iostream>
 #include <list>
 #include <stdint.h>
+
+#include "../ModuloDeTipos/DatoTriada.h"
+#include "../ModuloParser/ParserArchivoTriadas.h"
+
+using namespace ManejadorArchivo;
+using namespace std;
 
 class ArchivoTriadas {
 private:
@@ -29,10 +32,14 @@ private:
 	string pathArchivoTriadas;
 	fstream archivoTriadas;
 public:
+	ArchivoTriadas();
 	ArchivoTriadas(string path);
 
 	list<DatoTriada*>* getTriadas();
 	list<DatoTriada*>* getTriadas(uint32_t id);
+
+	uint32_t devolverTamanio();
+
 
 	//TODO metodos que consulten cosas particulares de cada triada.
 

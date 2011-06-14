@@ -21,22 +21,44 @@
 #ifndef ARCHIVOCONTROLTRIADAS_H_
 #define ARCHIVOCONTROLTRIADAS_H_
 
+#include <fstream>
+#include <iostream>
+#include <map>
+#include <stdint.h>
+
 #include "../ModuloParser/ParserArchivoControlTriadas.h"
+#include "../ModuloDeArchivos/ManejadorArchivo.h"
+
+using namespace ManejadorArchivo;
 
 class ArchivoControlTriadas {
 private:
 	ParserArchivoControlTriadas* parser;
 	string pathArchivoControlTriadas;
 	fstream archivoControlTriadas;
+	map<uint32_t,DatoControlTriada*>* datosControl;
+	map<uint32_t,DatoControlTriada*>::iterator it;
 public:
 	ArchivoControlTriadas();
 	ArchivoControlTriadas(string pathArchivoControlTriadas);
 
 	void actualizarArchivo();
 	void eliminarLibro(uint32_t idLibro);
+	DatoControlTriada* buscarEnMap(uint32_t idLIbro);
+
+	/**
+	 * Devuelve el nuevo offset donde se guardara la nueva triada
+	 * en el archivo de triadas.
+	 */
+	uint32_t calcularNuevoOffset();
+
+	/**
+	 * Se encarga de generar el map con los datos de control.
+	 */
+	void cargarDatosControl();
+
 
 	/* Getters y Setters */
-	fstream getArchivoControlTriadas() const;
 	ParserArchivoControlTriadas *getParser() const;
 	string getPathArchivoControlTriadas() const;
 	void setArchivoControlTriadas(fstream archivoControlTriadas);
