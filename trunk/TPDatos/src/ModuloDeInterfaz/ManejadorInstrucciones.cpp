@@ -80,12 +80,10 @@ void ManejadorInstrucciones::ejecutarInstruccion(char id) {
 			this->instruccion = new Instruccion_ConsultarEditorial(CONSULTA_INDICE_EDITORIAL,obtenerConsulta());
 			this->instruccion->ejecutar();
 		break;
-		/*
 	case (CONSULTA_INDICE_PALABRAS):
-			this->instruccion = new Instruccion_ConsultarTitulo(id);
+			this->instruccion = new Instruccion_ConsultarTitulo(CONSULTA_INDICE_PALABRAS,obtenerConsulta());
 			this->instruccion->ejecutar();
 		break;
-		*/
 	default:
 		Logger::log("ManejadorInstrucciones", "ejecutarInstruccion",
 				"Comando no valido.");
