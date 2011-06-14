@@ -32,6 +32,7 @@ public:
 
     bool estaBorrado();
     void borrarLibro();
+    string serializar();
 
 	/* Setters y Getters */
     uint32_t getIdLibro() const;
