@@ -28,6 +28,7 @@
 
 #include "../ModuloParser/ParserArchivoControlTriadas.h"
 #include "../ModuloDeArchivos/ManejadorArchivo.h"
+#include "../Common/Constantes.h"
 
 using namespace ManejadorArchivo;
 

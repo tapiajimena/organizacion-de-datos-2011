@@ -13,7 +13,7 @@ ArchivoControlTriadas::ArchivoControlTriadas() {
 
 }
 
-ArchivoControlTriadas::ArchivoControlTriadas(string pathArchivoControlTriadas) {
+ArchivoControlTriadas::ArchivoControlTriadas(string path) {
 	this->pathArchivoControlTriadas = pathArchivoControlTriadas;
 
 	char* cstrPath = new char[pathArchivoControlTriadas.size() + 1];
@@ -64,8 +64,11 @@ void ArchivoControlTriadas::eliminarLibro(uint32_t idLibro) {
 	//TODO
 }
 
+
 void ArchivoControlTriadas::cargarDatosControl() {
+
 	this->parser = new ParserArchivoControlTriadas(CONTROL_TOKEN);
+
 	this->datosControl = this->parser->getDatosControl(&archivoControlTriadas);
 
 	Logger::log("ArchivoControlLibro", "cargarLibros",
@@ -96,10 +99,7 @@ string ArchivoControlTriadas::getPathArchivoControlTriadas() const {
 	return pathArchivoControlTriadas;
 }
 
-void ArchivoControlTriadas::setArchivoControlTriadas(
-		fstream archivoControlTriadas) {
-	this->archivoControlTriadas = archivoControlTriadas;
-}
+
 
 void ArchivoControlTriadas::setParser(ParserArchivoControlTriadas *parser) {
 	this->parser = parser;
