@@ -139,6 +139,16 @@ namespace ManejadorArchivo
 	 */
 	 void IrAlFinal(fstream &arc);
 
+	 /*
+	  * Posiciona el puntero de escritura en el offset parametro
+	  */
+	 void PosicionarPunteroEscrituraEn(fstream &arc, uint32_t offsetPosicion);
+
+	 /*
+	  * Posiciona el puntero de lectura en el offset parametro
+	  */
+	 void PosicionarPunteroLecturaEn(fstream &arc, uint32_t offsetPosicion);
+
 	//cierra el archivo arc
 	 bool Cerrar(fstream &arc);
 
