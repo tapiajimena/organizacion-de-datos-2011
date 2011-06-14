@@ -22,6 +22,7 @@ public:
 
 	bool determinarEliminado(uint32_t eliminado);
 	virtual void cargarEstructura(string dato);
+	void leerArchivo(fstream* archivo);
 
 	map<uint32_t,DatoControlTriada*>* getDatosControl(fstream* archivo);
 

@@ -43,7 +43,7 @@ map<uint32_t, DatoControlTriada*>* ParserArchivoControlTriadas::getDatosControl(
 		fstream* archivo) {
 	IrAlInicio(*archivo);
 	leerArchivo(archivo);
-	return this->datoNuevo;
+	return this->datosControl;
 }
 
 void ParserArchivoControlTriadas::leerArchivo(fstream* archivo) {
@@ -53,7 +53,7 @@ void ParserArchivoControlTriadas::leerArchivo(fstream* archivo) {
 		if (archivo->is_open()) {
 			Logger::log("parserArchivoControlTriadas", "leerArchivo",
 					"Se comienza a leer el archivo de control");
-			this->it = this->triadas->begin();
+			this->it = this->datosControl->begin();
 
 			do {
 				archivo->getline(buffer, CONTROL_LENGTH);
@@ -75,7 +75,7 @@ bool ParserArchivoControlTriadas::determinarEliminado(uint32_t eliminado) {
 	bool estaEliminado = false;
 
 	if (eliminado == 0)
-		then estaEliminado = true;
+		estaEliminado = true;
 
 	return estaEliminado;
 }

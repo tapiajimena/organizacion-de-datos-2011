@@ -71,6 +71,10 @@ void ParserTriadas::leerArchivo(fstream* archivo) {
 	}
 }
 
+void ParserTriadas::cargarEstructura(string dato)
+{
+
+}
 
 ParserTriadas::~ParserTriadas() {
 	// TODO Auto-generated destructor stub

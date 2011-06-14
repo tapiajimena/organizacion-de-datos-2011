@@ -18,6 +18,7 @@
 #include "../../Common/Constantes.h"
 
 #include <list>
+#include <map>
 #include <stdint.h>
 
 using namespace ManejadorArchivo;
