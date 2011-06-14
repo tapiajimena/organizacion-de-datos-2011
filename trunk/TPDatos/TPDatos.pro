@@ -40,7 +40,6 @@ HEADERS += src/ModuloDeArchivos/ArchivoControlTriadas.h \
     src/ModuloDeIndices/Hash/ElementoHash.h \
     src/ModuloDeTipos/DatoTablaHash.h \
     src/ModuloDeTipos/DatoCubetaHash.h \
-    src/ModuloDeTipos/DatoControlTriadas.h \
     src/ModuloDeIndices/Hash/Hash.h \
     src/ModuloDeTipos/DatoElementoNodo.h \
     src/ModuloDeInterfaz/Instruccion_VerEstructura.h \
@@ -104,7 +103,6 @@ SOURCES += src/ModuloDeArchivos/ArchivoControlTriadas.cpp \
     src/ModuloDeIndices/Hash/ElementoHash.cpp \
     src/ModuloDeTipos/DatoTablaHash.cpp \
     src/ModuloDeTipos/DatoCubetaHash.cpp \
-    src/ModuloDeTipos/DatoControlTriadas.cpp \
     src/ModuloDeTipos/DatoElementoNodo.cpp \
     src/ModuloDeTipos/FrontCodedString.cpp \
     src/ModuloDeTipos/DatoLibro.cpp \
