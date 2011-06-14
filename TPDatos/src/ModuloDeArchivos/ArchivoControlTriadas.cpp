@@ -16,8 +16,8 @@ ArchivoControlTriadas::ArchivoControlTriadas() {
 ArchivoControlTriadas::ArchivoControlTriadas(string pathArchivoControlTriadas) {
 	this->pathArchivoControlTriadas = pathArchivoControlTriadas;
 
-	char* cstrPath = new char[path.size() + 1];
-	strcpy(cstrPath, path.c_str());
+	char* cstrPath = new char[pathArchivoControlTriadas.size() + 1];
+	strcpy(cstrPath, pathArchivoControlTriadas.c_str());
 
 	if (Existe(cstrPath, this->archivoControlTriadas)) {
 		Abrir(cstrPath, this->archivoControlTriadas, false);
@@ -35,14 +35,57 @@ ArchivoControlTriadas::ArchivoControlTriadas(string pathArchivoControlTriadas) {
 
 void ArchivoControlTriadas::actualizarArchivo() {
 	// TODO: actualizar archivo control triadas
+	Logger::log("ArchivoControlTriadas", "actualizarArchivo",
+			"Se comienza a actualizar el archivo de control.");
+
+	Cerrar(this->archivoControlTriadas);
+	fstream arc;
+	Crear(this->pathArchivoControlTriadas.c_str(), arc, true);
+
+	stringstream ss;
+	for (it = this->datosControl->begin(); it != this->datosControl->end(); it++) {
+		ss << (it->second)->serializar();
+		ss << "\n";
+	}
+	//se le saca el ultimo \n
+	string aux = ss.str();
+	aux = aux.substr(0, aux.length() - 1);
+
+	stringstream ss1;
+	ss1 << aux;
+
+	Escribir(arc, &ss1, 0);
+
+	Logger::log("ArchivoControlTriadas", "actualizarArchivo",
+			"Se termina de actualizar el archivo de control.");
 }
 
 void ArchivoControlTriadas::eliminarLibro(uint32_t idLibro) {
 	//TODO
 }
 
-fstream ArchivoControlTriadas::getArchivoControlTriadas() const {
-	return archivoControlTriadas;
+void ArchivoControlTriadas::cargarDatosControl() {
+	this->parser = new ParserArchivoControlTriadas(CONTROL_TOKEN);
+	this->datosControl = this->parser->getDatosControl(&archivoControlTriadas);
+
+	Logger::log("ArchivoControlLibro", "cargarLibros",
+			"Se obtienen los datos de control de los libros.");
+}
+
+DatoControlTriada* ArchivoControlTriadas::buscarEnMap(uint32_t idLibro) {
+	IrAlInicio(this->archivoControlTriadas);
+	it = this->datosControl->find(idLibro);
+	if (it != this->datosControl->end()) {
+		Logger::log("ArchivoControlTriada", "buscarEnMap",
+				"Se encontro el libro buscado.");
+		Logger::log("ArchivoControlTriada", "buscarEnMap",
+				"Se devuelve el libro buscado.");
+		return (*it).second;
+	} else {
+		Logger::log("ArchivoControlTriada", "buscarEnMap",
+				"No se cuentra el libro en el map.");
+		return NULL;
+	}
 }
 
 ParserArchivoControlTriadas * ArchivoControlTriadas::getParser() const {

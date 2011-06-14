@@ -34,6 +34,10 @@ ArchivoTriadas::ArchivoTriadas(string path) {
 	this->parser = new ParserArchivoTriadas(CONTROL_TOKEN);
 }
 
+uint32_t ArchivoTriadas::devolverTamanio() {
+	return GetSizeArchivo(this->archivoTriadas);
+}
+
 list<DatoTriada*>* ArchivoTriadas::getTriadas() {
 	//return this->parser->getTriadas(&archivoTriadas);
 }
