@@ -97,6 +97,21 @@ bool DatoCubetaHash::contieneElemento(ElementoHash elemento)
 	return elementoYaIngresado;
 }
 
+bool DatoCubetaHash::contieneElementoConIgualClave(ElementoHash elemento)
+{
+	bool claveYaAparecida = false;
+
+	for( std::vector<ElementoHash>::iterator it_elementos = this->elementosHash.begin(); it_elementos != this->elementosHash.end() && !claveYaAparecida; it_elementos++)
+	{
+		if (elemento.getPalabra() == (*it_elementos).getPalabra())
+		{
+			claveYaAparecida = true;
+		}
+	}
+
+	return claveYaAparecida;
+}
+
 bool DatoCubetaHash::insertarElementoHash(ElementoHash elemento)
 {
 	unsigned int tamanioElemento = elemento.getTamanioBytesEnDisco();
