@@ -318,7 +318,35 @@ void ControladorIndice::indexarPorPalabras(pair<Libro*,uint32_t> parLibroOffset)
 
 void ControladorIndice::indexarPorOcurrenciaTerminos(pair<Libro*,uint32_t> parLibroOffset)
 {
+	string 	termino;
 	CaseFoldedString caseFold;
+	pair<string,uint32_t> registroHash;
+	ArchivoTerminos* arcTerminos = new ArchivoTerminos(ARCHIVO_TERMINOS);
+
+
+	EstructuraPalabrasClave::iterator 	it;
+	for(it =parLibroOffset.first->getPalabrasClave()->begin();it!=parLibroOffset.first->getPalabrasClave()->end();++it)
+	{
+		termino = caseFold.caseFoldWord((*it).first);
+
+		//se inserta el termino en el arbol
+		//TODO traer el idTriadas y setearlo
+		DatoElementoNodo* nodo = new DatoElementoNodo(termino);
+		nodo->agregarLibro(parLibroOffset.second);
+		this->indiceArbol->insert(nodo);
+
+		//se busca el termino en el hash y si no existe se inserta
+		vector<uint32_t> resultadoBusqueda = this->indiceHash->buscarPalabraEnHash(termino);
+		if (resultadoBusqueda.empty())
+		{
+			registroHash.first = termino;
+			registroHash.second = arcTerminos->ingresarTermino(termino);
+			this->indiceHash->insertarClave(registroHash);
+		}
+
+
+	}
+
 	indiceArbol->insert(new DatoElementoNodo(caseFold.caseFoldWord(parLibroOffset.first->getAutor()),
 						parLibroOffset.second));
 }
