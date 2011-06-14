@@ -57,7 +57,7 @@
 /* CONSTANTES DEFINIDAS PARA ARCHIVO DE TERMINOS */
 
 /* Define el fin de una palabra en el archivo de términos*/
-#define FIN_DE_TERMINO "|"
+#define FIN_DE_TERMINO '|'
 
 /* CONSTANTES DEFINIDAS PARA ARCHIVO DE CONTROL */
 
