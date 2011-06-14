@@ -15,11 +15,15 @@
 class ParserArchivoControlTriadas: public ParserTriadas {
 private:
 	DatoControlTriada* datoNuevo;
+	map<uint32_t,DatoControlTriada*>::iterator it;
+	map<uint32_t,DatoControlTriada*>* datosControl;
 public:
 	ParserArchivoControlTriadas(string token);
 
 	bool determinarEliminado();
 	virtual void cargarEstructura(string dato);
+
+	map<uint32_t,DatoControlTriada*>* getDatosControl(fstream* archivo);
 
 	virtual ~ParserArchivoControlTriadas();
 };

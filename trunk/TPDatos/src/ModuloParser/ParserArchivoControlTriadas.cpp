@@ -21,10 +21,12 @@ void ParserArchivoControlTriadas::cargarEstructura(string dato) {
 	/* Dado que el orden de los datos es idLibro|IdTriadaInicial|IdTriadaFinal|eliminado */
 
 	this->datoNuevo->setIdLibro(ServiceClass::convertirAUint32(datos.at(0)));
-	this->datoNuevo->setIdTriadaInicial(ServiceClass::convertirAUint32(datos.at(1)));
-	this->datoNuevo->setIdTriadaFinal(ServiceClass::convertirAUint32(datos.at(2)));
-	this->datoNuevo->setEliminado(determinarEliminado());
-
+	this->datoNuevo->setIdTriadaInicial(ServiceClass::convertirAUint32(
+			datos.at(1)));
+	this->datoNuevo->setIdTriadaFinal(ServiceClass::convertirAUint32(
+			datos.at(2)));
+	this->datoNuevo->setEliminado(determinarEliminado(
+			(ServiceClass::convertirAUint32(datos.at(3)))));
 
 	Logger::log("parserArchivoControlTriada", "cargarEstructura",
 			"Se obtiene el dato de control.");
@@ -37,8 +39,45 @@ void ParserArchivoControlTriadas::cargarEstructura(string dato) {
 			"Se le agrega al map un nuevo dato.");
 }
 
-bool ParserArchivoControlTriadas::determinarEliminado() {
-	//TODO implementar;
+map<uint32_t, DatoControlTriada*>* ParserArchivoControlTriadas::getDatosControl(
+		fstream* archivo) {
+	IrAlInicio(*archivo);
+	leerArchivo(archivo);
+	return this->datoNuevo;
+}
+
+void ParserArchivoControlTriadas::leerArchivo(fstream* archivo) {
+	char buffer[CONTROL_LENGTH];
+
+	if (GetSizeArchivo(*archivo) > 0) {
+		if (archivo->is_open()) {
+			Logger::log("parserArchivoControlTriadas", "leerArchivo",
+					"Se comienza a leer el archivo de control");
+			this->it = this->triadas->begin();
+
+			do {
+				archivo->getline(buffer, CONTROL_LENGTH);
+				cargarEstructura(buffer);
+				this->contadorLinea++;
+				this->it++;
+			} while (!archivo->eof());
+		} else {
+			Logger::log("parserArchivoControlTriadas", "leerArchivo",
+					"El archivo no esta abierto.");
+		}
+	} else {
+		Logger::log("parserArchivoControlTriadas", "leerArchivo",
+				"El archivo esta vacio o no existe.");
+	}
+}
+
+bool ParserArchivoControlTriadas::determinarEliminado(uint32_t eliminado) {
+	bool estaEliminado = false;
+
+	if (eliminado == 0)
+		then estaEliminado = true;
+
+	return estaEliminado;
 }
 
 ParserArchivoControlTriadas::~ParserArchivoControlTriadas() {
