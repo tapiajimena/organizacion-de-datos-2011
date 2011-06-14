@@ -78,7 +78,8 @@ void ConsultaIndice::consultarTitulo(string consulta)
 
 void ConsultaIndice::consultarPalabras(string consulta)
 {
-	controlIndice->nuevoIndicePalabras();
+	controlIndice->nuevoIndiceOcurrenciaTerminos();
+	controlIndice->consultarPorPalabras(consulta);
 }
 
 

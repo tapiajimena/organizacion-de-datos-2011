@@ -736,6 +736,7 @@ std::vector<uint32_t> Hash::buscarFraseEnHash(std::string fraseConPalabrasClave)
 	std::string fraseConPalabrasClaveNormalizada =
 			ServiceClass::normalizarString(fraseConPalabrasClave);
 
+	cout<<"SE BUSCA FRASE: "<<fraseConPalabrasClaveNormalizada<<endl;
 	std::vector<std::string> listaPalabrasClave =
 			ServiceClass::obtenerListaPalabras(
 					fraseConPalabrasClaveNormalizada, SEPARADORES_DE_PALABRAS);
@@ -744,6 +745,7 @@ std::vector<uint32_t> Hash::buscarFraseEnHash(std::string fraseConPalabrasClave)
 
 	std::vector<uint32_t> resultadosParciales;
 	std::vector<uint32_t> resultadosFinales;
+
 
 	if (listaPalabrasClave.size() > 0) {
 		//resultados de la primera palabra
@@ -793,6 +795,7 @@ std::vector<uint32_t> Hash::buscarFraseEnHash(std::string fraseConPalabrasClave)
 		for (std::list<uint32_t>::iterator it_resultados =
 				listaResultadosAcumulados.begin(); it_resultados
 				!= listaResultadosAcumulados.end(); it_resultados++) {
+			cout<<endl<<"RESULTADOS HASH: "<<*it_resultados<<endl;
 			resultadosFinales.push_back(*it_resultados);
 		}
 
