@@ -22,7 +22,7 @@ uint32_t ArchivoTerminos::ingresarTermino(std::string palabra)
 	//iostream* ios;
 	stringstream ss;
 
-	unsigned int tamanioDato = sizeof(palabra.c_str());
+	unsigned int tamanioDato = palabra.length();
 	uint32_t offsetDeTermino = ManejadorArchivo::GetSizeArchivo( this->archivoTerminos);
 
 	//El Offset en archivo del término es su ID...
@@ -34,6 +34,7 @@ uint32_t ArchivoTerminos::ingresarTermino(std::string palabra)
 	ss << FIN_DE_TERMINO;
 
 	ManejadorArchivo::Escribir(&this->archivoTerminos, &ss, offsetDeTermino, tamanioDato + 1);
+	//cout<<"EL ARC DE TERMINOS ESCRIBE: "<< ss.str()<<endl;
 
 	return idTermino;
 }
