@@ -24,6 +24,7 @@
 #include "../../Common/Utilitarios/ServiceClass.h"
 #include "../ModuloDeTipos/CaseFoldedString.h"
 #include "../ModuloDeArchivos/ManejadorArchivo.h"
+#include "../ModuloDeArchivos/ArchivoTerminos.h"
 #include "../ModuloEstructuras/Configuracion.h"
 #include "../ModuloEstructuras/Libro.h"
 #include "../ModuloDeIndices/Hash/Hash.h"
