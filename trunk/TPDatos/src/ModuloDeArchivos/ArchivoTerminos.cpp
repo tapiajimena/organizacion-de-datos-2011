@@ -50,8 +50,7 @@ std::string ArchivoTerminos::obtenerTermino(uint32_t idTermino)
 
 	if( PRR < tamanioDeArchivo && PRR > 0)
 	{
-		//ManejadorArchivo::PosicionarseEn(PRR); TODO implementar metodo en ManejadorArchivo!!!
-		//TODO renombrar metodo Escribir que escribe a inicio de archivo por EscribirAlInicio ???
+		ManejadorArchivo::PosicionarPunteroLecturaEn(this->archivoTerminos, PRR);
 
 		while (!finTermino)
 		{

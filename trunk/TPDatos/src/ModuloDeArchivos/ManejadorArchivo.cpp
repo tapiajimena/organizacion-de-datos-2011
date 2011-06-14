@@ -222,6 +222,16 @@ void ManejadorArchivo::IrAlFinal(fstream &arc) {
 	arc.seekp(0, ios_base::end);
 }
 
+void ManejadorArchivo::PosicionarPunteroEscrituraEn(fstream &arc, uint32_t offsetPosicion)
+{
+	arc.seekp(offsetPosicion);
+}
+
+void ManejadorArchivo::PosicionarPunteroLecturaEn(fstream &arc, uint32_t offsetPosicion)
+{
+	arc.seekg(offsetPosicion);
+}
+
 bool ManejadorArchivo::Cerrar(fstream &arc) {
 	arc.close();
 	return true;
