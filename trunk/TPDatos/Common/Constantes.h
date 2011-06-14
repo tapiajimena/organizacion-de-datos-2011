@@ -120,6 +120,7 @@
 #define ARCHIVO_TABLA 	"ArchivoTabla"
 #define ARCHIVO_CUBETAS "ArchivoCubetas"
 #define ARCHIVO_BIBLIOTECA "Biblioteca"
+#define ARCHIVO_TERMINOS "Terminos"
 #define ARCHIVO_CONTROL_BIBLIOTECA "BibliotecaControl.txt"
 
 #define ARCHIVO_INDICE_AUTOR "IndiceAutor"
