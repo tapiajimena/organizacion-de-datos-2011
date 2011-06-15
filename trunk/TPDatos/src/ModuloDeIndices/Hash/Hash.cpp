@@ -7,7 +7,6 @@
  *
  *
  *     Estructura que administra un Ã­ndice para acceder a registros libros.
- *
  */
 
 #include "Hash.h"
@@ -179,20 +178,6 @@ bool Hash::elementoYaInsertado(std::vector< std::pair<DatoCubetaHash*, uint32_t>
 	while (!encontrado && it_cubetas!=sucesionDeCubetas.end())
 	{
 		encontrado = it_cubetas->first->contieneElemento(elemento);
-		it_cubetas++;
-	}
-
-	return encontrado;
-}
-
-bool Hash::claveYaIngresada(std::vector<std::pair<DatoCubetaHash*, uint32_t> >sucesionDeCubetas, ElementoHash elemento)
-{
-	bool encontrado = false;
-	std::vector< std::pair<DatoCubetaHash*, uint32_t> >::iterator it_cubetas = sucesionDeCubetas.begin();
-
-	while (!encontrado && it_cubetas!=sucesionDeCubetas.end())
-	{
-		encontrado = it_cubetas->first->contieneElementoConIgualClave(elemento);
 		it_cubetas++;
 	}
 
@@ -700,11 +685,11 @@ void Hash::insertarClave(std::pair<std::string, uint32_t> registroHash) {
 
 	std::vector< std::pair<DatoCubetaHash*, uint32_t> > sucesionDeCubetas = this->levantarSucesionDeCubetas(offsetCubeta);
 
-	//if ( !elementoYaInsertado(sucesionDeCubetas, elementoAInsertar)) //Antes se permitia multiples elementos para una clave
-	if(!this->claveYaIngresada(sucesionDeCubetas, elementoAInsertar)) //Ahora no se quiere que se pueda repetir la clave.
+	if ( !elementoYaInsertado(sucesionDeCubetas, elementoAInsertar))
 	{
 		//Método mágico...
 		this->insertarElementoEnCubeta(&elementoAInsertar, sucesionDeCubetas, datoTablaAPriori, numeroDeBloqueAPriori);
+
 	}
 
 	//liberación de recursos...
