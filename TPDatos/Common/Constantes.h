@@ -128,6 +128,8 @@
 #define ARCHIVO_INDICE_PALABRAS "IndicePalabra"
 #define ARCHIVO_INDICE_TITULO "IndiceTitulo"
 #define ARCHIVO_INDICE_OCURRENCIA_TERMINOS "IndiceOcurrenciaTerminos"
+#define ARCHIVO_INDICE_TRIADAS "IndiceTriadas"
+#define ARCHIVO_INDICE_TRIADAS_CONTROL "IndiceTriadasControl.txt"
 #define ARCHIVO_INDICE_TERMINOS_ID "IndiceTerminosId"
 
 #define ARCHIVO_TABLA_SUFIX "_Tabla"
