@@ -6,7 +6,8 @@
 *	Materia	: Organizacion de Datos (75.06) - FIUBA
 *
 *
-*
+*	Esta clase se usa como ODT, Object Data Transfer, es decir, sólo para pasar información de un
+*	lado a otro.
 *
 */
 
@@ -40,6 +41,11 @@ private:
 	//Estructura que guarda las palabras clave del libro y asociadas al nÃºmero de veces que aparece cada palabra en el libro
 	EstructuraPalabrasClave* _palabrasClave;
 
+	//Lista de ocurrencias de términos. El ID es el del documento, y la posición es la posición en el vector.
+	//No se cuentan las stopwords
+	//(se hace lo mismo con las consultas, de manera que consulta coincide bien con documento literalmente)
+	std::vector<std::string> listaOcurrenciasDeTerminos;
+
 public:
 
 	Libro();
@@ -70,6 +76,14 @@ public:
 
     void setOffset(uint32_t offset);
     void setPalabrasClave(EstructuraPalabrasClave *_palabrasClave);
+
+    //Devuelve una COPIA de la lista de ocurrencias de términos.
+    std::vector<std::string> getOcurrenciasDeTerminos();
+
+    //Carga el término en la lista de ocurrencias de términos. La carga debe ser secuencial
+    //desde el parser, de manera que la posición en el libro está dada por el orden en que
+    //se ingresaron a la lista de ocurrencias.
+    void cargarOcurrenciaDeTermino(std::string termino);
 };
 
 #endif /* LIBRO_H_ */
