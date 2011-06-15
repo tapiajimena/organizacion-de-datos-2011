@@ -95,3 +95,13 @@ void Libro::agregarPalabraClave(std::string palabra)
 		(*this->_palabrasClave)[palabra]++; // Se incrementa en uno el contador de apariciones de la palabra
 	}
 };
+
+std::vector<std::string> Libro::getOcurrenciasDeTerminos()
+{
+	return this->listaOcurrenciasDeTerminos;
+}
+
+void Libro::cargarOcurrenciaDeTermino(std::string termino)
+{
+	this->listaOcurrenciasDeTerminos.push_back(termino);
+}
