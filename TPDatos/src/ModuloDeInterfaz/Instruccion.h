@@ -32,6 +32,7 @@
 #include "../ModuloParser/ParserDeAutor.h"
 #include "../ModuloParser/ParserDeEditorial.h"
 #include "../ModuloParser/ParserDePalabras.h"
+#include "../ModuloParser/ParserDeOcurrenciasDeTerminos.h"
 
 
 using namespace std;

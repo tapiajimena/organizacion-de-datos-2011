@@ -26,6 +26,15 @@ public:
 	 */
 	void actualizarArchivoDeControl();
 
+
+	/**
+	 * Inserta la triada al final del archivo de triadas
+	 * y se actualiza el archivo de control.
+	 * @param triada dato a insertar
+	 */
+	void insertarTriadaAlFinal(DatoTriada* triada);
+
+
 	/**
 	 * Eliminar un libro del indice de terminos y su data de control
 	 * en el archivo de control de terminos.
@@ -33,7 +42,7 @@ public:
 	 */
 	bool eliminarLibro(uint32_t offset);
 
-	long int getSizeBiblioteca();
+	uint32_t getSizeArchivoTriadas();
 	string getPathBiblioteca();
 	string getPathControlBiblioteca();
 

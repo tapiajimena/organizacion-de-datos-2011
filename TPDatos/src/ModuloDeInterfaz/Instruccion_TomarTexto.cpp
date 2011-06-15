@@ -35,7 +35,7 @@ void Instruccion_TomarTexto::ejecutar() {
 			"Se toma el archivo correspondiente.");
 
 	Libro* libroUltimo = new Libro();
-	ParserDePalabras* parser = new ParserDePalabras(conf->getPathArchivoStopWords());
+	ParserDeOcurrenciasDeTerminos* parser = new ParserDeOcurrenciasDeTerminos(conf->getPathArchivoStopWords());
 	libroUltimo = parser->parsear(datoUltimoLibro);
 
 	pair<Libro*,uint32_t> parLibroOffset;
