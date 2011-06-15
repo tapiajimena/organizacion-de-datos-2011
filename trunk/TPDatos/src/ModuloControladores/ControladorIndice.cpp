@@ -321,6 +321,8 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(pair<Libro*,uint32_t> parLi
 {
 	string 					termino = "";
 	int						posicionRelativaTermino = 0;
+	uint32_t				idArchivoTriadasInicial = 0;
+	uint32_t				idArchivoTriadasFinal 	= 0;
 	CaseFoldedString 		caseFold;
 	pair<string,uint32_t> 	registroHash;
 	Configuracion* conf 	= Configuracion::GetInstancia();
@@ -335,6 +337,8 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(pair<Libro*,uint32_t> parLi
 	ArchivoTerminos* arcTerminos = new ArchivoTerminos(conf->getPathCarpetaTrabajo()
 													+ ARCHIVO_TERMINOS
 													+ EXTENSION_ARCHIVO_INDICE);
+
+	idArchivoTriadasInicial =  controlTriadas->getSizeArchivoTriadas();
 
 	vector<string>::iterator 	it;
 	for(it =parLibroOffset.first->getOcurrenciasDeTerminos().begin();
@@ -369,6 +373,8 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(pair<Libro*,uint32_t> parLi
 
 		posicionRelativaTermino++;
 	}
+
+	idArchivoTriadasFinal =  controlTriadas->getSizeArchivoTriadas();
 
 	delete(triada);
 	delete(controlTriadas);
