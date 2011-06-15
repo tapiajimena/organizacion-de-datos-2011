@@ -23,6 +23,21 @@ ControladorTriadas::ControladorTriadas(string pathArchivoTriadas,
 			"Se cargan los libros.");
 }
 
+
+void ControladorTriadas::insertarTriadaAlFinal(DatoTriada* datoTriada)
+{
+	this->arcTriadas->escribirAlFinal(datoTriada);
+
+	//TODO se inserto una nueva triada en el
+	//arcTriadas => deberia actualizarse arcControl
+	this->arcControl->actualizarArchivo();
+
+	Logger::log("ControladorTriadas", "ControladorTriadas",
+			"Se cargan los libros.");
+}
+
+
+
 bool ControladorTriadas::eliminarLibro(uint32_t offset) {
 	/* Actualiza el estado del archivo de control */
 	arcControl->eliminarLibro(offset);
@@ -35,6 +50,11 @@ bool ControladorTriadas::eliminarLibro(uint32_t offset) {
 
 void ControladorTriadas::actualizarArchivoDeControl() {
 	arcControl->actualizarArchivo();
+}
+
+uint32_t ControladorTriadas::getSizeArchivoTriadas()
+{
+	return this->arcTriadas->devolverTamanio();
 }
 
 ControladorTriadas::~ControladorTriadas() {

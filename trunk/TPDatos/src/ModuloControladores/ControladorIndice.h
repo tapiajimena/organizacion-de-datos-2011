@@ -21,6 +21,7 @@
 
 #include <stdint.h>
 
+#include "ControladorTriadas.h"
 #include "../../Common/Utilitarios/ServiceClass.h"
 #include "../ModuloDeTipos/CaseFoldedString.h"
 #include "../ModuloDeArchivos/ManejadorArchivo.h"
@@ -102,8 +103,13 @@ private:
 	 */
 	void indexarPorTitulo(pair<Libro*,uint32_t> parLibroOffset);
 	void indexarPorPalabras(pair<Libro*,uint32_t> parLibroOffset);
+
+
+	/**
+	 * Indexan en Arbol y Hash triadas y terminos
+	 *@param parLibroOffset el libro parseado por ocurrencia de terminos y el id del libro.
+	 */
 	void indexarPorOcurrenciaTerminos(pair<Libro*,uint32_t> parLibroOffset);
-	void indexarPorTerminosId(pair<string,uint32_t> parTerminoId);
 
 	void eliminarIndexadoPorTipo(char tipo, Libro* libroRemover,uint32_t idLibro);
 

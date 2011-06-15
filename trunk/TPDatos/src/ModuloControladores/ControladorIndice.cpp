@@ -319,32 +319,34 @@ void ControladorIndice::indexarPorPalabras(pair<Libro*,uint32_t> parLibroOffset)
 
 void ControladorIndice::indexarPorOcurrenciaTerminos(pair<Libro*,uint32_t> parLibroOffset)
 {
-	string 	termino;
-	CaseFoldedString caseFold;
-	pair<string,uint32_t> registroHash;
-	Configuracion* conf = Configuracion::GetInstancia();
+	string 					termino = "";
+	int						posicionRelativaTermino = 0;
+	CaseFoldedString 		caseFold;
+	pair<string,uint32_t> 	registroHash;
+	Configuracion* conf 	= Configuracion::GetInstancia();
+	DatoTriada* triada 		= new DatoTriada();
+	ControladorTriadas* controlTriadas = new ControladorTriadas(conf->getPathCarpetaTrabajo()
+																+ ARCHIVO_INDICE_TRIADAS
+																+ EXTENSION_ARCHIVO_REPORTE,
+																conf->getPathCarpetaTrabajo()
+																+ ARCHIVO_INDICE_TRIADAS_CONTROL);
 
 	Logger::log("ControladorIndice","indexarPorOcurrenciaTerminos", "Se indexan terminos.");
 	ArchivoTerminos* arcTerminos = new ArchivoTerminos(conf->getPathCarpetaTrabajo()
 													+ ARCHIVO_TERMINOS
 													+ EXTENSION_ARCHIVO_INDICE);
 
-	EstructuraPalabrasClave::iterator 	it;
-	for(it =parLibroOffset.first->getPalabrasClave()->begin();it!=parLibroOffset.first->getPalabrasClave()->end();++it)
+	vector<string>::iterator 	it;
+	for(it =parLibroOffset.first->getOcurrenciasDeTerminos().begin();
+			it!=parLibroOffset.first->getOcurrenciasDeTerminos().end();++it)
 	{
-		termino = caseFold.caseFoldWord((*it).first);
+		termino = caseFold.caseFoldWord(*it);
 
-		//se inserta el termino en el arbol
-		//TODO traer el idTriadas y setearlo
-		DatoElementoNodo* nodo = new DatoElementoNodo(termino);
-		nodo->agregarLibro(parLibroOffset.second);
-		this->indiceArbol->insert(nodo);
-
+		Logger::log("ControladorIndice","indexarPorOcurrenciaTerminos", "Se indexan en el hash.");
 		//se busca el termino en el hash y si no existe se inserta
 		vector<uint32_t> resultadoBusqueda = this->indiceHash->buscarPalabraEnHash(termino);
 		if (resultadoBusqueda.empty())
 		{
-			cout<< endl<<"Se indexa el termino: "<<termino<<endl;
 			//se le pasa el termino a indexar
 			registroHash.first = termino;
 			//se inserta en el arc de terminos y devuelve el id del termino.
@@ -352,19 +354,24 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(pair<Libro*,uint32_t> parLi
 
 			this->indiceHash->insertarClave(registroHash);
 		}
+		else
+			registroHash.second = resultadoBusqueda.front();
+
+		Logger::log("ControladorIndice","indexarPorOcurrenciaTerminos", "Se indexan las triadas en arbol y archivos.");
+		triada->setIdLibro(parLibroOffset.second);
+		triada->setIdTermino(registroHash.second);
+		triada->setPosicion(posicionRelativaTermino);
+		controlTriadas->insertarTriadaAlFinal(triada);
+
+		//se inserta el termino en el arbol
+		this->indiceArbol->insert(new DatoElementoNodo(termino,
+									controlTriadas->getSizeArchivoTriadas()));
+
+		posicionRelativaTermino++;
 	}
 
-	indiceArbol->insert(new DatoElementoNodo(caseFold.caseFoldWord(parLibroOffset.first->getAutor()),
-						parLibroOffset.second));
-}
-
-void ControladorIndice::indexarPorTerminosId(pair<string,uint32_t> parTerminoId)
-{
-	string 	aux;
-
-
-
-
+	delete(triada);
+	delete(controlTriadas);
 }
 
 

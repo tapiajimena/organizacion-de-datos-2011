@@ -35,11 +35,18 @@ public:
 	ArchivoTriadas();
 	ArchivoTriadas(string path);
 
+	/**
+	 * inserta un dato triada en el archivo de triadas
+	 * al final del archivo.
+	 * @param triada dato a insertar
+	 */
+	void escribirAlFinal(DatoTriada* triada);
+
+
 	list<DatoTriada*>* getTriadas();
 	list<DatoTriada*>* getTriadas(uint32_t id);
 
 	uint32_t devolverTamanio();
-
 
 	//TODO metodos que consulten cosas particulares de cada triada.
 

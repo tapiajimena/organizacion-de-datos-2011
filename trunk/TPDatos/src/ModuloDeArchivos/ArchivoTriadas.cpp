@@ -34,6 +34,20 @@ ArchivoTriadas::ArchivoTriadas(string path) {
 	this->parser = new ParserArchivoTriadas(CONTROL_TOKEN);
 }
 
+void ArchivoTriadas::escribirAlFinal(DatoTriada* triada)
+{
+	stringstream auxStream;
+	uint32_t idLibro 	= triada->getIdLibro();
+	uint32_t idTermino 	= triada->getIdTermino();
+	uint32_t posicionTermino= triada->getPosicion();//los long son malos para persistir
+
+	auxStream.write(reinterpret_cast<char *> (&idLibro), sizeof(idLibro));
+	auxStream.write(reinterpret_cast<char *> (&idTermino), sizeof(idLibro));
+	auxStream.write(reinterpret_cast<char *> (&posicionTermino), sizeof(posicionTermino));
+
+	Escribir(archivoTriadas, &auxStream);
+}
+
 uint32_t ArchivoTriadas::devolverTamanio() {
 	return GetSizeArchivo(this->archivoTriadas);
 }
