@@ -329,20 +329,22 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(pair<Libro*,uint32_t> parLi
 	DatoTriada* triada 		= new DatoTriada();
 	ControladorTriadas* controlTriadas = new ControladorTriadas(conf->getPathCarpetaTrabajo()
 																+ ARCHIVO_INDICE_TRIADAS
-																+ EXTENSION_ARCHIVO_REPORTE,
+																+ EXTENSION_ARCHIVO_INDICE,
 																conf->getPathCarpetaTrabajo()
-																+ ARCHIVO_INDICE_TRIADAS_CONTROL);
+																+ ARCHIVO_INDICE_TRIADAS_CONTROL
+																+ EXTENSION_ARCHIVO_REPORTE);
 
-	Logger::log("ControladorIndice","indexarPorOcurrenciaTerminos", "Se indexan terminos.");
+
 	ArchivoTerminos* arcTerminos = new ArchivoTerminos(conf->getPathCarpetaTrabajo()
 													+ ARCHIVO_TERMINOS
 													+ EXTENSION_ARCHIVO_INDICE);
 
+	Logger::log("ControladorIndice","indexarPorOcurrenciaTerminos", "Se indexan terminos.");
 	idArchivoTriadasInicial =  controlTriadas->getSizeArchivoTriadas();
 
 	vector<string>::iterator 	it;
-	for(it =parLibroOffset.first->getOcurrenciasDeTerminos().begin();
-			it!=parLibroOffset.first->getOcurrenciasDeTerminos().end();++it)
+	vector<string> ocurrenciasTerminos = parLibroOffset.first->getOcurrenciasDeTerminos();
+	for(it = ocurrenciasTerminos.begin(); it!=ocurrenciasTerminos.end(); ++it)
 	{
 		termino = caseFold.caseFoldWord(*it);
 
@@ -376,6 +378,7 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(pair<Libro*,uint32_t> parLi
 
 	idArchivoTriadasFinal =  controlTriadas->getSizeArchivoTriadas();
 
+	Logger::log("ControladorIndice","indexarPorOcurrenciaTerminos", "Se elimina la triada y el control triada");
 	delete(triada);
 	delete(controlTriadas);
 }
