@@ -37,6 +37,9 @@ void ControladorTriadas::insertarTriadaAlFinal(DatoTriada* datoTriada)
 }
 
 
+list<DatoTriada*>* ControladorTriadas::getTriadas(uint32_t id_Libro) {
+	return this->arcTriadas->getTriadas(id_Libro);
+}
 
 bool ControladorTriadas::eliminarLibro(uint32_t offset) {
 	/* Actualiza el estado del archivo de control */
