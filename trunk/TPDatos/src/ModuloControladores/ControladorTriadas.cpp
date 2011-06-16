@@ -36,6 +36,9 @@ void ControladorTriadas::insertarTriadaAlFinal(DatoTriada* datoTriada)
 			"Se cargan los libros.");
 }
 
+DatoTriada* ControladorTriadas::getTriada(uint32_t offsetTriada) {
+	return NULL;
+}
 
 list<DatoTriada*>* ControladorTriadas::getTriadas(uint32_t id_Libro) {
 	return this->arcTriadas->getTriadas(id_Libro);
