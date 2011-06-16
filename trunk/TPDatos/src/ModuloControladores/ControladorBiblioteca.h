@@ -97,6 +97,7 @@ public:
 	 */
 	bool eliminarLibro(uint32_t offset);
 
+	//TODO cantidadDeLibros()
 
 	long int getSizeBiblioteca();
 	string getPathBiblioteca();
