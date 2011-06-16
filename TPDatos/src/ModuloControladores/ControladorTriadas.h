@@ -48,6 +48,13 @@ public:
 	 */
 	list<DatoTriada*>* getTriadas(uint32_t id_Libro);
 
+	/**
+	 * Devuelve la triada que esta en la posicion (offset) pasada por
+	 * parametro en la lista de triadas.
+	 * @param offsetTriada offset en archivo de triadas.
+	 */
+	DatoTriada* getTriada(uint32_t offsetTriada);
+
 
 	uint32_t getSizeArchivoTriadas();
 	string getPathBiblioteca();
