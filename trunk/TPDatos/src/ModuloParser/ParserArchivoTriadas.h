@@ -27,11 +27,15 @@ private:
 public:
 	ParserArchivoTriadas(string token);
 
-	virtual void cargarEstructura(string dato);
+	void cargarEstructura(uint32_t idLibro, uint32_t idTermino, long posicionRelativa);
+	virtual void cargarEstructura(string palabra);
+
+	void leerArchivo(fstream* archivo, uint32_t offset);
 
 	/*Getters y Setters */
 	list<DatoTriada*>* getTriadas(fstream* archivo);
 	list<DatoTriada*>* getTriadas(fstream* archivo, uint32_t offset);
+	DatoTriada* getTriada(fstream* archivo, uint32_t offset);
 
 	virtual ~ParserArchivoTriadas();
 };
