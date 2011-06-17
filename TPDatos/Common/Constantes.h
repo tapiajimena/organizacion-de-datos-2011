@@ -142,9 +142,4 @@
 #define MAX_COMANDOS 10
 
 
-
-
-
-
-
 #endif /* CONSTANTES_H_ */
