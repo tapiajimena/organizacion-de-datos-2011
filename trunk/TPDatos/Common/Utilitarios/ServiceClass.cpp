@@ -241,8 +241,24 @@ uint32_t ServiceClass::convertirAUint32(string aux)
 	return rdo;
 }
 
+float ServiceClass::uint32tToFloat(uint32_t entero)
+{
+	float retornoFloat = (float)entero;
+	retornoFloat = retornoFloat / 100; //Se recuperan los dos decimales.
+	return retornoFloat;
+}
 
-ServiceClass::~ServiceClass() {
+uint32_t ServiceClass::floatToUint32t(float nroReal)
+{
+	nroReal = nroReal * 100; //Se guardan dos decimales.
+	int entero = (int)nroReal;
+	uint32_t retornoUint32_t = (uint32_t)entero;
+	return retornoUint32_t;
+}
+
+
+ServiceClass::~ServiceClass()
+{
 
 }
 

@@ -99,7 +99,12 @@ public:
 	 */
 	static string toStringData(vector<string>* datos, string separador);
 
+	//Estos dos métodos están interrelacionados unívocamente, no se puede modificar uno sin adaptar el otro
+	static float uint32tToFloat(uint32_t entero);
+	static uint32_t floatToUint32t(float nroReal);
+
 	virtual ~ServiceClass();
+
 };
 
 #endif /* SERVICECLASS_H_ */
