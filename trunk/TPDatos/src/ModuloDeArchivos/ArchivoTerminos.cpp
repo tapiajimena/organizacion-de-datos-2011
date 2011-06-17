@@ -74,3 +74,42 @@ std::string ArchivoTerminos::obtenerTermino(uint32_t idTermino)
 	termino = ss.str();
 	return termino;
 }
+
+std::vector<std::string> ArchivoTerminos::obtenerListaDeTerminos()
+{
+	//Para dejar el archivo en la misma posición, tras terminar el método.
+	uint32_t offsetPrevio = this->archivoTerminos.tellg();
+
+	uint32_t PRR = 0; //puntero local
+
+	std::vector<std::string> listaTerminos;
+
+	ManejadorArchivo::PosicionarPunteroLecturaEn(this->archivoTerminos, 0);
+
+	std::string palabra = "";
+	std::string letra = "";
+	char letraChar;
+
+	while( PRR < ManejadorArchivo::GetSizeArchivo(this->archivoTerminos))
+	{
+
+		letraChar = ManejadorArchivo::LeerCaracteres(this->archivoTerminos, 1).at(0); //aca lee basura... ??
+
+		if(letraChar != FIN_DE_TERMINO)
+		{
+			letra = &letraChar;
+			palabra.insert(palabra.length(), letra);
+		}
+		else
+		{
+			if(palabra.size() > 0)
+			{
+				listaTerminos.push_back(palabra);
+			}
+			palabra = "";
+		}
+	}
+
+	this->archivoTerminos.seekg(offsetPrevio);
+	return listaTerminos;
+}
