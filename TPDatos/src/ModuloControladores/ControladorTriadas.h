@@ -42,6 +42,8 @@ public:
 	 */
 	bool eliminarLibro(uint32_t offset);
 
+
+
 	/**
 	 * Devuelve todas las triadas de terminos pertenecientes a un libro.
 	 * @param id_Libro: id del libro del que se quieren obtener las triadas.
@@ -56,7 +58,11 @@ public:
 	DatoTriada* getTriada(uint32_t offsetTriada);
 
 
+	/**
+	 * Devuelve el tamanio del archivo de triadas.
+	 */
 	uint32_t getSizeArchivoTriadas();
+
 	string getPathBiblioteca();
 	string getPathControlBiblioteca();
 

@@ -26,7 +26,7 @@ ArchivoTriadas::ArchivoTriadas(string path) {
 	} else {
 		Logger::log("ArchivoTriadas", "ArchivoTriadas", "El archivo no existe.");
 		CrearSiNoExiste(cstrPath, this->archivoTriadas);
-		Logger::log("ArchivoControlLibro", "ArchivoControlLibro",
+		Logger::log("ArchivoControlTriadas", "ArchivoControlTriadas",
 				"Se crea un archivo nuevo.");
 	}
 	delete[] cstrPath;
@@ -36,6 +36,9 @@ ArchivoTriadas::ArchivoTriadas(string path) {
 
 void ArchivoTriadas::escribirAlFinal(DatoTriada* triada)
 {
+	Logger::log("ArchivoControlTriadas", "escribirAlFinal",
+			"Se escribe una triada en el archivo.");
+
 	stringstream auxStream;
 	uint32_t idLibro 	= triada->getIdLibro();
 	uint32_t idTermino 	= triada->getIdTermino();
@@ -45,7 +48,7 @@ void ArchivoTriadas::escribirAlFinal(DatoTriada* triada)
 	auxStream.write(reinterpret_cast<char *> (&idTermino), sizeof(idLibro));
 	auxStream.write(reinterpret_cast<char *> (&posicionTermino), sizeof(posicionTermino));
 
-	Escribir(archivoTriadas, &auxStream);
+	Escribir(archivoTriadas, &auxStream, this->devolverTamanio());
 }
 
 uint32_t ArchivoTriadas::devolverTamanio() {
