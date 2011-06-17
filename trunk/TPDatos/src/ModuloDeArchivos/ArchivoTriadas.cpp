@@ -34,6 +34,10 @@ ArchivoTriadas::ArchivoTriadas(string path) {
 	this->parser = new ParserArchivoTriadas(CONTROL_TOKEN);
 }
 
+DatoTriada* ArchivoTriadas::obtenerTriada(uint32_t offset) {
+	this->parser->getTriada(&this->archivoTriadas,offset);
+}
+
 void ArchivoTriadas::escribirAlFinal(DatoTriada* triada)
 {
 	Logger::log("ArchivoControlTriadas", "escribirAlFinal",
