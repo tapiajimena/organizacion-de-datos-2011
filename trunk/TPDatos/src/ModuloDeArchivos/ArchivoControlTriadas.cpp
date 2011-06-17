@@ -34,27 +34,33 @@ ArchivoControlTriadas::ArchivoControlTriadas(string path) {
 }
 
 void ArchivoControlTriadas::actualizarArchivo() {
-	// TODO: actualizar archivo control triadas
 	Logger::log("ArchivoControlTriadas", "actualizarArchivo",
-			"Se comienza a actualizar el archivo de control.");
+			"Se comienza a actualizar el archivo de control de triadas.");
 
 	Cerrar(this->archivoControlTriadas);
 	fstream arc;
 	Crear(this->pathArchivoControlTriadas.c_str(), arc, true);
 
-	stringstream ss;
-	for (it = this->datosControl->begin(); it != this->datosControl->end(); it++) {
-		ss << (it->second)->serializar();
-		ss << "\n";
+	//TODO cargar los datos de control en atributo datosControl
+	/*
+	if (this->datosControl->empty())
+	{
+		stringstream ss;
+		for (it = this->datosControl->begin(); it != this->datosControl->end(); it++)
+		{
+			ss << (it->second)->serializar();
+			ss << "\n";
+		}
+		//se le saca el ultimo \n
+		string aux = ss.str();
+		aux = aux.substr(0, aux.length() - 1);
+
+		stringstream ss1;
+		ss1 << aux;
+
+		Escribir(arc, &ss1, 0);
 	}
-	//se le saca el ultimo \n
-	string aux = ss.str();
-	aux = aux.substr(0, aux.length() - 1);
-
-	stringstream ss1;
-	ss1 << aux;
-
-	Escribir(arc, &ss1, 0);
+	*/
 
 	Logger::log("ArchivoControlTriadas", "actualizarArchivo",
 			"Se termina de actualizar el archivo de control.");

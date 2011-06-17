@@ -32,8 +32,8 @@ void ControladorTriadas::insertarTriadaAlFinal(DatoTriada* datoTriada)
 	//arcTriadas => deberia actualizarse arcControl
 	this->arcControl->actualizarArchivo();
 
-	Logger::log("ControladorTriadas", "ControladorTriadas",
-			"Se cargan los libros.");
+	Logger::log("ControladorTriadas", "insertarTriadaAlFinal",
+			"Se inserto triada al final.");
 }
 
 DatoTriada* ControladorTriadas::getTriada(uint32_t offsetTriada) {
@@ -64,5 +64,6 @@ uint32_t ControladorTriadas::getSizeArchivoTriadas()
 }
 
 ControladorTriadas::~ControladorTriadas() {
-	// TODO Auto-generated destructor stub
+	delete(arcTriadas);
+	delete(arcControl);
 }

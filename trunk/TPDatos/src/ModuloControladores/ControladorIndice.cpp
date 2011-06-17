@@ -344,7 +344,7 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(pair<Libro*,uint32_t> parLi
 
 	vector<string>::iterator 	it;
 	vector<string> ocurrenciasTerminos = parLibroOffset.first->getOcurrenciasDeTerminos();
-	for(it = ocurrenciasTerminos.begin(); it!=ocurrenciasTerminos.end(); ++it)
+	for(it = ocurrenciasTerminos.begin(); it!=ocurrenciasTerminos.end(); it++)
 	{
 		termino = caseFold.caseFoldWord(*it);
 
@@ -380,6 +380,7 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(pair<Libro*,uint32_t> parLi
 
 	Logger::log("ControladorIndice","indexarPorOcurrenciaTerminos", "Se elimina la triada y el control triada");
 	delete(triada);
+	delete(arcTerminos);
 	delete(controlTriadas);
 }
 
