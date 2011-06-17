@@ -9,6 +9,7 @@
 #ifndef PARSERARCHIVOCONTROLTRIADAS_H_
 #define PARSERARCHIVOCONTROLTRIADAS_H_
 
+#include <map>
 #include "ParserTriadas.h"
 #include "../ModuloDeTipos/DatoControlTriada.h"
 
@@ -20,8 +21,9 @@ private:
 public:
 	ParserArchivoControlTriadas(string token);
 
+	void cargarEstructura(string dato);
+
 	bool determinarEliminado(uint32_t eliminado);
-	virtual void cargarEstructura(string dato);
 	void leerArchivo(fstream* archivo);
 
 	map<uint32_t,DatoControlTriada*>* getDatosControl(fstream* archivo);

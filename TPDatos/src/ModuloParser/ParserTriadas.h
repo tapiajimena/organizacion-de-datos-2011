@@ -12,13 +12,13 @@
 
 #include "ParserAuxiliar.h"
 #include "../ModuloDeTipos/Dato.h"
+#include "../ModuloDeTipos/DatoTriada.h"
 #include "../ModuloDeArchivos/ManejadorArchivo.h"
 #include "../Common/Utilitarios/Logger.h"
 #include "../Common/Utilitarios/ServiceClass.h"
 #include "../../Common/Constantes.h"
 
 #include <list>
-#include <map>
 #include <stdint.h>
 
 using namespace ManejadorArchivo;
@@ -27,13 +27,12 @@ class ParserTriadas: public ParserAuxiliar {
 protected:
 	list<Dato*>::iterator it;
 	list<Dato*>* triadas;
+	DatoTriada* triada;
 	int contadorLinea;
 public:
 	ParserTriadas(string token);
 
-	virtual void leerArchivo(fstream* archivo);
-	void leerArchivo(fstream* archivo, uint32_t offset);
-	virtual void cargarEstructura(string dato);
+	void leerArchivo(fstream* archivo);
 
 	/*Getters y Setters */
 	list<Dato*>* getTriadas(fstream* archivo);
