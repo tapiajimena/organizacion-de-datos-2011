@@ -13,6 +13,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string>
+#include <vector>
 #include <iostream>
 #include "ManejadorArchivo.h"
 #include "../../Common/Constantes.h"
@@ -32,6 +33,8 @@ public:
 	//El ID es el offset en el archivo del primer caracter del término en disco. Ingresa al archivo con
 	//ese offset y devuelve la cadena de caracteres desde esa posición hasta el primer FIN_DE_TERMINO (constante)
 	std::string obtenerTermino(uint32_t idTermino);
+
+	std::vector<std::string> obtenerListaDeTerminos();
 
 };
 
