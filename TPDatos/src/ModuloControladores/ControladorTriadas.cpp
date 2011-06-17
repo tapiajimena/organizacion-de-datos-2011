@@ -37,7 +37,7 @@ void ControladorTriadas::insertarTriadaAlFinal(DatoTriada* datoTriada)
 }
 
 DatoTriada* ControladorTriadas::getTriada(uint32_t offsetTriada) {
-	return NULL;
+	return this->arcTriadas->obtenerTriada(offsetTriada);
 }
 
 list<DatoTriada*>* ControladorTriadas::getTriadas(uint32_t id_Libro) {
