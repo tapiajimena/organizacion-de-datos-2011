@@ -78,7 +78,7 @@ void ArchivoControlTriadas::cargarDatosControl() {
 	this->datosControl = this->parser->getDatosControl(&archivoControlTriadas);
 
 	Logger::log("ArchivoControlLibro", "cargarLibros",
-			"Se obtienen los datos de control de los libros.");
+			"Se obtienen los datos de control de las triadas.");
 }
 
 DatoControlTriada* ArchivoControlTriadas::buscarEnMap(uint32_t idLibro) {

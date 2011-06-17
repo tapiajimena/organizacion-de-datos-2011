@@ -46,6 +46,13 @@ public:
 	list<DatoTriada*>* getTriadas();
 	list<DatoTriada*>* getTriadas(uint32_t id);
 
+	/**
+	 * Devuelve la triada que se encuentra en el offset pasado
+	 * por parametro.
+	 * @param offset de triada
+	 */
+	DatoTriada* obtenerTriada(uint32_t offset);
+
 	uint32_t devolverTamanio();
 
 	//TODO metodos que consulten cosas particulares de cada triada.
