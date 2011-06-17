@@ -24,6 +24,7 @@
 #include "ControladorTriadas.h"
 #include "../../Common/Utilitarios/ServiceClass.h"
 #include "../ModuloDeTipos/CaseFoldedString.h"
+#include "../ModuloDeTipos/Termino.h"
 #include "../ModuloDeArchivos/ManejadorArchivo.h"
 #include "../ModuloDeArchivos/ArchivoTerminos.h"
 #include "../ModuloEstructuras/Configuracion.h"
@@ -72,6 +73,7 @@ public:
 	void consultarPorAutorOEditorial(string consulta);
 	void consultarPorTitulo(string consulta);
 	void consultarPorPalabras(string consulta);
+	void consultarPorOcurrenciaTerminos(string consulta);
 
 	/*
 	 * Indexan en un indice Arbol el autor o editorial
