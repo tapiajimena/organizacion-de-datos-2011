@@ -14,23 +14,25 @@
 #ifndef PARSERARCHIVOTRIADAS_H_
 #define PARSERARCHIVOTRIADAS_H_
 
+#include <list>
 #include "../ModuloDeTipos/DatoTriada.h"
-#include "../ModuloParser/ParserTriadas.h"
 #include "../ModuloDeTipos/DatoControlTriada.h"
 #include "../ModuloDeArchivos/ManejadorArchivo.h"
 
 using namespace ManejadorArchivo;
 
-class ParserArchivoTriadas: public ParserTriadas {
+class ParserArchivoTriadas {
 private:
-	DatoTriada* datoNuevo;
+	DatoTriada* triada;
+	string separador;
+	list<DatoTriada*>* triadas;
 public:
 	ParserArchivoTriadas(string token);
 
 	void cargarEstructura(uint32_t idLibro, uint32_t idTermino, long posicionRelativa);
-	virtual void cargarEstructura(string palabra);
 
 	void leerArchivo(fstream* archivo, uint32_t offset);
+
 
 	/*Getters y Setters */
 	list<DatoTriada*>* getTriadas(fstream* archivo);
