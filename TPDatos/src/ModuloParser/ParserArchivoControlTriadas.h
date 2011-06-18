@@ -9,15 +9,21 @@
 #ifndef PARSERARCHIVOCONTROLTRIADAS_H_
 #define PARSERARCHIVOCONTROLTRIADAS_H_
 
+#include <list>
 #include <map>
-#include "ParserTriadas.h"
 #include "../ModuloDeTipos/DatoControlTriada.h"
+#include "../ModuloDeArchivos/ManejadorArchivo.h"
 
-class ParserArchivoControlTriadas: public ParserTriadas {
+using namespace ManejadorArchivo;
+
+class ParserArchivoControlTriadas {
 private:
 	DatoControlTriada* datoNuevo;
+	string separador;
 	map<uint32_t,DatoControlTriada*>::iterator it;
 	map<uint32_t,DatoControlTriada*>* datosControl;
+	list<DatoControlTriada*>* triadas;
+	int contadorLinea;
 public:
 	ParserArchivoControlTriadas(string token);
 

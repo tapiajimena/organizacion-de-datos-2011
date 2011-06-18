@@ -9,9 +9,9 @@
 
 #include "ParserArchivoControlTriadas.h"
 
-ParserArchivoControlTriadas::ParserArchivoControlTriadas(string token) :
-	ParserTriadas(token) {
+ParserArchivoControlTriadas::ParserArchivoControlTriadas(string token) {
 	this->datoNuevo = new DatoControlTriada();
+	this->separador = token;
 }
 
 void ParserArchivoControlTriadas::cargarEstructura(string dato) {
