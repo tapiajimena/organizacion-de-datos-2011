@@ -363,25 +363,27 @@ list<DatoElementoNodo*>* LeafNode::frontCode(
 
 	list<DatoElementoNodo*>* resultado = new list<DatoElementoNodo*> ();
 
-	DatoElementoNodo* aux = frontDecodedElements->front();
+	if (!frontDecodedElements->empty())
+	{
+		DatoElementoNodo* aux = frontDecodedElements->front();
 
-	//quito a la palabraInicial de la lista
-	//para empezar a encodear a partir de la segunda
-	frontDecodedElements->pop_front();
+		//quito a la palabraInicial de la lista
+		//para empezar a encodear a partir de la segunda
+		frontDecodedElements->pop_front();
 
-	//la palabraInicial se guarda sin encodear
-	resultado->push_back(aux);
-
-	DatoElementoNodo* datoAnterior = aux;
-	for (list<DatoElementoNodo*>::iterator it = (frontDecodedElements->begin()); it
-			!= frontDecodedElements->end(); ++it) {
-
-		aux = frontCode(datoAnterior, (*it));
-
-		datoAnterior = (*it);
+		//la palabraInicial se guarda sin encodear
 		resultado->push_back(aux);
-	}
 
+		DatoElementoNodo* datoAnterior = aux;
+		for (list<DatoElementoNodo*>::iterator it = (frontDecodedElements->begin()); it
+				!= frontDecodedElements->end(); ++it) {
+
+			aux = frontCode(datoAnterior, (*it));
+
+			datoAnterior = (*it);
+			resultado->push_back(aux);
+		}
+	}
 	return resultado;
 
 }
@@ -471,36 +473,39 @@ list<DatoElementoNodo*>* LeafNode::frontDecode(
 
 	//tomo el primer elemento no encodeado
 	//para comenzar a realizar las comparaciones
-	DatoElementoNodo* aux = elementos->front();
+	if(!elementos->empty())
+	{
+		DatoElementoNodo* aux = elementos->front();
 
-	//quito el primer elemento de la lista para empezar a iterar
-	//por el segundo
-	elementos->pop_front();
+		//quito el primer elemento de la lista para empezar a iterar
+		//por el segundo
+		elementos->pop_front();
 
-	//guardo la primera palabra que no estaba encodeada.
-	resultado->push_back(aux);
-
-	string claveAux = "";
-	DatoElementoNodo* datoAnterior = aux;
-	list<DatoElementoNodo*>::const_iterator ci;
-	for (ci = elementos->begin(); ci != elementos->end(); ++ci) {
-
-		aux = new DatoElementoNodo("", (*ci)->getLibros());
-
-		claveAux.append(
-				datoAnterior->getClave().substr(0,
-						(*ci)->getCantidadLetrasClaveAnterior()));
-		claveAux.append((*ci)->getClave());
-		aux->setClave(claveAux);
-
-		//palabraDecodificada->append(palabraDecodificadaAnterior->substr(0,(*ci)->cantidadLetrasPalabraAnterior));
-		//palabraDecodificada->append((*ci)->palabraEncodeada);
-
-		claveAux = "";
-		datoAnterior = aux;
+		//guardo la primera palabra que no estaba encodeada.
 		resultado->push_back(aux);
-		//cout << "Resultado decoding: " << aux->getClave() << endl;
 
+		string claveAux = "";
+		DatoElementoNodo* datoAnterior = aux;
+		list<DatoElementoNodo*>::const_iterator ci;
+		for (ci = elementos->begin(); ci != elementos->end(); ++ci) {
+
+			aux = new DatoElementoNodo("", (*ci)->getLibros());
+
+			claveAux.append(
+					datoAnterior->getClave().substr(0,
+							(*ci)->getCantidadLetrasClaveAnterior()));
+			claveAux.append((*ci)->getClave());
+			aux->setClave(claveAux);
+
+			//palabraDecodificada->append(palabraDecodificadaAnterior->substr(0,(*ci)->cantidadLetrasPalabraAnterior));
+			//palabraDecodificada->append((*ci)->palabraEncodeada);
+
+			claveAux = "";
+			datoAnterior = aux;
+			resultado->push_back(aux);
+			//cout << "Resultado decoding: " << aux->getClave() << endl;
+
+		}
 	}
 
 	return resultado;
