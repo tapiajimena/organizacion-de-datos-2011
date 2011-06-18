@@ -52,7 +52,7 @@ std::string ArchivoTerminos::obtenerTermino(uint32_t idTermino)
 
 	stringstream ss;
 
-	if( PRR < tamanioDeArchivo && PRR >= 0)
+	if( PRR < tamanioDeArchivo)
 	{
 		ManejadorArchivo::PosicionarPunteroLecturaEn(this->archivoTerminos, PRR);
 
@@ -77,6 +77,52 @@ std::string ArchivoTerminos::obtenerTermino(uint32_t idTermino)
 
 	termino = ss.str();
 	return termino;
+}
+
+std::vector<uint32_t> ArchivoTerminos::obtenerListaDeIdTerminos()
+{
+	//Para dejar el archivo en la misma posición, tras terminar el método.
+	uint32_t offsetPrevio = this->archivoTerminos.tellg();
+
+	uint32_t PRR = 0; //puntero local
+
+	std::vector<uint32_t> listaIdTerminos;
+
+	uint32_t tamanioArchivoTerminos = ManejadorArchivo::GetSizeArchivo(this->archivoTerminos);
+
+	ManejadorArchivo::PosicionarPunteroLecturaEn(this->archivoTerminos, 0);
+
+	bool caracterFinTerminoEncontrado = false;
+	char letraChar;
+
+	//El cero siempre es el Id del primer Termino.
+	if( tamanioArchivoTerminos > 0)
+	{
+		listaIdTerminos.push_back(0);
+
+		while( PRR < tamanioArchivoTerminos)
+		{
+			this->archivoTerminos.read(&letraChar, 1);
+
+			if(caracterFinTerminoEncontrado && PRR < tamanioArchivoTerminos && letraChar != FIN_DE_TERMINO)
+			{
+				listaIdTerminos.push_back(PRR);
+				caracterFinTerminoEncontrado = false;
+			}
+			else
+			{
+				if(letraChar == FIN_DE_TERMINO)
+				{
+					caracterFinTerminoEncontrado = true;
+				}
+			}
+
+			PRR = this->archivoTerminos.tellg();
+		}
+	}
+
+	this->archivoTerminos.seekg(offsetPrevio, ios::beg);
+	return listaIdTerminos;
 }
 
 std::vector<std::string> ArchivoTerminos::obtenerListaDeTerminos()
