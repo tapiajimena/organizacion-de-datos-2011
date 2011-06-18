@@ -16,8 +16,9 @@ ControladorTriadas::ControladorTriadas(){
 ControladorTriadas::ControladorTriadas(string pathArchivoTriadas,
 		string pathControlTriadas) {
 
-	arcTriadas = new ArchivoTriadas(pathArchivoTriadas);
-	arcControl = new ArchivoControlTriadas(pathControlTriadas);
+	arcTriadas 	= new ArchivoTriadas(pathArchivoTriadas);
+	arcControl 	= new ArchivoControlTriadas(pathControlTriadas);
+	triadas		= new list<DatoTriada>;
 
 	Logger::log("ControladorTriadas", "ControladorTriadas",
 			"Se cargan los libros.");
@@ -39,6 +40,20 @@ void ControladorTriadas::insertarTriadaAlFinal(DatoTriada* datoTriada)
 DatoTriada* ControladorTriadas::getTriada(uint32_t offsetTriada)
 {
 	return this->arcTriadas->obtenerTriada(offsetTriada);
+}
+
+
+list<DatoTriada>* ControladorTriadas::getTriadas(list<uint32_t> idTriadas)
+{
+	DatoTriada* ptrTriada, triada;
+	list<uint32_t>::iterator it;
+	for(it=idTriadas.begin();it!=idTriadas.end();it++)
+	{
+		ptrTriada = this->getTriada(*it);
+
+		if(ptrTriada != NULL) triadas->push_back(*ptrTriada);
+	}
+	return triadas;
 }
 
 list<DatoTriada*>* ControladorTriadas::getTriadas(uint32_t id_Libro) {

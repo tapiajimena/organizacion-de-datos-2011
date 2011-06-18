@@ -464,8 +464,6 @@ list<DatoTriada> ControladorIndice::recuperarTriadas(string termino)
 {
 	Logger::log("ControladorIndice", "recuperarTriadas","se busca un termino");
 	Configuracion* conf = Configuracion::GetInstancia();
-	list<DatoTriada> triadas;
-	DatoTriada* ptrTriada;
 	DatoTriada triada;
 	DatoElementoNodo* nodoEncontrado = NULL;
 
@@ -478,25 +476,13 @@ list<DatoTriada> ControladorIndice::recuperarTriadas(string termino)
 							SIZE_BLOQUE);
 	nodoEncontrado = indiceArbol->find(new DatoElementoNodo(termino, 0));
 
-
 	list<uint32_t> idTriadas = nodoEncontrado->getLibros();
-	list<uint32_t>::iterator it;
-	for(it=idTriadas.begin();it!=idTriadas.end();it++)
-	{
-		ptrTriada = controlTriadas->getTriada(*it);
-		triada.setIdLibro(ptrTriada->getIdLibro());
-		triada.setPosicion(ptrTriada->getPosicion());
-		triada.setIdTermino(ptrTriada->getIdTermino());
-		cout<<"ESTO SI IMPORTA CONTROLADOR: "<<ptrTriada->getIdLibro()<<endl;
-
-		triadas.push_back(triada);
-		delete(ptrTriada);
-	}
+	list<DatoTriada>* triadas = controlTriadas->getTriadas(idTriadas);
 
 	delete(nodoBusqueda);
 	delete(controlTriadas);
 
-	return triadas;
+	return *triadas;
 }
 
 void ControladorIndice::indexarPorOcurrenciaTerminos(
@@ -510,8 +496,7 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 	Configuracion* conf = Configuracion::GetInstancia();
 	DatoTriada* triada = new DatoTriada();
 	ControladorTriadas* controlTriadas = new ControladorTriadas(
-			conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS
-					+ EXTENSION_ARCHIVO_INDICE,
+			conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS + EXTENSION_ARCHIVO_INDICE,
 			conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS_CONTROL);
 
 	ArchivoTerminos* arcTerminos = new ArchivoTerminos(
@@ -530,6 +515,7 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 
 		Logger::log("ControladorIndice", "indexarPorOcurrenciaTerminos",
 				"Se indexan en el hash.");
+
 		//se busca el termino en el hash y si no existe se inserta
 		vector<uint32_t> resultadoBusqueda =
 				this->indiceHash->buscarPalabraEnHash(termino);
@@ -545,13 +531,18 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 
 		Logger::log("ControladorIndice", "indexarPorOcurrenciaTerminos",
 				"Se indexan las triadas en arbol y archivos.");
+
+		//se inserta una triada al final del archivo de triadas
+		cout<<"SE INSERTA TRIADA: "<<termino<<endl;
+		cout<<"SE INSERTA TRIADA: "<<parLibroOffset.second<<endl;
+		cout<<"SE INSERTA TRIADA: "<<registroHash.second<<endl;
+		cout<<"SE INSERTA TRIADA: "<<posicionRelativaTermino<<endl<<endl;
 		triada->setIdLibro(parLibroOffset.second);
 		triada->setIdTermino(registroHash.second);
 		triada->setPosicion(posicionRelativaTermino);
 		controlTriadas->insertarTriadaAlFinal(triada);
 
-		//cout<<endl<<"se esta enviando al arbol: "<<termino<<endl;
-		//cout<<endl<<"se esta enviando al arbol: "<<controlTriadas->getSizeArchivoTriadas()<<endl;
+		cout<<"ID DE TRIADA: "<<controlTriadas->getSizeArchivoTriadas();
 		//se inserta el termino en el arbol
 		this->indiceArbol->insert(
 				new DatoElementoNodo(termino,

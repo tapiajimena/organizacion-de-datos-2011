@@ -15,8 +15,9 @@
 
 class ControladorTriadas {
 private:
-	ArchivoTriadas* arcTriadas;
-	ArchivoControlTriadas* arcControl;
+	ArchivoTriadas* 		arcTriadas;
+	ArchivoControlTriadas* 	arcControl;
+	list<DatoTriada>* 		triadas;
 public:
 	ControladorTriadas();
 	ControladorTriadas(string pathTriadas, string pathControlTriadas);
@@ -49,6 +50,7 @@ public:
 	 * @param id_Libro: id del libro del que se quieren obtener las triadas.
 	 */
 	list<DatoTriada*>* getTriadas(uint32_t id_Libro);
+	list<DatoTriada>* getTriadas(list<uint32_t> idLibros);
 
 	/**
 	 * Devuelve la triada que esta en la posicion (offset) pasada por
