@@ -31,6 +31,7 @@
 #include "../ModuloDeInterfaz/Instruccion_ConsultarTitulo.h"
 #include "../ModuloDeInterfaz/Instruccion_ConsultarAutor.h"
 #include "../ModuloDeInterfaz/Instruccion_ConsultarEditorial.h"
+#include "../ModuloDeInterfaz/Instruccion_ConsultarTerminosProximos.h"
 
 
 using namespace std;

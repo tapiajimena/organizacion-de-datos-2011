@@ -81,7 +81,7 @@ void ManejadorInstrucciones::ejecutarInstruccion(char id) {
 			this->instruccion->ejecutar();
 		break;
 	case (CONSULTA_INDICE_PALABRAS):
-			this->instruccion = new Instruccion_ConsultarTitulo(CONSULTA_INDICE_PALABRAS,obtenerConsulta());
+			this->instruccion = new Instruccion_ConsultarTerminosProximos(CONSULTA_INDICE_PALABRAS,obtenerConsulta());
 			this->instruccion->ejecutar();
 		break;
 	default:
