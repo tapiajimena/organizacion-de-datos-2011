@@ -17,7 +17,7 @@ ParserDiccionario::ParserDiccionario(string token) :
 }
 
 string ParserDiccionario::getDato(string buffer) {
-	return string(buffer.substr(0, buffer.size()));
+	return string(buffer.substr(0, buffer.size()-1));
 }
 
 void ParserDiccionario::leerArchivo(fstream* archivo) {

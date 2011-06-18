@@ -9,6 +9,7 @@
 
 ParserDeOcurrenciasDeTerminos::ParserDeOcurrenciasDeTerminos(std::string nombreArchivoStopWords)
 {
+	cout<<"ARCHIVO SP: "<<nombreArchivoStopWords;
 	this->diccionarioStopWords = new Diccionario();
 
 	this->diccionarioStopWords->cargarDiccionario();
@@ -37,9 +38,14 @@ void ParserDeOcurrenciasDeTerminos::procesarLineaLibro(std::string linea, Libro*
 		//EstructuraStopWords::iterator it_StopWords = this->listaStopWords.find(palabra);
 		bool esStopWord = this->diccionarioStopWords->existePalabra(palabra);
 
+		//this->diccionarioStopWords->mostrar();
 		if (!esStopWord)
 		{
 			libro->cargarOcurrenciaDeTermino(palabra);
+		}
+		else
+		{
+			cout<<"ENTROooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"<<endl;
 		}
 
 	}
