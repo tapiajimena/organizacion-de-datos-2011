@@ -34,6 +34,7 @@ private:
 
 	Hash* indiceNormasDocumentos;
 
+	//Se usa solo para generar indices:
 	ArchivoTerminos* archivoTerminos;
 
 	int cantidadTotalDeDocumentos; //Se carga al calcular e indexar pesos globales de terminos
@@ -72,7 +73,7 @@ private:
 	//Calcula la norma de un documento
 	float calcularNormaDeDocumento(uint32_t idDocumento);
 
-	float calcularNormaConsulta(std::string consulta);
+	float calcularNormaConsulta(std::list<uint32_t> consulta);
 
 public:
 	CalculadorDeNormas(ControladorIndice* controladorIndice, ControladorTriadas* controladorDeTriadas, ArchivoTerminos* archivoTerminos);
@@ -81,7 +82,7 @@ public:
 
 	//Devuelve el coseno del ángulo vectorial entre dos documentos o...
 	//... un documento y una consulta (la consulta se toma como documento de pocos terminos)
-	float calcularSimilitudConsultaDocumento(uint32_t idDocumento, std::vector<std::string> consulta);
+	float calcularSimilitudConsultaDocumento(uint32_t idDocumento, std::list<uint32_t> consulta);
 
 	void generarArchivoDeNormasDeDocumentos();
 
