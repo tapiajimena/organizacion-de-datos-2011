@@ -56,9 +56,11 @@ std::string ArchivoTerminos::obtenerTermino(uint32_t idTermino)
 	{
 		ManejadorArchivo::PosicionarPunteroLecturaEn(this->archivoTerminos, PRR);
 
-		while (!finTermino)
+		while (!finTermino && PRR < tamanioDeArchivo)
 		{
-			letraActual = ManejadorArchivo::LeerCaracteres(this->archivoTerminos, 1).at(0);
+			//letraActual = ManejadorArchivo::LeerCaracteres(this->archivoTerminos, 1).at(0);
+
+			this->archivoTerminos.read(&letraActual, 1);
 
 			if (letraActual == FIN_DE_TERMINO)
 			{
@@ -68,6 +70,8 @@ std::string ArchivoTerminos::obtenerTermino(uint32_t idTermino)
 			{
 				ss.write(&letraActual, 1);
 			}
+
+			PRR = this->archivoTerminos.tellg();
 		}
 	}
 
@@ -84,21 +88,27 @@ std::vector<std::string> ArchivoTerminos::obtenerListaDeTerminos()
 
 	std::vector<std::string> listaTerminos;
 
+	uint32_t tamanioArchivoTerminos = ManejadorArchivo::GetSizeArchivo(this->archivoTerminos);
+
 	ManejadorArchivo::PosicionarPunteroLecturaEn(this->archivoTerminos, 0);
+
+	//ManejadorArchivo::PosicionarPunteroLecturaEn(this->archivoTerminos, PRR);
 
 	std::string palabra = "";
 	std::string letra = "";
 	char letraChar;
 
-	while( PRR < ManejadorArchivo::GetSizeArchivo(this->archivoTerminos))
+	while( PRR < tamanioArchivoTerminos)
 	{
+		//este metodo de la clase leerCaracteres no anda bien, o se pisa, que se yo que corno le pasa
+		//letraChar = ManejadorArchivo::LeerCaracteres(this->archivoTerminos, 1).at(0); //aca lee basura... ??
 
-		letraChar = ManejadorArchivo::LeerCaracteres(this->archivoTerminos, 1).at(0); //aca lee basura... ??
+		this->archivoTerminos.read(&letraChar, 1);
 
 		if(letraChar != FIN_DE_TERMINO)
 		{
 			letra = &letraChar;
-			palabra.insert(palabra.length(), letra);
+			palabra.append(letra);
 		}
 		else
 		{
@@ -108,8 +118,10 @@ std::vector<std::string> ArchivoTerminos::obtenerListaDeTerminos()
 			}
 			palabra = "";
 		}
+
+		PRR = this->archivoTerminos.tellg();
 	}
 
-	this->archivoTerminos.seekg(offsetPrevio);
+	this->archivoTerminos.seekg(offsetPrevio, ios::beg);
 	return listaTerminos;
 }
