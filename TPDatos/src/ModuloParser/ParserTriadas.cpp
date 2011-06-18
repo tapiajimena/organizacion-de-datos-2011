@@ -35,6 +35,7 @@ void ParserTriadas::leerArchivo(fstream* archivo) {
 			do {
 				//archivo->getline(buffer, SEPARADOR_TRIADA);
 				cargarEstructura(buffer);
+				cout<<"BUFFER: "<<buffer<<endl;
 				this->contadorLinea++;
 				this->it++;
 			} while (!archivo->eof());
