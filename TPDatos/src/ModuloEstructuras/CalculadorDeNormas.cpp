@@ -281,7 +281,7 @@ float CalculadorDeNormas::calcularNormaDeDocumento(uint32_t idDocumento)
 	return sqrt(sumatoriaParcial);
 }
 
-float CalculadorDeNormas::calcularNormaConsulta(std::string consulta)
+float CalculadorDeNormas::calcularNormaConsulta(std::list<uint32_t> consulta)
 {
 	//TODO definir interfaz
 }
@@ -291,7 +291,7 @@ float CalculadorDeNormas::calcularProductoInterno(uint32_t idDocumento, std::str
 	//TODO definir tipo para consulta 'std::vector<uint32_t> listaTerminosConsulta'
 }
 
-float CalculadorDeNormas::calcularSimilitudConsultaDocumento(uint32_t idDocumento, std::vector<std::string> consulta)
+float CalculadorDeNormas::calcularSimilitudConsultaDocumento(uint32_t idDocumento, std::list<uint32_t> consulta)
 {
 	//float productoInterno = this->calcularProductoInterno(idDocumento, consulta);
 	//float productoDeNormas = this->obtenerNormaDocumento(idDocumento) * this->obtenerNormaConsulta(consulta);
