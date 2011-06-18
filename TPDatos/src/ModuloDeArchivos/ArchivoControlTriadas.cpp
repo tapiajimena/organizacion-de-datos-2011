@@ -14,7 +14,7 @@ ArchivoControlTriadas::ArchivoControlTriadas() {
 }
 
 ArchivoControlTriadas::ArchivoControlTriadas(string path) {
-	this->pathArchivoControlTriadas = pathArchivoControlTriadas;
+	this->pathArchivoControlTriadas = path;
 
 	char* cstrPath = new char[pathArchivoControlTriadas.size() + 1];
 	strcpy(cstrPath, pathArchivoControlTriadas.c_str());
