@@ -36,7 +36,8 @@ void ControladorTriadas::insertarTriadaAlFinal(DatoTriada* datoTriada)
 			"Se inserto triada al final.");
 }
 
-DatoTriada* ControladorTriadas::getTriada(uint32_t offsetTriada) {
+DatoTriada* ControladorTriadas::getTriada(uint32_t offsetTriada)
+{
 	return this->arcTriadas->obtenerTriada(offsetTriada);
 }
 
