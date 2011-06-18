@@ -34,6 +34,8 @@ public:
 	//ese offset y devuelve la cadena de caracteres desde esa posición hasta el primer FIN_DE_TERMINO (constante)
 	std::string obtenerTermino(uint32_t idTermino);
 
+	std::vector<uint32_t> obtenerListaDeIdTerminos();
+
 	std::vector<std::string> obtenerListaDeTerminos();
 
 };
