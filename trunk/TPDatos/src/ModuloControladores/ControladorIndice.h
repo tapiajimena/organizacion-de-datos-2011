@@ -91,6 +91,13 @@ public:
 
 	void generarReporte(char tipo, string nombreArchivo);
 
+
+	/*
+	 * Devuelve las triadas asociadas a la palabra termino
+	 * @param termino palabra a buscar en el indice de triadas
+	 */
+	list<DatoTriada> recuperarTriadas(string termino);
+
 private:
 
 	/*

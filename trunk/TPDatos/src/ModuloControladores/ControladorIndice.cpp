@@ -273,13 +273,13 @@ struct comparador_triadas {
 	}
 };
 
-void consultarPorOcurrenciaTerminos(string consulta) {
+void ControladorIndice::consultarPorOcurrenciaTerminos(string consulta) {
 
 	//ordenados por apararición en la consulta
 	list<Termino*> terminosDeLaConsulta;
 	list<Termino*>::const_iterator it_terminoDeLaConsulta;
 
-	list<DatoTriada> mockDatoTriada;
+//	list<DatoTriada> mockDatoTriada;
 
 	char * cstr, *pch;
 	string str = consulta;
@@ -289,8 +289,9 @@ void consultarPorOcurrenciaTerminos(string consulta) {
 
 	pch = strtok(cstr, " ,.-");
 	Termino* terminoAux = NULL;
+
 	while (pch != NULL) {
-		terminoAux = new Termino(pch, mockDatoTriada);
+		terminoAux = new Termino(pch, recuperarTriadas(pch));
 		terminosDeLaConsulta.push_back(terminoAux);
 		pch = strtok(NULL, " ,.-");
 	}
@@ -300,15 +301,13 @@ void consultarPorOcurrenciaTerminos(string consulta) {
 	list<uint32_t>::const_iterator it_libroResultado;
 
 	//cargo la lista de libros resultado
+	list<uint32_t> aux;
 	for (it_terminoDeLaConsulta = terminosDeLaConsulta.begin(); it_terminoDeLaConsulta
-			!= terminosDeLaConsulta.end(); ++it_terminoDeLaConsulta) {
-
-		for (it_libroResultado
-				= (*it_terminoDeLaConsulta)->obtenerLibros().begin(); it_libroResultado
-				!= (*it_terminoDeLaConsulta)->obtenerLibros().end(); ++it_libroResultado) {
+			!= terminosDeLaConsulta.end(); ++it_terminoDeLaConsulta)
+	{
+		aux = (*it_terminoDeLaConsulta)->obtenerLibros();
+		for (it_libroResultado = aux.begin();it_libroResultado != aux.end();++it_libroResultado)
 			librosResultado.push_back((*it_libroResultado));
-		}
-
 	}
 	librosResultado.sort();
 	librosResultado.unique();
@@ -418,7 +417,7 @@ void consultarPorOcurrenciaTerminos(string consulta) {
 
 void ControladorIndice::indexarPorAutorOEditorial(
 		pair<Libro*, uint32_t> parLibroOffset, bool autor) {
-	//FIXME revisar que no siempre se este insertando el autor (ARREGLADO RUSTICAMENTE)
+	//FIXME revisar que no siempre se este insertando el autor
 	CaseFoldedString caseFold;
 
 	if (autor)
@@ -460,6 +459,46 @@ void ControladorIndice::indexarPorPalabras(
 	}
 }
 
+
+list<DatoTriada> ControladorIndice::recuperarTriadas(string termino)
+{
+	Logger::log("ControladorIndice", "recuperarTriadas","se busca un termino");
+	Configuracion* conf = Configuracion::GetInstancia();
+	list<DatoTriada> triadas;
+	DatoTriada* ptrTriada;
+	DatoTriada triada;
+	DatoElementoNodo* nodoEncontrado = NULL;
+
+	DatoElementoNodo* nodoBusqueda = new DatoElementoNodo(termino);
+	ControladorTriadas* controlTriadas = new ControladorTriadas(
+						conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS + EXTENSION_ARCHIVO_INDICE,
+						conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS_CONTROL);
+	this->indiceArbol = new BPlusTree(pathCarpeta + ARCHIVO_INDICE_OCURRENCIA_TERMINOS
+							+ EXTENSION_ARCHIVO_INDICE,
+							SIZE_BLOQUE);
+	nodoEncontrado = indiceArbol->find(new DatoElementoNodo(termino, 0));
+
+
+	list<uint32_t> idTriadas = nodoEncontrado->getLibros();
+	list<uint32_t>::iterator it;
+	for(it=idTriadas.begin();it!=idTriadas.end();it++)
+	{
+		ptrTriada = controlTriadas->getTriada(*it);
+		triada.setIdLibro(ptrTriada->getIdLibro());
+		triada.setPosicion(ptrTriada->getPosicion());
+		triada.setIdTermino(ptrTriada->getIdTermino());
+		cout<<"ESTO SI IMPORTA CONTROLADOR: "<<ptrTriada->getIdLibro()<<endl;
+
+		triadas.push_back(triada);
+		delete(ptrTriada);
+	}
+
+	delete(nodoBusqueda);
+	delete(controlTriadas);
+
+	return triadas;
+}
+
 void ControladorIndice::indexarPorOcurrenciaTerminos(
 		pair<Libro*, uint32_t> parLibroOffset) {
 	string termino = "";
@@ -473,8 +512,7 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 	ControladorTriadas* controlTriadas = new ControladorTriadas(
 			conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS
 					+ EXTENSION_ARCHIVO_INDICE,
-			conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS_CONTROL
-					+ EXTENSION_ARCHIVO_REPORTE);
+			conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS_CONTROL);
 
 	ArchivoTerminos* arcTerminos = new ArchivoTerminos(
 			conf->getPathCarpetaTrabajo() + ARCHIVO_TERMINOS
@@ -512,6 +550,8 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 		triada->setPosicion(posicionRelativaTermino);
 		controlTriadas->insertarTriadaAlFinal(triada);
 
+		//cout<<endl<<"se esta enviando al arbol: "<<termino<<endl;
+		//cout<<endl<<"se esta enviando al arbol: "<<controlTriadas->getSizeArchivoTriadas()<<endl;
 		//se inserta el termino en el arbol
 		this->indiceArbol->insert(
 				new DatoElementoNodo(termino,
