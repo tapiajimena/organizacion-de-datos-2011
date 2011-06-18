@@ -26,11 +26,14 @@ void ParserArchivoTriadas::leerArchivo(fstream* archivo, uint32_t offset) {
 			Logger::log("ParserTriadas", "leerArchivo",
 					"Se comienza a leer el archivo de control");
 			archivo->seekg(offset);
+
 			archivo->read(reinterpret_cast<char *> (&idLibro), sizeof(idLibro));
 			archivo->read(reinterpret_cast<char *> (&idTermino),
 					sizeof(idTermino));
 			archivo->read(reinterpret_cast<char *> (&posicionRelativa),
 					sizeof(posicionRelativa));
+			cout<<"EL OFFSET: "<<offset<<endl;
+			cout<<"idLibro: "<<idLibro<<endl;
 			cargarEstructura(idLibro, idTermino, posicionRelativa);
 		} else {
 			Logger::log("ParserTriadas", "leerArchivo",
@@ -42,15 +45,64 @@ void ParserArchivoTriadas::leerArchivo(fstream* archivo, uint32_t offset) {
 	}
 }
 
+
+DatoTriada* recuperarTriada(fstream* archivo, uint32_t offset)
+{
+	DatoTriada* triadaResultado = new DatoTriada();
+	uint32_t idLibro, idTermino;
+	long posicionRelativa;
+
+	if (GetSizeArchivo(*archivo) > 0) {
+		if (archivo->is_open()) {
+			Logger::log("ParserTriadas", "recuperarTriada",
+					"Se comienza a leer el archivo de control");
+
+			archivo->seekg(offset);
+
+			archivo->read(reinterpret_cast<char *> (&idLibro), sizeof(idLibro));
+			archivo->read(reinterpret_cast<char *> (&idTermino),
+					sizeof(idTermino));
+			archivo->read(reinterpret_cast<char *> (&posicionRelativa),
+					sizeof(posicionRelativa));
+			//antes
+			//cargarEstructura(archivo,offset);
+			cout<<"Se recupero: "<<idLibro<<endl;
+			triadaResultado->setIdLibro(idLibro);
+			triadaResultado->setIdTermino(idTermino);
+			triadaResultado->setPosicion(posicionRelativa);
+		} else {
+			Logger::log("ParserTriadas", "leerArchivo",
+					"El archivo no esta abierto.");
+		}
+	} else {
+		Logger::log("ParserTriadas", "leerArchivo",
+				"El archivo esta vacio o no existe.");
+	}
+
+	return triadaResultado;
+}
+
+/*
+//ANTES
 DatoTriada* ParserArchivoTriadas::getTriada(fstream* archivo, uint32_t offset) {
 	DatoTriada* d = NULL;
 
 	IrAlInicio(*archivo);
 	leerArchivo(archivo, offset);
 
-	if (!this->triadas->empty()) d = (DatoTriada*)this->triadas->front();
+	if (!this->triadas->empty())
+		d = (DatoTriada*)this->triadas->front();
 
 	return d;
+}
+*/
+
+
+
+DatoTriada* ParserArchivoTriadas::getTriada(fstream* archivo, uint32_t offset)
+{
+	IrAlInicio(*archivo);
+	return recuperarTriada(archivo, offset);
 }
 
 
