@@ -274,11 +274,27 @@ struct comparador_triadas {
 };
 
 void consultarPorOcurrenciaTerminos(string consulta) {
-	//TODO obtener para cada termino de la consulta el Termino correspondiente
 
 	//ordenados por apararición en la consulta
 	list<Termino*> terminosDeLaConsulta;
 	list<Termino*>::const_iterator it_terminoDeLaConsulta;
+
+	list<DatoTriada> mockDatoTriada;
+
+	char * cstr, *pch;
+	string str = consulta;
+
+	cstr = new char[str.size() + 1];
+	strcpy(cstr, str.c_str());
+
+	pch = strtok(cstr, " ,.-");
+	Termino* terminoAux = NULL;
+	while (pch != NULL) {
+		terminoAux = new Termino(pch, mockDatoTriada);
+		terminosDeLaConsulta.push_back(terminoAux);
+		pch = strtok(NULL, " ,.-");
+	}
+	delete[] cstr;
 
 	list<uint32_t> librosResultado;
 	list<uint32_t>::const_iterator it_libroResultado;
