@@ -7,10 +7,16 @@
 
 #include "CalculadorDeNormas.h"
 
-CalculadorDeNormas::CalculadorDeNormas(ControladorIndice* controladorIndice, ControladorTriadas* controladorDeTriadas)
+CalculadorDeNormas::CalculadorDeNormas(ControladorIndice* controladorIndice, ControladorTriadas* controladorDeTriadas, ArchivoTerminos* archivoTerminos)
 {
 	Configuracion* conf = Configuracion::GetInstancia();
 	this->pathCarpeta = conf->getPathCarpetaTrabajo();
+
+	this->cantidadTotalDeDocumentos = 0; //Se carga al calcular pesos globales.
+
+	this->controladorDeTriadas = controladorDeTriadas;
+	this->controladorIndice = controladorIndice;
+	this->archivoTerminos = archivoTerminos;
 
 	std::string nombreArchivoTablaPesos = this->pathCarpeta + "/TablaIndicePesos.dat";
 	std::string nombreArchivoCubetasPesos = this->pathCarpeta + "/CubetasIndicePesos.dat";
@@ -35,11 +41,6 @@ CalculadorDeNormas::CalculadorDeNormas(ControladorIndice* controladorIndice, Con
 
 	this->indiceNormasDocumentos = new Hash(nombreArchivoTablaNormas, nombreArchivoCubetasNormas);
 
-	//this->cantidadTotalDeDocumentos = ???; TODO
-	this->controladorDeTriadas = controladorDeTriadas;
-	this->controladorIndice = controladorIndice;
-
-	//hash para pesos globales... (crear vacio, pisar archivos viejos).
 }
 
 CalculadorDeNormas::~CalculadorDeNormas()
@@ -47,6 +48,8 @@ CalculadorDeNormas::~CalculadorDeNormas()
 	//Los índices quedan en disco por si se quieren ver de alguna manera...
 	delete this->indicePesosGlobales;
 	delete this->indiceNormasDocumentos;
+
+	//No destruye el resto de las estructuras, porque no le pertenecen.
 }
 
 std::vector<DatoTriada> CalculadorDeNormas::levantarTriadasDeTermino(uint32_t idTermino)
@@ -60,7 +63,23 @@ std::vector<DatoTriada> CalculadorDeNormas::levantarTriadasDeTermino(uint32_t id
 
 void CalculadorDeNormas::generarIndiceDePesosGlobalesDeTerminos()
 {
-	//iterar sobre los terminos... ver archivoTerminos.
+	std::vector<std::pair<std::string, uint32_t> > listaTerminos = this->archivoTerminos->obtenerTerminos();
+
+	std::vector<std::pair<std::string, uint32_t> >::iterator it_terminos;
+
+	float pesoGlobalTermino;
+
+	for(it_terminos = listaTerminos.begin(); it_terminos != listaTerminos.end(); it_terminos++)
+	{
+		//calculamos el peso global...
+		pesoGlobalTermino = this->calcularPesoGlobalDeTermino((*it_terminos).second);//por id de termino.
+
+		//y lo guardamos en el indice...
+		this->indicePesosGlobales->insertarClave(*it_terminos);
+	}
+
+	this->cantidadTotalDeDocumentos = listaTerminos.size();
+
 }
 
 int CalculadorDeNormas::calcularDocumentosQueContienenTermino(uint32_t idTermino)
@@ -223,7 +242,8 @@ float CalculadorDeNormas::calcularNormaDeDocumento(uint32_t idDocumento)
 	//Ya tienen que estar cargados los pesos globales de términos, se consulta en vez de recalcular.
 
 	//Este vector guarda todos los términos del documento, sin importar la cantidad de ocurrencias de los mismos.
-	std::vector<uint32_t> listaIdTerminosDeDocumento; //TODO cargar listaIdTerminosDeDocumento...
+	//TODO cargar listaIdTerminosDeDocumento... (consultar Arbol)
+	std::vector<uint32_t> listaIdTerminosDeDocumento;
 
 	//Anotamos los términos ya procesados, para procesarlos una sola vez
 	std::vector<uint32_t> terminosYaProcesados;
@@ -263,12 +283,12 @@ float CalculadorDeNormas::calcularNormaDeDocumento(uint32_t idDocumento)
 
 float CalculadorDeNormas::calcularNormaConsulta(std::string consulta)
 {
-
+	//TODO definir interfaz
 }
 
 float CalculadorDeNormas::calcularProductoInterno(uint32_t idDocumento, std::string consulta)
 {
-
+	//TODO definir tipo para consulta 'std::vector<uint32_t> listaTerminosConsulta'
 }
 
 float CalculadorDeNormas::calcularSimilitudConsultaDocumento(uint32_t idDocumento, std::vector<std::string> consulta)
