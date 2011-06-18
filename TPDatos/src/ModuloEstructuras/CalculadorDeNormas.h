@@ -34,7 +34,9 @@ private:
 
 	Hash* indiceNormasDocumentos;
 
-	int cantidadTotalDeDocumentos;
+	ArchivoTerminos* archivoTerminos;
+
+	int cantidadTotalDeDocumentos; //Se carga al calcular e indexar pesos globales de terminos
 
 	//METODOS PRIVADOS---------------------------------------------------
 
@@ -73,7 +75,7 @@ private:
 	float calcularNormaConsulta(std::string consulta);
 
 public:
-	CalculadorDeNormas(ControladorIndice* controladorIndice, ControladorTriadas* controladorDeTriadas);
+	CalculadorDeNormas(ControladorIndice* controladorIndice, ControladorTriadas* controladorDeTriadas, ArchivoTerminos* archivoTerminos);
 
 	virtual ~CalculadorDeNormas();
 
