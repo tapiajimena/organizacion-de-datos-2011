@@ -18,6 +18,7 @@ Termino::Termino(string termino, list<DatoTriada> triadasDelTermino) {
 	for (triada = triadasDelTermino.begin(); triada != triadasDelTermino.end(); ++triada) {
 		this->listaDeOcurrencias.push_back(
 				make_pair((*triada).getIdLibro(), (*triada).getPosicion()));
+		//cout<<"ESTO SI IMPORTA: "<< (*triada).getIdLibro()<<endl;
 	}
 }
 
@@ -29,6 +30,7 @@ list<uint32_t> Termino::obtenerLibros() {
 			!= this->listaDeOcurrencias.end(); ++ocurrencia) {
 
 		libros.push_back((*ocurrencia).first);
+		//cout<<"ESTO SI IMPORTA: "<< (*ocurrencia).first<<endl;
 
 	}
 	//ordeno para obtener los unicos
