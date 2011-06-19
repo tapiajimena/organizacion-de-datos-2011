@@ -11,6 +11,7 @@
 
 ParserArchivoControlTriadas::ParserArchivoControlTriadas(string token) {
 	this->datoNuevo = new DatoControlTriada();
+	this->datosControl = new map<uint32_t,DatoControlTriada*>;
 	this->separador = token;
 }
 
@@ -33,7 +34,8 @@ void ParserArchivoControlTriadas::cargarEstructura(string dato) {
 
 	DatoControlTriada* d = new DatoControlTriada(this->datoNuevo);
 
-	this->triadas->push_back(d);
+	this->datosControl->insert(pair<uint32_t, DatoControlTriada*> (
+			ServiceClass::convertirAUint32(datos.at(0)), d));
 
 	Logger::log("parserArchivoControlTriada", "cargarEstructura",
 			"Se le agrega al map un nuevo dato.");
