@@ -17,7 +17,7 @@
 #include <string>
 #include <stdint.h>
 #include <math.h>
-#include "DatoTriada.h"
+#include "MockDatoTriada.h"
 
 using namespace std;
 
@@ -43,6 +43,8 @@ public:
 	Termino();
 
 	Termino(string nombre, list<DatoTriada*>* triadasDelTermino);
+
+	uint32_t obtenerId();
 
 	string obtenerNombre();
 
