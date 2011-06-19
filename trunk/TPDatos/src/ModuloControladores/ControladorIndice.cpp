@@ -291,7 +291,7 @@ void ControladorIndice::consultarPorOcurrenciaTerminos(string consulta) {
 	Termino* terminoAux = NULL;
 
 	while (pch != NULL) {
-		terminoAux = new Termino(pch, recuperarTriadas(pch));
+		//terminoAux = new Termino(pch, recuperarTriadas(pch));
 		terminosDeLaConsulta.push_back(terminoAux);
 		pch = strtok(NULL, " ,.-");
 	}
@@ -460,7 +460,7 @@ void ControladorIndice::indexarPorPalabras(
 }
 
 
-list<DatoTriada> ControladorIndice::recuperarTriadas(string termino)
+list<DatoTriada*>* ControladorIndice::recuperarTriadas(string termino)
 {
 	Logger::log("ControladorIndice", "recuperarTriadas","se busca un termino");
 	Configuracion* conf = Configuracion::GetInstancia();
@@ -477,12 +477,12 @@ list<DatoTriada> ControladorIndice::recuperarTriadas(string termino)
 	nodoEncontrado = indiceArbol->find(new DatoElementoNodo(termino, 0));
 
 	list<uint32_t> idTriadas = nodoEncontrado->getLibros();
-	list<DatoTriada>* triadas = controlTriadas->getTriadas(idTriadas);
+	list<DatoTriada*>* triadas = controlTriadas->getTriadas(idTriadas);
 
 	delete(nodoBusqueda);
 	delete(controlTriadas);
 
-	return *triadas;
+	return triadas;
 }
 
 void ControladorIndice::indexarPorOcurrenciaTerminos(
