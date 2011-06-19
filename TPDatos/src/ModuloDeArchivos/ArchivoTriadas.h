@@ -36,15 +36,18 @@ public:
 	ArchivoTriadas(string path);
 
 	/**
-	 * inserta un dato triada en el archivo de triadas
+	 * Inserta un dato triada en el archivo de triadas
+	 * @param triada: dato a insertar
+	 * @param offset: posicion en la que se va a insertar la nueva triada.
+	 */
+	void insertarNuevaTriada(DatoTriada* triada, uint32_t offset);
+
+	/**
+	 * Inserta un dato triada en el archivo de triadas
 	 * al final del archivo.
 	 * @param triada dato a insertar
 	 */
 	void escribirAlFinal(DatoTriada* triada);
-
-
-	list<DatoTriada*>* getTriadas();
-	list<DatoTriada*>* getTriadas(uint32_t id);
 
 	/**
 	 * Devuelve la triada que se encuentra en el offset pasado

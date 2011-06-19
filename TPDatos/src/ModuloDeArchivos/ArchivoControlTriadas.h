@@ -39,6 +39,7 @@ private:
 	fstream archivoControlTriadas;
 	map<uint32_t,DatoControlTriada*>* datosControl;
 	map<uint32_t,DatoControlTriada*>::iterator it;
+	list<uint32_t>* offsets;
 public:
 	ArchivoControlTriadas();
 	ArchivoControlTriadas(string pathArchivoControlTriadas);
@@ -46,6 +47,8 @@ public:
 	void actualizarArchivo();
 	void eliminarLibro(uint32_t idLibro);
 	DatoControlTriada* buscarEnMap(uint32_t idLIbro);
+
+	uint32_t buscarOffsetDondeEscribir(int cantidadTriadas);
 
 	/**
 	 * Devuelve el nuevo offset donde se guardara la nueva triada
@@ -58,13 +61,12 @@ public:
 	 */
 	void cargarDatosControl();
 
-
-	/* Getters y Setters */
-	ParserArchivoControlTriadas *getParser() const;
-	string getPathArchivoControlTriadas() const;
-	void setArchivoControlTriadas(fstream archivoControlTriadas);
-	void setParser(ParserArchivoControlTriadas *parser);
-	void setPathArchivoControlTriadas(string pathArchivoControlTriadas);
+	/**
+	 * Devuelve la lista de offsets correspondiente a todos las
+	 * triadas que pertenecen a un libro.
+	 * @param id_Libro: libro del cual se quieren obtener las triadas.
+	 */
+	list<uint32_t>* getTriadas(uint32_t id_Libro);
 
 	virtual ~ArchivoControlTriadas();
 };

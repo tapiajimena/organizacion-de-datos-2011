@@ -31,6 +31,28 @@ ArchivoControlTriadas::ArchivoControlTriadas(string path) {
 				"Se crea un archivo nuevo.");
 	}
 	delete[] cstrPath;
+
+	this->offsets = new list<uint32_t>;
+	cargarDatosControl();
+}
+
+uint32_t ArchivoControlTriadas::buscarOffsetDondeEscribir(int cantidadTriadas) {
+	uint32_t espacioRango = 0;
+
+	/* Recorro el map en busqueda de espacios libres */
+	for (it = datosControl->begin(); it != datosControl->end(); ++it) {
+			/* Calculo el espacio libre en el rango */
+			espacioRango = (((*it).second)->getTriadaFinal() - ((*it).second)->getTriadaInicial())
+					/ (sizeof(espacioRango) * 3);
+		/* Si ese espacio esta eliminado y ademas los nuevos datos caben en el espacio libre */
+		if(((*it).second)->estaBorrado() && (espacioRango > 0 && espacioRango <= cantidadTriadas)){
+					espacioRango = (*it).second)->getTriadaInicial();
+		}
+		else {
+			espacioRango = this->//
+		}
+		}
+	}
 }
 
 void ArchivoControlTriadas::actualizarArchivo() {
@@ -70,9 +92,23 @@ void ArchivoControlTriadas::eliminarLibro(uint32_t idLibro) {
 	//TODO
 }
 
+list<uint32_t>* ArchivoControlTriadas::getTriadas(uint32_t id_Libro) {
+	DatoControlTriada* d = buscarEnMap(id_Libro);
+
+	if(d != NULL) {
+		//se asume que el offset inicial y final son validos.
+		uint32_t siguiente = d->getIdTriadaInicial();
+		while (siguiente <= d->getIdTriadaFinal()) {
+			this->offsets->push_back(siguiente);
+			siguiente += sizeof(siguiente)*3;
+		}
+	}
+
+	return this->offsets;
+}
+
 
 void ArchivoControlTriadas::cargarDatosControl() {
-
 	this->parser = new ParserArchivoControlTriadas(CONTROL_TOKEN);
 
 	this->datosControl = this->parser->getDatosControl(&archivoControlTriadas);
@@ -97,24 +133,6 @@ DatoControlTriada* ArchivoControlTriadas::buscarEnMap(uint32_t idLibro) {
 	}
 }
 
-ParserArchivoControlTriadas * ArchivoControlTriadas::getParser() const {
-	return parser;
-}
-
-string ArchivoControlTriadas::getPathArchivoControlTriadas() const {
-	return pathArchivoControlTriadas;
-}
-
-
-
-void ArchivoControlTriadas::setParser(ParserArchivoControlTriadas *parser) {
-	this->parser = parser;
-}
-
-void ArchivoControlTriadas::setPathArchivoControlTriadas(
-		string pathArchivoControlTriadas) {
-	this->pathArchivoControlTriadas = pathArchivoControlTriadas;
-}
 
 ArchivoControlTriadas::~ArchivoControlTriadas() {
 	//TODO
