@@ -24,32 +24,6 @@ list<Dato*>* ParserTriadas::getTriadas(fstream* archivo, uint32_t id) {
 	return this->triadas;
 }
 
-void ParserTriadas::leerArchivo(fstream* archivo) {
-	char buffer[CONTROL_LENGTH];
-
-	if (GetSizeArchivo(*archivo) > 0) {
-		if (archivo->is_open()) {
-			Logger::log("ParserTriadas", "leerArchivo",
-					"Se comienza a leer el archivo de control");
-			this->it = this->triadas->begin();
-			do {
-				//archivo->getline(buffer, SEPARADOR_TRIADA);
-				cargarEstructura(buffer);
-				cout<<"BUFFER: "<<buffer<<endl;
-				this->contadorLinea++;
-				this->it++;
-			} while (!archivo->eof());
-		} else {
-			Logger::log("ParserTriadas", "leerArchivo",
-					"El archivo no esta abierto.");
-		}
-	} else {
-		Logger::log("ParserTriadas", "leerArchivo",
-				"El archivo esta vacio o no existe.");
-	}
-}
-
-
 ParserTriadas::~ParserTriadas() {
 	// TODO Auto-generated destructor stub
 }

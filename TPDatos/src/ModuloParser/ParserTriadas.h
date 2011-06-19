@@ -23,16 +23,15 @@
 
 using namespace ManejadorArchivo;
 
-class ParserTriadas: public ParserAuxiliar {
+class ParserTriadas {
 protected:
 	list<Dato*>::iterator it;
 	list<Dato*>* triadas;
 	DatoTriada* triada;
+	string separador;
 	int contadorLinea;
 public:
 	ParserTriadas(string token);
-
-	void leerArchivo(fstream* archivo);
 
 	/*Getters y Setters */
 	list<Dato*>* getTriadas(fstream* archivo);
