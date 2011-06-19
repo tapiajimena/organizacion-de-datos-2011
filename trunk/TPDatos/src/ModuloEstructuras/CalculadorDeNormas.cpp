@@ -388,6 +388,14 @@ float CalculadorDeNormas::calcularProductoInterno(VectorDeDocumento* vectorDocum
 	return productoInterno;
 }
 
+void CalculadorDeNormas::generarArchivoDeNormasDeDocumentos()
+{
+//para cada documento, calcular norma e ingresar al hash.
+	//std::string idDocumetoStr = ServiceClass::obtenerString(idDocumento);
+	//std::pair<std::string, uint32_t> claveNormaDocumentoHash;
+	//this->indiceNormasDocumentos->insertarClave(claveNormaDocumentoHash);
+}
+
 float CalculadorDeNormas::calcularSimilitudConsultaDocumento(uint32_t idDocumento, std::list<uint32_t> consulta)
 {
 	VectorDeDocumento* vectorConsulta = this->cargarVectorDeTerminos(consulta);
