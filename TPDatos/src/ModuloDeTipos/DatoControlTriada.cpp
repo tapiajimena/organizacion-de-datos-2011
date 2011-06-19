@@ -26,10 +26,14 @@ DatoControlTriada::DatoControlTriada(DatoControlTriada* d){
 string DatoControlTriada::serializar() {
 	vector<string> datos;
 
+	uint32_t eliminado = 0;
+
+	if (this->eliminado) eliminado = 1;
+
 	string datosControl[] = { ServiceClass::toString(this->idLibro),
 			ServiceClass::toString(this->idTriadaInicial),
 			ServiceClass::toString(this->idTriadaFinal),
-			ServiceClass::toString(this->eliminado)};
+			ServiceClass::toString(eliminado)};
 
 	datos.clear();
 
