@@ -40,6 +40,7 @@ private:
 	map<uint32_t,DatoControlTriada*>* datosControl;
 	map<uint32_t,DatoControlTriada*>::iterator it;
 	list<uint32_t>* offsets;
+	bool datoEliminado;
 public:
 	ArchivoControlTriadas();
 	ArchivoControlTriadas(string pathArchivoControlTriadas);
@@ -48,7 +49,9 @@ public:
 	void eliminarLibro(uint32_t idLibro);
 	DatoControlTriada* buscarEnMap(uint32_t idLIbro);
 
-	uint32_t buscarOffsetDondeEscribir(int cantidadTriadas, uint32_t sizeArchivo);
+	uint32_t buscarOffsetDondeEscribir(int cantidadTriadas, uint32_t sizeArchivo, uint32_t idLibro);
+
+	void agregarDatoControl(DatoControlTriada* nuevo);
 
 	/**
 	 * Devuelve el nuevo offset donde se guardara la nueva triada
@@ -67,6 +70,12 @@ public:
 	 * @param id_Libro: libro del cual se quieren obtener las triadas.
 	 */
 	list<uint32_t>* getTriadas(uint32_t id_Libro);
+
+	void setDatoEliminado(bool e);
+
+	bool getDatoEliminado();
+
+
 
 	virtual ~ArchivoControlTriadas();
 };
