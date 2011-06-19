@@ -19,6 +19,13 @@
 #include "../ModuloDeTipos/DatoTriada.h"
 #include "../ModuloDeIndices/Hash/Hash.h"
 
+//Modelo de vector de documento.
+//uint32_t: ID del término
+//int: cantidad de apariciones del término en el documento.
+//De esta forma se evita definir un vector con tantas posiciones como términos tengamos en el diccionario.
+//Es algo más enredado para codificar, pero mucho más eficiente.
+typedef std::map<uint32_t, int> VectorDeDocumento;
+
 class CalculadorDeNormas {
 private:
 	//ATRIBUTOS----------------------------------------------------------
@@ -42,7 +49,7 @@ private:
 	//METODOS PRIVADOS---------------------------------------------------
 
 	//Accede al índice de tríadas y levanta todas las ocurrencias de un término
-	std::vector<DatoTriada> levantarTriadasDeTermino(uint32_t idTermino);
+	std::list<DatoTriada> levantarTriadasDeTermino(uint32_t idTermino);
 
 	//Devuelve la cantidad total de documentos que contienen al menos una vez un término
 	//También llamado "FRECUENCIA GLOBAL DE TERMINO" (cantidad de documentos en que aparece)
@@ -65,15 +72,23 @@ private:
 	//Se usa para las consultas de similitud, con las normas ya calculadas y guardadas en un archivo.
 	float calcularPesoLocalDeTermino(uint32_t idDocumento, uint32_t idTermino);
 
-	float calcularProductoInterno(uint32_t idDocumento, std::string consulta);
+	//Calcula el producto interno de dos vectores de documento (la consulta es tambien un vector de documento)
+	float calcularProductoInterno(VectorDeDocumento* vectorDocumento1, VectorDeDocumento* vectorDocumento2);
 
 	//Genera un índice de tipo Hash con todos los pesos globales de los términos.
 	void generarIndiceDePesosGlobalesDeTerminos();
 
-	//Calcula la norma de un documento
-	float calcularNormaDeDocumento(uint32_t idDocumento);
+	//Se usa para documentos y consultas por igual.
+	VectorDeDocumento* cargarVectorDeTerminos(std::list<uint32_t> ocurrenciasDeTerminos);
 
-	float calcularNormaConsulta(std::list<uint32_t> consulta);
+	//Este toma el Id de documento, levanta sus triadas y carga el vector.
+	VectorDeDocumento* cargarVectorDeTerminos(uint32_t idDocumento);
+
+	//Calcula la norma de un documento (deprecated)
+	//float calcularNormaDeDocumento(uint32_t idDocumento);
+
+	//Tanto para documentos como para consultas.
+	float calcularNormaVectorDeTerminos(VectorDeDocumento* vectorDeTerminos);
 
 public:
 	CalculadorDeNormas(ControladorIndice* controladorIndice, ControladorTriadas* controladorDeTriadas, ArchivoTerminos* archivoTerminos);

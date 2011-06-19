@@ -52,13 +52,12 @@ CalculadorDeNormas::~CalculadorDeNormas()
 	//No destruye el resto de las estructuras, porque no le pertenecen.
 }
 
-std::vector<DatoTriada> CalculadorDeNormas::levantarTriadasDeTermino(uint32_t idTermino)
+std::list<DatoTriada> CalculadorDeNormas::levantarTriadasDeTermino(uint32_t idTermino)
 {
-	std::vector<DatoTriada> ocurrenciasDeTermino;
+	//Esto es un acceso directo al archivo a traves de su offset-Id.
+	std::string palabra = this->archivoTerminos->obtenerTermino(idTermino);
 
-	//TODO...
-
-	return ocurrenciasDeTermino;
+	return this->controladorIndice->recuperarTriadas(palabra);
 }
 
 void CalculadorDeNormas::generarIndiceDePesosGlobalesDeTerminos()
@@ -86,14 +85,14 @@ int CalculadorDeNormas::calcularDocumentosQueContienenTermino(uint32_t idTermino
 {
 	int documentosQueContienenTermino = 0;
 
-	std::vector<DatoTriada> ocurrenciasDeTermino = this->levantarTriadasDeTermino(idTermino);
+	std::list<DatoTriada> ocurrenciasDeTermino = this->levantarTriadasDeTermino(idTermino);
 
 	//En este vector se guardan los libros en que aparece el término. La idea es no contar
 	//dos ocurrencias si son del mismo documento, ya que interesa la cantidad de DOCUMENTOS
 	//que contienen alguna vez al término.
 	std::vector<uint32_t> documentosYaVisitados;
 
-	std::vector<DatoTriada>::iterator it_triadas;
+	std::list<DatoTriada>::iterator it_triadas;
 
 	std::vector<uint32_t>::iterator it_documentos;
 
@@ -147,9 +146,9 @@ int CalculadorDeNormas::calcularAparicionesDeTerminoEnDocumento(uint32_t idDocum
 
 	//Es más rápido pedir las ocurrencias del término que levantar todas las tríadas del libro.
 	//(salvo que se carguen millones de libros y que haya más ocurrencias del término que palabras en el libro)
-	std::vector<DatoTriada> ocurrenciasDeTermino = this->levantarTriadasDeTermino(idTermino);
+	std::list<DatoTriada> ocurrenciasDeTermino = this->levantarTriadasDeTermino(idTermino);
 
-	std::vector<DatoTriada>::iterator it_ocurrencias;
+	std::list<DatoTriada>::iterator it_ocurrencias;
 
 	for(it_ocurrencias = ocurrenciasDeTermino.begin();
 		it_ocurrencias != ocurrenciasDeTermino.end();
@@ -237,12 +236,15 @@ float CalculadorDeNormas::calcularPesoLocalDeTermino(uint32_t idDocumento, uint3
 	return frecuenciaLocal*pesoGlobal/normaDocumento;
 }
 
+//Depretated... se usa calcular la norma sobre el VectorDeDocumento, no sobre idTermino.
+/*
 float CalculadorDeNormas::calcularNormaDeDocumento(uint32_t idDocumento)
 {
+
 	//Ya tienen que estar cargados los pesos globales de términos, se consulta en vez de recalcular.
 
 	//Este vector guarda todos los términos del documento, sin importar la cantidad de ocurrencias de los mismos.
-	//TODO cargar listaIdTerminosDeDocumento... (consultar Arbol)
+	//Falta cargar listaIdTerminosDeDocumento... (consultar Arbol)
 	std::vector<uint32_t> listaIdTerminosDeDocumento;
 
 	//Anotamos los términos ya procesados, para procesarlos una sola vez
@@ -280,21 +282,119 @@ float CalculadorDeNormas::calcularNormaDeDocumento(uint32_t idDocumento)
 
 	return sqrt(sumatoriaParcial);
 }
+*/
 
-float CalculadorDeNormas::calcularNormaConsulta(std::list<uint32_t> consulta)
+VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(uint32_t idDocumento)
 {
-	//TODO definir interfaz
+	std::list<DatoTriada*>* listaDatoTriadas = this->controladorDeTriadas->getTriadas(idDocumento);
+
+	std::list<DatoTriada*>::iterator it_datosTriada;
+
+	VectorDeDocumento* listaTerminosEnDocumento = new VectorDeDocumento();
+
+	for( it_datosTriada = listaDatoTriadas->begin(); it_datosTriada != listaDatoTriadas->end(); it_datosTriada++)
+	{
+		if( listaTerminosEnDocumento->find((*it_datosTriada)->getIdTermino()) != listaTerminosEnDocumento->end())
+		{
+			(*listaTerminosEnDocumento)[(*it_datosTriada)->getIdTermino()]++;
+		}
+		else
+		{
+			(*listaTerminosEnDocumento)[(*it_datosTriada)->getIdTermino()] = 1;
+		}
+	}
+
+	return listaTerminosEnDocumento;
 }
 
-float CalculadorDeNormas::calcularProductoInterno(uint32_t idDocumento, std::string consulta)
+VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(std::list<uint32_t> ocurrenciasDeTerminos)
 {
-	//TODO definir tipo para consulta 'std::vector<uint32_t> listaTerminosConsulta'
+	VectorDeDocumento* vectorConsulta = new VectorDeDocumento();
+
+	std::list<uint32_t>::iterator it_terminos;
+
+	for(it_terminos = ocurrenciasDeTerminos.begin(); it_terminos != ocurrenciasDeTerminos.end(); it_terminos++)
+	{
+		if( vectorConsulta->find(*it_terminos) != vectorConsulta->end())
+		{
+			(*vectorConsulta)[*it_terminos]++;
+		}
+		else
+		{
+			(*vectorConsulta)[*it_terminos] = 1;
+		}
+	}
+
+	return vectorConsulta;
+}
+
+float CalculadorDeNormas::calcularNormaVectorDeTerminos(VectorDeDocumento* vectorDeTerminos)
+{
+	VectorDeDocumento::iterator it_vector;
+
+	float normaDocumento = 0.0; //normaDocumento = sqrt(sumatoriaCuadradaParcial)
+	float sumatoriaCuadradaParcial = 0.0; //sumatoriaCuadradaParcial = (pesoDeTerminoEnDocumento)^2
+	float pesoDeTerminoEnDocumento = 0.0; // pesoDeTerminoEnDocumento = [aparicionesTermino] * pesoGlobalTermino
+
+	for(it_vector = vectorDeTerminos->begin(); it_vector != vectorDeTerminos->end(); it_vector++)
+	{
+		//peso de termino en documento = cantidad de apariciones * peso global del termino.
+		pesoDeTerminoEnDocumento = (*it_vector).second * this->obtenerPesoGlobalDeIndice((*it_vector).first);
+
+		sumatoriaCuadradaParcial = sumatoriaCuadradaParcial + pow(pesoDeTerminoEnDocumento, 2);
+	}
+
+	normaDocumento = sqrt(sumatoriaCuadradaParcial);
+
+	return normaDocumento;
+}
+
+float CalculadorDeNormas::calcularProductoInterno(VectorDeDocumento* vectorDocumento1, VectorDeDocumento* vectorDocumento2)
+{
+	//iteraremos sobre el mas corto de los dos vectores (la consulta tipicamente)
+	VectorDeDocumento* vectorDocumento;
+	VectorDeDocumento* vectorConsulta;
+
+	if( vectorDocumento1->size() > vectorDocumento2->size())
+	{
+		vectorDocumento = vectorDocumento1;
+		vectorConsulta = vectorDocumento2;
+	}
+	else
+	{
+		vectorDocumento = vectorDocumento2;
+		vectorConsulta = vectorDocumento1;
+	}
+
+	//Se multiplican los multiplos de los terminos que aparecen tanto en la consulta como en le documento.
+	//El resto de los teminos dan cero en el P.I. Canonico.
+	float productoInterno = 0.0;
+
+	VectorDeDocumento::iterator it_consulta;
+	for(it_consulta = vectorConsulta->begin(); it_consulta != vectorConsulta->end(); it_consulta++)
+	{
+		if( vectorDocumento->find(it_consulta->first) != vectorDocumento->end())
+		{
+			productoInterno = productoInterno + it_consulta->second * (vectorDocumento->find(it_consulta->first)->second);
+		}
+	}
+
+	return productoInterno;
 }
 
 float CalculadorDeNormas::calcularSimilitudConsultaDocumento(uint32_t idDocumento, std::list<uint32_t> consulta)
 {
-	//float productoInterno = this->calcularProductoInterno(idDocumento, consulta);
-	//float productoDeNormas = this->obtenerNormaDocumento(idDocumento) * this->obtenerNormaConsulta(consulta);
+	VectorDeDocumento* vectorConsulta = this->cargarVectorDeTerminos(consulta);
 
-	//return productoInterno / productoDeNormas;
+	VectorDeDocumento* vectorDocumento = this->cargarVectorDeTerminos(idDocumento);
+
+	float productoInterno = this->calcularProductoInterno(vectorDocumento, vectorConsulta);
+
+	//La norma del documento la leemos del indice, para ahorrar accesos a disco.
+	float productoDeNormas = this->obtenerNormaDocumentoDeIndice(idDocumento) * this->calcularNormaVectorDeTerminos(vectorConsulta);
+
+	delete vectorConsulta;
+	delete vectorDocumento;
+
+	return productoInterno / productoDeNormas;
 }
