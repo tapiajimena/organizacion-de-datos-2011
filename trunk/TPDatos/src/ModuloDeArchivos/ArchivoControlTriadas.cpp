@@ -48,13 +48,20 @@ uint32_t ArchivoControlTriadas::buscarOffsetDondeEscribir(int cantidadTriadas,
 		/* Si ese espacio esta eliminado */
 		if (((*it).second)->estaBorrado())
 		{
+			//recupera y setea el nuevo idLibro de un datoControl
 			DatoControlTriada* datoControl = buscarEnMap(((*it).second)->getIdLibro());
 			datoControl->setIdLibro(idLibro);
-			this->datoEliminado =true;
+			datoControl->setEliminado(false);
 
-			((*it).second)->setEliminado(false);
+			//se elimina la clave del map pertenciente a ese datoControl
+			this->datosControl->erase(((*it).second)->getIdLibro());
+
+			//se inserta el nuevo registro en map(idLibro,dControlLibro)
+			this->datosControl->insert( pair<uint32_t,DatoControlTriada*>(idLibro,datoControl));
+
+			this->datoEliminado =true;
 			cout << "entra en el espacio vacio " << endl;
-			return ((*it).second)->getIdTriadaInicial();
+			return datoControl->getIdTriadaInicial();
 		}
 	}
 	return sizeArchivo;
