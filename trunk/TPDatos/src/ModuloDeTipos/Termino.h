@@ -1,8 +1,13 @@
 /*
  * Termino.h
  *
- *  Created on: 12/06/2011
- *      Author: paulo
+ *	Autor	: GRUPO 1 - Fernandez, Gallinal, Maraggi, Tapia
+ *	Catedra	: SERVETTO-FERRER-FERNANDEZ
+ *	Materia	: Organizacion de Datos (75.06) - FIUBA
+ *
+ *
+ *
+ *
  */
 
 #ifndef TERMINO_H_
@@ -11,12 +16,15 @@
 #include <list>
 #include <string>
 #include <stdint.h>
+#include <math.h>
 #include "DatoTriada.h"
 
 using namespace std;
 
-//<id_libro, posicionEnElLibro>
-typedef list<pair<uint32_t,long> > ListaDeOcurrencias;
+typedef struct {
+	uint32_t id_libro;
+	long posicion;
+} PosicionTerminoEnLibro;
 
 typedef struct {
 	long posicionMasProximaTerminoAnterior;
@@ -26,19 +34,27 @@ typedef struct {
 
 class Termino {
 private:
-	string termino;
+	string nombre;
 	uint32_t id_termino;
-	ListaDeOcurrencias listaDeOcurrencias;
-	float pesoGlobal;
+	list<PosicionTerminoEnLibro*>* posicionesTerminoEnLibros;
+	list<PosicionTerminoEnLibro*>::const_iterator ci_posicionTerminoEnLibro;
 
 public:
 	Termino();
 
-	Termino(string termino, list<DatoTriada> triadasDelTermino);
+	Termino(string nombre, list<DatoTriada*>* triadasDelTermino);
 
-	list<uint32_t> obtenerLibros();
+	string obtenerNombre();
 
-	list<long> obtenerPosiciones(uint32_t id_libro);
+	list<uint32_t>* obtenerLibros();
+
+	int obtenerCantidadLibros();
+
+	int obtenerCantidadAparicionesEnLibro(uint32_t id_libro);
+
+	float obtenerPesoGlobal(int totalDocumentos);
+
+	list<long>* obtenerPosicionesEnLibro(uint32_t id_libro);
 
 	bool estaEnLibro(uint32_t id_libro);
 
