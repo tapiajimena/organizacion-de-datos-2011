@@ -30,14 +30,16 @@ void ControladorTriadas::insertarTriada(DatoTriada* triada, uint32_t offset) {
 }
 
 uint32_t ControladorTriadas::getSiguienteIdTriada() {
-	uint32_t siguiente = this->offsetAEscribir + (sizeof(this->offsetAEscribir)*3);
+	uint32_t siguiente = this->offsetAEscribir + (sizeof(this->offsetAEscribir)
+			* 3);
 	this->offsetAEscribir += siguiente;
 	return siguiente;
 }
 
 uint32_t ControladorTriadas::dondeEscribo(int cantidadTriadas) {
-	if(getSizeArchivoTriadas() != 0) {
-		this->offsetAEscribir = this->arcControl->buscarOffsetDondeEscribir(cantidadTriadas);
+	if (getSizeArchivoTriadas() != 0) {
+		this->offsetAEscribir = this->arcControl->buscarOffsetDondeEscribir(
+				cantidadTriadas, this->getSizeArchivoTriadas());
 	}
 
 	return this->offsetAEscribir;
