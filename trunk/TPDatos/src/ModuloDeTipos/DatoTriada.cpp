@@ -14,7 +14,9 @@ DatoTriada::DatoTriada() {
 }
 
 DatoTriada::DatoTriada(DatoTriada* d) {
-	// TODO Auto-generated constructor stub
+	this->idLibro = d->idLibro;
+	this->idTermino = d->idTermino;
+	this->posicion = d->posicion;
 }
 
 uint32_t DatoTriada::getId() const {
