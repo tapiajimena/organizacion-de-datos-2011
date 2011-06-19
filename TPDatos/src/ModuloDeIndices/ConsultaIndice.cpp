@@ -80,6 +80,19 @@ void ConsultaIndice::consultarPalabras(string consulta)
 {
 	controlIndice->nuevoIndiceOcurrenciaTerminos();
 	controlIndice->consultarPorOcurrenciaTerminos(consulta);
+
+	//cargar libros de test: libro1.txt{la casa grande} y libro2.txt{el auto amarillo}
+	Configuracion* conf = Configuracion::GetInstancia();
+	ArchivoTerminos* archivoTerminos = new ArchivoTerminos(conf->getPathCarpetaTrabajo()
+			+ ARCHIVO_TERMINOS+ EXTENSION_ARCHIVO_INDICE);
+
+	ControladorIndice* controladorIndice = new ControladorIndice();
+	CalculadorDeNormas* calculadorDeNormas = new CalculadorDeNormas(controladorIndice, archivoTerminos);
+
+	calculadorDeNormas->generarArchivoDeNormasDeDocumentos();
+	std::cout<<"Se genero el archivo de normas de documentos"<<std::endl;
+
+
 }
 
 
