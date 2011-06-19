@@ -17,6 +17,7 @@
 #include "../ModuloDeArchivos/ManejadorArchivo.h"
 #include "../ModuloControladores/ControladorIndice.h"
 #include "../ModuloControladores/ControladorBiblioteca.h"
+#include "../ModuloEstructuras/CalculadorDeNormas.h"
 
 
 class ConsultaIndice
