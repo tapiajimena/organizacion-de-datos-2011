@@ -40,14 +40,7 @@ void ParserDeOcurrenciasDeTerminos::procesarLineaLibro(std::string linea, Libro*
 
 		//this->diccionarioStopWords->mostrar();
 		if (!esStopWord)
-		{
 			libro->cargarOcurrenciaDeTermino(palabra);
-		}
-		else
-		{
-			cout<<"ENTROooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"<<endl;
-		}
-
 	}
 }
 
