@@ -11,8 +11,6 @@
 #include "ArchivoTriadas.h"
 
 ArchivoTriadas::ArchivoTriadas(string path) {
-	// TODO Auto-generated constructor stub
-
 	this->pathArchivoTriadas = path;
 	this->triadas = new list<DatoTriada*> ();
 
@@ -34,38 +32,36 @@ ArchivoTriadas::ArchivoTriadas(string path) {
 	this->parser = new ParserArchivoTriadas(CONTROL_TOKEN);
 }
 
-DatoTriada* ArchivoTriadas::obtenerTriada(uint32_t offset)
-{
-	return this->parser->getTriada(&this->archivoTriadas,offset);
+DatoTriada* ArchivoTriadas::obtenerTriada(uint32_t offset) {
+	return this->parser->getTriada(&this->archivoTriadas, offset);
 }
 
-void ArchivoTriadas::escribirAlFinal(DatoTriada* triada)
-{
-	Logger::log("ArchivoControlTriadas", "escribirAlFinal",
+void ArchivoTriadas::escribirAlFinal(DatoTriada* triada) {
+	Logger::log("ArchivoTriadas", "escribirAlFinal",
+			"Se escribe una triada en el archivo.");
+
+	insertarNuevaTriada(triada, this->devolverTamanio());
+}
+
+void ArchivoTriadas::insertarNuevaTriada(DatoTriada* triada, uint32_t offset) {
+	Logger::log("ArchivoTriadas", "insertarNuevaTriada",
 			"Se escribe una triada en el archivo.");
 
 	stringstream auxStream;
-	uint32_t idLibro 	= triada->getIdLibro();
-	uint32_t idTermino 	= triada->getIdTermino();
-	uint32_t posicionTermino= triada->getPosicion();//los long son malos para persistir
+	uint32_t idLibro = triada->getIdLibro();
+	uint32_t idTermino = triada->getIdTermino();
+	uint32_t posicionTermino = triada->getPosicion();//los long son malos para persistir
 
 	auxStream.write(reinterpret_cast<char *> (&idLibro), sizeof(idLibro));
 	auxStream.write(reinterpret_cast<char *> (&idTermino), sizeof(idLibro));
-	auxStream.write(reinterpret_cast<char *> (&posicionTermino), sizeof(posicionTermino));
+	auxStream.write(reinterpret_cast<char *> (&posicionTermino),
+			sizeof(posicionTermino));
 
-	Escribir(archivoTriadas, &auxStream, this->devolverTamanio());
+	Escribir(archivoTriadas, &auxStream, offset);
 }
 
 uint32_t ArchivoTriadas::devolverTamanio() {
 	return GetSizeArchivo(this->archivoTriadas);
-}
-
-list<DatoTriada*>* ArchivoTriadas::getTriadas() {
-	//return this->parser->getTriadas(&archivoTriadas);
-}
-
-list<DatoTriada*>* ArchivoTriadas::getTriadas(uint32_t id) {
-	//return this->parser->getTriadas(&archivoTriadas, id);
 }
 
 ArchivoTriadas::~ArchivoTriadas() {
