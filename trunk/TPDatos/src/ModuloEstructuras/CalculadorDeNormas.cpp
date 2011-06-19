@@ -7,14 +7,14 @@
 
 #include "CalculadorDeNormas.h"
 
-CalculadorDeNormas::CalculadorDeNormas(ControladorIndice* controladorIndice, ControladorTriadas* controladorDeTriadas, ArchivoTerminos* archivoTerminos)
+CalculadorDeNormas::CalculadorDeNormas(ControladorIndice* controladorIndice, ArchivoTerminos* archivoTerminos)
 {
 	Configuracion* conf = Configuracion::GetInstancia();
 	this->pathCarpeta = conf->getPathCarpetaTrabajo();
 
 	this->cantidadTotalDeDocumentos = 0; //Se carga al calcular pesos globales.
 
-	this->controladorDeTriadas = controladorDeTriadas;
+	//this->controladorDeTriadas = controladorDeTriadas;
 	this->controladorIndice = controladorIndice;
 	this->archivoTerminos = archivoTerminos;
 
@@ -52,7 +52,7 @@ CalculadorDeNormas::~CalculadorDeNormas()
 	//No destruye el resto de las estructuras, porque no le pertenecen.
 }
 
-std::list<DatoTriada> CalculadorDeNormas::levantarTriadasDeTermino(uint32_t idTermino)
+std::list<DatoTriada*>* CalculadorDeNormas::levantarTriadasDeTermino(uint32_t idTermino)
 {
 	//Esto es un acceso directo al archivo a traves de su offset-Id.
 	std::string palabra = this->archivoTerminos->obtenerTermino(idTermino);
@@ -85,21 +85,21 @@ int CalculadorDeNormas::calcularDocumentosQueContienenTermino(uint32_t idTermino
 {
 	int documentosQueContienenTermino = 0;
 
-	std::list<DatoTriada> ocurrenciasDeTermino = this->levantarTriadasDeTermino(idTermino);
+	std::list<DatoTriada*>* ocurrenciasDeTermino = this->levantarTriadasDeTermino(idTermino);
 
 	//En este vector se guardan los libros en que aparece el término. La idea es no contar
 	//dos ocurrencias si son del mismo documento, ya que interesa la cantidad de DOCUMENTOS
 	//que contienen alguna vez al término.
 	std::vector<uint32_t> documentosYaVisitados;
 
-	std::list<DatoTriada>::iterator it_triadas;
+	std::list<DatoTriada*>::iterator it_triadas;
 
 	std::vector<uint32_t>::iterator it_documentos;
 
 	bool documentoYaVisitado;
 
-	for(it_triadas = ocurrenciasDeTermino.begin();
-		it_triadas != ocurrenciasDeTermino.end();
+	for(it_triadas = ocurrenciasDeTermino->begin();
+		it_triadas != ocurrenciasDeTermino->end();
 		it_triadas++)
 	{
 		documentoYaVisitado = false;
@@ -110,7 +110,7 @@ int CalculadorDeNormas::calcularDocumentosQueContienenTermino(uint32_t idTermino
 			it_documentos != documentosYaVisitados.end() && !documentoYaVisitado;
 			it_documentos++)
 		{
-			if(it_triadas->getIdLibro() == *it_documentos)
+			if((*it_triadas)->getIdLibro() == *it_documentos)
 			{
 				documentoYaVisitado = true;
 			}
@@ -119,9 +119,12 @@ int CalculadorDeNormas::calcularDocumentosQueContienenTermino(uint32_t idTermino
 		if(!documentoYaVisitado)
 		{
 			documentosQueContienenTermino++;
-			documentosYaVisitados.push_back(it_triadas->getIdLibro());
+			documentosYaVisitados.push_back((*it_triadas)->getIdLibro());
 		}
 	}
+
+	//TODO ver si antes de eliminar vector hay que eliminar manualmente todos los elementos DatoTriada
+	delete ocurrenciasDeTermino;
 
 	return documentosQueContienenTermino;
 }
@@ -146,19 +149,22 @@ int CalculadorDeNormas::calcularAparicionesDeTerminoEnDocumento(uint32_t idDocum
 
 	//Es más rápido pedir las ocurrencias del término que levantar todas las tríadas del libro.
 	//(salvo que se carguen millones de libros y que haya más ocurrencias del término que palabras en el libro)
-	std::list<DatoTriada> ocurrenciasDeTermino = this->levantarTriadasDeTermino(idTermino);
+	std::list<DatoTriada*>* ocurrenciasDeTermino = this->levantarTriadasDeTermino(idTermino);
 
-	std::list<DatoTriada>::iterator it_ocurrencias;
+	std::list<DatoTriada*>::iterator it_ocurrencias;
 
-	for(it_ocurrencias = ocurrenciasDeTermino.begin();
-		it_ocurrencias != ocurrenciasDeTermino.end();
+	for(it_ocurrencias = ocurrenciasDeTermino->begin();
+		it_ocurrencias != ocurrenciasDeTermino->end();
 		it_ocurrencias++)
 	{
-		if(it_ocurrencias->getIdLibro() == idDocumento)
+		if((*it_ocurrencias)->getIdLibro() == idDocumento)
 		{
 			ocurrenciasDeTerminoEnDocumento++;
 		}
 	}
+
+	//TODO ver si antes de eliminar vector hay que eliminar manualmente todos los elementos DatoTriada
+	delete ocurrenciasDeTermino;
 
 	return ocurrenciasDeTerminoEnDocumento;
 }
@@ -286,7 +292,7 @@ float CalculadorDeNormas::calcularNormaDeDocumento(uint32_t idDocumento)
 
 VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(uint32_t idDocumento)
 {
-	std::list<DatoTriada*>* listaDatoTriadas = this->controladorDeTriadas->getTriadas(idDocumento);
+	std::list<DatoTriada*>* listaDatoTriadas = this->controladorIndice->getControladorTriadas()->getTriadas(idDocumento);
 
 	std::list<DatoTriada*>::iterator it_datosTriada;
 
