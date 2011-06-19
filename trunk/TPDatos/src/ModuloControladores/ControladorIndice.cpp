@@ -471,14 +471,11 @@ void ControladorIndice::indexarPorPalabras(
 list<DatoTriada*>* ControladorIndice::recuperarTriadas(string termino)
 {
 	Logger::log("ControladorIndice", "recuperarTriadas","se busca un termino");
-	Configuracion* conf = Configuracion::GetInstancia();
 	DatoTriada triada;
 	DatoElementoNodo* nodoEncontrado = NULL;
 
 	DatoElementoNodo* nodoBusqueda = new DatoElementoNodo(termino);
-	ControladorTriadas* controlTriadas = new ControladorTriadas(
-						conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS + EXTENSION_ARCHIVO_INDICE,
-						conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS_CONTROL);
+
 	this->indiceArbol = new BPlusTree(pathCarpeta + ARCHIVO_INDICE_OCURRENCIA_TERMINOS
 							+ EXTENSION_ARCHIVO_INDICE,
 							SIZE_BLOQUE);
@@ -488,7 +485,6 @@ list<DatoTriada*>* ControladorIndice::recuperarTriadas(string termino)
 	list<DatoTriada*>* triadas = controlTriadas->getTriadas(idTriadas);
 
 	delete(nodoBusqueda);
-	delete(controlTriadas);
 
 	return triadas;
 }
@@ -546,15 +542,14 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 		triada->setIdTermino(registroHash.second);
 		triada->setPosicion(posicionRelativaTermino);
 		//controlTriadas->insertarTriadaAlFinal(triada);
-		controlTriadas->insertarTriada(triada, controlTriadas->getSiguienteIdTriada());
-
-		/*
+		controlTriadas->insertarTriada(triada, offsetAEscribir);
+		offsetAEscribir= controlTriadas->getSiguienteIdTriada();
 		cout<<"INSERTA TRIADA palabra: "<<termino<<endl;
 		cout<<"INSERTA TRIADA idLibro: "<<parLibroOffset.second<<endl;
 		cout<<"INSERTA TRIADA idTermino: "<<registroHash.second<<endl;
 		cout<<"INSERTA TRIADA pos: "<<posicionRelativaTermino<<endl<<endl;
 		cout<<"ID DE TRIADA: "<<controlTriadas->getSizeArchivoTriadas();
-		*/
+
 
 		//se inserta el termino en el arbol
 		this->indiceArbol->insert(
@@ -592,5 +587,7 @@ ControladorIndice::~ControladorIndice() {
 				"Se elimina el Arbol");
 		delete (indiceArbol);
 	}
+	delete(controlTriadas);
+
 }
 
