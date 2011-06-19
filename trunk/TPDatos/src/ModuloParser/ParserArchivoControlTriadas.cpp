@@ -74,10 +74,10 @@ void ParserArchivoControlTriadas::leerArchivo(fstream* archivo) {
 }
 
 bool ParserArchivoControlTriadas::determinarEliminado(uint32_t eliminado) {
-	bool estaEliminado = false;
+	bool estaEliminado = true;
 
 	if (eliminado == 0)
-		estaEliminado = true;
+		estaEliminado = false;
 
 	return estaEliminado;
 }
