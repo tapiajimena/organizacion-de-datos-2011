@@ -499,6 +499,7 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 	pair<string, uint32_t> registroHash;
 	Configuracion* conf = Configuracion::GetInstancia();
 	DatoTriada* triada = new DatoTriada();
+	DatoControlTriada* datoControlTriada = new DatoControlTriada();
 
 	ArchivoTerminos* arcTerminos = new ArchivoTerminos(
 			conf->getPathCarpetaTrabajo() + ARCHIVO_TERMINOS
@@ -508,14 +509,33 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 			"Se indexan terminos.");
 	idArchivoTriadasInicial = controlTriadas->getSizeArchivoTriadas();
 
-	uint32_t offsetAEscribir;
-	uint32_t offsetTriadaActual;
+	uint32_t offsetAEscribir = 0;
+
+	cout << "inicialmente... el OFFSETAESCRIOBIR esta en: " << offsetAEscribir << endl;
 
 	vector<string> ocurrenciasTerminos =parLibroOffset.first->getOcurrenciasDeTerminos();
-	offsetAEscribir = controlTriadas->dondeEscribo(ocurrenciasTerminos.size());
+	offsetAEscribir = controlTriadas->dondeEscribo(ocurrenciasTerminos.size(), parLibroOffset.second);
+
+	cout << "se calcula OFFSETAESCRIOBIR con donde escribo la primera vez: " << offsetAEscribir << endl;
+
+	//si no se encontro ningun eliminado se actualiza. Sino no.
+	if (!controlTriadas->getDatoControlEliminado())
+	{
+		/* Se arma el dato de control */
+		int sizeRegistroFijo = sizeof(offsetAEscribir)*3;
+		datoControlTriada->setIdLibro(parLibroOffset.second);
+		datoControlTriada->setIdTriadaFinal(ocurrenciasTerminos.size()*sizeRegistroFijo + offsetAEscribir);
+		if (offsetAEscribir == 0)
+			datoControlTriada->setIdTriadaInicial(offsetAEscribir);
+		else
+			datoControlTriada->setIdTriadaInicial(offsetAEscribir+ sizeRegistroFijo);
+	}
+
+	datoControlTriada->setEliminado(false);
 
 	vector<string>::iterator it;
-	for (it = ocurrenciasTerminos.begin(); it != ocurrenciasTerminos.end(); it++) {
+	for (it = ocurrenciasTerminos.begin(); it != ocurrenciasTerminos.end(); it++)
+	{
 		termino = caseFold.caseFoldWord(*it);
 
 		Logger::log("ControladorIndice", "indexarPorOcurrenciaTerminos",
@@ -537,27 +557,39 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 		Logger::log("ControladorIndice", "indexarPorOcurrenciaTerminos",
 				"Se indexan las triadas en arbol y archivos.");
 
-		//se inserta una triada al final del archivo de triadas
+		//se inserta una triada en el archivo de triadas
 		triada->setIdLibro(parLibroOffset.second);
 		triada->setIdTermino(registroHash.second);
 		triada->setPosicion(posicionRelativaTermino);
 		//controlTriadas->insertarTriadaAlFinal(triada);
+
 		controlTriadas->insertarTriada(triada, offsetAEscribir);
-		offsetAEscribir= controlTriadas->getSiguienteIdTriada();
+
+		cout<<"se inserto la triada en OFFSET A ESCRIBIR: "<<offsetAEscribir<<endl;
 		cout<<"INSERTA TRIADA palabra: "<<termino<<endl;
 		cout<<"INSERTA TRIADA idLibro: "<<parLibroOffset.second<<endl;
 		cout<<"INSERTA TRIADA idTermino: "<<registroHash.second<<endl;
 		cout<<"INSERTA TRIADA pos: "<<posicionRelativaTermino<<endl<<endl;
-		cout<<"ID DE TRIADA: "<<controlTriadas->getSizeArchivoTriadas();
+		//cout<<"ID DE TRIADA: "<<controlTriadas->getSizeArchivoTriadas()<<endl;
 
 
 		//se inserta el termino en el arbol
 		this->indiceArbol->insert(
-				new DatoElementoNodo(termino,
-						controlTriadas->getSizeArchivoTriadas()));
+				new DatoElementoNodo(termino,offsetAEscribir));
+
+		offsetAEscribir= controlTriadas->getSiguienteIdTriada();
+		cout << "se calcula el nuevo OFFSETAESCRIOBIR para la proxima triada dentro del mismo libro: " << offsetAEscribir << endl;
 
 		posicionRelativaTermino++;
 	}
+
+	//si no se encontro ningun eliminado se actualiza. Sino no.
+	if (!controlTriadas->getDatoControlEliminado())
+		controlTriadas->insertarDatosControlTriadas(datoControlTriada);
+	else
+		cout<<"SE INSERTA UN DATO CONTROL TRIADA SOBRE UN ELIMINADO: "<< datoControlTriada;
+
+	controlTriadas->actualizarArchivoDeControl();
 
 	idArchivoTriadasFinal = controlTriadas->getSizeArchivoTriadas();
 

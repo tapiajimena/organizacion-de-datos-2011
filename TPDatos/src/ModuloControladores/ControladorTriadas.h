@@ -43,6 +43,11 @@ public:
 	 */
 	void insertarTriada(DatoTriada* triada, uint32_t offset);
 
+	/**
+	 * Inserta nuevo dato de control de triadas.
+	 * @param datoControlTriada: dato de control a ser agregado.
+	 */
+	void insertarDatosControlTriadas(DatoControlTriada* datoControlTriada);
 
 	/**
 	 * Eliminar un libro del indice de terminos y su data de control
@@ -76,7 +81,7 @@ public:
 	 * de un libro especifico.
 	 * @param cantidadTriadas: cantidad de triadas en el libro.
 	 */
-	uint32_t dondeEscribo(int cantidadTriadas);
+	uint32_t dondeEscribo(int cantidadTriadas, uint32_t idLibro);
 
 	uint32_t getSiguienteIdTriada();
 
@@ -88,6 +93,10 @@ public:
 
 	string getPathBiblioteca();
 	string getPathControlBiblioteca();
+
+	void setDatoControlEliminado(bool e);
+	bool getDatoControlEliminado();
+
 
 	virtual ~ControladorTriadas();
 };

@@ -29,18 +29,23 @@ void ControladorTriadas::insertarTriada(DatoTriada* triada, uint32_t offset) {
 	this->arcTriadas->insertarNuevaTriada(triada, offset);
 }
 
-uint32_t ControladorTriadas::getSiguienteIdTriada() {
-	uint32_t siguiente = this->offsetAEscribir + (sizeof(this->offsetAEscribir)
-			* 3);
-	this->offsetAEscribir += siguiente;
-	return siguiente;
+void ControladorTriadas::insertarDatosControlTriadas(DatoControlTriada* datoControlTriada) {
+	this->arcControl->agregarDatoControl(datoControlTriada);
 }
 
-uint32_t ControladorTriadas::dondeEscribo(int cantidadTriadas) {
-	if (getSizeArchivoTriadas() != 0) {
+uint32_t ControladorTriadas::getSiguienteIdTriada() {
+	this->offsetAEscribir += (sizeof(offsetAEscribir)*3);
+	return this->offsetAEscribir;
+}
+
+uint32_t ControladorTriadas::dondeEscribo(int cantidadTriadas, uint32_t idLibro) {
+	uint32_t sizeArchivo = getSizeArchivoTriadas();
+	if (sizeArchivo != 0) {
 		this->offsetAEscribir = this->arcControl->buscarOffsetDondeEscribir(
-				cantidadTriadas, this->getSizeArchivoTriadas());
+				cantidadTriadas, sizeArchivo, idLibro);
 	}
+	else
+		return 0;
 
 	return this->offsetAEscribir;
 }
@@ -48,8 +53,6 @@ uint32_t ControladorTriadas::dondeEscribo(int cantidadTriadas) {
 void ControladorTriadas::insertarTriadaAlFinal(DatoTriada* datoTriada) {
 	this->arcTriadas->escribirAlFinal(datoTriada);
 
-	//TODO se inserto una nueva triada en el
-	//arcTriadas => deberia actualizarse arcControl
 	this->arcControl->actualizarArchivo();
 
 	Logger::log("ControladorTriadas", "insertarTriadaAlFinal",
@@ -84,6 +87,18 @@ bool ControladorTriadas::eliminarLibro(uint32_t offset) {
 
 	Logger::log("ControladorTriadas", "eliminarLibro",
 			"Se actualiza el archivo de control.");
+}
+
+
+void ControladorTriadas::setDatoControlEliminado(bool e)
+{
+	return this->arcControl->setDatoEliminado(e);
+}
+
+
+bool ControladorTriadas::getDatoControlEliminado()
+{
+	return this->arcControl->getDatoEliminado();
 }
 
 void ControladorTriadas::actualizarArchivoDeControl() {
