@@ -21,7 +21,7 @@ void ParserArchivoTriadas::leerArchivo(fstream* archivo, uint32_t offset) {
 
 	uint32_t tamanioArchivo = GetSizeArchivo(*archivo);
 
-	cout<<"LLEGA OFFSET: "<<offset<<endl;
+	//cout<<"LLEGA OFFSET: "<<offset<<endl;
 	if ((tamanioArchivo > 0) && (offset < tamanioArchivo)){
 		if (archivo->is_open()) {
 			Logger::log("ParserTriadas", "leerArchivo",
