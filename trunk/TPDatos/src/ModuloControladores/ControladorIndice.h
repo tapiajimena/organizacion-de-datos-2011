@@ -37,8 +37,9 @@ using namespace std;
 class ControladorIndice
 {
 private:
-	Hash* 		indiceHash;
-	BPlusTree* 	indiceArbol;
+	Hash* 					indiceHash;
+	BPlusTree* 				indiceArbol;
+	ControladorTriadas* 	controlTriadas;
 	DatoElementoNodo* datoElementoNodo;
 	string		pathCarpeta;//path de trabajo
 
@@ -97,6 +98,8 @@ public:
 	 * @param termino palabra a buscar en el indice de triadas
 	 */
 	list<DatoTriada*>* recuperarTriadas(string termino);
+
+	ControladorTriadas* getControladorTriadas();
 
 private:
 

@@ -17,6 +17,11 @@ ControladorIndice::ControladorIndice() {
 	this->pathCarpeta = conf->getPathCarpetaTrabajo();
 	this->indiceHash = NULL;
 	this->indiceArbol = NULL;
+
+	this->controlTriadas = new ControladorTriadas(
+			conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS + EXTENSION_ARCHIVO_INDICE,
+			conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS_CONTROL);
+
 }
 
 ControladorIndice::ControladorIndice(string pathCarpeta) {
@@ -24,6 +29,9 @@ ControladorIndice::ControladorIndice(string pathCarpeta) {
 	this->indiceHash = NULL;
 	this->indiceArbol = NULL;
 
+	this->controlTriadas = new ControladorTriadas(
+			pathCarpeta + ARCHIVO_INDICE_TRIADAS + EXTENSION_ARCHIVO_INDICE,
+			pathCarpeta + ARCHIVO_INDICE_TRIADAS_CONTROL);
 }
 
 void ControladorIndice::nuevoIndiceAutor() {
@@ -495,9 +503,6 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 	pair<string, uint32_t> registroHash;
 	Configuracion* conf = Configuracion::GetInstancia();
 	DatoTriada* triada = new DatoTriada();
-	ControladorTriadas* controlTriadas = new ControladorTriadas(
-			conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS + EXTENSION_ARCHIVO_INDICE,
-			conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS_CONTROL);
 
 	ArchivoTerminos* arcTerminos = new ArchivoTerminos(
 			conf->getPathCarpetaTrabajo() + ARCHIVO_TERMINOS
@@ -507,9 +512,13 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 			"Se indexan terminos.");
 	idArchivoTriadasInicial = controlTriadas->getSizeArchivoTriadas();
 
+	uint32_t offsetAEscribir;
+	uint32_t offsetTriadaActual;
+
+	vector<string> ocurrenciasTerminos =parLibroOffset.first->getOcurrenciasDeTerminos();
+	offsetAEscribir = controlTriadas->dondeEscribo(ocurrenciasTerminos.size());
+
 	vector<string>::iterator it;
-	vector<string> ocurrenciasTerminos =
-			parLibroOffset.first->getOcurrenciasDeTerminos();
 	for (it = ocurrenciasTerminos.begin(); it != ocurrenciasTerminos.end(); it++) {
 		termino = caseFold.caseFoldWord(*it);
 
@@ -533,16 +542,20 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 				"Se indexan las triadas en arbol y archivos.");
 
 		//se inserta una triada al final del archivo de triadas
-		cout<<"SE INSERTA TRIADA: "<<termino<<endl;
-		cout<<"SE INSERTA TRIADA: "<<parLibroOffset.second<<endl;
-		cout<<"SE INSERTA TRIADA: "<<registroHash.second<<endl;
-		cout<<"SE INSERTA TRIADA: "<<posicionRelativaTermino<<endl<<endl;
 		triada->setIdLibro(parLibroOffset.second);
 		triada->setIdTermino(registroHash.second);
 		triada->setPosicion(posicionRelativaTermino);
-		controlTriadas->insertarTriadaAlFinal(triada);
+		//controlTriadas->insertarTriadaAlFinal(triada);
+		controlTriadas->insertarTriada(triada, controlTriadas->getSiguienteIdTriada());
 
+		/*
+		cout<<"INSERTA TRIADA palabra: "<<termino<<endl;
+		cout<<"INSERTA TRIADA idLibro: "<<parLibroOffset.second<<endl;
+		cout<<"INSERTA TRIADA idTermino: "<<registroHash.second<<endl;
+		cout<<"INSERTA TRIADA pos: "<<posicionRelativaTermino<<endl<<endl;
 		cout<<"ID DE TRIADA: "<<controlTriadas->getSizeArchivoTriadas();
+		*/
+
 		//se inserta el termino en el arbol
 		this->indiceArbol->insert(
 				new DatoElementoNodo(termino,
@@ -559,6 +572,13 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 	delete (arcTerminos);
 	delete (controlTriadas);
 }
+
+
+ControladorTriadas* ControladorIndice::getControladorTriadas()
+{
+	return this->controlTriadas;
+}
+
 
 ControladorIndice::~ControladorIndice() {
 	if (indiceHash != NULL) {
