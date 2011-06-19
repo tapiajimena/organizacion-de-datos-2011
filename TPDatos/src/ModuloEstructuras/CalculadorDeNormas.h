@@ -33,7 +33,7 @@ private:
 	//path de trabajo
 	string		pathCarpeta;
 
-	ControladorTriadas* controladorDeTriadas;
+	//ControladorTriadas* controladorDeTriadas;
 
 	ControladorIndice* controladorIndice;
 
@@ -49,7 +49,7 @@ private:
 	//METODOS PRIVADOS---------------------------------------------------
 
 	//Accede al índice de tríadas y levanta todas las ocurrencias de un término
-	std::list<DatoTriada> levantarTriadasDeTermino(uint32_t idTermino);
+	std::list<DatoTriada*>* levantarTriadasDeTermino(uint32_t idTermino);
 
 	//Devuelve la cantidad total de documentos que contienen al menos una vez un término
 	//También llamado "FRECUENCIA GLOBAL DE TERMINO" (cantidad de documentos en que aparece)
@@ -91,7 +91,8 @@ private:
 	float calcularNormaVectorDeTerminos(VectorDeDocumento* vectorDeTerminos);
 
 public:
-	CalculadorDeNormas(ControladorIndice* controladorIndice, ControladorTriadas* controladorDeTriadas, ArchivoTerminos* archivoTerminos);
+	//CalculadorDeNormas(ControladorIndice* controladorIndice, ControladorTriadas* controladorDeTriadas, ArchivoTerminos* archivoTerminos);
+	CalculadorDeNormas(ControladorIndice* controladorIndice, ArchivoTerminos* archivoTerminos);
 
 	virtual ~CalculadorDeNormas();
 
