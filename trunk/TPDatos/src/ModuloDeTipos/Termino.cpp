@@ -10,7 +10,6 @@
  *
  */
 
-
 #include "Termino.h"
 
 Termino::Termino() {
@@ -19,6 +18,7 @@ Termino::Termino() {
 
 Termino::Termino(string nombre, list<DatoTriada*>* triadasDelTermino) {
 	this->nombre = nombre;
+	this->id_termino = triadasDelTermino->front()->getIdTermino();
 	this->posicionesTerminoEnLibros = new list<PosicionTerminoEnLibro*>();
 	PosicionTerminoEnLibro* posicionTerminoEnLibro = NULL;
 
@@ -29,6 +29,10 @@ Termino::Termino(string nombre, list<DatoTriada*>* triadasDelTermino) {
 		posicionTerminoEnLibro->posicion = (*ci_triada)->getPosicion();
 		this->posicionesTerminoEnLibros->push_back(posicionTerminoEnLibro);
 	}
+}
+
+uint32_t Termino::obtenerId(){
+	return this->id_termino;
 }
 
 string Termino::obtenerNombre(){
