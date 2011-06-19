@@ -587,7 +587,6 @@ ControladorIndice::~ControladorIndice() {
 				"Se elimina el Arbol");
 		delete (indiceArbol);
 	}
-	delete(controlTriadas);
 
 }
 
