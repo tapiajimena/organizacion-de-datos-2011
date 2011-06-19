@@ -48,7 +48,7 @@ public:
 	void eliminarLibro(uint32_t idLibro);
 	DatoControlTriada* buscarEnMap(uint32_t idLIbro);
 
-	uint32_t buscarOffsetDondeEscribir(int cantidadTriadas);
+	uint32_t buscarOffsetDondeEscribir(int cantidadTriadas, uint32_t sizeArchivo);
 
 	/**
 	 * Devuelve el nuevo offset donde se guardara la nueva triada

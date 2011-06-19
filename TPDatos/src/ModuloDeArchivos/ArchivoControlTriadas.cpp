@@ -36,21 +36,21 @@ ArchivoControlTriadas::ArchivoControlTriadas(string path) {
 	cargarDatosControl();
 }
 
-uint32_t ArchivoControlTriadas::buscarOffsetDondeEscribir(int cantidadTriadas) {
+uint32_t ArchivoControlTriadas::buscarOffsetDondeEscribir(int cantidadTriadas, uint32_t sizeArchivo) {
 	uint32_t espacioRango = 0;
 
 	/* Recorro el map en busqueda de espacios libres */
 	for (it = datosControl->begin(); it != datosControl->end(); ++it) {
-			/* Calculo el espacio libre en el rango */
-			espacioRango = (((*it).second)->getTriadaFinal() - ((*it).second)->getTriadaInicial())
+			/* Calculo el espacio en el rango */
+			espacioRango = (((*it).second)->getIdTriadaFinal() - ((*it).second)->getIdTriadaInicial())
 					/ (sizeof(espacioRango) * 3);
+
 		/* Si ese espacio esta eliminado y ademas los nuevos datos caben en el espacio libre */
 		if(((*it).second)->estaBorrado() && (espacioRango > 0 && espacioRango <= cantidadTriadas)){
-					espacioRango = (*it).second)->getTriadaInicial();
+			return ((*it).second)->getIdTriadaInicial();
 		}
 		else {
-			espacioRango = this->//
-		}
+			return sizeArchivo;
 		}
 	}
 }
