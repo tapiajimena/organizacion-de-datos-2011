@@ -17,6 +17,7 @@ ArchivoControlTriadas::ArchivoControlTriadas(string path) {
 	this->datosControl = new map<uint32_t, DatoControlTriada*> ;
 	this->it = datosControl->begin();
 	this->pathArchivoControlTriadas = path;
+	this->datoEliminado = false;
 
 	char* cstrPath = new char[pathArchivoControlTriadas.size() + 1];
 	strcpy(cstrPath, pathArchivoControlTriadas.c_str());
@@ -39,24 +40,24 @@ ArchivoControlTriadas::ArchivoControlTriadas(string path) {
 }
 
 uint32_t ArchivoControlTriadas::buscarOffsetDondeEscribir(int cantidadTriadas,
-		uint32_t sizeArchivo) {
-	uint32_t espacioRango = 0;
+		uint32_t sizeArchivo, uint32_t idLibro) {
 
-	/* Recorro el map en busqueda de espacios libres */
-	for (it = datosControl->begin(); it != datosControl->end(); ++it) {
-		/* Calculo el espacio en el rango */
-		espacioRango = (((*it).second)->getIdTriadaFinal()
-				- ((*it).second)->getIdTriadaInicial()) / (sizeof(espacioRango)
-				* 3);
+	/* Se recorre el map en busqueda de espacios libres */
+	for (it = datosControl->begin(); it != datosControl->end(); ++it)
+	{
+		/* Si ese espacio esta eliminado */
+		if (((*it).second)->estaBorrado())
+		{
+			DatoControlTriada* datoControl = buscarEnMap(((*it).second)->getIdLibro());
+			datoControl->setIdLibro(idLibro);
+			this->datoEliminado =true;
 
-		/* Si ese espacio esta eliminado y ademas los nuevos datos caben en el espacio libre */
-		if (((*it).second)->estaBorrado() && (espacioRango > 0 && espacioRango
-				<= cantidadTriadas)) {
+			((*it).second)->setEliminado(false);
+			cout << "entra en el espacio vacio " << endl;
 			return ((*it).second)->getIdTriadaInicial();
-		} else {
-			return sizeArchivo;
 		}
 	}
+	return sizeArchivo;
 
 }
 
@@ -64,37 +65,38 @@ void ArchivoControlTriadas::actualizarArchivo() {
 	Logger::log("ArchivoControlTriadas", "actualizarArchivo",
 			"Se comienza a actualizar el archivo de control de triadas.");
 
+	//cargarDatosControl();
+
 	Cerrar(this->archivoControlTriadas);
 	fstream arc;
 	Crear(this->pathArchivoControlTriadas.c_str(), arc, true);
 
-	//TODO cargar los datos de control en atributo datosControl
-	/*
-	 if (this->datosControl->empty())
-	 {
-	 stringstream ss;
-	 for (it = this->datosControl->begin(); it != this->datosControl->end(); it++)
-	 {
-	 ss << (it->second)->serializar();
-	 ss << "\n";
-	 }
-	 //se le saca el ultimo \n
-	 string aux = ss.str();
-	 aux = aux.substr(0, aux.length() - 1);
+	stringstream ss;
+	for (it = this->datosControl->begin(); it != this->datosControl->end(); it++) {
+		ss << (it->second)->serializar();
+		ss << "\n";
+	}
+	//se le saca el ultimo \n
+	string aux = ss.str();
+	aux = aux.substr(0, aux.length() - 1);
 
-	 stringstream ss1;
-	 ss1 << aux;
+	stringstream ss1;
+	ss1 << aux;
+	cout<<"LA daata a serializar es: "<<ss1.str()<<endl;
 
-	 Escribir(arc, &ss1, 0);
-	 }
-	 */
+	Escribir(arc, &ss1, 0);
 
 	Logger::log("ArchivoControlTriadas", "actualizarArchivo",
 			"Se termina de actualizar el archivo de control.");
 }
 
+void ArchivoControlTriadas::agregarDatoControl(DatoControlTriada* nuevo) {
+	this->datosControl->insert(
+			pair<uint32_t, DatoControlTriada*> (nuevo->getIdLibro(), nuevo));
+}
+
 void ArchivoControlTriadas::eliminarLibro(uint32_t idLibro) {
-	//TODO
+	(buscarEnMap(idLibro))->borrarLibro();
 }
 
 list<uint32_t>* ArchivoControlTriadas::getTriadas(uint32_t id_Libro) {
@@ -136,6 +138,19 @@ DatoControlTriada* ArchivoControlTriadas::buscarEnMap(uint32_t idLibro) {
 		return NULL;
 	}
 }
+
+
+void ArchivoControlTriadas::setDatoEliminado(bool eliminado)
+{
+	this->datoEliminado = eliminado;
+}
+
+
+bool ArchivoControlTriadas::getDatoEliminado()
+{
+	return this->datoEliminado;
+}
+
 
 ArchivoControlTriadas::~ArchivoControlTriadas() {
 	//TODO
