@@ -11,7 +11,6 @@
 
 Instruccion_ProcesarTitulo::Instruccion_ProcesarTitulo(char id) :
 	Instruccion(id) {
-	// TODO Auto-generated constructor stub
 
 }
 
@@ -30,5 +29,5 @@ void Instruccion_ProcesarTitulo::ejecutar() {
 }
 
 Instruccion_ProcesarTitulo::~Instruccion_ProcesarTitulo() {
-	// TODO Auto-generated destructor stub
+
 }

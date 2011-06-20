@@ -83,5 +83,33 @@ bool ParserArchivoControlTriadas::determinarEliminado(uint32_t eliminado) {
 }
 
 ParserArchivoControlTriadas::~ParserArchivoControlTriadas() {
-	// TODO Auto-generated destructor stub
+	delete(datoNuevo);
+
+	Logger::log("ParserArchivoControlTriadas", "~ParserArchivoControlTriadas",
+			"Se elimina el ParserArchivoControlTriadas.");
+
+	/*
+	//TODO eliminar map
+	if(!datosControl->empty())
+	{
+		//elimina cada datoControl dentro de datosControl
+		for(it = datosControl->begin(); it != datosControl->end();it++)
+		{
+			delete((*it).second);
+			datosControl->erase(it);
+		}
+		delete(datosControl);
+	}
+	*/
+
+
+
 }
+
+
+
+
+
+
+
+

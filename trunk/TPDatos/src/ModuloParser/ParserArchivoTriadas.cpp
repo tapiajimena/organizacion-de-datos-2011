@@ -71,5 +71,17 @@ DatoTriada* ParserArchivoTriadas::getTriada(fstream* archivo, uint32_t offset) {
 }
 
 ParserArchivoTriadas::~ParserArchivoTriadas() {
-	// TODO Auto-generated destructor stub
+	Logger::log("ParserArchivoTriadas", "~ParserArchivoTriadas",
+			"Se elimina el ParserArchivoTriadas.");
+
+	/*
+	delete(this->triada);
+
+	//elimina cada dato dentro de triadas
+	list<DatoTriada*>::iterator itTriadas;
+	for(itTriadas= this->triadas->begin(); itTriadas != triadas->end();itTriadas++)
+		delete(*itTriadas);
+	delete(triadas);
+*/
+
 }

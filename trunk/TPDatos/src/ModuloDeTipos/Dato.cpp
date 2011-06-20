@@ -89,5 +89,5 @@ long int Dato::getSize()
 }
 
 Dato::~Dato() {
-	// TODO Auto-generated destructor stub
+
 }

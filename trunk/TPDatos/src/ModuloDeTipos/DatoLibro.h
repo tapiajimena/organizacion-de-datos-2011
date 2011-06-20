@@ -15,9 +15,7 @@
 
 #include "Dato.h"
 
-/*
- *
- */
+
 class DatoLibro : public Dato {
 public:
 	DatoLibro();

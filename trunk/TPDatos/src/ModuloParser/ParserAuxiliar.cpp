@@ -14,5 +14,5 @@ ParserAuxiliar::ParserAuxiliar(string token) {
 }
 
 ParserAuxiliar::~ParserAuxiliar() {
-	// TODO Auto-generated destructor stub
+
 }

@@ -58,15 +58,17 @@ void Instruccion_VerEstructura::ejecutar()
 
 	indexador->generarReporte(char_Aux, this->nombreArchivo);
 
-	//armo los archivos.
+	//se arman los archivos.
 	crearArchivos();
 
 
 	cout<<"Se generan reportes en la carpeta de resultados."<<endl;
 	Logger::log("Instruccion_VerEstructura", "ejecutar",
 			"Se muestra la estructura.");
+
+	delete(indexador);
 }
 
 Instruccion_VerEstructura::~Instruccion_VerEstructura() {
-	// TODO Auto-generated destructor stub
+
 }

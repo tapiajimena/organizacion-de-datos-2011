@@ -10,7 +10,6 @@
 #include "Instruccion_ProcesarAutor.h"
 
 Instruccion_ProcesarAutor::Instruccion_ProcesarAutor(char id) : Instruccion(id) {
-	// TODO Auto-generated constructor stub
 
 }
 
@@ -27,5 +26,5 @@ void Instruccion_ProcesarAutor::ejecutar(){
 }
 
 Instruccion_ProcesarAutor::~Instruccion_ProcesarAutor() {
-	// TODO Auto-generated destructor stub
+
 }

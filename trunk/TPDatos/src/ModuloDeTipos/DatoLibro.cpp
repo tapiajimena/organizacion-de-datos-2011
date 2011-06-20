@@ -12,14 +12,11 @@
 
 DatoLibro::DatoLibro() :
 	Dato() {
-	// TODO Auto-generated constructor stub
 
 }
 
 DatoLibro::DatoLibro(const DatoLibro & d) :
 	Dato(d) {
-	// TODO Auto-generated constructor stub
-
 }
 
 DatoLibro::DatoLibro(char* c) :
@@ -37,7 +34,6 @@ bool DatoLibro::agregar(const Dato & d, unsigned int posicion) {
 	if (posicion > this->dato.str().length())
 		return false;
 	else {
-		//TODO revisar bien que solo serviria para char* o string
 		this->dato.str().insert(posicion, d.toString());
 		return true;
 	}

@@ -22,7 +22,7 @@ private:
 	string separador;
 	map<uint32_t,DatoControlTriada*>::iterator it;
 	map<uint32_t,DatoControlTriada*>* datosControl;
-	list<DatoControlTriada*>* triadas;
+//	list<DatoControlTriada*>* triadas;
 	int contadorLinea;
 public:
 	ParserArchivoControlTriadas(string token);

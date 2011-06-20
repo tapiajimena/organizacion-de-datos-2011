@@ -122,7 +122,6 @@ char ManejadorInstrucciones::obtenerIDinstruccion(string id) {
 string ManejadorInstrucciones::obtenerConsulta() {
 	string rdo = "";
 
-	//TODO CAMBIAR a algo que realmente sea util
 	for (int i = 2; i < MAX_COMANDOS; i++)
 		rdo+=this->comando[i];
 

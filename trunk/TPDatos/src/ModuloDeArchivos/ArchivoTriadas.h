@@ -58,8 +58,6 @@ public:
 
 	uint32_t devolverTamanio();
 
-	//TODO metodos que consulten cosas particulares de cada triada.
-
 	virtual ~ArchivoTriadas();
 };
 
