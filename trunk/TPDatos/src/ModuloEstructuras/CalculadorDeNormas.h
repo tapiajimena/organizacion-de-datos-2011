@@ -1,9 +1,12 @@
 /*
+ *
  * CalculadorDeNormas.h
  *
- *  Created on: 14/06/2011
- *      Author: santi
- *      //TODO cambiar comentario de encabezado.
+ *	Autor	: GRUPO 1 - Fernandez, Gallinal, Maraggi, Tapia
+ *	Catedra	: SERVETTO-FERRER-FERNANDEZ
+ *	Materia	: Organizacion de Datos (75.06) - FIUBA
+ *
+ *
  */
 
 #ifndef CALCULADORDENORMAS_H_
@@ -28,10 +31,10 @@
 
 //Modelo de vector de documento.
 //uint32_t: ID del término
-//int: cantidad de apariciones del término en el documento.
+//float: Peso Local del termino.
 //De esta forma se evita definir un vector con tantas posiciones como términos tengamos en el diccionario.
 //Es algo más enredado para codificar, pero mucho más eficiente.
-typedef std::map<uint32_t, int> VectorDeDocumento;
+typedef std::map<uint32_t, float> VectorDeDocumento;
 
 class CalculadorDeNormas {
 private:
@@ -109,6 +112,11 @@ private:
 
 	//Tanto para documentos como para consultas.
 	float calcularNormaVectorDeTerminos(VectorDeDocumento* vectorDeTerminos);
+
+	//Multiplica las posiciones del vector de documento por el peso global del termino
+	//Se llama aparte de cargarVectorDeTerminos porque se pondera para calcular similitudes,
+	//pero no de la misma manera para calcular las normas.
+	void ponderarPesoLocal(VectorDeDocumento* vectorDocumento);
 
 public:
 	//CalculadorDeNormas(ControladorIndice* controladorIndice, ControladorTriadas* controladorDeTriadas, ArchivoTerminos* archivoTerminos);
