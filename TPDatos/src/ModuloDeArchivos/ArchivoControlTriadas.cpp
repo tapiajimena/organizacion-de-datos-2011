@@ -35,7 +35,8 @@ ArchivoControlTriadas::ArchivoControlTriadas(string path) {
 	}
 	delete[] cstrPath;
 
-	this->offsets = new list<uint32_t> ;
+	this->offsetsTriadas = new list<uint32_t> ;
+	this->idLibrosInsertados = new list<uint32_t> ;
 	cargarDatosControl();
 }
 
@@ -116,6 +117,15 @@ void ArchivoControlTriadas::eliminarDatoControl(uint32_t idLibro) {
 	this->datosControl->erase(idLibro);
 }
 
+list<uint32_t>* ArchivoControlTriadas::getIdLibrosAlmacenados() {
+	if(!this->datosControl->empty()) {
+		for (it = this->datosControl->begin(); it != this->datosControl->end(); it++) {
+			this->idLibrosInsertados->push_back((*it).first);
+		}
+	}
+	return this->idLibrosInsertados;
+}
+
 list<uint32_t>* ArchivoControlTriadas::getTriadas(uint32_t id_Libro) {
 	DatoControlTriada* d = buscarEnMap(id_Libro);
 
@@ -123,12 +133,12 @@ list<uint32_t>* ArchivoControlTriadas::getTriadas(uint32_t id_Libro) {
 		//se asume que el offset inicial y final son validos.
 		uint32_t siguiente = d->getIdTriadaInicial();
 		while (siguiente <= d->getIdTriadaFinal()) {
-			this->offsets->push_back(siguiente);
+			this->offsetsTriadas->push_back(siguiente);
 			siguiente += sizeof(siguiente) * 3;
 		}
 	}
 
-	return this->offsets;
+	return this->offsetsTriadas;
 }
 
 void ArchivoControlTriadas::cargarDatosControl() {
