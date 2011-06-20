@@ -3,6 +3,7 @@
  *
  *  Created on: 14/06/2011
  *      Author: santi
+ *      //TODO cambiar comentario de encabezado.
  */
 
 #ifndef CALCULADORDENORMAS_H_
@@ -16,8 +17,14 @@
 #include "../ModuloEstructuras/Configuracion.h"
 #include "../ModuloControladores/ControladorTriadas.h"
 #include "../ModuloControladores/ControladorIndice.h"
+//TODO sacar ControladorBiblioteca y usar a ControladorTriadas para obtener Ids de libros.
+#include "../ModuloControladores/ControladorBiblioteca.h"
 #include "../ModuloDeTipos/DatoTriada.h"
 #include "../ModuloDeIndices/Hash/Hash.h"
+#include "../ModuloDeTipos/Termino.h"
+
+//TODO include para testing, sacar
+#include "../ModuloTesting/MockControladorIndice.h"
 
 //Modelo de vector de documento.
 //uint32_t: ID del término
@@ -41,12 +48,22 @@ private:
 
 	Hash* indiceNormasDocumentos;
 
+	std::string nombreArchivoTablaPesos;
+	std::string nombreArchivoCubetasPesos;
+
+	std::string nombreArchivoTablaNormas;
+	std::string nombreArchivoCubetasNormas;
+
 	//Se usa solo para generar indices:
 	ArchivoTerminos* archivoTerminos;
 
 	int cantidadTotalDeDocumentos; //Se carga al calcular e indexar pesos globales de terminos
 
 	//METODOS PRIVADOS---------------------------------------------------
+
+	//Crea los archivos de indice vacios, para descartar cosas que tuvieran antes.
+	//...cada vez que se ingresa un libro estos indices pierden validez y hay que vaciarlos.
+	void reiniciarIndices();
 
 	//Accede al índice de tríadas y levanta todas las ocurrencias de un término
 	std::list<DatoTriada*>* levantarTriadasDeTermino(uint32_t idTermino);
@@ -79,7 +96,10 @@ private:
 	void generarIndiceDePesosGlobalesDeTerminos();
 
 	//Se usa para documentos y consultas por igual.
-	VectorDeDocumento* cargarVectorDeTerminos(std::list<uint32_t> ocurrenciasDeTerminos);
+	//VectorDeDocumento* cargarVectorDeTerminos(std::list<uint32_t> ocurrenciasDeTerminos);
+
+	//Toma una lista de elementos Termino* y carga un nuevo vector de documento
+	VectorDeDocumento* cargarVectorDeTerminos(std::list<Termino*>* listaTerminos);
 
 	//Este toma el Id de documento, levanta sus triadas y carga el vector.
 	VectorDeDocumento* cargarVectorDeTerminos(uint32_t idDocumento);
@@ -98,9 +118,9 @@ public:
 
 	//Devuelve el coseno del ángulo vectorial entre dos documentos o...
 	//... un documento y una consulta (la consulta se toma como documento de pocos terminos)
-	float calcularSimilitudConsultaDocumento(uint32_t idDocumento, std::list<uint32_t> consulta);
+	float calcularSimilitudConsultaDocumento(uint32_t idDocumento, std::list<Termino*>* consulta);
 
-	void generarArchivoDeNormasDeDocumentos();
+	void generarArchivoDeNormasDeDocumentos(ControladorBiblioteca* controladorBiblioteca);
 
 	//Busca en el archivo de normas la norma del documento por id. Se debe haber generado el archivo de
 	//normas en una corrida anterior. Si el archivo de normas no existe o el idDocumento no está en él, devuelve cero.

@@ -3,6 +3,7 @@
  *
  *  Created on: 14/06/2011
  *      Author: santi
+ *      TODO cambiar comentario de encabezado
  */
 
 #include "CalculadorDeNormas.h"
@@ -12,35 +13,47 @@ CalculadorDeNormas::CalculadorDeNormas(ControladorIndice* controladorIndice, Arc
 	Configuracion* conf = Configuracion::GetInstancia();
 	this->pathCarpeta = conf->getPathCarpetaTrabajo();
 
-	this->cantidadTotalDeDocumentos = 0; //Se carga al calcular pesos globales.
+	//TODO sacar hardcode y obtener numero de documentos de controladorIndice->controladorTriadas()->getIdLibros()->size()
+	this->cantidadTotalDeDocumentos = 2; //Se carga al calcular pesos globales.
 
 	//this->controladorDeTriadas = controladorDeTriadas;
 	this->controladorIndice = controladorIndice;
 	this->archivoTerminos = archivoTerminos;
 
-	std::string nombreArchivoTablaPesos = this->pathCarpeta + "/TablaIndicePesos.dat";
-	std::string nombreArchivoCubetasPesos = this->pathCarpeta + "/CubetasIndicePesos.dat";
+	this->nombreArchivoTablaPesos = this->pathCarpeta + "TablaIndicePesos.dat";
+	this->nombreArchivoCubetasPesos = this->pathCarpeta + "CubetasIndicePesos.dat";
 
-	std::string nombreArchivoTablaNormas = this->pathCarpeta + "/TablaIndiceNormas.dat";
-	std::string nombreArchivoCubetasNormas = this->pathCarpeta + "/CubetasIndiceNormas.dat";
+	this->nombreArchivoTablaNormas = this->pathCarpeta + "TablaIndiceNormas.dat";
+	this->nombreArchivoCubetasNormas = this->pathCarpeta + "CubetasIndiceNormas.dat";
 
+	//Levantamos los indices
+	this->indicePesosGlobales = new Hash(this->nombreArchivoTablaPesos, this->nombreArchivoCubetasPesos);
+	this->indiceNormasDocumentos = new Hash(this->nombreArchivoTablaNormas, this->nombreArchivoCubetasNormas);
+
+	std::cout<<"*!*!*!*!*!* CREAMOS INDICES HASH"<<std::endl;
+
+}
+
+void CalculadorDeNormas::reiniciarIndices()
+{
 	//Creamos y cerramos los archivos, por si antes fueron creados. Necesitamos empezar de cero, y el Hash...
 	//...está hecho para persistir y recuperar la información que guarda.
-	fstream arcTemporal;
-	ManejadorArchivo::Crear(nombreArchivoTablaPesos.c_str(), arcTemporal, true);
-	ManejadorArchivo::Cerrar(arcTemporal);
-	ManejadorArchivo::Crear(nombreArchivoCubetasPesos.c_str(), arcTemporal, true);
-	ManejadorArchivo::Cerrar(arcTemporal);
-	ManejadorArchivo::Crear(nombreArchivoTablaNormas.c_str(), arcTemporal, true);
-	ManejadorArchivo::Cerrar(arcTemporal);
-	ManejadorArchivo::Crear(nombreArchivoCubetasNormas.c_str(), arcTemporal, true);
-	ManejadorArchivo::Cerrar(arcTemporal);
+	delete this->indiceNormasDocumentos;
+	delete this->indicePesosGlobales;
 
+	fstream arcTemporal;
+	ManejadorArchivo::Crear(this->nombreArchivoTablaPesos.c_str(), arcTemporal, true);
+	ManejadorArchivo::Cerrar(arcTemporal);
+	ManejadorArchivo::Crear(this->nombreArchivoCubetasPesos.c_str(), arcTemporal, true);
+	ManejadorArchivo::Cerrar(arcTemporal);
+	ManejadorArchivo::Crear(this->nombreArchivoTablaNormas.c_str(), arcTemporal, true);
+	ManejadorArchivo::Cerrar(arcTemporal);
+	ManejadorArchivo::Crear(this->nombreArchivoCubetasNormas.c_str(), arcTemporal, true);
+	ManejadorArchivo::Cerrar(arcTemporal);
 
 	this->indicePesosGlobales = new Hash(nombreArchivoTablaPesos, nombreArchivoCubetasPesos);
 
 	this->indiceNormasDocumentos = new Hash(nombreArchivoTablaNormas, nombreArchivoCubetasNormas);
-
 }
 
 CalculadorDeNormas::~CalculadorDeNormas()
@@ -55,9 +68,45 @@ CalculadorDeNormas::~CalculadorDeNormas()
 std::list<DatoTriada*>* CalculadorDeNormas::levantarTriadasDeTermino(uint32_t idTermino)
 {
 	//Esto es un acceso directo al archivo a traves de su offset-Id.
+
 	std::string palabra = this->archivoTerminos->obtenerTermino(idTermino);
 
-	return this->controladorIndice->recuperarTriadas(palabra);
+	//TODO arreglar y descomentar metodo. Llegan malas triadas
+	//return new std::list<DatoTriada*>; //si devuelvo lista vacia, va bien.
+/*
+	std::list<DatoTriada*>* listaTriadas;
+
+	std::cout<<"Palabra: "<<palabra<<std::endl;
+	listaTriadas = this->controladorIndice->recuperarTriadas(palabra);
+	//Posibilidades:
+		//* Falla controladorIndice y me da cualquier direccion
+		//* Falla controladorTriadas.
+		//* ????
+
+	std::cout<<"++++++++++++Tamanio lista Triadas:"<<listaTriadas->size()<<std::endl;
+	std::cout<<"IdLibro: "<<listaTriadas->front()->getIdLibro()<<std::endl;
+	std::cout<<"IdTermino: "<<listaTriadas->front()->getIdTermino()<<std::endl;
+	std::cout<<"Posicion: "<<listaTriadas->front()->getPosicion()<<std::endl;
+
+	std::cout<<"??????????????????????????"<<std::endl;
+	return listaTriadas;
+*/
+
+	//Testing con mock.
+	MockControladorIndice* mock = new MockControladorIndice();
+	std::list<DatoTriada*>* lista = mock->recuperarTriadas(palabra);
+
+	std::cout<<"++++++++++++Tamanio lista Triadas para "<<palabra<<": "<<lista->size()<<std::endl;
+	std::cout<<"IdLibro: "<<lista->front()->getIdLibro()<<std::endl;
+	std::cout<<"IdTermino: "<<lista->front()->getIdTermino()<<std::endl;
+	std::cout<<"Posicion: "<<lista->front()->getPosicion()<<std::endl;
+
+	//delete mock;
+	return lista;
+
+
+	//std::list<DatoTriada*>* listaTriadas = new std::list<DatoTriada*>;
+	//return listaTriadas;
 }
 
 void CalculadorDeNormas::generarIndiceDePesosGlobalesDeTerminos()
@@ -68,13 +117,24 @@ void CalculadorDeNormas::generarIndiceDePesosGlobalesDeTerminos()
 
 	float pesoGlobalTermino;
 
+	std::pair<std::string, uint32_t> parIdTerminoPesoGlobal;
+
 	for(it_terminos = listaTerminos.begin(); it_terminos != listaTerminos.end(); it_terminos++)
 	{
+
 		//calculamos el peso global...
 		pesoGlobalTermino = this->calcularPesoGlobalDeTermino((*it_terminos).second);//por id de termino.
 
+		std::cout<<"Termino: '"<<(*it_terminos).first<<"' con ID "<<(*it_terminos).second<<" Tiene Peso Global: "<<pesoGlobalTermino<<std::endl;
+		//La clave en el indice es el ID de termino pero pasado a string.
+		parIdTerminoPesoGlobal.first = ServiceClass::obtenerString((*it_terminos).second);
+
+		//Guardamos el peso global con dos decimales en un entero. Al recuperar, se debe volver a correr la coma.
+		int pesoTerminoConDosDecimales = ServiceClass::floatToUint32t(pesoGlobalTermino);
+		parIdTerminoPesoGlobal.second = pesoTerminoConDosDecimales;
+
 		//y lo guardamos en el indice...
-		this->indicePesosGlobales->insertarClave(*it_terminos);
+		this->indicePesosGlobales->insertarClave(parIdTerminoPesoGlobal);
 	}
 
 	this->cantidadTotalDeDocumentos = listaTerminos.size();
@@ -85,8 +145,11 @@ int CalculadorDeNormas::calcularDocumentosQueContienenTermino(uint32_t idTermino
 {
 	int documentosQueContienenTermino = 0;
 
+	std::cout<<"---------------calcularDocumentosQueContienenTermino"<<std::endl;
+	//TODO esta linea pincha.
 	std::list<DatoTriada*>* ocurrenciasDeTermino = this->levantarTriadasDeTermino(idTermino);
 
+	std::cout<<"++++++++++++++Ocurrencias de Termino: "<<ocurrenciasDeTermino->size()<<std::endl;
 	//En este vector se guardan los libros en que aparece el término. La idea es no contar
 	//dos ocurrencias si son del mismo documento, ya que interesa la cantidad de DOCUMENTOS
 	//que contienen alguna vez al término.
@@ -123,8 +186,14 @@ int CalculadorDeNormas::calcularDocumentosQueContienenTermino(uint32_t idTermino
 		}
 	}
 
-	//TODO ver si antes de eliminar vector hay que eliminar manualmente todos los elementos DatoTriada
+	//Vaciamos vector y liberamos recursos.
+	while (!ocurrenciasDeTermino->empty())
+	{
+		delete ocurrenciasDeTermino->back();
+		ocurrenciasDeTermino->pop_back();
+	}
 	delete ocurrenciasDeTermino;
+
 
 	return documentosQueContienenTermino;
 }
@@ -135,10 +204,15 @@ float CalculadorDeNormas::calcularPesoGlobalDeTermino(uint32_t idTermino)
 
 	int frecuenciaGlobalDeTermino = this->calcularDocumentosQueContienenTermino(idTermino);
 
+	std::cout<<"Frecuencia Global de Termino: "<<frecuenciaGlobalDeTermino<<std::endl;
+
 	if(frecuenciaGlobalDeTermino != 0)
 	{
+		std::cout<<"Nro Real parcial: "<<(float)(this->cantidadTotalDeDocumentos / frecuenciaGlobalDeTermino)<<std::endl;
 		pesoGlobal = log10( (float)(this->cantidadTotalDeDocumentos / frecuenciaGlobalDeTermino));
 	}
+
+	std::cout<<"Peso Global de Termino calculado: "<<pesoGlobal<<std::endl;
 
 	return pesoGlobal;
 }
@@ -149,8 +223,11 @@ int CalculadorDeNormas::calcularAparicionesDeTerminoEnDocumento(uint32_t idDocum
 
 	//Es más rápido pedir las ocurrencias del término que levantar todas las tríadas del libro.
 	//(salvo que se carguen millones de libros y que haya más ocurrencias del término que palabras en el libro)
-	std::list<DatoTriada*>* ocurrenciasDeTermino = this->levantarTriadasDeTermino(idTermino);
 
+	//TODO ver aca levantar triadas.
+	std::cout<<"1-----------------------"<<std::endl;
+	std::list<DatoTriada*>* ocurrenciasDeTermino = this->levantarTriadasDeTermino(idTermino);
+	std::cout<<"2-----------------------"<<std::endl;
 	std::list<DatoTriada*>::iterator it_ocurrencias;
 
 	for(it_ocurrencias = ocurrenciasDeTermino->begin();
@@ -163,7 +240,11 @@ int CalculadorDeNormas::calcularAparicionesDeTerminoEnDocumento(uint32_t idDocum
 		}
 	}
 
-	//TODO ver si antes de eliminar vector hay que eliminar manualmente todos los elementos DatoTriada
+	while (!ocurrenciasDeTermino->empty())
+	{
+		delete ocurrenciasDeTermino->back();
+		ocurrenciasDeTermino->pop_back();
+	}
 	delete ocurrenciasDeTermino;
 
 	return ocurrenciasDeTerminoEnDocumento;
@@ -292,7 +373,25 @@ float CalculadorDeNormas::calcularNormaDeDocumento(uint32_t idDocumento)
 
 VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(uint32_t idDocumento)
 {
-	std::list<DatoTriada*>* listaDatoTriadas = this->controladorIndice->getControladorTriadas()->getTriadas(idDocumento);
+	//TODO aca me da mas triadas de las que hay por documento... ver la salida, llegan mal las triadas.
+	//TODO sacar mock de testing.
+	//std::list<DatoTriada*>* listaDatoTriadas = this->controladorIndice->getControladorTriadas()->getTriadas(idDocumento);
+
+	MockControladorIndice* mock = new MockControladorIndice();
+	std::list<DatoTriada*>* listaDatoTriadas = mock->recuperarTriadasDeDocumento(idDocumento);
+	delete mock;
+
+	std::cout<<"LEo triadas de documento................."<<std::endl;
+
+	std::cout<<"Me llegan para el documento: " <<idDocumento<<", "<<listaDatoTriadas->size()<<" triadas."<<std::endl;
+	std::list<DatoTriada*>::iterator it;
+	for(it = listaDatoTriadas->begin(); it != listaDatoTriadas->end(); it++)
+	{
+		std::cout<<"IdLibro: "<<(*it)->getIdLibro();
+		std::cout<<"   IdTermino: "<<(*it)->getIdTermino();
+		std::cout<<"   Posicion: "<<(*it)->getPosicion()<<std::endl;
+	}
+	std::cout<<"Fin Triadas Documento---"<<std::endl;
 
 	std::list<DatoTriada*>::iterator it_datosTriada;
 
@@ -310,9 +409,41 @@ VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(uint32_t idDocumen
 		}
 	}
 
+	//Liberamos recursos
+	while( !listaDatoTriadas->empty() )
+	{
+		delete listaDatoTriadas->back();
+		listaDatoTriadas->pop_back();
+	}
+
 	return listaTerminosEnDocumento;
 }
 
+VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(std::list<Termino*>* listaTerminos)
+{
+	VectorDeDocumento* vectorConsulta = new VectorDeDocumento();
+
+	std::list<Termino*>::iterator it_terminos;
+
+	for(it_terminos = listaTerminos->begin(); it_terminos != listaTerminos->end(); it_terminos++)
+	{
+		uint32_t idTermino = (*it_terminos)->obtenerId();
+
+		if( vectorConsulta->find(idTermino) != vectorConsulta->end())
+		{
+			(*vectorConsulta)[idTermino]++;
+		}
+		else
+		{
+			(*vectorConsulta)[idTermino] = 1;
+		}
+
+	}
+
+	return vectorConsulta;
+}
+
+/*
 VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(std::list<uint32_t> ocurrenciasDeTerminos)
 {
 	VectorDeDocumento* vectorConsulta = new VectorDeDocumento();
@@ -333,6 +464,7 @@ VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(std::list<uint32_t
 
 	return vectorConsulta;
 }
+*/
 
 float CalculadorDeNormas::calcularNormaVectorDeTerminos(VectorDeDocumento* vectorDeTerminos)
 {
@@ -345,7 +477,9 @@ float CalculadorDeNormas::calcularNormaVectorDeTerminos(VectorDeDocumento* vecto
 	for(it_vector = vectorDeTerminos->begin(); it_vector != vectorDeTerminos->end(); it_vector++)
 	{
 		//peso de termino en documento = cantidad de apariciones * peso global del termino.
-		pesoDeTerminoEnDocumento = (*it_vector).second * this->obtenerPesoGlobalDeIndice((*it_vector).first);
+		float pesoGlobalDeTermino = this->obtenerPesoGlobalDeIndice((*it_vector).first);
+		std::cout<<"Peso Global De Termino: "<<pesoGlobalDeTermino<<std::endl;
+		pesoDeTerminoEnDocumento = (*it_vector).second * pesoGlobalDeTermino;
 
 		sumatoriaCuadradaParcial = sumatoriaCuadradaParcial + pow(pesoDeTerminoEnDocumento, 2);
 	}
@@ -388,22 +522,57 @@ float CalculadorDeNormas::calcularProductoInterno(VectorDeDocumento* vectorDocum
 	return productoInterno;
 }
 
-void CalculadorDeNormas::generarArchivoDeNormasDeDocumentos()
+void CalculadorDeNormas::generarArchivoDeNormasDeDocumentos(ControladorBiblioteca* controladorBiblioteca)
 {
-//para cada documento, calcular norma e ingresar al hash.
-	//std::string idDocumetoStr = ServiceClass::obtenerString(idDocumento);
-	//std::pair<std::string, uint32_t> claveNormaDocumentoHash;
-	//this->indiceNormasDocumentos->insertarClave(claveNormaDocumentoHash);
+	//vaciamos el contenido desactualizado de los indices.
+	this->reiniciarIndices();
+	std::cout<<"generarIndiceDePesosGlobales......"<<std::endl;
+	//Generamos un indice con los pesos globales, que se van a usar intensivamente para la generacion de las normas.
+	this->generarIndiceDePesosGlobalesDeTerminos();
+	std::cout<<"generarIndiceDePesosGlobales......... OK"<<std::endl;
+	std::list<uint32_t> listaIdDocumentos = controladorBiblioteca->recuperarLibrosDeBiblioteca();
+	std::list<uint32_t>::iterator it_idDocumentos;
+
+	for (it_idDocumentos = listaIdDocumentos.begin(); it_idDocumentos != listaIdDocumentos.end(); it_idDocumentos++)
+	{
+		uint32_t idDocumento = (*it_idDocumentos);
+
+		VectorDeDocumento* vectorDocumento = this->cargarVectorDeTerminos(idDocumento);
+
+		std::cout<<"####Tamanio VectorDocumento: "<<vectorDocumento->size()<<std::endl;
+
+		//Esta norma recibe la coma corrida dos lugares a la derecha, para almacenar dos decimales en un entero.
+		//Al leer se corre de nuevo la coma y se recuperan los dos decimales.
+		float normaDocumentoReal = this->calcularNormaVectorDeTerminos( vectorDocumento );
+
+		uint32_t normaDocumento = ServiceClass::floatToUint32t(normaDocumentoReal);
+
+		std::cout<<"NormaDocumento: "<<normaDocumentoReal<<std::endl;
+
+		//Insertamos el par ID Doc / Norma Doc en el índice de normas...
+		std::string idDocumetoStr = ServiceClass::obtenerString(idDocumento);
+		std::pair<std::string, uint32_t> claveNormaDocumentoHash;
+		claveNormaDocumentoHash.first = idDocumetoStr;
+		claveNormaDocumentoHash.second = normaDocumento;
+		this->indiceNormasDocumentos->insertarClave(claveNormaDocumentoHash);
+
+		delete vectorDocumento;
+
+	}
 }
 
-float CalculadorDeNormas::calcularSimilitudConsultaDocumento(uint32_t idDocumento, std::list<uint32_t> consulta)
+float CalculadorDeNormas::calcularSimilitudConsultaDocumento(uint32_t idDocumento, std::list<Termino*>* consulta)
 {
 	VectorDeDocumento* vectorConsulta = this->cargarVectorDeTerminos(consulta);
+
+	std::cout<<"----------calculando producto interno..."<<std::endl;
+
 
 	VectorDeDocumento* vectorDocumento = this->cargarVectorDeTerminos(idDocumento);
 
 	float productoInterno = this->calcularProductoInterno(vectorDocumento, vectorConsulta);
 
+	std::cout<<"Producto Interno: "<<productoInterno<<std::endl;
 	//La norma del documento la leemos del indice, para ahorrar accesos a disco.
 	float productoDeNormas = this->obtenerNormaDocumentoDeIndice(idDocumento) * this->calcularNormaVectorDeTerminos(vectorConsulta);
 
