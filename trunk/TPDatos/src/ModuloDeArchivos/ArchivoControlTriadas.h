@@ -37,9 +37,10 @@ private:
 	ParserArchivoControlTriadas* parser;
 	string pathArchivoControlTriadas;
 	fstream archivoControlTriadas;
-	map<uint32_t,DatoControlTriada*>* datosControl;
-	map<uint32_t,DatoControlTriada*>::iterator it;
-	list<uint32_t>* offsets;
+	map<uint32_t, DatoControlTriada*>* datosControl;
+	map<uint32_t, DatoControlTriada*>::iterator it;
+	list<uint32_t>* offsetsTriadas;
+	list<uint32_t>* idLibrosInsertados;
 	bool datoEliminado;
 public:
 	ArchivoControlTriadas();
@@ -50,7 +51,8 @@ public:
 	void eliminarDatoControl(uint32_t idLibro);
 	DatoControlTriada* buscarEnMap(uint32_t idLIbro);
 
-	uint32_t buscarOffsetDondeEscribir(int cantidadTriadas, uint32_t sizeArchivo);
+	uint32_t buscarOffsetDondeEscribir(int cantidadTriadas,
+			uint32_t sizeArchivo);
 
 	void agregarDatoControl(DatoControlTriada* nuevo);
 
@@ -72,11 +74,14 @@ public:
 	 */
 	list<uint32_t>* getTriadas(uint32_t id_Libro);
 
+	/**
+	 * Devuelve la lista de todos los ids de libros que se almacenaron.
+	 */
+	list<uint32_t>* getIdLibrosAlmacenados();
+
 	void setDatoEliminado(bool e);
 
 	bool getDatoEliminado();
-
-
 
 	virtual ~ArchivoControlTriadas();
 };
