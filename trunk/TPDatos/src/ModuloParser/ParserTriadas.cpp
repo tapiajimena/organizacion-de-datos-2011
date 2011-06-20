@@ -9,8 +9,7 @@
 
 #include "ParserTriadas.h"
 
-ParserTriadas::ParserTriadas(string token) :
-	ParserAuxiliar(token) {
+ParserTriadas::ParserTriadas(string token) {
 	this->triadas = new list<Dato*> ();
 	this->it = this->triadas->begin();
 	this->contadorLinea = 0;
