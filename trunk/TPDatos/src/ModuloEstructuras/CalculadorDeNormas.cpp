@@ -380,9 +380,11 @@ VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(uint32_t idDocumen
 	//TODO sacar mock de testing.
 	//std::list<DatoTriada*>* listaDatoTriadas = this->controladorIndice->getControladorTriadas()->getTriadas(idDocumento);
 
+	//Testing de triadas.
 	MockControladorIndice* mock = new MockControladorIndice();
 	std::list<DatoTriada*>* listaDatoTriadas = mock->recuperarTriadasDeDocumento(idDocumento);
 	delete mock;
+
 
 	std::cout<<"Leo triadas de documento................."<<std::endl;
 
@@ -459,29 +461,6 @@ VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(std::list<Termino*
 	return vectorConsulta;
 }
 
-/*
-VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(std::list<uint32_t> ocurrenciasDeTerminos)
-{
-	VectorDeDocumento* vectorConsulta = new VectorDeDocumento();
-
-	std::list<uint32_t>::iterator it_terminos;
-
-	for(it_terminos = ocurrenciasDeTerminos.begin(); it_terminos != ocurrenciasDeTerminos.end(); it_terminos++)
-	{
-		if( vectorConsulta->find(*it_terminos) != vectorConsulta->end())
-		{
-			(*vectorConsulta)[*it_terminos]++;
-		}
-		else
-		{
-			(*vectorConsulta)[*it_terminos] = 1;
-		}
-	}
-
-	return vectorConsulta;
-}
-*/
-
 float CalculadorDeNormas::calcularNormaVectorDeTerminos(VectorDeDocumento* vectorDeTerminos)
 {
 	VectorDeDocumento::iterator it_vector;
@@ -535,7 +514,7 @@ float CalculadorDeNormas::calcularProductoInterno(VectorDeDocumento* vectorDocum
 	return productoInterno;
 }
 
-void CalculadorDeNormas::generarArchivoDeNormasDeDocumentos(ControladorBiblioteca* controladorBiblioteca)
+void CalculadorDeNormas::generarArchivoDeNormasDeDocumentos()//ControladorBiblioteca* controladorBiblioteca)
 {
 	//vaciamos el contenido desactualizado de los indices.
 	this->reiniciarIndices();
@@ -543,10 +522,11 @@ void CalculadorDeNormas::generarArchivoDeNormasDeDocumentos(ControladorBibliotec
 	//Generamos un indice con los pesos globales, que se van a usar intensivamente para la generacion de las normas.
 	this->generarIndiceDePesosGlobalesDeTerminos();
 	std::cout<<"generarIndiceDePesosGlobales......... OK"<<std::endl;
-	std::list<uint32_t> listaIdDocumentos = controladorBiblioteca->recuperarLibrosDeBiblioteca();
+	std::list<uint32_t>* listaIdDocumentos = this->controladorIndice->getControladorTriadas()->getLibrosAlmacenados();
+	//controladorBiblioteca->recuperarLibrosDeBiblioteca();
 	std::list<uint32_t>::iterator it_idDocumentos;
 
-	for (it_idDocumentos = listaIdDocumentos.begin(); it_idDocumentos != listaIdDocumentos.end(); it_idDocumentos++)
+	for (it_idDocumentos = listaIdDocumentos->begin(); it_idDocumentos != listaIdDocumentos->end(); it_idDocumentos++)
 	{
 		uint32_t idDocumento = (*it_idDocumentos);
 
