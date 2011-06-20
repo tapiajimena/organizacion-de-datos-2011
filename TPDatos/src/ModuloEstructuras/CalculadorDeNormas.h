@@ -21,7 +21,7 @@
 #include "../ModuloControladores/ControladorTriadas.h"
 #include "../ModuloControladores/ControladorIndice.h"
 //TODO sacar ControladorBiblioteca y usar a ControladorTriadas para obtener Ids de libros.
-#include "../ModuloControladores/ControladorBiblioteca.h"
+//#include "../ModuloControladores/ControladorBiblioteca.h"
 #include "../ModuloDeTipos/DatoTriada.h"
 #include "../ModuloDeIndices/Hash/Hash.h"
 #include "../ModuloDeTipos/Termino.h"
@@ -98,9 +98,6 @@ private:
 	//Genera un índice de tipo Hash con todos los pesos globales de los términos.
 	void generarIndiceDePesosGlobalesDeTerminos();
 
-	//Se usa para documentos y consultas por igual.
-	//VectorDeDocumento* cargarVectorDeTerminos(std::list<uint32_t> ocurrenciasDeTerminos);
-
 	//Toma una lista de elementos Termino* y carga un nuevo vector de documento
 	VectorDeDocumento* cargarVectorDeTerminos(std::list<Termino*>* listaTerminos);
 
@@ -128,7 +125,8 @@ public:
 	//... un documento y una consulta (la consulta se toma como documento de pocos terminos)
 	float calcularSimilitudConsultaDocumento(uint32_t idDocumento, std::list<Termino*>* consulta);
 
-	void generarArchivoDeNormasDeDocumentos(ControladorBiblioteca* controladorBiblioteca);
+	//TODO limpiar encabezado
+	void generarArchivoDeNormasDeDocumentos();//ControladorBiblioteca* controladorBiblioteca);
 
 	//Busca en el archivo de normas la norma del documento por id. Se debe haber generado el archivo de
 	//normas en una corrida anterior. Si el archivo de normas no existe o el idDocumento no está en él, devuelve cero.
