@@ -90,6 +90,10 @@ public:
 	 */
 	list<char>* chequearIndexado(uint32_t idLibro);
 
+	/**
+	 *
+	 */
+	bool estaEliminado(uint32_t idLibro);
 
 	/**
 	 * Elimina un libro a la biblioteca y su data de control en el archivo de control

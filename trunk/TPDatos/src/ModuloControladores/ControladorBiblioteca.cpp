@@ -24,11 +24,12 @@ ControladorBiblioteca::ControladorBiblioteca(string pathBiblioteca,
 }
 
 uint32_t ControladorBiblioteca::ingresarLibro(string pathLibro) {
-	uint32_t nuevoOffset;
+	uint32_t nuevoOffset = 0;
 	uint32_t sizeLibroIngresado = GetSizeArchivo(pathLibro);
 
 	if (sizeLibroIngresado > 0) {
 		/* Se actualiza la insercion en el archivo de control */
+		cout<<"EL SIZE ARCHIVO DE BIBLIOTECA ES: "<<arcLibro->getSizeArchivo()<<endl;
 		nuevoOffset = arcControl->registrarLibro(sizeLibroIngresado,
 				arcLibro->getSizeArchivo());
 
@@ -200,6 +201,10 @@ string ControladorBiblioteca::getPathControlBiblioteca() {
 
 string ControladorBiblioteca::getPathBiblioteca() {
 	return arcLibro->getPath();
+}
+
+bool ControladorBiblioteca::estaEliminado(uint32_t idLibro) {
+	return this->arcControl->estaEliminado(idLibro);
 }
 
 ControladorBiblioteca::~ControladorBiblioteca() {
