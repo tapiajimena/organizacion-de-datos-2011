@@ -15,10 +15,10 @@
 
 class ControladorTriadas {
 private:
-	ArchivoTriadas* 		arcTriadas;
-	ArchivoControlTriadas* 	arcControl;
-	list<DatoTriada*>* 		triadas;
-	uint32_t				offsetAEscribir;
+	ArchivoTriadas* arcTriadas;
+	ArchivoControlTriadas* arcControl;
+	list<DatoTriada*>* triadas;
+	uint32_t offsetAEscribir;
 public:
 	ControladorTriadas();
 	ControladorTriadas(string pathTriadas, string pathControlTriadas);
@@ -56,6 +56,8 @@ public:
 	 */
 	bool eliminarLibro(uint32_t offset);
 
+	void eliminarRegistro(uint32_t id_Libro);
+
 	/**
 	 * Devuelve todas las triadas de terminos pertenecientes a un libro.
 	 * @param id_Libro: id del libro del que se quieren obtener las triadas.
@@ -77,14 +79,18 @@ public:
 	DatoTriada* getTriada(uint32_t offsetTriada);
 
 	/**
+	 * Devuelve los ids de los libros que se encuentran almacenados.
+	 */
+	list<uint32_t>* getLibrosAlmacenados();
+
+	/**
 	 * Devuelve el offset donde se comenzaran a escribir las triadas
 	 * de un libro especifico.
 	 * @param cantidadTriadas: cantidad de triadas en el libro.
 	 */
-	uint32_t dondeEscribo(int cantidadTriadas, uint32_t idLibro);
+	uint32_t dondeEscribo(int cantidadTriadas);
 
 	uint32_t getSiguienteIdTriada();
-
 
 	/**
 	 * Devuelve el tamanio del archivo de triadas.
@@ -96,7 +102,6 @@ public:
 
 	void setDatoControlEliminado(bool e);
 	bool getDatoControlEliminado();
-
 
 	virtual ~ControladorTriadas();
 };

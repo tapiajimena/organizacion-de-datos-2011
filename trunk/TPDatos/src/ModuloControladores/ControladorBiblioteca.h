@@ -41,7 +41,7 @@ public:
 	 * agrega un libro a la biblioteca y su data de control en el archivo de control
 	 * @param pathLibro ruta del libro a agregar
 	 */
-	bool ingresarLibro(string pathLibro);
+	uint32_t ingresarLibro(string pathLibro);
 
 	/*
 	 *Devuelve un dato libro con el libro que se pidio.

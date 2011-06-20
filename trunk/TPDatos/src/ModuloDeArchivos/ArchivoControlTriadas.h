@@ -47,9 +47,10 @@ public:
 
 	void actualizarArchivo();
 	void eliminarLibro(uint32_t idLibro);
+	void eliminarDatoControl(uint32_t idLibro);
 	DatoControlTriada* buscarEnMap(uint32_t idLIbro);
 
-	uint32_t buscarOffsetDondeEscribir(int cantidadTriadas, uint32_t sizeArchivo, uint32_t idLibro);
+	uint32_t buscarOffsetDondeEscribir(int cantidadTriadas, uint32_t sizeArchivo);
 
 	void agregarDatoControl(DatoControlTriada* nuevo);
 

@@ -82,7 +82,7 @@ public:
 	uint32_t dondeEscribo(uint32_t sizeAlmacenar);
 
 	/**
-	 * Escribe en el registro de control que un libro se agregar en la
+	 * Escribe en el registro de control que un libro se agrega en la
 	 * biblioteca.
 	 *
 	 */

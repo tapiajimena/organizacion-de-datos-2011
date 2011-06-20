@@ -29,22 +29,22 @@ void ControladorTriadas::insertarTriada(DatoTriada* triada, uint32_t offset) {
 	this->arcTriadas->insertarNuevaTriada(triada, offset);
 }
 
-void ControladorTriadas::insertarDatosControlTriadas(DatoControlTriada* datoControlTriada) {
+void ControladorTriadas::insertarDatosControlTriadas(
+		DatoControlTriada* datoControlTriada) {
 	this->arcControl->agregarDatoControl(datoControlTriada);
 }
 
 uint32_t ControladorTriadas::getSiguienteIdTriada() {
-	this->offsetAEscribir += (sizeof(offsetAEscribir)*3);
+	this->offsetAEscribir += (sizeof(offsetAEscribir) * 3);
 	return this->offsetAEscribir;
 }
 
-uint32_t ControladorTriadas::dondeEscribo(int cantidadTriadas, uint32_t idLibro) {
+uint32_t ControladorTriadas::dondeEscribo(int cantidadTriadas) {
 	uint32_t sizeArchivo = getSizeArchivoTriadas();
 	if (sizeArchivo != 0) {
 		this->offsetAEscribir = this->arcControl->buscarOffsetDondeEscribir(
-				cantidadTriadas, sizeArchivo, idLibro);
-	}
-	else
+				cantidadTriadas, sizeArchivo);
+	} else
 		return 0;
 
 	return this->offsetAEscribir;
@@ -79,6 +79,10 @@ list<DatoTriada*>* ControladorTriadas::getTriadas(uint32_t id_Libro) {
 	return this->getTriadas(*(this->arcControl->getTriadas(id_Libro)));
 }
 
+list<uint32_t>* ControladorTriadas::getLibrosAlmacenados() {
+	;
+}
+
 bool ControladorTriadas::eliminarLibro(uint32_t offset) {
 	/* Actualiza el estado del archivo de control */
 	arcControl->eliminarLibro(offset);
@@ -89,15 +93,15 @@ bool ControladorTriadas::eliminarLibro(uint32_t offset) {
 			"Se actualiza el archivo de control.");
 }
 
+void ControladorTriadas::eliminarRegistro(uint32_t idLibro) {
+	this->arcControl->eliminarDatoControl(idLibro);
+}
 
-void ControladorTriadas::setDatoControlEliminado(bool e)
-{
+void ControladorTriadas::setDatoControlEliminado(bool e) {
 	return this->arcControl->setDatoEliminado(e);
 }
 
-
-bool ControladorTriadas::getDatoControlEliminado()
-{
+bool ControladorTriadas::getDatoControlEliminado() {
 	return this->arcControl->getDatoEliminado();
 }
 
