@@ -80,7 +80,7 @@ list<DatoTriada*>* ControladorTriadas::getTriadas(uint32_t id_Libro) {
 }
 
 list<uint32_t>* ControladorTriadas::getLibrosAlmacenados() {
-	;
+	return this->arcControl->getIdLibrosAlmacenados();
 }
 
 bool ControladorTriadas::eliminarLibro(uint32_t offset) {
