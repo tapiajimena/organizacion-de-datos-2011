@@ -344,6 +344,7 @@ uint32_t ArchivoControlLibro::registrarLibro(uint32_t size,
 	} else {
 		nuevoLibro->setId_Libro((calcularNuevoOffset(
 				buscado->getEspacioLibre(), size, id_Libro)));
+
 		nuevoLibro->setEspacioLibre(calcularNuevoEspacioLibre(
 				buscado->getEspacioLibre(), size));
 
@@ -357,7 +358,14 @@ uint32_t ArchivoControlLibro::registrarLibro(uint32_t size,
 				"Se agrega nuevo libro.");
 		Logger::log("ArchivoControlLibro", "registrarLibro",
 				ServiceClass::toString(nuevoLibro->getId_Libro()));
-		nuevoOffset = nuevoLibro->getId_Libro();
+		/*
+		cout<<"*****************ARC CTRL REGISTRAR LIBRO DONDE ESCRIBO: "<<id_Libro<<endl;
+		cout<<"*****************ARC CTRL REGISTRAR LIBRO SIZE A METER: "<<size<<endl;
+		cout<<"*****************ARC CTRL REGISTRAR LIBRO OFFSET: "<<nuevoLibro->getOffset()<<endl;
+		cout<<"*****************ARC CTRL REGISTRAR LIBRO ID LIBRO: "<<nuevoLibro->getId_Libro()<<endl;
+		cout<<"*****************ARC CTRL REGISTRAR LIBRO SIZE: "<<nuevoLibro->getSize()<<endl;
+		*/
+		nuevoOffset = id_Libro;
 	}
 
 	return nuevoOffset;

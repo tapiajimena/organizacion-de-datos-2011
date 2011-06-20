@@ -17,6 +17,8 @@ Instruccion_TomarTexto::Instruccion_TomarTexto(char id, string pathLibro) :
 
 void Instruccion_TomarTexto::ejecutar() {
 	long int idUltimoLibro = 0;
+	uint32_t idLibroAsignado = 0;
+
 	Configuracion* conf = Configuracion::GetInstancia();
 
 	this->controladorBiblioteca = new ControladorBiblioteca(
@@ -27,9 +29,10 @@ void Instruccion_TomarTexto::ejecutar() {
 
 	idUltimoLibro = this->controladorBiblioteca->getSizeBiblioteca();
 
-	this->controladorBiblioteca->ingresarLibro(this->libroNuevo);
+	idLibroAsignado = this->controladorBiblioteca->ingresarLibro(this->libroNuevo);
 
-	DatoLibro* datoUltimoLibro = new DatoLibro(this->controladorBiblioteca->recuperarLibro(idUltimoLibro));
+
+	DatoLibro* datoUltimoLibro = new DatoLibro(this->controladorBiblioteca->recuperarLibro(idLibroAsignado));
 
 	Logger::log("Instruccion_TomarTexto", "ejecutar",
 			"Se toma el archivo correspondiente.");
@@ -40,7 +43,7 @@ void Instruccion_TomarTexto::ejecutar() {
 
 	pair<Libro*,uint32_t> parLibroOffset;
 	parLibroOffset.first	= libroUltimo;
-	parLibroOffset.second	= idUltimoLibro;
+	parLibroOffset.second	= idLibroAsignado;
 	controladorIndice->nuevoIndiceOcurrenciaTerminos();
 	controladorIndice->indexar(parLibroOffset,INDICE_OCURRENCIA_TERMINOS);
 

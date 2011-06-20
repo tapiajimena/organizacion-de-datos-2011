@@ -282,145 +282,12 @@ struct comparador_triadas {
 };
 
 void ControladorIndice::consultarPorOcurrenciaTerminos(string consulta) {
+	list<DatoTriada*>* triadas = this->recuperarTriadas(consulta);
 
-	//ordenados por apararición en la consulta
-	list<Termino*> terminosDeLaConsulta;
-	list<Termino*>::const_iterator it_terminoDeLaConsulta;
-
-//	list<DatoTriada> mockDatoTriada;
-
-	char * cstr, *pch;
-	string str = consulta;
-
-	cstr = new char[str.size() + 1];
-	strcpy(cstr, str.c_str());
-
-	pch = strtok(cstr, " ,.-");
-	Termino* terminoAux = NULL;
-
-	while (pch != NULL) {
-		//terminoAux = new Termino(pch, recuperarTriadas(pch));
-		terminosDeLaConsulta.push_back(terminoAux);
-		pch = strtok(NULL, " ,.-");
-	}
-	delete[] cstr;
-
-	list<uint32_t> librosResultado;
-	list<uint32_t>::const_iterator it_libroResultado;
-
-	//cargo la lista de libros resultado
-	list<uint32_t> aux;
-	for (it_terminoDeLaConsulta = terminosDeLaConsulta.begin(); it_terminoDeLaConsulta
-			!= terminosDeLaConsulta.end(); ++it_terminoDeLaConsulta)
-	{
-		aux = (*it_terminoDeLaConsulta)->obtenerLibros();
-		for (it_libroResultado = aux.begin();it_libroResultado != aux.end();++it_libroResultado)
-			librosResultado.push_back((*it_libroResultado));
-	}
-	librosResultado.sort();
-	librosResultado.unique();
-
-	//para la busqueda por proximidad
-	list<uint32_t> librosBusquedaPorProximidad;
-	list<uint32_t>::const_iterator it_libroBusquedaPorProximidad;
-
-	//para la busqueda por pesos
-	list<uint32_t> librosBusquedaPorPeso;
-	list<uint32_t>::const_iterator it_libroBusquedaPorPeso;
-
-	bool libroContieneTodosLosTerminosDeLaConsulta = true;
-	for (it_libroResultado = librosResultado.begin(); it_libroResultado
-			!= librosResultado.end(); ++it_libroResultado) {
-
-		libroContieneTodosLosTerminosDeLaConsulta = true;
-		for (it_terminoDeLaConsulta = terminosDeLaConsulta.begin(); it_terminoDeLaConsulta
-				!= terminosDeLaConsulta.end(); ++it_terminoDeLaConsulta) {
-			libroContieneTodosLosTerminosDeLaConsulta
-					= (*it_terminoDeLaConsulta)->estaEnLibro(
-							(*it_libroResultado));
-		}
-
-		if (libroContieneTodosLosTerminosDeLaConsulta) {
-			librosBusquedaPorProximidad.push_back((*it_libroResultado));
-		} else {
-			librosBusquedaPorPeso.push_back((*it_libroResultado));
-		}
-
-	}
-
-	list<TriadaConsultaPorProximidad*> triadasDeProximidad;
-
-	list<PosicionesMasProximasTermino*> posicionesMasProximasTerminos;
-	list<PosicionesMasProximasTermino*>::const_iterator
-			it_posicionesMasProximasTermino;
-
-	TriadaConsultaPorProximidad* triadaDeProximidad;
-	PosicionesMasProximasTermino* posicionesMasProximasTermino;
-	Termino* terminoAnterior = NULL;
-	Termino* terminoPosterior = NULL;
-	long proximidad = 0;
-	int cantidadDeTerminosEnOrden = 0;
-	long posicionMasProximaTerminoAnteriorActual = 0;
-	long posicionMasProximaTerminoPosteriorActual = 0;
-	for (it_libroBusquedaPorProximidad = librosBusquedaPorProximidad.begin(); it_libroBusquedaPorProximidad
-			!= librosBusquedaPorProximidad.end(); ++it_libroBusquedaPorProximidad) {
-
-		proximidad = 0;
-		cantidadDeTerminosEnOrden = 0;
-		posicionesMasProximasTerminos.clear();
-
-		for (it_terminoDeLaConsulta = ++terminosDeLaConsulta.begin(); it_terminoDeLaConsulta
-				!= --terminosDeLaConsulta.end(); ++it_terminoDeLaConsulta) {
-			terminoPosterior = (*(++it_terminoDeLaConsulta));
-			--it_terminoDeLaConsulta;
-			terminoAnterior = (*(--it_terminoDeLaConsulta));
-			++it_terminoDeLaConsulta;
-			posicionesMasProximasTermino
-					= (*it_terminoDeLaConsulta)->obtenerMejoresPosiciones(
-							(*it_libroBusquedaPorProximidad),
-							(Termino*) terminoAnterior,
-							(Termino*) terminoPosterior);
-
-			posicionesMasProximasTerminos.push_back(
-					posicionesMasProximasTermino);
-		}
-
-		triadaDeProximidad = new TriadaConsultaPorProximidad;
-		triadaDeProximidad->id_libro = (*it_libroBusquedaPorProximidad);
-		triadaDeProximidad->cantidadDeTerminosEnOrden = 0;
-		triadaDeProximidad->proximidad = 0;
-		for (it_posicionesMasProximasTermino
-				= posicionesMasProximasTerminos.begin(); it_posicionesMasProximasTermino
-				!= posicionesMasProximasTerminos.end(); ++it_posicionesMasProximasTermino) {
-			posicionMasProximaTerminoAnteriorActual
-					= (*it_posicionesMasProximasTermino)->posicionMasProximaTerminoPosterior;
-			posicionMasProximaTerminoPosteriorActual
-					= (*it_posicionesMasProximasTermino)->posicionMasProximaTerminoAnterior;
-			if (posicionMasProximaTerminoPosteriorActual != -1
-					&& posicionMasProximaTerminoAnteriorActual != -1) {
-				triadaDeProximidad->proximidad
-						+= posicionMasProximaTerminoPosteriorActual
-								- posicionMasProximaTerminoAnteriorActual;
-				triadaDeProximidad->cantidadDeTerminosEnOrden += 1;
-			} else if (posicionMasProximaTerminoAnteriorActual == -1) {
-				triadaDeProximidad->proximidad
-						+= posicionMasProximaTerminoPosteriorActual
-								- posicionMasProximaTerminoAnteriorActual;
-			} else {
-				triadaDeProximidad->proximidad
-						+= posicionMasProximaTerminoAnteriorActual
-								- posicionMasProximaTerminoPosteriorActual;
-			}
-		}
-		triadasDeProximidad.push_back(triadaDeProximidad);
-	}
-
-	// imprimo el resultado de los libros por proximidad
-	triadasDeProximidad.sort(comparador_triadas());
-	for (list<TriadaConsultaPorProximidad*>::const_iterator ci =
-			triadasDeProximidad.begin(); ci != triadasDeProximidad.end(); ++ci) {
-		cout << "Id_Libro: " << (*ci)->id_libro << endl;
-	}
+	cout<<"LA TRIADA PRIMERA id: "<<((DatoTriada*)triadas->front())->getId()<<endl;
+	cout<<"LA TRIADA PRIMERA idLibro: "<<((DatoTriada*)triadas->front())->getIdLibro()<<endl;
+	cout<<"LA TRIADA PRIMERA idTermino: "<<((DatoTriada*)triadas->front())->getIdTermino()<<endl;
+	cout<<"LA TRIADA PRIMERA posicion: "<<((DatoTriada*)triadas->front())->getPosicion()<<endl;
 }
 
 void ControladorIndice::indexarPorAutorOEditorial(
@@ -514,24 +381,23 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 	cout << "inicialmente... el OFFSETAESCRIOBIR esta en: " << offsetAEscribir << endl;
 
 	vector<string> ocurrenciasTerminos =parLibroOffset.first->getOcurrenciasDeTerminos();
-	offsetAEscribir = controlTriadas->dondeEscribo(ocurrenciasTerminos.size(), parLibroOffset.second);
+	offsetAEscribir = controlTriadas->dondeEscribo(ocurrenciasTerminos.size());
 
 	cout << "se calcula OFFSETAESCRIOBIR con donde escribo la primera vez: " << offsetAEscribir << endl;
 
-	//si no se encontro ningun eliminado se actualiza. Sino no.
-	if (!controlTriadas->getDatoControlEliminado())
-	{
-		/* Se arma el dato de control */
-		int sizeRegistroFijo = sizeof(offsetAEscribir)*3;
-		datoControlTriada->setIdLibro(parLibroOffset.second);
-		datoControlTriada->setIdTriadaFinal(ocurrenciasTerminos.size()*sizeRegistroFijo + offsetAEscribir);
-		if (offsetAEscribir == 0)
-			datoControlTriada->setIdTriadaInicial(offsetAEscribir);
-		else
-			datoControlTriada->setIdTriadaInicial(offsetAEscribir+ sizeRegistroFijo);
-	}
+	/* Si se esta guardando en espacio previamente ocupado */
+	if(offsetAEscribir < this->controlTriadas->getSizeArchivoTriadas()) {
+		cout << "estoy guardando el nuevo grupo de triadas en un lugar previamente ocupado." << endl;
+		cout << "elimino el idLibro: " << this->controlTriadas->getTriada(offsetAEscribir)->getIdLibro() << endl;
+		this->controlTriadas->eliminarRegistro(this->controlTriadas->getTriada(offsetAEscribir)->getIdLibro());
 
-	datoControlTriada->setEliminado(false);
+	}
+		 /*Se arma el dato de control*/
+			int sizeRegistroFijo = sizeof(offsetAEscribir)*3;
+			datoControlTriada->setIdLibro(parLibroOffset.second);
+			datoControlTriada->setIdTriadaInicial(offsetAEscribir);
+			datoControlTriada->setIdTriadaFinal(datoControlTriada->getIdTriadaInicial() + (ocurrenciasTerminos.size()-1)*sizeRegistroFijo);
+			datoControlTriada->setEliminado(false);
 
 	vector<string>::iterator it;
 	for (it = ocurrenciasTerminos.begin(); it != ocurrenciasTerminos.end(); it++)
@@ -561,17 +427,7 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 		triada->setIdLibro(parLibroOffset.second);
 		triada->setIdTermino(registroHash.second);
 		triada->setPosicion(posicionRelativaTermino);
-		//controlTriadas->insertarTriadaAlFinal(triada);
-
 		controlTriadas->insertarTriada(triada, offsetAEscribir);
-
-		cout<<"se inserto la triada en OFFSET A ESCRIBIR: "<<offsetAEscribir<<endl;
-		cout<<"INSERTA TRIADA palabra: "<<termino<<endl;
-		cout<<"INSERTA TRIADA idLibro: "<<parLibroOffset.second<<endl;
-		cout<<"INSERTA TRIADA idTermino: "<<registroHash.second<<endl;
-		cout<<"INSERTA TRIADA pos: "<<posicionRelativaTermino<<endl<<endl;
-		//cout<<"ID DE TRIADA: "<<controlTriadas->getSizeArchivoTriadas()<<endl;
-
 
 		//se inserta el termino en el arbol
 		this->indiceArbol->insert(
@@ -583,12 +439,7 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 		posicionRelativaTermino++;
 	}
 
-	//si no se encontro ningun eliminado se actualiza. Sino no.
-	if (!controlTriadas->getDatoControlEliminado())
-		controlTriadas->insertarDatosControlTriadas(datoControlTriada);
-	else
-		cout<<"SE INSERTA UN DATO CONTROL TRIADA SOBRE UN ELIMINADO: "<< datoControlTriada;
-
+	controlTriadas->insertarDatosControlTriadas(datoControlTriada);
 	controlTriadas->actualizarArchivoDeControl();
 
 	idArchivoTriadasFinal = controlTriadas->getSizeArchivoTriadas();

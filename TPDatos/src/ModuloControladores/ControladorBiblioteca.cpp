@@ -23,12 +23,13 @@ ControladorBiblioteca::ControladorBiblioteca(string pathBiblioteca,
 			"Se cargan los libros.");
 }
 
-bool ControladorBiblioteca::ingresarLibro(string pathLibro) {
+uint32_t ControladorBiblioteca::ingresarLibro(string pathLibro) {
+	uint32_t nuevoOffset;
 	uint32_t sizeLibroIngresado = GetSizeArchivo(pathLibro);
 
 	if (sizeLibroIngresado > 0) {
 		/* Se actualiza la insercion en el archivo de control */
-		uint32_t nuevoOffset = arcControl->registrarLibro(sizeLibroIngresado,
+		nuevoOffset = arcControl->registrarLibro(sizeLibroIngresado,
 				arcLibro->getSizeArchivo());
 
 		Logger::log("ControladorBiblioteca", "ingresarLibro",
@@ -54,6 +55,11 @@ bool ControladorBiblioteca::ingresarLibro(string pathLibro) {
 				"El libro a ingresar no existe, verifique.");
 		cout << "El libro a ingresar no existe, verifique. " << endl;
 	}
+
+
+	//FIXME preguntar porque el nuevo offset llega el valor del idLibro siguiente en una eliminacion
+	return nuevoOffset;
+
 }
 
 bool ControladorBiblioteca::eliminarLibro(uint32_t offset) {
