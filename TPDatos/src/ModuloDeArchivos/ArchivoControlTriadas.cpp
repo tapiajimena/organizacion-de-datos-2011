@@ -61,7 +61,7 @@ uint32_t ArchivoControlTriadas::buscarOffsetDondeEscribir(int cantidadTriadas,
 
 			/* Si ese espacio esta eliminado y ademas los nuevos datos caben en el espacio libre */
 			if (((*it).second)->estaBorrado() && (espacioRango > 0
-					&& espacioRango <= cantidadTriadas)) {
+					&& espacioRango >= cantidadTriadas)) {
 
 				cout << "SI entra en el espacio del libro:"
 						<< ((*it).second)->getIdLibro() << endl;
@@ -175,5 +175,27 @@ bool ArchivoControlTriadas::getDatoEliminado() {
 }
 
 ArchivoControlTriadas::~ArchivoControlTriadas() {
-	//TODO
+	Logger::log("ArchivoControlTriada", "~ArchivoControlTriadas",
+			"Se elimina el ArchivoControlTriadas.");
+
+	Cerrar(this->archivoControlTriadas);
+
+	for(it = datosControl->begin(); it != datosControl->end(); it++)
+		delete((*it).second);
+	delete(datosControl);
+
+	delete(offsetsTriadas);
+	delete(idLibrosInsertados);
+	delete(parser);
 }
+
+
+
+
+
+
+
+
+
+
+

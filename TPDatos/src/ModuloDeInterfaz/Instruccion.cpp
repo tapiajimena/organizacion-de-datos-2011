@@ -20,5 +20,5 @@ void Instruccion::setIDInstruccion(char idInstruccion) {
 }
 
 Instruccion::~Instruccion() {
-	// TODO Auto-generated destructor stub
+
 }

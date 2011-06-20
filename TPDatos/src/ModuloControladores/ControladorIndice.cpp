@@ -292,7 +292,6 @@ void ControladorIndice::consultarPorOcurrenciaTerminos(string consulta) {
 
 void ControladorIndice::indexarPorAutorOEditorial(
 		pair<Libro*, uint32_t> parLibroOffset, bool autor) {
-	//FIXME revisar que no siempre se este insertando el autor
 	CaseFoldedString caseFold;
 
 	if (autor)
@@ -392,12 +391,13 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 		this->controlTriadas->eliminarRegistro(this->controlTriadas->getTriada(offsetAEscribir)->getIdLibro());
 
 	}
-		 /*Se arma el dato de control*/
-			int sizeRegistroFijo = sizeof(offsetAEscribir)*3;
-			datoControlTriada->setIdLibro(parLibroOffset.second);
-			datoControlTriada->setIdTriadaInicial(offsetAEscribir);
-			datoControlTriada->setIdTriadaFinal(datoControlTriada->getIdTriadaInicial() + (ocurrenciasTerminos.size()-1)*sizeRegistroFijo);
-			datoControlTriada->setEliminado(false);
+
+	/*Se arma el dato de control*/
+	int sizeRegistroFijo = sizeof(offsetAEscribir)*3;
+	datoControlTriada->setIdLibro(parLibroOffset.second);
+	datoControlTriada->setIdTriadaInicial(offsetAEscribir);
+	datoControlTriada->setIdTriadaFinal(datoControlTriada->getIdTriadaInicial() + (ocurrenciasTerminos.size()-1)*sizeRegistroFijo);
+	datoControlTriada->setEliminado(false);
 
 	vector<string>::iterator it;
 	for (it = ocurrenciasTerminos.begin(); it != ocurrenciasTerminos.end(); it++)
@@ -420,6 +420,8 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 		} else
 			registroHash.second = resultadoBusqueda.front();
 
+		cout<<"SE TIENEN LOS ID TERMINOS : "<<registroHash.second<<endl;
+		cout<<"SE TIENEN LOS TERMINOS : "<<registroHash.first<<endl<<endl;
 		Logger::log("ControladorIndice", "indexarPorOcurrenciaTerminos",
 				"Se indexan las triadas en arbol y archivos.");
 

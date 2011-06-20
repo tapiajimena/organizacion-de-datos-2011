@@ -10,7 +10,6 @@
 #include "Instruccion_ProcesarEditorial.h"
 
 Instruccion_ProcesarEditorial::Instruccion_ProcesarEditorial(char id) : Instruccion(id) {
-	// TODO Auto-generated constructor stub
 
 }
 
@@ -27,5 +26,5 @@ void Instruccion_ProcesarEditorial::ejecutar(){
 }
 
 Instruccion_ProcesarEditorial::~Instruccion_ProcesarEditorial() {
-	// TODO Auto-generated destructor stub
+
 }

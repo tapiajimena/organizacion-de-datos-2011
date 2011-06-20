@@ -10,7 +10,6 @@
 #include "Instruccion_ProcesarPalabras.h"
 
 Instruccion_ProcesarPalabras::Instruccion_ProcesarPalabras(char id) : Instruccion(id) {
-	// TODO Auto-generated constructor stub
 
 }
 
@@ -23,10 +22,9 @@ void Instruccion_ProcesarPalabras::ejecutar(){
 	Logger::log("Instruccion_ProcesarPalabras", "ejecutar",
 			"Se indexa por palabras.");
 
-
 	delete(indexador);
 }
 
 Instruccion_ProcesarPalabras::~Instruccion_ProcesarPalabras() {
-	// TODO Auto-generated destructor stub
+
 }

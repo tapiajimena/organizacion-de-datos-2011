@@ -10,7 +10,7 @@
 #include "DatoTriada.h"
 
 DatoTriada::DatoTriada() {
-	// TODO Auto-generated constructor stub
+
 }
 
 DatoTriada::DatoTriada(DatoTriada* d) {
@@ -52,5 +52,5 @@ void DatoTriada::setPosicion(long posicion) {
 }
 
 DatoTriada::~DatoTriada() {
-	// TODO Auto-generated destructor stub
+
 }

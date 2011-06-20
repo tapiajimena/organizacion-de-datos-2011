@@ -114,6 +114,9 @@ uint32_t ControladorTriadas::getSizeArchivoTriadas() {
 }
 
 ControladorTriadas::~ControladorTriadas() {
-	delete (arcTriadas);
+	Logger::log("ControladorTriadas", "~ControladorTriadas",
+			"Se cierra el archivo de control.");
+
 	delete (arcControl);
+	delete (arcTriadas);
 }

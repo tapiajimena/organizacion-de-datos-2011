@@ -397,7 +397,6 @@ void ArchivoControlLibro::setLibros(map<uint32_t, DatoControlLibro*> *libros) {
 }
 
 ArchivoControlLibro::~ArchivoControlLibro() {
-	// TODO Auto-generated destructor stub
 	Logger::log("ArchivoControlLibro", "~ArchivoControlLibro",
 			"Se cierra el archivo de control.");
 

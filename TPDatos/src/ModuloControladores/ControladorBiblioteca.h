@@ -30,21 +30,21 @@ private:
 public:
 	ControladorBiblioteca();
 
-	/*
-	 * crea el ArchivoLibro y su archivo de control, con los path indicados.
+	/**
+	 * Crea el ArchivoLibro y su archivo de control, con los path indicados.
 	 * @param pathBiblioteca path del archivo de biblioteca
 	 * @param pathControlBiblioteca path de control de la biblioteca
 	 */
 	ControladorBiblioteca(string pathBiblioteca, string pathControlBiblioteca);
 
-	/*
-	 * agrega un libro a la biblioteca y su data de control en el archivo de control
+	/**
+	 * Agrega un libro a la biblioteca y su data de control en el archivo de control
 	 * @param pathLibro ruta del libro a agregar
 	 */
 	uint32_t ingresarLibro(string pathLibro);
 
-	/*
-	 *Devuelve un dato libro con el libro que se pidio.
+	/**
+	 * Devuelve un dato libro con el libro que se pidio.
 	 * @param offset id del libro a recupertestControladorBiblioteca()ar
 	 */
 	DatoLibro recuperarLibro(uint32_t offset);
@@ -56,48 +56,46 @@ public:
 	 */
 	void registrarIndexadoArchivoControl(uint32_t idLibro, char tipoClave);
 
-	/*
-	 *Devuelve los idLibros que tiene la biblioteca
+	/**
+	 * Devuelve los idLibros que tiene la biblioteca
 	 */
 	list<uint32_t> recuperarLibrosDeBiblioteca();
 
-	/*
-	 *Actualiza el archivo de control
+	/**
+	 * Actualiza el archivo de control
 	 */
 	void actualizarArchivoDeControl();
 
-	/*
-	 * devuelve los libros no indexados por ese indice
+	/**
+	 * Devuelve los libros no indexados por ese indice
 	 * @param tipoIndice A E T P
 	 */
 	list<uint32_t> recuperarLibrosNoIndexadosPor(char tipoIndice);
 
-	/*
+	/**
 	 * Devuelve un libro con sus atributos cargados
 	 */
 	Libro* cargarNuevoLibroParseado(uint32_t idLibro);
 
 
-	/*
-	 *
-	 * deberia recorrer a lista e ir insertando el tag en el archvio de control
+	/**
+	 * Recorre la lista e inserta el tag en el archvio de control
 	 */
 	void registrarIndexado(list<DatoLibro> dLibros);
 
 
-	/*
-	 *
+	/**
+	 * Devuelve el tipo de indexacion del libro de id idLibro
+	 * @param idLibro libro del cual se quiere saber los indices
 	 */
 	list<char>* chequearIndexado(uint32_t idLibro);
 
 
-	/*
-	 * elimina un libro a la biblioteca y su data de control en el archivo de control
+	/**
+	 * Elimina un libro a la biblioteca y su data de control en el archivo de control
 	 * @param offset id del libro a eliminar
 	 */
 	bool eliminarLibro(uint32_t offset);
-
-	//TODO cantidadDeLibros()
 
 	long int getSizeBiblioteca();
 	string getPathBiblioteca();

@@ -10,7 +10,6 @@
 #include "DatoControlTriada.h"
 
 DatoControlTriada::DatoControlTriada() {
-	// TODO Auto-generated constructor stub
 
 }
 
@@ -80,5 +79,5 @@ void DatoControlTriada::borrarLibro() {
 }
 
 DatoControlTriada::~DatoControlTriada() {
-	// TODO Auto-generated destructor stub
+
 }

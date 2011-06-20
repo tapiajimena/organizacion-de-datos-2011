@@ -104,10 +104,6 @@ FrontCodedString* FrontCodedString::frontCode(string* palabraAnterior,
 
 }
 
-FrontCodedString::~FrontCodedString() {
-	// TODO Auto-generated destructor stub
-}
-
 short int FrontCodedString::getCantidadLetrasPalabraActual() const {
 	return cantidadLetrasPalabraActual;
 }
@@ -134,3 +130,6 @@ void FrontCodedString::setPalabraEncodeada(string palabraEncodeada) {
 	this->palabraEncodeada = palabraEncodeada;
 }
 
+FrontCodedString::~FrontCodedString() {
+
+}

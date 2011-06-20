@@ -30,6 +30,7 @@ void Instruccion_ListarArchivosTomados::getLibro(uint32_t idLibro)
 	cout<<"CANTIDAD PALABRAS REGISTRADAS: "<<libro->getPalabrasClave()->size()<<endl<<endl;
 
 	delete(libro);
+	delete(controladorBiblioteca);
 }
 
 
@@ -51,5 +52,5 @@ void Instruccion_ListarArchivosTomados::ejecutar(){
 }
 
 Instruccion_ListarArchivosTomados::~Instruccion_ListarArchivosTomados() {
-	// TODO Auto-generated destructor stub
+
 }

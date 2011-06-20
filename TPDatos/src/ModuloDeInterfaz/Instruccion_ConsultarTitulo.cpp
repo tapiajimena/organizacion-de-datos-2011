@@ -35,5 +35,5 @@ void Instruccion_ConsultarTitulo::ejecutar()
 }
 
 Instruccion_ConsultarTitulo::~Instruccion_ConsultarTitulo() {
-	// TODO Auto-generated destructor stub
+
 }

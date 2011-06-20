@@ -35,5 +35,5 @@ void Instruccion_ConsultarTerminosProximos::ejecutar()
 }
 
 Instruccion_ConsultarTerminosProximos::~Instruccion_ConsultarTerminosProximos() {
-	// TODO Auto-generated destructor stub
+
 }

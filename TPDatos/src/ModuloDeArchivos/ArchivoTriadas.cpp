@@ -12,7 +12,7 @@
 
 ArchivoTriadas::ArchivoTriadas(string path) {
 	this->pathArchivoTriadas = path;
-	this->triadas = new list<DatoTriada*> ();
+	this->triadas = new list<DatoTriada*>;
 
 	char* cstrPath = new char[path.size() + 1];
 	strcpy(cstrPath, path.c_str());
@@ -65,5 +65,11 @@ uint32_t ArchivoTriadas::devolverTamanio() {
 }
 
 ArchivoTriadas::~ArchivoTriadas() {
-	// TODO Auto-generated destructor stub
+	Logger::log("ArchivoTriadas", "~ArchivoTriadas",
+			"Se cierra el archivo de Triadas.");
+
+	if ((Existe(this->pathArchivoTriadas.c_str(),this->archivoTriadas))
+			&& (archivoTriadas.is_open()))
+		Cerrar(archivoTriadas);
+
 }

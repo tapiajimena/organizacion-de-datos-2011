@@ -56,10 +56,7 @@ uint32_t ControladorBiblioteca::ingresarLibro(string pathLibro) {
 		cout << "El libro a ingresar no existe, verifique. " << endl;
 	}
 
-
-	//FIXME preguntar porque el nuevo offset llega el valor del idLibro siguiente en una eliminacion
 	return nuevoOffset;
-
 }
 
 bool ControladorBiblioteca::eliminarLibro(uint32_t offset) {
