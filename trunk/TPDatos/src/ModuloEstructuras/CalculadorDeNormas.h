@@ -1,3 +1,4 @@
+
 /*
  *
  * CalculadorDeNormas.h
@@ -7,7 +8,7 @@
  *	Materia	: Organizacion de Datos (75.06) - FIUBA
  *
  *
- */
+ *
 
 #ifndef CALCULADORDENORMAS_H_
 #define CALCULADORDENORMAS_H_
@@ -133,4 +134,6 @@ public:
 	float obtenerNormaDocumentoIndexada();
 };
 
-#endif /* CALCULADORDENORMAS_H_ */
+#endif /* CALCULADORDENORMAS_H_
+*/
+

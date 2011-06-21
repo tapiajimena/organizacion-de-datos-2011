@@ -8,7 +8,7 @@
  *
  *
  */
-
+/*
 #include "CalculadorDeNormas.h"
 
 CalculadorDeNormas::CalculadorDeNormas(ControladorIndice* controladorIndice, ArchivoTerminos* archivoTerminos)
@@ -72,7 +72,11 @@ std::list<DatoTriada*>* CalculadorDeNormas::levantarTriadasDeTermino(uint32_t id
 {
 	//Esto es un acceso directo al archivo a traves de su offset-Id.
 
+<<<<<<< .mine
+	//TODO ...
+=======
 	std::string palabra = this->archivoTerminos->obtenerTermino(idTermino);
+>>>>>>> .r541
 
 	//TODO buscar triadas a traves de ConsultaIndice->ControladorTriadas()->obtenerTriadas(palabra);
 
@@ -480,6 +484,9 @@ float CalculadorDeNormas::calcularNormaVectorDeTerminos(VectorDeDocumento* vecto
 
 	return normaDocumento;
 }
+<<<<<<< .mine
+*/
+=======
 
 float CalculadorDeNormas::calcularProductoInterno(VectorDeDocumento* vectorDocumento1, VectorDeDocumento* vectorDocumento2)
 {
@@ -602,3 +609,4 @@ float CalculadorDeNormas::calcularSimilitudConsultaDocumento(uint32_t idDocument
 
 	return productoInterno / productoDeNormas;
 }
+>>>>>>> .r541
