@@ -12,11 +12,14 @@
 
 #include <stdint.h>
 #include <stdlib.h>
-#include <string>
+#include <string.h>
+#include <stdio.h>
 #include <vector>
 #include <iostream>
 #include "ManejadorArchivo.h"
 #include "../../Common/Constantes.h"
+
+using namespace std;
 
 class ArchivoTerminos {
 private:
@@ -32,13 +35,10 @@ public:
 
 	//El ID es el offset en el archivo del primer caracter del término en disco. Ingresa al archivo con
 	//ese offset y devuelve la cadena de caracteres desde esa posición hasta el primer FIN_DE_TERMINO (constante)
-	std::string obtenerTermino(uint32_t idTermino);
+	string obtenerTermino(uint32_t idTermino);
 
-	std::vector<uint32_t> obtenerListaDeIdTerminos();
 
-	std::vector<std::string> obtenerListaDeTerminos();
-
-	std::vector<std::pair<std::string, uint32_t> > obtenerTerminos();
+	vector<pair<string, uint32_t> > obtenerTerminos();
 
 };
 
