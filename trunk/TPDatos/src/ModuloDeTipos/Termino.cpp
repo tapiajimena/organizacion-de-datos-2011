@@ -1,24 +1,14 @@
-/*
- * Termino.cpp
- *
- *	Autor	: GRUPO 1 - Fernandez, Gallinal, Maraggi, Tapia
- *	Catedra	: SERVETTO-FERRER-FERNANDEZ
- *	Materia	: Organizacion de Datos (75.06) - FIUBA
- *
- *
- *
- *
- */
-
 #include "Termino.h"
 
 Termino::Termino() {
-	// TODO Auto-generated constructor stub
+
 }
 
 Termino::Termino(string nombre, list<DatoTriada*>* triadasDelTermino) {
 	this->nombre = nombre;
-	this->id_termino = triadasDelTermino->front()->getIdTermino();
+	if (triadasDelTermino->size() > 0){
+		this->id_termino = triadasDelTermino->front()->getIdTermino();
+	}
 	this->posicionesTerminoEnLibros = new list<PosicionTerminoEnLibro*>();
 	PosicionTerminoEnLibro* posicionTerminoEnLibro = NULL;
 
@@ -107,47 +97,34 @@ PosicionesMasProximasTermino* Termino::obtenerMejoresPosiciones(uint32_t id_libr
 
 	PosicionesMasProximasTermino* posicionesMasProximasTermino =
 			new PosicionesMasProximasTermino;
-	posicionesMasProximasTermino->posicionMasProximaTerminoAnterior = -1;
-	posicionesMasProximasTermino->posicionMasProximaTerminoPosterior = -1;
 
-	long posicionResultado = -1;
-
-	long posicionAnteriorMasProximaActual = 0;
-	long posicionPosteriorMasProximaActual = 0;
+	PosicionesMasProximasTermino* posicionesMasProximasTerminoActuales =
+			new PosicionesMasProximasTermino;
 
 	list<long>* posicionesEnLibro = this->obtenerPosicionesEnLibro(id_libro);
 	list<long>::const_iterator ci_posicionEnLibro;
 
+	bool primer = true;
 	for (ci_posicionEnLibro = posicionesEnLibro->begin();
 		ci_posicionEnLibro != posicionesEnLibro->end();
 			++ci_posicionEnLibro) {
-
-		posicionAnteriorMasProximaActual =
+			
+		posicionesMasProximasTerminoActuales->posicionMasProximaTerminoAnterior =
 			terminoAnterior->obtenerPosicionAnteriorMasProxima(id_libro, *ci_posicionEnLibro);
-		posicionPosteriorMasProximaActual =
+		posicionesMasProximasTerminoActuales->posicionMasProximaTerminoPosterior =
 			terminoPosterior->obtenerPosicionPosteriorMasProxima(id_libro, *ci_posicionEnLibro);
+		posicionesMasProximasTerminoActuales->posicionActualTermino = *ci_posicionEnLibro;
 
-		if (posicionResultado == -1) {
-			posicionesMasProximasTermino->posicionMasProximaTerminoAnterior
-					= posicionAnteriorMasProximaActual;
-			posicionesMasProximasTermino->posicionMasProximaTerminoPosterior
-					= posicionPosteriorMasProximaActual;
-			posicionResultado = *ci_posicionEnLibro;
-		} else {
-			if (((*ci_posicionEnLibro) - posicionAnteriorMasProximaActual + posicionPosteriorMasProximaActual - (*ci_posicionEnLibro))
-				< (posicionResultado - posicionesMasProximasTermino->posicionMasProximaTerminoAnterior
-					+ posicionesMasProximasTermino->posicionMasProximaTerminoPosterior - posicionResultado)) {
-
-				posicionesMasProximasTermino->posicionMasProximaTerminoAnterior
-						= posicionAnteriorMasProximaActual;
-				posicionesMasProximasTermino->posicionMasProximaTerminoPosterior
-						= posicionPosteriorMasProximaActual;
-				posicionResultado = *ci_posicionEnLibro;
-			}
+		if ((primer) || (*posicionesMasProximasTerminoActuales < *posicionesMasProximasTermino)) {
+			
+			*posicionesMasProximasTermino = *posicionesMasProximasTerminoActuales;
 		}
+		
+		primer = false;
 	}
-
+	
 	delete (posicionesEnLibro);
+	delete (posicionesMasProximasTerminoActuales);
 
 	return posicionesMasProximasTermino;
 
@@ -160,7 +137,7 @@ long Termino::obtenerPosicionAnteriorMasProxima(uint32_t id_libro,
 	for (ci_posicionTerminoEnLibro = this->posicionesTerminoEnLibros->begin(); ci_posicionTerminoEnLibro
 			!= this->posicionesTerminoEnLibros->end(); ++ci_posicionTerminoEnLibro) {
 		if (((*ci_posicionTerminoEnLibro)->id_libro == id_libro) &&
-			(((*ci_posicionTerminoEnLibro)->posicion < posicion) &&
+			(((*ci_posicionTerminoEnLibro)->posicion <= posicion) &&
 				((*ci_posicionTerminoEnLibro)->posicion > posicionAnteriorMasProxima))) {
 			posicionAnteriorMasProxima = (*ci_posicionTerminoEnLibro)->posicion;
 		}
@@ -176,22 +153,23 @@ long Termino::obtenerPosicionPosteriorMasProxima(uint32_t id_libro,
 	for (ci_posicionTerminoEnLibro = this->posicionesTerminoEnLibros->begin(); ci_posicionTerminoEnLibro
 			!= this->posicionesTerminoEnLibros->end(); ++ci_posicionTerminoEnLibro) {
 		if (((*ci_posicionTerminoEnLibro)->id_libro == id_libro) &&
-			(((*ci_posicionTerminoEnLibro)->posicion > posicion) &&
+			(((*ci_posicionTerminoEnLibro)->posicion >= posicion) &&
 				(((*ci_posicionTerminoEnLibro)->posicion < posicionPosteriorMasProxima) || (posicionPosteriorMasProxima == -1)))) {
 			posicionPosteriorMasProxima = (*ci_posicionTerminoEnLibro)->posicion;
 		}
 	}
-
+	
 	return posicionPosteriorMasProxima;
 }
 
 Termino::~Termino() {
-
+	
 	for (ci_posicionTerminoEnLibro = posicionesTerminoEnLibros->begin();
 		ci_posicionTerminoEnLibro != posicionesTerminoEnLibros->end();
 			++ci_posicionTerminoEnLibro){
 				delete (*ci_posicionTerminoEnLibro);
 	}
-
+	
 	delete (posicionesTerminoEnLibros);
 }
+
