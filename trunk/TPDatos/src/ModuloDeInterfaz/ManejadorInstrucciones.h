@@ -32,6 +32,9 @@
 #include "../ModuloDeInterfaz/Instruccion_ConsultarAutor.h"
 #include "../ModuloDeInterfaz/Instruccion_ConsultarEditorial.h"
 #include "../ModuloDeInterfaz/Instruccion_ConsultarTerminosProximos.h"
+#include "../ModuloDeInterfaz/Instruccion_ConsultarArchivoTerminos.h"
+#include "../ModuloDeInterfaz/Instruccion_ConsultarIndiceTerminos.h"
+#include "../ModuloDeInterfaz/Instruccion_ConsultarOcurrenciaPosicional.h"
 
 
 using namespace std;

@@ -88,6 +88,21 @@ void ManejadorInstrucciones::ejecutarInstruccion(char id) {
 			this->instruccion = new Instruccion_ConsultarTerminosProximos(CONSULTA_INDICE_PALABRAS,obtenerConsulta());
 			this->instruccion->ejecutar();
 		break;
+	case (CONSULTA_ARCHIVO_OCURRENCIA):
+			this->instruccion = new Instruccion_ConsultarOcurrenciaPosicional(CONSULTA_INDICE_PALABRAS,obtenerConsulta());
+			this->instruccion->ejecutar();
+		break;
+	case (CONSULTA_ARCHIVO_NORMAS):
+			this->instruccion = new Instruccion_ConsultarOcurrenciaPosicional(CONSULTA_ARCHIVO_NORMAS,obtenerConsulta());
+			this->instruccion->ejecutar();
+		break;
+	case (CONSULTA_ARCHIVO_TERMINOS):
+			this->instruccion = new Instruccion_ConsultarArchivoTerminos(CONSULTA_ARCHIVO_TERMINOS,obtenerConsulta());
+			this->instruccion->ejecutar();
+	case (CONSULTA_INDICE_TERMINOS):
+			this->instruccion = new Instruccion_ConsultarIndiceTerminos(CONSULTA_INDICE_TERMINOS,obtenerConsulta());
+			this->instruccion->ejecutar();
+		break;
 	default:
 		Logger::log("ManejadorInstrucciones", "ejecutarInstruccion",
 				"Comando no valido.");
@@ -113,9 +128,21 @@ char ManejadorInstrucciones::obtenerIDinstruccion(string id) {
 				else if (id[i + 2] == 'p')
 					idInstruccion =  CONSULTA_INDICE_PALABRAS;
 			}
+			else if((idInstruccion == 'v'))
+			{
+				string aux = obtenerConsulta();
+				if(aux == "-at")
+					idInstruccion =  CONSULTA_ARCHIVO_TERMINOS;
+				else if(aux == "-ani")
+					idInstruccion =  CONSULTA_ARCHIVO_NORMAS;
+				else if(aux == "-aop")
+					idInstruccion =  CONSULTA_ARCHIVO_OCURRENCIA;
+				else if(aux == "-li")
+					idInstruccion =  CONSULTA_INDICE_TERMINOS;
+			}
 		}
 	}
-
+	cout<<endl;
 	Logger::log("ManejadorInstrucciones", "obtenerIDInstruccion",
 			"Se codifica.");
 
