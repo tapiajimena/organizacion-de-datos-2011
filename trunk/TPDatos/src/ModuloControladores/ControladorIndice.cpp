@@ -35,6 +35,7 @@ ControladorIndice::ControladorIndice(string pathCarpeta) {
 }
 
 void ControladorIndice::nuevoIndiceAutor() {
+
 	this->indiceArbol = new BPlusTree(
 			pathCarpeta + ARCHIVO_INDICE_AUTOR + EXTENSION_ARCHIVO_INDICE,
 			SIZE_BLOQUE);
@@ -203,6 +204,7 @@ void ControladorIndice::consultarPorAutorOEditorial(string consulta) {
 
 	Logger::log("ControladorIndice", "consultarPorAutorOEditorial",
 			"Se busca la consulta");
+
 	encontrado = indiceArbol->find(new DatoElementoNodo(consultaCaseFold, 0));
 	if ((encontrado) && (encontrado->getClave() != "")
 			&& (consultaCaseFold.compare(encontrado->getClave()) == 0)) {
@@ -260,35 +262,6 @@ void ControladorIndice::consultarPorPalabras(string consulta) {
 	 }*/
 }
 
-typedef struct {
-	uint32_t id_libro;
-	long proximidad;
-	int cantidadDeTerminosEnOrden;
-} TriadaConsultaPorProximidad;
-
-struct comparador_triadas {
-	bool operator()(TriadaConsultaPorProximidad* primero,
-			TriadaConsultaPorProximidad* segundo) {
-		if (primero->cantidadDeTerminosEnOrden
-				< segundo->cantidadDeTerminosEnOrden) {
-			return true;
-		} else if (primero->cantidadDeTerminosEnOrden
-				> segundo->cantidadDeTerminosEnOrden) {
-			return false;
-		} else {
-			return (primero->proximidad < segundo->proximidad);
-		}
-	}
-};
-
-void ControladorIndice::consultarPorOcurrenciaTerminos(string consulta) {
-	list<DatoTriada*>* triadas = this->recuperarTriadas(consulta);
-
-	cout<<"LA TRIADA PRIMERA id: "<<((DatoTriada*)triadas->front())->getId()<<endl;
-	cout<<"LA TRIADA PRIMERA idLibro: "<<((DatoTriada*)triadas->front())->getIdLibro()<<endl;
-	cout<<"LA TRIADA PRIMERA idTermino: "<<((DatoTriada*)triadas->front())->getIdTermino()<<endl;
-	cout<<"LA TRIADA PRIMERA posicion: "<<((DatoTriada*)triadas->front())->getPosicion()<<endl;
-}
 
 void ControladorIndice::indexarPorAutorOEditorial(
 		pair<Libro*, uint32_t> parLibroOffset, bool autor) {
@@ -326,9 +299,6 @@ void ControladorIndice::indexarPorPalabras(
 		registroHash.first = aux;
 		registroHash.second = parLibroOffset.second;
 
-		//cout<<"Se envia Clave: "<<aux<<endl;
-		//cout<<"Se envia id: "<<parLibroOffset.second<<endl;
-
 		this->indiceHash->insertarClave(registroHash);
 	}
 }
@@ -355,6 +325,7 @@ list<DatoTriada*>* ControladorIndice::recuperarTriadas(string termino)
 	return triadas;
 }
 
+
 void ControladorIndice::indexarPorOcurrenciaTerminos(
 		pair<Libro*, uint32_t> parLibroOffset) {
 	string termino = "";
@@ -377,20 +348,12 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 
 	uint32_t offsetAEscribir = 0;
 
-	cout << "inicialmente... el OFFSETAESCRIOBIR esta en: " << offsetAEscribir << endl;
-
 	vector<string> ocurrenciasTerminos =parLibroOffset.first->getOcurrenciasDeTerminos();
 	offsetAEscribir = controlTriadas->dondeEscribo(ocurrenciasTerminos.size());
 
-	cout << "se calcula OFFSETAESCRIOBIR con donde escribo la primera vez: " << offsetAEscribir << endl;
-
 	/* Si se esta guardando en espacio previamente ocupado */
-	if(offsetAEscribir < this->controlTriadas->getSizeArchivoTriadas()) {
-		cout << "estoy guardando el nuevo grupo de triadas en un lugar previamente ocupado." << endl;
-		cout << "elimino el idLibro: " << this->controlTriadas->getTriada(offsetAEscribir)->getIdLibro() << endl;
+	if(offsetAEscribir < this->controlTriadas->getSizeArchivoTriadas())
 		this->controlTriadas->eliminarRegistro(this->controlTriadas->getTriada(offsetAEscribir)->getIdLibro());
-
-	}
 
 	/*Se arma el dato de control*/
 	int sizeRegistroFijo = sizeof(offsetAEscribir)*3;
@@ -420,8 +383,6 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 		} else
 			registroHash.second = resultadoBusqueda.front();
 
-		cout<<"SE TIENEN LOS ID TERMINOS : "<<registroHash.second<<endl;
-		cout<<"SE TIENEN LOS TERMINOS : "<<registroHash.first<<endl<<endl;
 		Logger::log("ControladorIndice", "indexarPorOcurrenciaTerminos",
 				"Se indexan las triadas en arbol y archivos.");
 
@@ -436,7 +397,6 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 				new DatoElementoNodo(termino,offsetAEscribir));
 
 		offsetAEscribir= controlTriadas->getSiguienteIdTriada();
-		cout << "se calcula el nuevo OFFSETAESCRIOBIR para la proxima triada dentro del mismo libro: " << offsetAEscribir << endl;
 
 		posicionRelativaTermino++;
 	}

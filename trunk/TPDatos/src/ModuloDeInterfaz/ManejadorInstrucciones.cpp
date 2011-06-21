@@ -114,7 +114,6 @@ char ManejadorInstrucciones::obtenerIDinstruccion(string id) {
 					idInstruccion =  CONSULTA_INDICE_PALABRAS;
 			}
 		}
-
 	}
 
 	Logger::log("ManejadorInstrucciones", "obtenerIDInstruccion",

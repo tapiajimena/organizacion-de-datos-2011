@@ -18,14 +18,19 @@ Instruccion_ConsultarTerminosProximos::Instruccion_ConsultarTerminosProximos(cha
 
 void Instruccion_ConsultarTerminosProximos::ejecutar()
 {
+	CaseFoldedString caseFold = CaseFoldedString();
 	Configuracion* conf = Configuracion::GetInstancia();
 	ConsultaIndice* consulta = new ConsultaIndice(conf->getPathCarpetaTrabajo());
 
 	Logger::log("Instruccion_ConsultarTerminosProximos", "ejecutar",
 			"Se ejecuta la consulta.");
 
-	cout<<"Se devuelven los datos por terminos proximos"<<endl;
-	consulta->consultarTerminosProximos(titulo);
+	cout<<"Se devuelven los datos por terminos proximos de "<<this->titulo<<endl;
+	if(consulta->esConsultable())
+		consulta->consultarTerminosProximos(caseFold.caseFoldWord(titulo));
+	else
+		cout<<MENSAJE_INDICE_NO_CONSULTABLE<<endl;
+
 
 	Logger::log("Instruccion_ConsultarTerminosProximos", "ejecutar",
 			"Se devuelve la consulta.");

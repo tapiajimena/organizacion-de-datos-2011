@@ -74,6 +74,21 @@ list<char>* ArchivoControlLibro::chequearIndexado(uint32_t idLibro) {
 	}
 }
 
+list<char>* ArchivoControlLibro::chequearIndexadoSinCarga(uint32_t idLibro) {
+	DatoControlLibro* datoBuscado = buscarEnMap(idLibro);
+
+	if (datoBuscado != NULL) {
+		Logger::log("ArchivoControlLibro", "chequearIndexado",
+				"El libro buscado esta indexado.");
+		return datoBuscado->getIndexado();
+	} else {
+		Logger::log("ArchivoControlLibro", "chequearIndexado",
+				"No se encuentra el libro buscado.");
+		return NULL;
+	}
+}
+
+
 string ArchivoControlLibro::getPathArchivoControlLibro() const {
 	return pathArchivoControlLibro;
 }
@@ -354,8 +369,6 @@ uint32_t ArchivoControlLibro::registrarLibro(uint32_t size,
 		Logger::log("ArchivoControlLibro", "registrarLibro",
 				"Se agrega nuevo libro al final.");
 		nuevoOffset = nuevoLibro->getId_Libro();
-		cout << "**********DEVUELVE FIN ARCHIVO*********" << endl;
-
 	} else {
 		nuevoLibro->setId_Libro(id_Libro);
 

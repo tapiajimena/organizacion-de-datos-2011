@@ -1,8 +1,10 @@
 /*
- * ParserDeOcurrenciasDeTerminos.h
+ * ParserDeOcurrencias.h
  *
- *  Created on: 15/06/2011
- *      Author: santi
+ *	Autor	: GRUPO 1 - Fernandez, Gallinal, Maraggi, Tapia
+ *	Catedra	: SERVETTO-FERRER-FERNANDEZ
+ *	Materia	: Organizacion de Datos (75.06) - FIUBA
+ *
  */
 
 #ifndef PARSERDEOCURRENCIASDETERMINOS_H_

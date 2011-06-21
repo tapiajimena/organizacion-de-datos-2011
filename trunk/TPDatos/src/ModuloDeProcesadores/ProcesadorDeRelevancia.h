@@ -19,6 +19,7 @@
 #include "../ModuloDeTipos/Termino.h"
 #include "../ModuloDeTipos/DuplaConsultaPorPeso.h"
 #include "../ModuloDeTipos/TriadaConsultaPorProximidad.h"
+//#include "../ModuloEstructuras/CalculadorDeNormas.h"
 
 #include <iostream>
 #include <list>

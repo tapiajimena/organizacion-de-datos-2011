@@ -37,6 +37,7 @@ using namespace std;
 class ControladorIndice
 {
 private:
+	bool					esConsultable;
 	Hash* 					indiceHash;
 	BPlusTree* 				indiceArbol;
 	ControladorTriadas* 	controlTriadas;
@@ -74,7 +75,6 @@ public:
 	void consultarPorAutorOEditorial(string consulta);
 	void consultarPorTitulo(string consulta);
 	void consultarPorPalabras(string consulta);
-	void consultarPorOcurrenciaTerminos(string consulta);
 
 	/*
 	 * Indexan en un indice Arbol el autor o editorial

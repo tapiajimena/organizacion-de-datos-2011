@@ -21,6 +21,11 @@ ConsultaIndice::ConsultaIndice()
 	controlBiblioteca = new ControladorBiblioteca(
 			pathCarpeta + ARCHIVO_BIBLIOTECA + EXTENSION_ARCHIVO_INDICE,
 			pathCarpeta + ARCHIVO_CONTROL_BIBLIOTECA);
+
+	if(controlBiblioteca->getSizeBiblioteca()>0)
+		consultable =true;
+	else
+		consultable = false;
 }
 
 ConsultaIndice::ConsultaIndice(string pathCarpeta)
@@ -31,6 +36,11 @@ ConsultaIndice::ConsultaIndice(string pathCarpeta)
 	controlBiblioteca = new ControladorBiblioteca(
 			pathCarpeta + ARCHIVO_BIBLIOTECA + EXTENSION_ARCHIVO_INDICE,
 			pathCarpeta + ARCHIVO_CONTROL_BIBLIOTECA);
+
+	if(controlBiblioteca->getSizeBiblioteca() > 0)
+		consultable =true;
+	else
+		consultable = false;
 }
 
 
@@ -54,39 +64,92 @@ void ConsultaIndice::crearTipoConsulta(char tipoConsulta, string consulta)
 	}
 }
 
-void ConsultaIndice::consultarAutor(string consulta)
+
+bool ConsultaIndice::validarEsConsultable(char tipoIndice)
+{
+	list<uint32_t> libros = controlBiblioteca->recuperarLibrosDeBiblioteca();
+	this->consultable = false;
+
+	list<uint32_t>::iterator it;
+	for(it=libros.begin(); it != libros.end(); ++it)
+	{
+		list<char>* indexados  = controlBiblioteca->chequearIndexadoSinCarga(*it);
+
+		if (indexados->empty())
+			this->consultable = false;
+		else
+		{
+			list<char>::iterator itIndexado;
+			for(itIndexado = indexados->begin();itIndexado != indexados->end(); itIndexado++)
+			{
+				if ((*itIndexado) == tipoIndice)
+					this->consultable = true;
+			}
+		}
+	}
+	return consultable;
+}
+
+
+bool ConsultaIndice::consultarAutor(string consulta)
 {
 	Logger::log("ConsultaIndice", "consultarAutor","Se accede al indice.");
-	controlIndice->nuevoIndiceAutor();
-	controlIndice->consultarPorAutorOEditorial(consulta);
+
+	if (validarEsConsultable(INDICE_AUTOR))
+	{
+		controlIndice->nuevoIndiceAutor();
+		controlIndice->consultarPorAutorOEditorial(consulta);
+		return true;
+	}
+	else
+		return false;
 }
 
-void ConsultaIndice::consultarEditorial(string consulta)
+bool ConsultaIndice::consultarEditorial(string consulta)
 {
 	Logger::log("ConsultaIndice", "consultarEditorial","Se accede al indice.");
-	controlIndice->nuevoIndiceEditorial();
-	controlIndice->consultarPorAutorOEditorial(consulta);
+	if(validarEsConsultable(INDICE_EDITORIAL))
+	{
+		controlIndice->nuevoIndiceEditorial();
+		controlIndice->consultarPorAutorOEditorial(consulta);
+	}
 }
 
 
-void ConsultaIndice::consultarTitulo(string consulta)
+bool ConsultaIndice::consultarTitulo(string consulta)
 {
-	controlIndice->nuevoIndiceTitulo();
-	controlIndice->consultarPorTitulo(consulta);
+	Logger::log("ConsultaIndice", "consultarTitulo","Se accede al indice.");
+	if(validarEsConsultable(INDICE_TITULO))
+	{
+		controlIndice->nuevoIndiceTitulo();
+		controlIndice->consultarPorTitulo(consulta);
+		return true;
+	}
+	else
+		return false;
 }
 
 
-void ConsultaIndice::consultarPalabras(string consulta)
+bool ConsultaIndice::consultarPalabras(string consulta)
 {
-	controlIndice->nuevoIndiceOcurrenciaTerminos();
-	controlIndice->consultarPorOcurrenciaTerminos(consulta);
+	/*
+	Logger::log("ConsultaIndice", "consultarPalabras","Se accede al indice.");
+	if(validarEsConsultable(INDICE_PALABRAS))
+	{
+		controlIndice->nuevoIndiceOcurrenciaTerminos();
+		controlIndice->consultarPorOcurrenciaTerminos(consulta);
+		return true;
+	}
+	else
+		return false;
+		*/
 }
 
 void ConsultaIndice::consultarTerminosProximos(string consulta)
 {
+	Logger::log("ConsultaIndice", "consultarTerminosProximos","Se accede al indice.");
 
-
-	cout<<"Datos a consultar Consulta: "<<consulta<<endl;
+	cout<<"Datos a consultar: "<<consulta<<endl;
 
 	Configuracion* conf = Configuracion::GetInstancia();
 	ControladorIndice* control = new ControladorIndice();
@@ -98,6 +161,7 @@ void ConsultaIndice::consultarTerminosProximos(string consulta)
 
 	Logger::log("ConsultaIndice", "consultarTerminosProximos","Se realiza la consulta");
 	proc->mostrarLibrosRelevantes(consulta);
+
 }
 
 
@@ -108,10 +172,9 @@ void ConsultaIndice::consultar(char tipoIndice, string consulta)
 	list<uint32_t> 			idLibros;
 	pair<Libro*,uint32_t>	parLibroOffset;
 
-
 	crearTipoConsulta(tipoIndice, consulta);
-
 }
+
 
 void ConsultaIndice::generarReporte(char tipoIndice, string nombreArchivo)
 {
@@ -123,6 +186,16 @@ void ConsultaIndice::generarReporte(char tipoIndice, string nombreArchivo)
 }
 
 
+bool ConsultaIndice::esConsultable() const
+{
+    return consultable;
+}
+
+
+void ConsultaIndice::setConsultable(bool consultable)
+{
+    this->consultable = consultable;
+}
 
 ConsultaIndice::~ConsultaIndice()
 {

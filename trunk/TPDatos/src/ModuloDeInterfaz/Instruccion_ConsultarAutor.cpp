@@ -18,14 +18,23 @@ Instruccion_ConsultarAutor::Instruccion_ConsultarAutor(char id, string consulta)
 
 void Instruccion_ConsultarAutor::ejecutar()
 {
+	CaseFoldedString caseFold = CaseFoldedString();
 	Configuracion* conf = Configuracion::GetInstancia();
 	ConsultaIndice* consulta = new ConsultaIndice(conf->getPathCarpetaTrabajo());
+
 
 	Logger::log("Instruccion_ConsultarAutor", "ejecutar",
 			"Se ejecuta la consulta.");
 
-	cout<<"Se devuelven los datos consultados de Autor: "<<endl;
-	consulta->consultarAutor(autor);
+	if(consulta->esConsultable())
+	{
+		if (consulta->consultarAutor(caseFold.caseFoldWord(autor)))
+			cout<<MENSAJE_CONSULTA_EXITOSA<<endl;
+		else
+			cout<<MENSAJE_INDICE_NO_CONSULTABLE_BIBLIOTECA_VACIA<<endl;
+	}
+	else
+		cout<<MENSAJE_INDICE_NO_CONSULTABLE_BIBLIOTECA_VACIA<<endl;
 
 
 	Logger::log("Instruccion_ConsultarAutor", "ejecutar",

@@ -29,7 +29,6 @@ uint32_t ControladorBiblioteca::ingresarLibro(string pathLibro) {
 
 	if (sizeLibroIngresado > 0) {
 		/* Se actualiza la insercion en el archivo de control */
-		cout<<"EL SIZE ARCHIVO DE BIBLIOTECA ES: "<<arcLibro->getSizeArchivo()<<endl;
 		nuevoOffset = arcControl->registrarLibro(sizeLibroIngresado,
 				arcLibro->getSizeArchivo());
 
@@ -172,9 +171,6 @@ Libro* ControladorBiblioteca::cargarNuevoLibroParseado(uint32_t idLibro) {
 	delete (libroPalabras);
 	delete (parserPalabras);
 
-	//cout<<"LIBRO PARSEADO IMPRIME: "<<libroPalabras->getPalabrasClave()->back()<<endl;
-
-
 	return libroNuevo;
 }
 
@@ -184,6 +180,10 @@ void ControladorBiblioteca::actualizarArchivoDeControl() {
 
 list<char>* ControladorBiblioteca::chequearIndexado(uint32_t idLibro) {
 	return arcControl->chequearIndexado(idLibro);
+}
+
+list<char>* ControladorBiblioteca::chequearIndexadoSinCarga(uint32_t idLibro) {
+	return arcControl->chequearIndexadoSinCarga(idLibro);
 }
 
 void ControladorBiblioteca::registrarIndexadoArchivoControl(uint32_t idLibro,

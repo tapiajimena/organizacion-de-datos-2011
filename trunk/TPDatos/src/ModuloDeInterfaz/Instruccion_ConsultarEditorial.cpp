@@ -18,14 +18,20 @@ Instruccion_ConsultarEditorial::Instruccion_ConsultarEditorial(char id, string c
 
 void Instruccion_ConsultarEditorial::ejecutar()
 {
+	CaseFoldedString caseFold = CaseFoldedString();
 	Configuracion* conf = Configuracion::GetInstancia();
 	ConsultaIndice* consulta = new ConsultaIndice(conf->getPathCarpetaTrabajo());
 
 	Logger::log("Instruccion_ConsultarEditorial", "ejecutar",
 			"Se ejecuta la consulta.");
 
-	cout<<"Se devuelven los datos consultados de editorial "<< editorial<<": "<<endl;
-	consulta->consultarEditorial(editorial);
+	cout<<"Se ejecuta la consulta de editorial "<< editorial<<": "<<endl;
+	if(consulta->esConsultable()
+			&& (consulta->consultarEditorial(caseFold.caseFoldWord(editorial))))
+		cout<<MENSAJE_CONSULTA_EXITOSA<<endl;
+	else
+		cout<<MENSAJE_INDICE_NO_CONSULTABLE<<endl;
+
 
 
 	Logger::log("Instruccion_ConsultarEditorial", "ejecutar",

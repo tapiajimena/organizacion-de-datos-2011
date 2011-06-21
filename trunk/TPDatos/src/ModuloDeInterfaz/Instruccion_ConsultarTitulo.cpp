@@ -24,8 +24,18 @@ void Instruccion_ConsultarTitulo::ejecutar()
 	Logger::log("Instruccion_ConsultarTitulo", "ejecutar",
 			"Se ejecuta la consulta.");
 
-	cout<<"Se devuelven los datos consultados de titulo "<<endl;
-	consulta->consultarTitulo(titulo);
+	cout<<"Se ejecuta la consulta de titulo "<<titulo<<endl;
+	if(consulta->esConsultable())
+	{
+		if (consulta->consultarTitulo(titulo))
+			cout<<MENSAJE_CONSULTA_EXITOSA<<endl;
+		else
+			cout<<MENSAJE_INDICE_NO_CONSULTABLE_BIBLIOTECA_VACIA<<endl;
+	}
+	else
+		cout<<MENSAJE_INDICE_NO_CONSULTABLE<<endl;
+
+
 
 	Logger::log("Instruccion_ConsultarTitulo", "ejecutar",
 			"Se devuelve la consulta.");
