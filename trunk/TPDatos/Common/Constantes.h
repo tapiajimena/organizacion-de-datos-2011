@@ -142,4 +142,10 @@
 #define MAX_COMANDOS 10
 
 
+/* MENSAJES */
+#define MENSAJE_LIBRO_NO_EXISTE "\n\t EL LIBRO PEDIDO NO SE ENCUENTRA EN LA BIBLIOTECA \n"
+#define MENSAJE_QUITAR_ARCHIVO "\n\t Se eliminan los registros del indice.\n"
+
+
+
 #endif /* CONSTANTES_H_ */
