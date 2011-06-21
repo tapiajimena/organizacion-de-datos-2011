@@ -570,11 +570,35 @@ void InternalNode::toString(iostream* ios, int rootLevel, int sizeOffset, fstrea
 	ss.str("");
 
 	list<string>::const_iterator it_keys = this->keys.begin();
+	//begin front coding
+	list<string*>* frontDecodedStrings = new list<string*>();
+	FrontCodedString* fcs = new FrontCodedString();
+	while (it_keys != this->keys.end())
+	{
+		frontDecodedStrings->push_back(new string(*it_keys));
+		it_keys++;
+	}
+	list<FrontCodedString*>* frontCodedStrings = fcs->frontCode(frontDecodedStrings);
+	list<FrontCodedString*>::const_iterator ci;
+	for(ci = frontCodedStrings->begin();ci != frontCodedStrings->end();++ci){
+		ss << "(" << ((*ci)->getCantidadLetrasPalabraAnterior()) << ")";
+		ss << "(" << ((*ci)->getCantidadLetrasPalabraActual()) << ")";
+		ss << ((*ci)->getPalabraEncodeada());
+		delete (*ci);
+	}
+	delete (fcs);
+	delete (frontDecodedStrings);
+	delete (frontCodedStrings);
+	
+	//end front coding
+
+	/*
 	while (it_keys != this->keys.end())
 	{
 		ss << "(" << (*it_keys) << ")";
 		it_keys++;
 	}
+	*/
 	keys = ss.str();
 
 	ss.str("");
@@ -596,37 +620,7 @@ void InternalNode::toString(iostream* ios, int rootLevel, int sizeOffset, fstrea
 }
 
 void InternalNode::toStringXML(iostream* ios, int rootLevel, int sizeOffset, fstream* fs){
-	/*
-	//DEPROCATED!
-	string tabs = setTabsXML(rootLevel - this->level);
 
-	string keys = "";
-	list<int>::iterator it = this->keys.begin();
-	stringstream ss;
-	ss.str("");
-	while (it != this->keys.end())
-	{
-		ss << (*it) << ",";
-		it++;
-	}
-	keys = ss.str();
-	it = this->childIds.begin();
-	ss.str("");
-	while (it != this->childIds.end())
-	{
-		ss << (*it) << ",";
-		it++;
-	}
-
-	string ids = ss.str();
-
-	(*ios) << tabs << "<node id=\"" << getNodeId() << "\" level=\"" << getLevel()
-			<< "\" keys=\"" << keys << "\" ids=\"" << ids  <<  "\" nodeSize=\""
-			<< this->getSize() << "\" controlDataSize=\"" << this->getCtrlDataSize()
-			<< "\"  nodeDataSize=\"" << this->getDataSize() << "\" >" << endl;
-	nodesToStringXML(ios, rootLevel, sizeOffset, fs);
-	(*ios) << tabs << "</node>" << endl;
-	*/
 }
 
 
@@ -643,16 +637,7 @@ void InternalNode::nodesToString(iostream* ios, int rootLevel, int sizeOffset, f
 }
 
 void InternalNode::nodesToStringXML(iostream* ios, int rootLevel, int sizeOffset, fstream* fs){
-	/*
-	list<int>::iterator it = this->childIds.begin();
-	while (it != this->childIds.end())
-	{
-		Node* pNode = NodeFactory::readNode(*it, sizeOffset, fs);
-		pNode->toStringXML(ios, rootLevel, sizeOffset, fs);
-		it++;
-		delete pNode;
-	}
-	*/
+
 }
 
 
@@ -721,4 +706,6 @@ int InternalNode::merge(Node* leftSibling, Node* node, Node* rightSibling){
 	//Next to the last merge node should be left empty.
 	return EXIT_SUCCESS;
 }
+
+
 

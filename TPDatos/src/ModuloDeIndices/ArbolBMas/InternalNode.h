@@ -17,6 +17,7 @@
 #include <string.h>
 #include <stdint.h>
 #include "Node.h"
+#include "../../ModuloDeTipos/FrontCodedString.h"
 
 #include "BPlusTree_CONST.h"
 
@@ -28,7 +29,15 @@ private:
 	list<int> childIds;
 	void nodesToString(iostream* ios, int rootLevel, int sizeOffset, fstream* fs);
 	void nodesToStringXML(iostream* ios, int rootLevel, int sizeOffset, fstream* fs);
-    void synchronizeOnRemove(Node* node, unsigned int* freeNodeCounter, fstream* fs);
+    	void synchronizeOnRemove(Node* node, unsigned int* freeNodeCounter, fstream* fs);
+    	
+    	/*
+    	* front coding
+    	*/
+
+	FrontCodedString* frontCode(string* palabraAnterior, string* palabraAEncodear);
+	list<FrontCodedString*>* frontCode(list<string*>* listaDePalabras);
+	list<string*>* frontDecode(list<FrontCodedString*>* palabrasFrontCodeadas);
 
 
 public:
