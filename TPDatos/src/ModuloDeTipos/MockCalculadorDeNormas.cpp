@@ -1,4 +1,6 @@
+
 #include "MockCalculadorDeNormas.h"
+
 
 CalculadorDeNormas::CalculadorDeNormas(ControladorIndice* controladorIndice, ArchivoTerminos* archivoTerminos){
 	this->controladorIndice = controladorIndice;
@@ -19,4 +21,5 @@ float CalculadorDeNormas::calcularSimilitudConsultaConDocumento(uint32_t id_docu
 	return (float)rand()/(float)RAND_MAX;
 	
 }
+
 

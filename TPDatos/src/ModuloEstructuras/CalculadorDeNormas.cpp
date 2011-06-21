@@ -8,7 +8,7 @@
  *
  *
  */
-
+/*
 #include "CalculadorDeNormas.h"
 
 CalculadorDeNormas::CalculadorDeNormas(ControladorIndice* controladorIndice, ArchivoTerminos* archivoTerminos)
@@ -87,7 +87,7 @@ std::list<DatoTriada*>* CalculadorDeNormas::levantarTriadasDeTermino(uint32_t id
 	//std::list<DatoTriada*>* listaTriadas = mock->recuperarTriadas(palabra);
 	//delete mock;
 
-/*
+
 	std::cout<<"++++++++++++Tamanio lista Triadas:"<<listaTriadas->size()<<std::endl;
 	std::cout<<"IdLibro: "<<listaTriadas->front()->getIdLibro()<<std::endl;
 	std::cout<<"IdTermino: "<<listaTriadas->front()->getIdTermino()<<std::endl;
@@ -95,7 +95,7 @@ std::list<DatoTriada*>* CalculadorDeNormas::levantarTriadasDeTermino(uint32_t id
 
 	std::cout<<"??????????????????????????"<<std::endl;
 	return listaTriadas;
-*/
+
 
 	std::cout<<"++++++++++++Tamanio lista Triadas para "<<palabra<<": "<<listaTriadas->size()<<std::endl;
 	std::cout<<"IdLibro: "<<listaTriadas->front()->getIdLibro()<<std::endl;
@@ -548,3 +548,4 @@ float CalculadorDeNormas::calcularSimilitudConsultaDocumento(uint32_t idDocument
 
 	return productoInterno / productoDeNormas;
 }
+*/

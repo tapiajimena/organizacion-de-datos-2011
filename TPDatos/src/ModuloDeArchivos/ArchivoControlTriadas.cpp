@@ -54,18 +54,9 @@ uint32_t ArchivoControlTriadas::buscarOffsetDondeEscribir(int cantidadTriadas,
 					- ((*it).second)->getIdTriadaInicial())
 					/ (sizeof(espacioRango) * 3)) + 1;
 
-			cout << "espacio en el rango: " << espacioRango << endl;
-			cout << "quiero meter: " << cantidadTriadas << endl;
-			if (((*it).second)->estaBorrado())
-				cout << "esta borrado" << endl;
-
 			/* Si ese espacio esta eliminado y ademas los nuevos datos caben en el espacio libre */
 			if (((*it).second)->estaBorrado() && (espacioRango > 0
 					&& espacioRango >= cantidadTriadas)) {
-
-				cout << "SI entra en el espacio del libro:"
-						<< ((*it).second)->getIdLibro() << endl;
-
 				espacioRango = ((*it).second)->getIdTriadaInicial();
 				encontrado = true;
 			}
@@ -96,7 +87,6 @@ void ArchivoControlTriadas::actualizarArchivo() {
 
 	stringstream ss1;
 	ss1 << aux;
-	cout << "LA daata a serializar es: " << ss1.str() << endl;
 
 	Escribir(arc, &ss1, 0);
 
@@ -129,7 +119,7 @@ list<uint32_t>* ArchivoControlTriadas::getIdLibrosAlmacenados() {
 list<uint32_t>* ArchivoControlTriadas::getTriadas(uint32_t id_Libro) {
 	DatoControlTriada* d = buscarEnMap(id_Libro);
 
-	if (d != NULL) {
+	if ((d != NULL) && (!d->estaBorrado())) {
 		//se asume que el offset inicial y final son validos.
 		uint32_t siguiente = d->getIdTriadaInicial();
 		while (siguiente <= d->getIdTriadaFinal()) {

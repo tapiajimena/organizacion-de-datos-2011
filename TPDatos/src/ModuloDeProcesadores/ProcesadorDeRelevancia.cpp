@@ -107,14 +107,6 @@ Termino* ProcesadorDeRelevancia::obtenerTermino(string nombre){
 	
 	Termino* termino = new Termino(nombre, triadasTermino);
 
-	cout<<"Busco el termino: "<<nombre<<endl;
-	cout<<"cantidad de triadas: "<<triadasTermino->size()<<endl;
-	list<DatoTriada*>::const_iterator ci;
-	for (ci=triadasTermino->begin();ci!=triadasTermino->end();++ci){
-		cout<<"id libro: "<<(*ci)->getIdLibro()<<endl;
-		cout<<"id termino: "<<(*ci)->getIdTermino()<<endl;
-		cout<<"posicion: "<<(*ci)->getPosicion()<<endl;
-	}
 	return termino;
 }
 
@@ -364,6 +356,7 @@ list<DuplaConsultaPorPeso*>* ProcesadorDeRelevancia::obtenerDuplasConsultaPorPes
 		duplaAux = new DuplaConsultaPorPeso;
 		duplaAux->id_libro = (*ci_libro);
 		duplaAux->similitud = this->calculadorDeNormas->calcularSimilitudConsultaConDocumento((*ci_libro), terminos);
+		//duplaAux->similitud = this->calculadorDeNormas->calcularSimilitudConsultaConDocumento((*ci_libro), terminos);
 		duplasConsultaPorPeso->push_back(duplaAux);
 	}
 	

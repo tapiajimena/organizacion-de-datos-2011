@@ -37,7 +37,6 @@ uint32_t ArchivoTerminos::ingresarTermino(std::string palabra)
 
 	ManejadorArchivo::Escribir(&this->archivoTerminos, &ss, offsetDeTermino, tamanioDato + 1);
 	this->archivoTerminos.flush();
-	//cout<<"EL ARC DE TERMINOS ESCRIBE: "<< ss.str()<<endl;
 
 	return idTermino;
 }

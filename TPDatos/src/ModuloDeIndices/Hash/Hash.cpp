@@ -730,7 +730,6 @@ std::vector<uint32_t> Hash::buscarFraseEnHash(std::string fraseConPalabrasClave)
 	std::string fraseConPalabrasClaveNormalizada =
 			ServiceClass::normalizarString(fraseConPalabrasClave);
 
-	cout<<"SE BUSCA FRASE: "<<fraseConPalabrasClaveNormalizada<<endl;
 	std::vector<std::string> listaPalabrasClave =
 			ServiceClass::obtenerListaPalabras(
 					fraseConPalabrasClaveNormalizada, SEPARADORES_DE_PALABRAS);

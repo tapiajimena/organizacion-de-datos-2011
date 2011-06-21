@@ -16,6 +16,7 @@
 #define INSTRUCCION_TOMARTEXTO_H_
 
 #include "Instruccion.h"
+#include "../ModuloEstructuras/CalculadorDeNormas.h"
 
 class Instruccion_TomarTexto: public Instruccion {
 private:

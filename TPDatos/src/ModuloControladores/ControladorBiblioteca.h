@@ -90,6 +90,8 @@ public:
 	 */
 	list<char>* chequearIndexado(uint32_t idLibro);
 
+	list<char>* chequearIndexadoSinCarga(uint32_t idLibro);
+
 	/**
 	 *
 	 */

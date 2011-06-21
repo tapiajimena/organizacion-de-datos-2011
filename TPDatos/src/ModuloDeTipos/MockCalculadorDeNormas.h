@@ -1,3 +1,4 @@
+
 #ifndef MOCK_CALCULADOR_DE_NORMAS_H_
 #define MOCK_CALCULADOR_DE_NORMAS_H_
 
@@ -24,4 +25,5 @@ public:
 };
 
 #endif /* MOCK_CALCULADOR_DE_NORMAS_H_ */
+
 

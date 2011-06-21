@@ -64,13 +64,18 @@ DatoTriada* ControladorTriadas::getTriada(uint32_t offsetTriada) {
 }
 
 list<DatoTriada*>* ControladorTriadas::getTriadas(list<uint32_t> idTriadas) {
+	DatoControlTriada* controlTriada;
 	DatoTriada* ptrTriada, triada;
 	list<uint32_t>::iterator it;
 	triadas->clear();
 	for (it = idTriadas.begin(); it != idTriadas.end(); it++) {
 		ptrTriada = this->getTriada(*it);
 
-		if (ptrTriada != NULL)
+		controlTriada = this->arcControl->buscarEnMap(ptrTriada->getIdLibro());
+
+		if ((ptrTriada != NULL)
+				&& (controlTriada != NULL)
+				&&(!controlTriada->estaBorrado()))
 			triadas->push_back(ptrTriada);
 	}
 

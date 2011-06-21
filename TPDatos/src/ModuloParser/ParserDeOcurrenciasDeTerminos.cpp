@@ -1,15 +1,17 @@
 /*
- * ParserDeOcurrenciasDeTerminos.cpp
+ * ParserDeOcurrencias.cpp
  *
- *  Created on: 15/06/2011
- *      Author: santi
+ *	Autor	: GRUPO 1 - Fernandez, Gallinal, Maraggi, Tapia
+ *	Catedra	: SERVETTO-FERRER-FERNANDEZ
+ *	Materia	: Organizacion de Datos (75.06) - FIUBA
+ *
  */
+
 
 #include "ParserDeOcurrenciasDeTerminos.h"
 
 ParserDeOcurrenciasDeTerminos::ParserDeOcurrenciasDeTerminos(std::string nombreArchivoStopWords)
 {
-	cout<<"ARCHIVO SP: "<<nombreArchivoStopWords;
 	this->diccionarioStopWords = new Diccionario();
 
 	this->diccionarioStopWords->cargarDiccionario();

@@ -75,6 +75,8 @@ public:
 	 */
 	list<char>* chequearIndexado(uint32_t idLIbro);
 
+	list<char>* chequearIndexadoSinCarga(uint32_t idLibro);
+
 	/**
 	 * Devuelve el offset en el cual se puede continuar con la escritura.
 	 * @param sizeAlmacenar: tamaño del dato a ser almacenado.

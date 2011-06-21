@@ -81,7 +81,7 @@ void Indexador::indexar(char tipoIndice)
 
 			parLibroOffset.first 	= libro;
 			parLibroOffset.second 	= *it;
-			//cout<<"LAS PALABRAS SON: "<<libro->getPalabrasClave()<<endl;
+
 			controlIndice->indexar(parLibroOffset, tipoIndice);
 			controlBiblioteca->registrarIndexadoArchivoControl(*it, tipoIndice);
 

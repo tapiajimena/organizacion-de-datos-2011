@@ -8,7 +8,7 @@
  *
  *
  */
-
+/*
 #ifndef CALCULADORDENORMAS_H_
 #define CALCULADORDENORMAS_H_
 
@@ -27,7 +27,7 @@
 #include "../ModuloDeTipos/Termino.h"
 
 //TODO include para testing, sacar
-#include "../ModuloTesting/MockControladorIndice.h"
+//#include "../ModuloTesting/MockControladorIndice.h"
 
 //Modelo de vector de documento.
 //uint32_t: ID del t�rmino
@@ -131,3 +131,4 @@ public:
 };
 
 #endif /* CALCULADORDENORMAS_H_ */
+
