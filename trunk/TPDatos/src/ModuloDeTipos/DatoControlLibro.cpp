@@ -51,7 +51,6 @@ string DatoControlLibro::serializar() {
 					0,
 					ServiceClass::toStringData(&datos, CONTROL_TOKEN).size()
 							- 1), ServiceClass::toString(this->offset) };
-
 	datos.clear();
 
 	//Se inicializa un vector con los datos de control
