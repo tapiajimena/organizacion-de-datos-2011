@@ -74,7 +74,7 @@ std::list<DatoTriada*>* CalculadorDeNormas::levantarTriadasDeTermino(uint32_t id
 
 <<<<<<< .mine
 	//TODO ...
-=======
+
 	std::string palabra = this->archivoTerminos->obtenerTermino(idTermino);
 >>>>>>> .r541
 
@@ -97,7 +97,7 @@ std::list<DatoTriada*>* CalculadorDeNormas::levantarTriadasDeTermino(uint32_t id
 
 	std::cout<<"??????????????????????????"<<std::endl;
 	return listaTriadas;
-*/
+
 
 	//Testing con mock.
 	MockControladorIndice* mock = new MockControladorIndice();
@@ -376,7 +376,7 @@ float CalculadorDeNormas::calcularNormaDeDocumento(uint32_t idDocumento)
 
 	return sqrt(sumatoriaParcial);
 }
-*/
+
 
 VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(uint32_t idDocumento)
 {
@@ -485,8 +485,7 @@ float CalculadorDeNormas::calcularNormaVectorDeTerminos(VectorDeDocumento* vecto
 	return normaDocumento;
 }
 <<<<<<< .mine
-*/
-=======
+
 
 float CalculadorDeNormas::calcularProductoInterno(VectorDeDocumento* vectorDocumento1, VectorDeDocumento* vectorDocumento2)
 {
@@ -610,3 +609,4 @@ float CalculadorDeNormas::calcularSimilitudConsultaDocumento(uint32_t idDocument
 	return productoInterno / productoDeNormas;
 }
 >>>>>>> .r541
+*/
