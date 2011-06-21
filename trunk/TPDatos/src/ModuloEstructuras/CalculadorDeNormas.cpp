@@ -8,7 +8,7 @@
  *
  *
  */
-/*
+
 #include "CalculadorDeNormas.h"
 
 CalculadorDeNormas::CalculadorDeNormas(ControladorIndice* controladorIndice, ArchivoTerminos* archivoTerminos)
@@ -17,7 +17,8 @@ CalculadorDeNormas::CalculadorDeNormas(ControladorIndice* controladorIndice, Arc
 	this->pathCarpeta = conf->getPathCarpetaTrabajo();
 
 	//TODO sacar hardcode y obtener numero de documentos de controladorIndice->controladorTriadas()->getIdLibros()->size()
-	this->cantidadTotalDeDocumentos = 2; //Se carga al calcular pesos globales.
+	//this->cantidadTotalDeDocumentos = 2; //Hardcode para testing.
+	this->cantidadTotalDeDocumentos = this->controladorIndice->getControladorTriadas()->getLibrosAlmacenados()->size();
 
 	//this->controladorDeTriadas = controladorDeTriadas;
 	this->controladorIndice = controladorIndice;
@@ -40,7 +41,7 @@ CalculadorDeNormas::CalculadorDeNormas(ControladorIndice* controladorIndice, Arc
 void CalculadorDeNormas::reiniciarIndices()
 {
 	//Creamos y cerramos los archivos, por si antes fueron creados. Necesitamos empezar de cero, y el Hash...
-	//...está hecho para persistir y recuperar la información que guarda.
+	//...estï¿½ hecho para persistir y recuperar la informaciï¿½n que guarda.
 	delete this->indiceNormasDocumentos;
 	delete this->indicePesosGlobales;
 
@@ -61,7 +62,7 @@ void CalculadorDeNormas::reiniciarIndices()
 
 CalculadorDeNormas::~CalculadorDeNormas()
 {
-	//Los índices quedan en disco por si se quieren ver de alguna manera...
+	//Los ï¿½ndices quedan en disco por si se quieren ver de alguna manera...
 	delete this->indicePesosGlobales;
 	delete this->indiceNormasDocumentos;
 
@@ -72,24 +73,21 @@ std::list<DatoTriada*>* CalculadorDeNormas::levantarTriadasDeTermino(uint32_t id
 {
 	//Esto es un acceso directo al archivo a traves de su offset-Id.
 
-<<<<<<< .mine
-	//TODO ...
 
+	std::cout<<"idTermino: "<<idTermino<<std::endl;
 	std::string palabra = this->archivoTerminos->obtenerTermino(idTermino);
->>>>>>> .r541
-
+	std::cout<<"Palabra: "<<palabra<<std::endl;
 	//TODO buscar triadas a traves de ConsultaIndice->ControladorTriadas()->obtenerTriadas(palabra);
 
+	//Carga posta de triadas:
+	std::list<DatoTriada*>* listaTriadas = this->controladorIndice->recuperarTriadas(palabra);
+
+	//Testing con mock.
+	//MockControladorIndice* mock = new MockControladorIndice();
+	//std::list<DatoTriada*>* listaTriadas = mock->recuperarTriadas(palabra);
+	//delete mock;
+
 /*
-	std::list<DatoTriada*>* listaTriadas;
-
-	std::cout<<"Palabra: "<<palabra<<std::endl;
-	listaTriadas = this->controladorIndice->recuperarTriadas(palabra);
-	//Posibilidades:
-		//* Falla controladorIndice y me da cualquier direccion
-		//* Falla controladorTriadas.
-		//* ????
-
 	std::cout<<"++++++++++++Tamanio lista Triadas:"<<listaTriadas->size()<<std::endl;
 	std::cout<<"IdLibro: "<<listaTriadas->front()->getIdLibro()<<std::endl;
 	std::cout<<"IdTermino: "<<listaTriadas->front()->getIdTermino()<<std::endl;
@@ -97,23 +95,15 @@ std::list<DatoTriada*>* CalculadorDeNormas::levantarTriadasDeTermino(uint32_t id
 
 	std::cout<<"??????????????????????????"<<std::endl;
 	return listaTriadas;
+*/
 
+	std::cout<<"++++++++++++Tamanio lista Triadas para "<<palabra<<": "<<listaTriadas->size()<<std::endl;
+	std::cout<<"IdLibro: "<<listaTriadas->front()->getIdLibro()<<std::endl;
+	std::cout<<"IdTermino: "<<listaTriadas->front()->getIdTermino()<<std::endl;
+	std::cout<<"Posicion: "<<listaTriadas->front()->getPosicion()<<std::endl;
 
-	//Testing con mock.
-	MockControladorIndice* mock = new MockControladorIndice();
-	std::list<DatoTriada*>* lista = mock->recuperarTriadas(palabra);
+	return listaTriadas;
 
-	std::cout<<"++++++++++++Tamanio lista Triadas para "<<palabra<<": "<<lista->size()<<std::endl;
-	std::cout<<"IdLibro: "<<lista->front()->getIdLibro()<<std::endl;
-	std::cout<<"IdTermino: "<<lista->front()->getIdTermino()<<std::endl;
-	std::cout<<"Posicion: "<<lista->front()->getPosicion()<<std::endl;
-
-	//delete mock;
-	return lista;
-
-
-	//std::list<DatoTriada*>* listaTriadas = new std::list<DatoTriada*>;
-	//return listaTriadas;
 }
 
 void CalculadorDeNormas::generarIndiceDePesosGlobalesDeTerminos()
@@ -157,9 +147,9 @@ int CalculadorDeNormas::calcularDocumentosQueContienenTermino(uint32_t idTermino
 	std::list<DatoTriada*>* ocurrenciasDeTermino = this->levantarTriadasDeTermino(idTermino);
 
 	std::cout<<"++++++++++++++Ocurrencias de Termino: "<<ocurrenciasDeTermino->size()<<std::endl;
-	//En este vector se guardan los libros en que aparece el término. La idea es no contar
+	//En este vector se guardan los libros en que aparece el tï¿½rmino. La idea es no contar
 	//dos ocurrencias si son del mismo documento, ya que interesa la cantidad de DOCUMENTOS
-	//que contienen alguna vez al término.
+	//que contienen alguna vez al tï¿½rmino.
 	std::vector<uint32_t> documentosYaVisitados;
 
 	std::list<DatoTriada*>::iterator it_triadas;
@@ -228,8 +218,8 @@ int CalculadorDeNormas::calcularAparicionesDeTerminoEnDocumento(uint32_t idDocum
 {
 	int ocurrenciasDeTerminoEnDocumento = 0;
 
-	//Es más rápido pedir las ocurrencias del término que levantar todas las tríadas del libro.
-	//(salvo que se carguen millones de libros y que haya más ocurrencias del término que palabras en el libro)
+	//Es mï¿½s rï¿½pido pedir las ocurrencias del tï¿½rmino que levantar todas las trï¿½adas del libro.
+	//(salvo que se carguen millones de libros y que haya mï¿½s ocurrencias del tï¿½rmino que palabras en el libro)
 
 	std::list<DatoTriada*>* ocurrenciasDeTermino = this->levantarTriadasDeTermino(idTermino);
 
@@ -330,64 +320,16 @@ float CalculadorDeNormas::calcularPesoLocalDeTermino(uint32_t idDocumento, uint3
 	return frecuenciaLocal*pesoGlobal; // /normaDocumento (no va la norma documento aca)
 }
 
-//Depretated... se usa calcular la norma sobre el VectorDeDocumento, no sobre idTermino.
-/*
-float CalculadorDeNormas::calcularNormaDeDocumento(uint32_t idDocumento)
-{
-
-	//Ya tienen que estar cargados los pesos globales de términos, se consulta en vez de recalcular.
-
-	//Este vector guarda todos los términos del documento, sin importar la cantidad de ocurrencias de los mismos.
-	//Falta cargar listaIdTerminosDeDocumento... (consultar Arbol)
-	std::vector<uint32_t> listaIdTerminosDeDocumento;
-
-	//Anotamos los términos ya procesados, para procesarlos una sola vez
-	std::vector<uint32_t> terminosYaProcesados;
-
-	std::vector<uint32_t>::iterator it_terminos;
-
-	std::vector<uint32_t>::iterator it_terminosYaProcesados;
-
-	float sumatoriaParcial = 0.0;
-
-	for(it_terminos = listaIdTerminosDeDocumento.begin(); it_terminos != listaIdTerminosDeDocumento.end(); it_terminos++)
-	{
-		bool terminoYaProcesado = false;
-
-		for( it_terminosYaProcesados = terminosYaProcesados.begin();
-			 it_terminosYaProcesados != terminosYaProcesados.end() && !terminoYaProcesado;
-			 it_terminosYaProcesados++)
-		{
-			if( *it_terminosYaProcesados == *it_terminos)
-			{
-				terminoYaProcesado = true;
-			}
-		}
-
-		if (!terminoYaProcesado)
-		{
-			float pesoGlobalTermino = this->obtenerPesoGlobalDeIndice(*it_terminos);
-
-			int frecuenciaLocalDeTermino = this->calcularAparicionesDeTerminoEnDocumento(idDocumento, *it_terminos);
-
-			sumatoriaParcial = sumatoriaParcial +  frecuenciaLocalDeTermino * pow(pesoGlobalTermino, 2);
-		}
-	}
-
-	return sqrt(sumatoriaParcial);
-}
-
-
 VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(uint32_t idDocumento)
 {
 
 	//TODO sacar mock de testing.
-	//std::list<DatoTriada*>* listaDatoTriadas = this->controladorIndice->getControladorTriadas()->getTriadas(idDocumento);
+	std::list<DatoTriada*>* listaDatoTriadas = this->controladorIndice->getControladorTriadas()->getTriadas(idDocumento);
 
 	//Testing de triadas.
-	MockControladorIndice* mock = new MockControladorIndice();
-	std::list<DatoTriada*>* listaDatoTriadas = mock->recuperarTriadasDeDocumento(idDocumento);
-	delete mock;
+	//MockControladorIndice* mock = new MockControladorIndice();
+	//std::list<DatoTriada*>* listaDatoTriadas = mock->recuperarTriadasDeDocumento(idDocumento);
+	//delete mock;
 
 
 	std::cout<<"Leo triadas de documento................."<<std::endl;
@@ -484,8 +426,6 @@ float CalculadorDeNormas::calcularNormaVectorDeTerminos(VectorDeDocumento* vecto
 
 	return normaDocumento;
 }
-<<<<<<< .mine
-
 
 float CalculadorDeNormas::calcularProductoInterno(VectorDeDocumento* vectorDocumento1, VectorDeDocumento* vectorDocumento2)
 {
@@ -548,7 +488,7 @@ void CalculadorDeNormas::generarArchivoDeNormasDeDocumentos()//ControladorBiblio
 
 		std::cout<<"NormaDocumento: "<<normaDocumentoReal<<std::endl;
 
-		//Insertamos el par ID Doc / Norma Doc en el índice de normas...
+		//Insertamos el par ID Doc / Norma Doc en el ï¿½ndice de normas...
 		std::string idDocumetoStr = ServiceClass::obtenerString(idDocumento);
 		std::pair<std::string, uint32_t> claveNormaDocumentoHash;
 		claveNormaDocumentoHash.first = idDocumetoStr;
@@ -608,5 +548,3 @@ float CalculadorDeNormas::calcularSimilitudConsultaDocumento(uint32_t idDocument
 
 	return productoInterno / productoDeNormas;
 }
->>>>>>> .r541
-*/
