@@ -145,7 +145,9 @@
 /* MENSAJES */
 #define MENSAJE_LIBRO_NO_EXISTE "\n\t EL LIBRO PEDIDO NO SE ENCUENTRA EN LA BIBLIOTECA \n"
 #define MENSAJE_QUITAR_ARCHIVO "\n\t Se eliminan los registros del indice.\n"
-
+#define MENSAJE_INDICE_NO_CONSULTABLE_BIBLIOTECA_VACIA "\n\t No apto para consulta.\n"
+#define MENSAJE_INDICE_NO_CONSULTABLE "\n\t NO HAY RESULTADOS.\n"
+#define MENSAJE_CONSULTA_EXITOSA "\n\t Se devuelven los datos consultados.\n "
 
 
 #endif /* CONSTANTES_H_ */
