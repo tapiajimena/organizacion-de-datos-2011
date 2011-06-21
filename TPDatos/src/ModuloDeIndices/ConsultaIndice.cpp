@@ -98,7 +98,6 @@ void ConsultaIndice::consultarTerminosProximos(string consulta)
 
 	Logger::log("ConsultaIndice", "consultarTerminosProximos","Se realiza la consulta");
 	proc->mostrarLibrosRelevantes(consulta);
-
 }
 
 
