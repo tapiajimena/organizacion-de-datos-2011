@@ -106,6 +106,31 @@ bool ControladorTriadas::eliminarLibro(uint32_t offset) {
 
 }
 
+void ControladorTriadas::mostrarContendioArchivoTriadas() {
+	Configuracion* conf = Configuracion::GetInstancia();
+	uint32_t offset = 0;
+	DatoTriada* d;
+	fstream  fs;
+	stringstream  ss;
+
+	string aux = conf->getPathCarpetaReportes()+ARCHIVO_OCURRENCIA_POSICIONAL+EXTENSION_ARCHIVO_REPORTE;
+	Crear(aux.c_str(),fs,true);
+
+	while (offset < getSizeArchivoTriadas()) {
+		   d = this->arcTriadas->obtenerTriada(offset);
+		   ss << "<" << (d)->getIdLibro();
+		   ss << "," << (d)->getIdTermino();
+		   ss << "," << (d)->getPosicion() << ">" << endl;
+
+		   Escribir(fs, &ss);
+		   offset += sizeof(offset)*3;
+	}
+
+	cout<<"Se imprimio el archivo de ocurrencias"<<endl;
+	Cerrar(fs);
+}
+
+
 void ControladorTriadas::eliminarRegistro(uint32_t idLibro) {
 	this->arcControl->eliminarDatoControl(idLibro);
 }

@@ -176,6 +176,12 @@ void ControladorIndice::eliminarIndexadoPorTipo(char tipo, Libro* libroRemover,
 
 }
 
+void ControladorIndice::mostrarTriadas()
+{
+	this->controlTriadas->mostrarContendioArchivoTriadas();
+
+}
+
 void ControladorIndice::generarReporte(char tipoIndice, string nombreArchivo) {
 	Configuracion* conf = Configuracion::GetInstancia();
 	if (tipoIndice == INDICE_AUTOR)
@@ -194,6 +200,15 @@ void ControladorIndice::generarReporte(char tipoIndice, string nombreArchivo) {
 		this->indiceHash->escribirEstructuraEnArchivos(
 				conf->getPathCarpetaReportes() + nombreArchivo + "_Palabras"
 						+ EXTENSION_ARCHIVO_REPORTE);
+	else if (tipoIndice == CONSULTA_INDICE_TERMINOS)
+	{
+		this->indiceHash->escribirEstructuraEnArchivos(
+				conf->getPathCarpetaReportes() + nombreArchivo + "_ListasInvertidasTablas"
+						+ EXTENSION_ARCHIVO_REPORTE);
+		this->indiceArbol->dump(
+				conf->getPathCarpetaReportes() + nombreArchivo + "_ListasInvertidas"
+						+ EXTENSION_ARCHIVO_REPORTE);
+	}
 }
 
 void ControladorIndice::consultarPorAutorOEditorial(string consulta) {

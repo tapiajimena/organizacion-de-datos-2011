@@ -7,6 +7,7 @@
  *
  */
 
+#include "../ModuloEstructuras/Configuracion.h"
 #include "../ModuloDeArchivos/ArchivoTriadas.h"
 #include "../ModuloDeArchivos/ArchivoControlTriadas.h"
 
@@ -89,6 +90,12 @@ public:
 	 * @param cantidadTriadas: cantidad de triadas en el libro.
 	 */
 	uint32_t dondeEscribo(int cantidadTriadas);
+
+	/**
+	 * Muestra por pantalla las triadas
+	 */
+	void mostrarContendioArchivoTriadas();
+
 
 	uint32_t getSiguienteIdTriada();
 
