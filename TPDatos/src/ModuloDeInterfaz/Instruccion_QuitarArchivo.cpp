@@ -20,18 +20,28 @@ void Instruccion_QuitarArchivo::ejecutar()
 {
 	Indexador* indexador = new Indexador();
 	Configuracion* conf = Configuracion::GetInstancia();
+	this->controladorBiblioteca = new ControladorBiblioteca(
+			conf->getPathCarpetaTrabajo()+ "/"+ ARCHIVO_BIBLIOTECA + EXTENSION_ARCHIVO_INDICE,
+			conf->getPathCarpetaTrabajo()+"/"+ARCHIVO_CONTROL_BIBLIOTECA);
 	this->controladorIndice = new ControladorIndice(conf->getPathCarpetaTrabajo());
 
-	(controladorIndice->getControladorTriadas())->eliminarLibro(idArchivo);
+	if ((controladorBiblioteca->getSizeBiblioteca() > 0)
+		&& (!controladorBiblioteca->estaEliminado(this->idArchivo)))
+	{
+		(controladorIndice->getControladorTriadas())->eliminarLibro(idArchivo);
 
-	//se lo elimina de los indices y biblioteca
-	indexador->eliminarIndexado(idArchivo);
+		//se lo elimina de los indices y biblioteca
+		indexador->eliminarIndexado(idArchivo);
 
-	cout<<"Se eliminan los registros del indice."<<endl;
-	Logger::log("Instruccion_QuitarArchivo", "ejecutar","Se elimina el archivo.");
-
+		cout<<MENSAJE_QUITAR_ARCHIVO<<endl;
+		Logger::log("Instruccion_QuitarArchivo", "ejecutar","Se elimina el archivo.");
+	}
+	else
+		cout<<MENSAJE_LIBRO_NO_EXISTE<<endl;
 
 	delete(indexador);
+	delete(controladorIndice);
+	delete(controladorBiblioteca);
 }
 
 Instruccion_QuitarArchivo::~Instruccion_QuitarArchivo()

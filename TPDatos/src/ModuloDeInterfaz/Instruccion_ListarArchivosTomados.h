@@ -17,6 +17,7 @@
 #define INSTRUCCION_LISTARARCHIVOSTOMADOS_H_
 
 #include "../ModuloEstructuras/Configuracion.h"
+#include "../ModuloDeArchivos/ManejadorArchivo.h"
 #include "Instruccion.h"
 
 class Instruccion_ListarArchivosTomados: public Instruccion {
