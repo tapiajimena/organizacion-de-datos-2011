@@ -80,18 +80,24 @@ void ConsultaIndice::consultarPalabras(string consulta)
 {
 	controlIndice->nuevoIndiceOcurrenciaTerminos();
 	controlIndice->consultarPorOcurrenciaTerminos(consulta);
+}
 
-	//cargar libros de test: libro1.txt{la casa grande} y libro2.txt{el auto amarillo}
+void ConsultaIndice::consultarTerminosProximos(string consulta)
+{
+
+
+	cout<<"Datos a consultar Consulta: "<<consulta<<endl;
+
 	Configuracion* conf = Configuracion::GetInstancia();
-	ArchivoTerminos* archivoTerminos = new ArchivoTerminos(conf->getPathCarpetaTrabajo()
-			+ ARCHIVO_TERMINOS+ EXTENSION_ARCHIVO_INDICE);
+	ControladorIndice* control = new ControladorIndice();
+	ArchivoTerminos* arc = new ArchivoTerminos(
+			conf->getPathCarpetaTrabajo()
+					+ ARCHIVO_TERMINOS
+					+ EXTENSION_ARCHIVO_INDICE);
+	ProcesadorDeRelevancia* proc = new ProcesadorDeRelevancia(control, arc);
 
-	ControladorIndice* controladorIndice = new ControladorIndice();
-	CalculadorDeNormas* calculadorDeNormas = new CalculadorDeNormas(controladorIndice, archivoTerminos);
-
-	calculadorDeNormas->generarArchivoDeNormasDeDocumentos();
-	std::cout<<"Se genero el archivo de normas de documentos"<<std::endl;
-
+	Logger::log("ConsultaIndice", "consultarTerminosProximos","Se realiza la consulta");
+	proc->mostrarLibrosRelevantes(consulta);
 
 }
 
