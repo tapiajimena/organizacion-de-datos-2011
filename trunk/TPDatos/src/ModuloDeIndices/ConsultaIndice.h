@@ -17,7 +17,9 @@
 #include "../ModuloDeArchivos/ManejadorArchivo.h"
 #include "../ModuloControladores/ControladorIndice.h"
 #include "../ModuloControladores/ControladorBiblioteca.h"
+#include "../ModuloDeProcesadores/ProcesadorDeRelevancia.h"
 #include "../ModuloEstructuras/CalculadorDeNormas.h"
+
 
 
 class ConsultaIndice
@@ -49,6 +51,7 @@ public:
 	void consultarTitulo(string consulta);
 	void consultarPalabras(string consulta);
 	void consultarEditorial(string consulta);
+	void consultarTerminosProximos(string consulta);
 
 	/*
 	 * Da la orden a un indice para que genere el reporte segun el tipo.
