@@ -488,11 +488,6 @@ bool Hash::probarInsertarEnSucesionDeCubetasTrasRedispersion(std::vector<std::pa
 			it_sucesionDeCubetas++)
 	{
 
-		//todo sacar
-		//this->archivoCubetas.flush();
-		//this->archivoTabla.flush();
-
-
 		elementoInsertado = it_sucesionDeCubetas->first->insertarElementoHash(*elemento);
 
 		if (elementoInsertado)
