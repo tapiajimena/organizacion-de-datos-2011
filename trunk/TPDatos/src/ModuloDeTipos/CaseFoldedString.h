@@ -16,8 +16,8 @@
 #include <iostream>
 #include <string>
 #include "./Common/Utilitarios/ServiceClass.h"
-#include <QString>
-#include <qtextstream.h>
+//#include <QString>
+//#include <qtextstream.h>
 
 
 using namespace std;
