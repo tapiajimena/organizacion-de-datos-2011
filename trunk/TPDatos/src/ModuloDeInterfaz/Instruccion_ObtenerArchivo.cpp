@@ -13,13 +13,16 @@ Instruccion_ObtenerArchivo::Instruccion_ObtenerArchivo(char id, uint32_t idLibro
 	this->idLibro = idLibro;
 }
 
-void Instruccion_ObtenerArchivo::ejecutar(){
+void Instruccion_ObtenerArchivo::ejecutar() {
 	Configuracion* conf = Configuracion::GetInstancia();
 	this->controladorBiblioteca = new ControladorBiblioteca(
 			conf->getPathCarpetaTrabajo() + "/" + ARCHIVO_BIBLIOTECA + EXTENSION_ARCHIVO_INDICE,
 			conf->getPathCarpetaTrabajo() + "/" + ARCHIVO_CONTROL_BIBLIOTECA);
 
-	cout << (this->controladorBiblioteca->recuperarLibro(this->idLibro)).getDato() << endl;
+	if(!controladorBiblioteca->estaEliminado(this->idLibro))
+		cout<<(this->controladorBiblioteca->recuperarLibro(this->idLibro)).getDato() << endl;
+	else
+		cout<<MENSAJE_LIBRO_NO_EXISTE<<endl;
 
 	Logger::log("Instruccion_ObtenerArchivo", "ejecutar",
 			"Se levanta el archivo de texto.");

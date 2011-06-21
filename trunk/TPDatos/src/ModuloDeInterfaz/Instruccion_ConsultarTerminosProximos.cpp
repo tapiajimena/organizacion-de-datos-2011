@@ -24,8 +24,8 @@ void Instruccion_ConsultarTerminosProximos::ejecutar()
 	Logger::log("Instruccion_ConsultarTerminosProximos", "ejecutar",
 			"Se ejecuta la consulta.");
 
-	cout<<"Se devuelven los datos consultados de titulo "<<endl;
-	consulta->consultarPalabras(titulo);
+	cout<<"Se devuelven los datos por terminos proximos"<<endl;
+	consulta->consultarTerminosProximos(titulo);
 
 	Logger::log("Instruccion_ConsultarTerminosProximos", "ejecutar",
 			"Se devuelve la consulta.");

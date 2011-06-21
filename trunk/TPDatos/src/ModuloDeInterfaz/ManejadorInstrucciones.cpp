@@ -58,9 +58,13 @@ void ManejadorInstrucciones::ejecutarInstruccion(char id) {
 		this->instruccion->ejecutar();
 		break;
 	case 'q':
-		this->instruccion = new Instruccion_QuitarArchivo(id,
-				ServiceClass::convertirAUint32(this->comando[2]));
-		this->instruccion->ejecutar();
+		if (this->comando[2] != "")
+		{
+			this->instruccion = new Instruccion_QuitarArchivo(id,
+					ServiceClass::convertirAUint32(this->comando[2]));
+			this->instruccion->ejecutar();
+		}
+		else cout<<MENSAJE_LIBRO_NO_EXISTE<<endl;
 		break;
 	case 'v':
 		this->instruccion = new Instruccion_VerEstructura(id,

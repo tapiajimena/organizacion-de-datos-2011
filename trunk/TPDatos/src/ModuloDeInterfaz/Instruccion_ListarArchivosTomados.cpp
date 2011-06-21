@@ -21,8 +21,8 @@ void Instruccion_ListarArchivosTomados::getLibro(uint32_t idLibro)
 	this->controladorBiblioteca = new ControladorBiblioteca(
 			conf->getPathCarpetaTrabajo()+ "/"+ ARCHIVO_BIBLIOTECA + EXTENSION_ARCHIVO_INDICE,
 			conf->getPathCarpetaTrabajo()+"/"+ARCHIVO_CONTROL_BIBLIOTECA);
-	Libro* libro = this->controladorBiblioteca->cargarNuevoLibroParseado(idLibro);
 
+	Libro* libro = this->controladorBiblioteca->cargarNuevoLibroParseado(idLibro);
 	cout<<endl<<"ID LIBRO: "<<idLibro<<endl;
 	cout<<"TITULO: "<<libro->getTitulo()<<endl;
 	cout<<"AUTOR: "<<libro->getAutor()<<endl;
