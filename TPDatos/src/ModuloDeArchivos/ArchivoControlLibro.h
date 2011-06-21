@@ -102,6 +102,12 @@ public:
     void eliminarLibro(uint32_t idLibro, uint32_t size);
 
     /**
+     * Verifica si el libro se encuentra eliminado.
+     * @param idLibro: libro consultado.
+     */
+    bool estaEliminado(uint32_t idLibro);
+
+    /**
      * Actualiza el archivo de control con los cambios realizados
      * durante las consultas.
      */

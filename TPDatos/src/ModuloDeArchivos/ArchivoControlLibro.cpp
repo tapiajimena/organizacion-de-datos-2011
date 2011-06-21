@@ -87,7 +87,7 @@ uint32_t ArchivoControlLibro::dondeEscribo(uint32_t sizeAlmacenar) {
 	list<DatoControlLibro*>* espaciosLibres = getEspaciosLibres();
 	list<DatoControlLibro*>* espaciosLibresFusionados = new list<
 			DatoControlLibro*> ();
-	uint32_t mejorAjuste;
+	uint32_t mejorAjuste = 0;
 
 	if (espaciosLibres->size() == 0) {
 		mejorAjuste = FIN_DE_ARCHIVO;
@@ -120,8 +120,8 @@ uint32_t ArchivoControlLibro::dondeEscribo(uint32_t sizeAlmacenar) {
 		}
 	}
 
-	Logger::log("ArchivoControlLibro", "dondeEscribo", ServiceClass::toString(
-			mejorAjuste));
+	Logger::log("ArchivoControlLibro", "dondeEscribo",
+			ServiceClass::toString(mejorAjuste));
 
 	return mejorAjuste;
 }
@@ -149,8 +149,8 @@ list<DatoControlLibro*>* ArchivoControlLibro::getEspaciosLibres() {
 	return espaciosLibres;
 }
 
-list<DatoControlLibro*>* ArchivoControlLibro::fusionarEspaciosLibres(list<
-		DatoControlLibro*>* espaciosLibres) {
+list<DatoControlLibro*>* ArchivoControlLibro::fusionarEspaciosLibres(
+		list<DatoControlLibro*>* espaciosLibres) {
 	list<DatoControlLibro*>* espaciosLibresFusionados = new list<
 			DatoControlLibro*> ();
 
@@ -165,8 +165,9 @@ list<DatoControlLibro*>* ArchivoControlLibro::fusionarEspaciosLibres(list<
 	for (it = espaciosLibres->begin(); it != espaciosLibres->end(); it++) {
 		while ((aux->getId_Libro() + METADATA_SIZE_BOOK
 				+ aux->getEspacioLibre()) == (*it)->getId_Libro()) {
-			aux->setEspacioLibre(aux->getEspacioLibre()
-					+ (*it)->getEspacioLibre() + METADATA_SIZE_BOOK);
+			aux->setEspacioLibre(
+					aux->getEspacioLibre() + (*it)->getEspacioLibre()
+							+ METADATA_SIZE_BOOK);
 
 			if ((*it)->getId_Libro() < cola->getId_Libro()) {
 				delete (*it);
@@ -229,8 +230,8 @@ void ArchivoControlLibro::actualizarEspaciosLibres(
 	//ingreso los nuevos espacios
 	for (list<DatoControlLibro*>::const_iterator ci = espaciosLibres->begin(); ci
 			!= espaciosLibres->end(); ++ci) {
-		libros->insert(pair<uint32_t, DatoControlLibro*> ((*ci)->getId_Libro(),
-				(*ci)));
+		libros->insert(
+				pair<uint32_t, DatoControlLibro*> ((*ci)->getId_Libro(), (*ci)));
 	}
 
 }
@@ -316,6 +317,19 @@ uint32_t ArchivoControlLibro::calcularNuevoEspacioLibre(uint32_t espacioLibre,
 	return nuevoEspacioLibre;
 }
 
+bool ArchivoControlLibro::estaEliminado(uint32_t idLibro) {
+	cargarLibros();
+	DatoControlLibro* d = buscarEnMap(idLibro);
+	if (d != NULL) {
+		if (d->getEspacioLibre() > 0)
+			return true;
+		else
+			return false;
+	} else {
+		return true;
+	}
+}
+
 uint32_t ArchivoControlLibro::registrarLibro(uint32_t size,
 		uint32_t finArcLibros) {
 	//cargar una lista inicial de indices.
@@ -334,37 +348,40 @@ uint32_t ArchivoControlLibro::registrarLibro(uint32_t size,
 
 	if ((buscado == NULL) || (id_Libro == FIN_DE_ARCHIVO)) {
 		nuevoLibro->setId_Libro(finArcLibros);
-		this->libros->insert(pair<uint32_t, DatoControlLibro*> (finArcLibros,
-				nuevoLibro));
+		this->libros->insert(
+				pair<uint32_t, DatoControlLibro*> (finArcLibros, nuevoLibro));
 
 		Logger::log("ArchivoControlLibro", "registrarLibro",
 				"Se agrega nuevo libro al final.");
 		nuevoOffset = nuevoLibro->getId_Libro();
+		cout << "**********DEVUELVE FIN ARCHIVO*********" << endl;
 
 	} else {
-		nuevoLibro->setId_Libro((calcularNuevoOffset(
-				buscado->getEspacioLibre(), size, id_Libro)));
+		nuevoLibro->setId_Libro(id_Libro);
 
-		nuevoLibro->setEspacioLibre(calcularNuevoEspacioLibre(
-				buscado->getEspacioLibre(), size));
+		cout << "id_libro del nuevo libro: " << nuevoLibro->getId_Libro()
+				<< endl;
+
+		nuevoLibro->setEspacioLibre(
+				calcularNuevoEspacioLibre(buscado->getEspacioLibre(), size));
+
+		cout << "espacio libre del nuevo libro: "
+				<< nuevoLibro->getEspacioLibre() << endl;
 
 		nuevoLibro->setOffset(this->parser->getOffsetArchivo());
 
-		this->libros->insert(pair<uint32_t, DatoControlLibro*> (
-				nuevoLibro->getId_Libro(), nuevoLibro));
+		cout << "offset del nuevo libro: " << nuevoLibro->getOffset() << endl;
+
+		this->libros->insert(
+				pair<uint32_t, DatoControlLibro*> (nuevoLibro->getId_Libro(),
+						nuevoLibro));
 		buscado->setEspacioLibre(0);
 
 		Logger::log("ArchivoControlLibro", "registrarLibro",
 				"Se agrega nuevo libro.");
 		Logger::log("ArchivoControlLibro", "registrarLibro",
 				ServiceClass::toString(nuevoLibro->getId_Libro()));
-		/*
-		cout<<"*****************ARC CTRL REGISTRAR LIBRO DONDE ESCRIBO: "<<id_Libro<<endl;
-		cout<<"*****************ARC CTRL REGISTRAR LIBRO SIZE A METER: "<<size<<endl;
-		cout<<"*****************ARC CTRL REGISTRAR LIBRO OFFSET: "<<nuevoLibro->getOffset()<<endl;
-		cout<<"*****************ARC CTRL REGISTRAR LIBRO ID LIBRO: "<<nuevoLibro->getId_Libro()<<endl;
-		cout<<"*****************ARC CTRL REGISTRAR LIBRO SIZE: "<<nuevoLibro->getSize()<<endl;
-		*/
+
 		nuevoOffset = id_Libro;
 	}
 
