@@ -33,6 +33,7 @@
 
 /* Define fin de línea en una cadena*/
 #define CARACTER_FIN_DE_LINEA "\n"
+#define CARACTER_TAB "\t"
 
 /* Define los caracteres que separan una palabra de otra */
 #define SEPARADORES_DE_PALABRAS " .,-;:¿?¡!'<@>)("
@@ -111,6 +112,10 @@
 #define CONSULTA_INDICE_EDITORIAL  'Y'
 #define CONSULTA_INDICE_TITULO  'X'
 #define CONSULTA_INDICE_PALABRAS  'W'
+#define CONSULTA_INDICE_TERMINOS 'R'
+#define CONSULTA_ARCHIVO_OCURRENCIA 'M'
+#define CONSULTA_ARCHIVO_TERMINOS 'N'
+#define CONSULTA_ARCHIVO_NORMAS 'B'
 
 #define CARPETA_DEFAULT_INDICES "Indices/"
 
@@ -122,6 +127,7 @@
 #define ARCHIVO_BIBLIOTECA "Biblioteca"
 #define ARCHIVO_TERMINOS "Terminos"
 #define ARCHIVO_CONTROL_BIBLIOTECA "BibliotecaControl.txt"
+
 
 #define ARCHIVO_INDICE_AUTOR "IndiceAutor"
 #define ARCHIVO_INDICE_EDITORIAL "IndiceEditorial"
@@ -136,6 +142,9 @@
 #define ARCHIVO_INDICE_SUFIX "_Indice"
 #define ARCHIVO_ESPACIOSLIBRES_SUFIX "_EspaciosLibres"
 #define ARCHIVO_BLOQUES_SUFIX "_Bloques"
+#define ARCHIVO_OCURRENCIA_POSICIONAL "_OcurrenciaPosicional"
+
+
 
 
 /* MANEJADOR INSTRUCCIONES */
