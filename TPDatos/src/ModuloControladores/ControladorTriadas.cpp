@@ -66,12 +66,14 @@ DatoTriada* ControladorTriadas::getTriada(uint32_t offsetTriada) {
 list<DatoTriada*>* ControladorTriadas::getTriadas(list<uint32_t> idTriadas) {
 	DatoTriada* ptrTriada, triada;
 	list<uint32_t>::iterator it;
+	triadas->clear();
 	for (it = idTriadas.begin(); it != idTriadas.end(); it++) {
 		ptrTriada = this->getTriada(*it);
 
 		if (ptrTriada != NULL)
 			triadas->push_back(ptrTriada);
 	}
+
 	return triadas;
 }
 
@@ -85,12 +87,18 @@ list<uint32_t>* ControladorTriadas::getLibrosAlmacenados() {
 
 bool ControladorTriadas::eliminarLibro(uint32_t offset) {
 	/* Actualiza el estado del archivo de control */
-	arcControl->eliminarLibro(offset);
+	if(getSizeArchivoTriadas() > 0)
+	{
+		arcControl->eliminarLibro(offset);
+		arcControl->actualizarArchivo();
 
-	arcControl->actualizarArchivo();
+		Logger::log("ControladorTriadas", "eliminarLibro",
+				"Se actualiza el archivo de control.");
+	}
+	else
+		Logger::log("ControladorTriadas", "eliminarLibro",
+						"El archivo control esta vacio");
 
-	Logger::log("ControladorTriadas", "eliminarLibro",
-			"Se actualiza el archivo de control.");
 }
 
 void ControladorTriadas::eliminarRegistro(uint32_t idLibro) {
