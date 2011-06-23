@@ -8,7 +8,7 @@
  *
  *
  */
-/*
+
 #ifndef CALCULADORDENORMAS_H_
 #define CALCULADORDENORMAS_H_
 
@@ -120,7 +120,7 @@ public:
 
 	//Devuelve el coseno del �ngulo vectorial entre dos documentos o...
 	//... un documento y una consulta (la consulta se toma como documento de pocos terminos)
-	float calcularSimilitudConsultaDocumento(uint32_t idDocumento, std::list<Termino*>* consulta);
+	float calcularSimilitudConsultaConDocumento(uint32_t idDocumento, std::list<Termino*>* consulta);
 
 	//TODO limpiar encabezado
 	void generarArchivoDeNormasDeDocumentos();//ControladorBiblioteca* controladorBiblioteca);
