@@ -46,16 +46,17 @@ void Instruccion_TomarTexto::ejecutar() {
 	parLibroOffset.second	= idLibroAsignado;
 	controladorIndice->nuevoIndiceOcurrenciaTerminos();
 	controladorIndice->indexar(parLibroOffset,INDICE_OCURRENCIA_TERMINOS);
-/*
+
 	ArchivoTerminos* archivoTerminos = new ArchivoTerminos(conf->getPathCarpetaTrabajo()
 															+ ARCHIVO_TERMINOS
 															+ EXTENSION_ARCHIVO_INDICE);
+
 	CalculadorDeNormas* calculadorDeNormas = new CalculadorDeNormas(controladorIndice,archivoTerminos);
 	calculadorDeNormas->generarArchivoDeNormasDeDocumentos();
 
 	delete(archivoTerminos);
 	delete(calculadorDeNormas);
-	*/
+
 
 }
 
