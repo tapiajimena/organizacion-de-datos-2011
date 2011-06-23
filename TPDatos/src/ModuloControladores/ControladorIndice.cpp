@@ -274,7 +274,7 @@ IdsTriadasIdTermino* groupByIdTermino(list<DatoTriada*>* datoTriadas){
 
 void ControladorIndice::mostrarTriadas()
 {
-	this->controlTriadas->mostrarContendioArchivoTriadas();
+	//this->controlTriadas->mostrarContendioArchivoTriadas();
 
 }
 
@@ -417,18 +417,24 @@ void ControladorIndice::indexarPorPalabras(
 
 list<DatoTriada*>* ControladorIndice::recuperarTriadas(string termino)
 {
+	std::cout<<"ESTOY ADENTRO DE CONTROLADORINDICE, en el metodo RECUPERARTRIADAS"<<std::endl;
 	Logger::log("ControladorIndice", "recuperarTriadas","se busca un termino");
 	DatoTriada triada;
 	DatoElementoNodo* nodoEncontrado = NULL;
 
 	DatoElementoNodo* nodoBusqueda = new DatoElementoNodo(termino);
 
+	std::cout<<"Buscando nodo"<<std::endl;
+
 	nodoEncontrado = indiceArbol->find(new DatoElementoNodo(termino, 0));
+
+	std::cout<<"Termino busqueda nodo"<<std::endl;
 
 	list<uint32_t> idTriadas = nodoEncontrado->getLibros();
 	list<DatoTriada*>* triadas = controlTriadas->getTriadas(idTriadas);
 
 	delete(nodoBusqueda);
+	std::cout<<"Estoy SALIENDO DE CONTROLADORINDICE::RECUPERARTRIADAS...."<<std::endl;
 
 	return triadas;
 }
@@ -474,6 +480,7 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 	for (it = ocurrenciasTerminos.begin(); it != ocurrenciasTerminos.end(); it++)
 	{
 		termino = caseFold.caseFoldWord(*it);
+		termino = *it;
 
 		Logger::log("ControladorIndice", "indexarPorOcurrenciaTerminos",
 				"Se indexan en el hash.");
@@ -500,6 +507,12 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 		triada->setPosicion(posicionRelativaTermino);
 		controlTriadas->insertarTriada(triada, offsetAEscribir);
 
+
+		if (termino == " ")
+			std::cout<<"espacio!!!!!!!"<<endl;
+		if (termino == "")
+			std::cout<<"vacio!!!!!!!"<<endl;
+
 		//se inserta el termino en el arbol
 		this->indiceArbol->insert(
 				new DatoElementoNodo(termino,offsetAEscribir));
@@ -518,13 +531,20 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 			"Se elimina la triada y el control triada");
 	delete (triada);
 	delete (arcTerminos);
-	delete (controlTriadas);
+	//delete (controlTriadas);
 }
 
 
 ControladorTriadas* ControladorIndice::getControladorTriadas()
 {
+	/*if (this->controlTriadas == NULL){
+		Configuracion* conf = Configuracion::GetInstancia();
+		this->controlTriadas = new ControladorTriadas(
+				conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS + EXTENSION_ARCHIVO_INDICE,
+				conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS_CONTROL);
+	}*/
 	return this->controlTriadas;
+
 }
 
 
