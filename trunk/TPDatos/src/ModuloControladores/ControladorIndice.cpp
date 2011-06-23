@@ -24,10 +24,6 @@ ControladorIndice::ControladorIndice() {
 			conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS_CONTROL);
 
 
-	this->indiceArbol = new BPlusTree(pathCarpeta + ARCHIVO_INDICE_OCURRENCIA_TERMINOS
-							+ EXTENSION_ARCHIVO_INDICE,
-							SIZE_BLOQUE);
-
 }
 
 ControladorIndice::ControladorIndice(string pathCarpeta) {
@@ -40,9 +36,6 @@ ControladorIndice::ControladorIndice(string pathCarpeta) {
 			pathCarpeta + ARCHIVO_INDICE_TRIADAS + EXTENSION_ARCHIVO_INDICE,
 			pathCarpeta + ARCHIVO_INDICE_TRIADAS_CONTROL);
 
-	this->indiceArbol = new BPlusTree(pathCarpeta + ARCHIVO_INDICE_OCURRENCIA_TERMINOS
-							+ EXTENSION_ARCHIVO_INDICE,
-							SIZE_BLOQUE);
 }
 
 void ControladorIndice::nuevoIndiceAutor() {
@@ -61,9 +54,10 @@ void ControladorIndice::nuevoIndiceEditorial() {
 }
 
 void ControladorIndice::nuevoIndiceOcurrenciaTerminos() {
-	this->indiceArbol = new BPlusTree(
-			pathCarpeta + ARCHIVO_INDICE_OCURRENCIA_TERMINOS
-					+ EXTENSION_ARCHIVO_INDICE, SIZE_BLOQUE);
+
+		this->indiceArbol = new BPlusTree(
+				pathCarpeta + ARCHIVO_INDICE_OCURRENCIA_TERMINOS
+						+ EXTENSION_ARCHIVO_INDICE, SIZE_BLOQUE);
 
 	this->indiceHash
 			= new Hash(
@@ -334,25 +328,18 @@ void ControladorIndice::indexarPorPalabras(
 
 list<DatoTriada*>* ControladorIndice::recuperarTriadas(string termino)
 {
-	std::cout<<"ESTOY ADENTRO DE CONTROLADORINDICE, en el metodo RECUPERARTRIADAS"<<std::endl;
 	Logger::log("ControladorIndice", "recuperarTriadas","se busca un termino");
 	DatoTriada triada;
 	DatoElementoNodo* nodoEncontrado = NULL;
 
 	DatoElementoNodo* nodoBusqueda = new DatoElementoNodo(termino);
 
-	std::cout<<"Creando el arbol"<<std::endl;
-
-	std::cout<<"Buscando nodo"<<std::endl;
 	nodoEncontrado = indiceArbol->find(new DatoElementoNodo(termino, 0));
-
-	std::cout<<"Saliendo del arbol"<<std::endl;
 
 	list<uint32_t> idTriadas = nodoEncontrado->getLibros();
 	list<DatoTriada*>* triadas = controlTriadas->getTriadas(idTriadas);
 
 	delete(nodoBusqueda);
-	std::cout<<"Estoy SALIENDO DE CONTROLADORINDICE::RECUPERARTRIADAS...."<<std::endl;
 
 	return triadas;
 }
@@ -443,7 +430,6 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 			"Se elimina la triada y el control triada");
 	delete (triada);
 	delete (arcTerminos);
-	//delete (controlTriadas);
 }
 
 
