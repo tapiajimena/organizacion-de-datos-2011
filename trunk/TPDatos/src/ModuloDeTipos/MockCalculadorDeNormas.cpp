@@ -1,4 +1,4 @@
-
+/*
 #include "MockCalculadorDeNormas.h"
 
 
@@ -22,4 +22,4 @@ float CalculadorDeNormas::calcularSimilitudConsultaConDocumento(uint32_t id_docu
 	
 }
 
-
+*/
