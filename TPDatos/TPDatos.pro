@@ -1,7 +1,21 @@
 TEMPLATE = app
 TARGET = TPDatos
 QT += core
-HEADERS += src/ModuloDeArchivos/ArchivoControlTriadas.h \
+HEADERS += src/ModuloDeInterfaz/Instruccion_ConsultarNormaInfinito.h \
+    src/ModuloDeInterfaz/Instruccion_ConsultarIndiceTerminos.h \
+    src/ModuloDeInterfaz/Instruccion_ConsultarOcurrenciaPosicional.h \
+    src/ModuloDeInterfaz/Instruccion_ConsultarArchivoTerminos.h \
+    src/ModuloDeTipos/MockCalculadorDeNormas.h \
+    src/ModuloDeProcesadores/ProcesadorDeRelevancia.h \
+    src/ModuloDeTipos/DuplaConsultaPorPeso.h \
+    src/ModuloDeTipos/PosicionTerminoEnLibro.h \
+    src/ModuloDeTipos/PosicionesMasProximasTermino.h \
+    src/ModuloDeTipos/TriadaConsultaPorProximidad.h \
+    src/ModuloDeInterfaz/Instruccion_ConsultarTerminosProximos.h \
+    src/ModuloDeTipos/Termino.h \
+    src/ModuloEstructuras/CalculadorDeNormas.h \
+    src/ModuloParser/ParserDeOcurrenciasDeTerminos.h \
+    src/ModuloDeArchivos/ArchivoControlTriadas.h \
     src/ModuloControladores/ControladorTriadas.h \
     src/ModuloDeArchivos/ArchivoTerminos.h \
     src/ModuloDeArchivos/ArchivoTriadas.h \
@@ -24,7 +38,6 @@ HEADERS += src/ModuloDeArchivos/ArchivoControlTriadas.h \
     src/ModuloDeTipos/CaseFoldedString.h \
     src/ModuloEstructuras/Configuracion.h \
     src/ModuloEstructuras/Libro.h \
-    src/ModuloParser/ParserTriadas.h \
     src/ModuloParser/ParserArchivoControlTriadas.h \
     src/ModuloParser/ParserDeAtributo.h \
     src/ModuloParser/ParserDeAutor.h \
@@ -67,7 +80,17 @@ HEADERS += src/ModuloDeArchivos/ArchivoControlTriadas.h \
     Common/Utilitarios/Logger.h \
     Common/Utilitarios/ServiceClass.h \
     src/ModuloEstructuras/Diccionario.h
-SOURCES += src/ModuloDeArchivos/ArchivoControlTriadas.cpp \
+SOURCES += src/ModuloDeInterfaz/Instruccion_ConsultarNormaInfinito.cpp \
+    src/ModuloDeInterfaz/Instruccion_ConsultarIndiceTerminos.cpp \
+    src/ModuloDeInterfaz/Instruccion_ConsultarOcurrenciaPosicional.cpp \
+    src/ModuloDeInterfaz/Instruccion_ConsultarArchivoTerminos.cpp \
+    src/ModuloDeTipos/MockCalculadorDeNormas.cpp \
+    src/ModuloDeProcesadores/ProcesadorDeRelevancia.cpp \
+    src/ModuloDeInterfaz/Instruccion_ConsultarTerminosProximos.cpp \
+    src/ModuloDeTipos/Termino.cpp \
+    src/ModuloEstructuras/CalculadorDeNormas.cpp \
+    src/ModuloParser/ParserDeOcurrenciasDeTerminos.cpp \
+    src/ModuloDeArchivos/ArchivoControlTriadas.cpp \
     src/ModuloControladores/ControladorTriadas.cpp \
     src/ModuloDeArchivos/ArchivoTerminos.cpp \
     src/ModuloDeArchivos/ArchivoTriadas.cpp \
@@ -90,14 +113,13 @@ SOURCES += src/ModuloDeArchivos/ArchivoControlTriadas.cpp \
     src/ModuloEstructuras/Configuracion.cpp \
     src/ModuloDeIndices/Hash/TestHash.cpp \
     src/ModuloEstructuras/Libro.cpp \
-    src/ModuloParser/ParserTriadas.cpp \
     src/ModuloParser/ParserArchivoControlTriadas.cpp \
     src/ModuloParser/ParserDeAutor.cpp \
     src/ModuloParser/ParserDeEditorial.cpp \
     src/ModuloParser/ParserDePalabras.cpp \
     src/ModuloParser/ParserDeTitulo.cpp \
     src/ModuloDeIndices/Indexador.cpp \
-    src/ModuloDeIndices/Hash/Hash.cpp \    
+    src/ModuloDeIndices/Hash/Hash.cpp \
     src/ModuloControladores/ControladorIndice.cpp \
     src/ModuloControladores/ControladorBiblioteca.cpp \
     src/ModuloDeIndices/Hash/ElementoHash.cpp \
