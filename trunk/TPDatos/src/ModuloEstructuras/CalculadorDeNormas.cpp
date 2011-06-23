@@ -67,17 +67,17 @@ CalculadorDeNormas::~CalculadorDeNormas()
 std::list<DatoTriada*>* CalculadorDeNormas::levantarTriadasDeTermino(uint32_t idTermino)
 {
 
-	std::cout<<"levantando idTermino"<<std::endl;
+	//std::cout<<"levantando idTermino"<<std::endl;
 	//Esto es un acceso directo al archivo a traves de su offset-Id.
 	std::string palabra = this->archivoTerminos->obtenerTermino(idTermino);
 
-	std::cout<<"Palabra de Termino: "<<palabra<<std::endl;
+	//std::cout<<"Palabra de Termino: "<<palabra<<std::endl;
 
-	std::cout<<"Llamo a... this->controladorIndice->recuperarTriadas(palabra)..."<<std::endl;
+	//std::cout<<"Llamo a... this->controladorIndice->recuperarTriadas(palabra)..."<<std::endl;
 	//Carga posta de triadas:
 	std::list<DatoTriada*>* listaTriadas = this->controladorIndice->recuperarTriadas(palabra);
 
-	std::cout<<"Recupero listaTriadas..."<<std::endl;
+	//std::cout<<"Recupero listaTriadas..."<<std::endl;
 
 	return listaTriadas;
 }
@@ -98,7 +98,7 @@ void CalculadorDeNormas::generarIndiceDePesosGlobalesDeTerminos()
 		//calculamos el peso global...
 		pesoGlobalTermino = this->calcularPesoGlobalDeTermino((*it_terminos).second);//por id de termino.
 
-		std::cout<<"Termino: '"<<(*it_terminos).first<<"' con ID "<<(*it_terminos).second<<" Tiene Peso Global: "<<pesoGlobalTermino<<std::endl;
+		//std::cout<<"Termino: '"<<(*it_terminos).first<<"' con ID "<<(*it_terminos).second<<" Tiene Peso Global: "<<pesoGlobalTermino<<std::endl;
 		//La clave en el indice es el ID de termino pero pasado a string.
 		parIdTerminoPesoGlobal.first = ServiceClass::obtenerString((*it_terminos).second);
 
@@ -118,9 +118,9 @@ int CalculadorDeNormas::calcularDocumentosQueContienenTermino(uint32_t idTermino
 {
 	int documentosQueContienenTermino = 0;
 
-	std::cout<<" entrando a levantarTriadasDeTermino..."<<std::endl;
+	//std::cout<<" entrando a levantarTriadasDeTermino..."<<std::endl;
 	std::list<DatoTriada*>* ocurrenciasDeTermino = this->levantarTriadasDeTermino(idTermino);
-	std::cout<<"Salio de levantarTriadasDeTermino"<<std::endl;
+	//std::cout<<"Salio de levantarTriadasDeTermino"<<std::endl;
 
 	//En este vector se guardan los libros en que aparece el t�rmino. La idea es no contar
 	//dos ocurrencias si son del mismo documento, ya que interesa la cantidad de DOCUMENTOS
@@ -165,11 +165,11 @@ float CalculadorDeNormas::calcularPesoGlobalDeTermino(uint32_t idTermino)
 {
 	float pesoGlobal = 0.0;
 
-	std::cout<<"entrando a calcularDocumentosQueContienenTermino"<<std::endl;
+	//std::cout<<"entrando a calcularDocumentosQueContienenTermino"<<std::endl;
 	float frecuenciaGlobalDeTermino = this->calcularDocumentosQueContienenTermino(idTermino);
 
-	std::cout<<"Frec. global de termino: "<< frecuenciaGlobalDeTermino<<std::endl;
-	std::cout<<"cantidad docs: "<< this->cantidadTotalDeDocumentos<<std::endl;
+	//std::cout<<"Frec. global de termino: "<< frecuenciaGlobalDeTermino<<std::endl;
+	//std::cout<<"cantidad docs: "<< this->cantidadTotalDeDocumentos<<std::endl;
 
 	if(frecuenciaGlobalDeTermino != 0)
 	{
@@ -260,7 +260,7 @@ float CalculadorDeNormas::obtenerNormaDocumentoDeIndice(uint32_t idDocumento)
 		}
 		else
 		{
-			std::cout<<"ERROR: multiples normas para el documento"<<normaDocumento;
+			std::cout<<"Atencion: multiples normas para el documento"<<normaDocumento;
 			//throw??
 		}
 
