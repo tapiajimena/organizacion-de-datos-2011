@@ -17,10 +17,12 @@ ControladorIndice::ControladorIndice() {
 	this->pathCarpeta = conf->getPathCarpetaTrabajo();
 	this->indiceHash = NULL;
 	this->indiceArbol = NULL;
+	this->controlTriadas = NULL;
 
 	this->controlTriadas = new ControladorTriadas(
 			conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS + EXTENSION_ARCHIVO_INDICE,
 			conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS_CONTROL);
+
 
 	this->indiceArbol = new BPlusTree(pathCarpeta + ARCHIVO_INDICE_OCURRENCIA_TERMINOS
 							+ EXTENSION_ARCHIVO_INDICE,
@@ -32,6 +34,7 @@ ControladorIndice::ControladorIndice(string pathCarpeta) {
 	this->pathCarpeta = pathCarpeta;
 	this->indiceHash = NULL;
 	this->indiceArbol = NULL;
+	this->controlTriadas = NULL;
 
 	this->controlTriadas = new ControladorTriadas(
 			pathCarpeta + ARCHIVO_INDICE_TRIADAS + EXTENSION_ARCHIVO_INDICE,
@@ -115,8 +118,6 @@ void ControladorIndice::eliminarIndexado(Libro* libroRemover, uint32_t idLibro,
 	}
 }
 
-
-
 void ControladorIndice::eliminarIndexadoPorTipo(char tipo, Libro* libroRemover,
 		uint32_t idLibro) {
 	CaseFoldedString caseFold;
@@ -186,95 +187,11 @@ void ControladorIndice::eliminarIndexadoPorTipo(char tipo, Libro* libroRemover,
 
 }
 
-/*
- * Intento de acoplar el eliminar de Nico
-
-typedef list<uint32_t>* IdsTriadas;
-
-typedef map<uint32_t, IdsTriadas> IdsTriadasIdTermino;
-
-void ControladorIndice::eliminarIndexadoOcurrenciaTerminos(Libro* libroRemover, uint32_t idLibro)
-{
-	IdsTriadasIdTermino* triadasPorIdTermino = groupByIdTermino (triadas);
-	IdsTriadasIdTermino::const_iterator ci_idTermino;
-
-	list<uint32_t>* aux = NULL;
-	list<uint32_t>::const_iterator ci_idTriada;
-
-	for (ci_idTermino = triadasPorIdTermino->begin();
-		ci_idTermino != triadasPorIdTermino->end();
-			++ci_idTermino){
-
-		cout<<ci_idTermino->first<<" => ( ";
-		aux = ci_idTermino->second;
-
-		for(ci_idTriada = aux->begin();
-			ci_idTriada != aux->end();
-				++ci_idTriada){
-			cout<<(*ci_idTriada)<<" ";
-
-		}
-
-		cout<<")"<<endl;
-
-	}
-
-	liberarMemoria(triadas, triadasPorIdTermino);
-}
-
-void liberarMemoria(list<DatoTriada*>* triadas, IdsTriadasIdTermino* mapa){
-{
-	IdsTriadasIdTermino::iterator it_mapa;
-	list<DatoTriada*>::iterator it_triada;
-
-	for (it_triada=triadas->begin();it_triada!=triadas->end();++it_triada)
-	{
-		delete(*it_triada);
-	}
-	delete triadas;
-
-	for (it_mapa = mapa->begin();it_mapa != mapa->end();++it_mapa){
-
-		delete (it_mapa->second);
-	}
-	delete mapa;
-}
-
-
-IdsTriadasIdTermino* groupByIdTermino(list<DatoTriada*>* datoTriadas){
-
-	IdsTriadasIdTermino* result = new IdsTriadasIdTermino();
-	IdsTriadasIdTermino::iterator it;
-
-	list<uint32_t>* aux = NULL;
-
-	list<DatoTriada*>::const_iterator ci;
-	for (ci=datoTriadas->begin();ci!=datoTriadas->end();++ci)
-	{
-		if (result->find((*ci)->id_termino) != result->end()){
-			aux = result->find((*ci)->id_termino)->second;
-		}else {
-			aux = new list<uint32_t>();
-		}
-
-		aux->push_back((*ci)->id);
-
-		result->insert(pair<uint32_t, list<uint32_t>* >((*ci)->id_termino, aux));
-	}
-
-	return result;
-
-}
-
-/*
- * fin intento
- */
-
 
 
 void ControladorIndice::mostrarTriadas()
 {
-	//this->controlTriadas->mostrarContendioArchivoTriadas();
+	this->controlTriadas->mostrarContendioArchivoTriadas();
 
 }
 
@@ -424,11 +341,12 @@ list<DatoTriada*>* ControladorIndice::recuperarTriadas(string termino)
 
 	DatoElementoNodo* nodoBusqueda = new DatoElementoNodo(termino);
 
-	std::cout<<"Buscando nodo"<<std::endl;
+	std::cout<<"Creando el arbol"<<std::endl;
 
+	std::cout<<"Buscando nodo"<<std::endl;
 	nodoEncontrado = indiceArbol->find(new DatoElementoNodo(termino, 0));
 
-	std::cout<<"Termino busqueda nodo"<<std::endl;
+	std::cout<<"Saliendo del arbol"<<std::endl;
 
 	list<uint32_t> idTriadas = nodoEncontrado->getLibros();
 	list<DatoTriada*>* triadas = controlTriadas->getTriadas(idTriadas);
@@ -507,12 +425,6 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 		triada->setPosicion(posicionRelativaTermino);
 		controlTriadas->insertarTriada(triada, offsetAEscribir);
 
-
-		if (termino == " ")
-			std::cout<<"espacio!!!!!!!"<<endl;
-		if (termino == "")
-			std::cout<<"vacio!!!!!!!"<<endl;
-
 		//se inserta el termino en el arbol
 		this->indiceArbol->insert(
 				new DatoElementoNodo(termino,offsetAEscribir));
@@ -537,14 +449,7 @@ void ControladorIndice::indexarPorOcurrenciaTerminos(
 
 ControladorTriadas* ControladorIndice::getControladorTriadas()
 {
-	/*if (this->controlTriadas == NULL){
-		Configuracion* conf = Configuracion::GetInstancia();
-		this->controlTriadas = new ControladorTriadas(
-				conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS + EXTENSION_ARCHIVO_INDICE,
-				conf->getPathCarpetaTrabajo() + ARCHIVO_INDICE_TRIADAS_CONTROL);
-	}*/
 	return this->controlTriadas;
-
 }
 
 
@@ -559,6 +464,12 @@ ControladorIndice::~ControladorIndice() {
 		Logger::log("ControladorIndice", "~ControladorIndice",
 				"Se elimina el Arbol");
 		delete (indiceArbol);
+	}
+
+	if (controlTriadas != NULL) {
+		Logger::log("ControladorIndice", "~ControladorIndice",
+				"Se elimina el Control Triadas");
+		delete (controlTriadas);
 	}
 
 }
