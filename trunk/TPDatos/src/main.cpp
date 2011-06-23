@@ -10,14 +10,20 @@
 #include <string>
 #include <iostream>
 #include "ModuloDeInterfaz/ManejadorInstrucciones.h"
+#include "ModuloControladores/ControladorIndice.h"
+#include "ModuloEstructuras/Configuracion.h"
+#include "../Common/Constantes.h"
 
 
 
 int main(int cantidad, char* argumentos[])
 {
+
 	ManejadorInstrucciones* instrucciones = new ManejadorInstrucciones(argumentos, cantidad);
 	instrucciones->ejecutarInstruccionElegida();
 	delete(instrucciones);
 
+
+	return 0;
 }
 
