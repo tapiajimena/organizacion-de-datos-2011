@@ -11,8 +11,8 @@
  *	./ejecutable –t
  */
 
-#ifndef INSTRUCCION_CONSULTARTERMINOSPROXIMOS_H_
-#define INSTRUCCION_CONSULTARTERMINOSPROXIMOSH_
+#ifndef INSTRUCCION_CONSULTARARCHIVOSTERMINOS_H_
+#define INSTRUCCION_CONSULTARARCHIVOSTERMINOS_H_
 
 #include "Instruccion.h"
 #include "../ModuloDeIndices/ConsultaIndice.h"
@@ -29,4 +29,4 @@ public:
 	virtual ~Instruccion_ConsultarArchivoTerminos();
 };
 
-#endif /* INSTRUCCION_CONSULTARTERMINOSPROXIMOS_H_ */
+#endif /* INSTRUCCION_CONSULTARARCHIVOSTERMINOS_H_ */
