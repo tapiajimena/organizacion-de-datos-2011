@@ -47,20 +47,24 @@ void Instruccion_TomarTexto::ejecutar() {
 	controladorIndice->nuevoIndiceOcurrenciaTerminos();
 	controladorIndice->indexar(parLibroOffset,INDICE_OCURRENCIA_TERMINOS);
 
+	delete(controladorIndice);
+	delete(controladorBiblioteca);
+
+
+	ControladorIndice* controlIndiceAux = new ControladorIndice(conf->getPathCarpetaTrabajo());
 	ArchivoTerminos* archivoTerminos = new ArchivoTerminos(conf->getPathCarpetaTrabajo()
 															+ ARCHIVO_TERMINOS
 															+ EXTENSION_ARCHIVO_INDICE);
 
-	CalculadorDeNormas* calculadorDeNormas = new CalculadorDeNormas(controladorIndice,archivoTerminos);
+	controlIndiceAux->nuevoIndiceOcurrenciaTerminos();
+	CalculadorDeNormas* calculadorDeNormas = new CalculadorDeNormas(controlIndiceAux,archivoTerminos);
 	calculadorDeNormas->generarArchivoDeNormasDeDocumentos();
 
+	delete controlIndiceAux;
 	delete(archivoTerminos);
 	delete(calculadorDeNormas);
-
-
 }
 
 Instruccion_TomarTexto::~Instruccion_TomarTexto() {
-	delete(controladorIndice);
-	delete(controladorBiblioteca);
+
 }
