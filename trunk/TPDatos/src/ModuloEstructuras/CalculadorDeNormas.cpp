@@ -315,24 +315,49 @@ VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(uint32_t idDocumen
 
 VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(std::list<Termino*>* listaTerminos)
 {
-	VectorDeDocumento* vectorConsulta = new VectorDeDocumento();
+	VectorDeDocumento* vectorConsulta = new VectorDeDocumento(); //se retorna esto.
 
 	std::list<Termino*>::iterator it_terminos;
 
+	std::vector<uint32_t> listaIdTerminos;
+	uint32_t idTermino;
+
 	for(it_terminos = listaTerminos->begin(); it_terminos != listaTerminos->end(); it_terminos++)
 	{
-		uint32_t idTermino = (*it_terminos)->obtenerId();
+		std::cout<<"El termino de consulta "<<(*it_terminos)->obtenerNombre()<<" tiene "<<(*it_terminos)->obtenerCantidadLibros()<<" libros."<<std::endl;
 
-		if( vectorConsulta->find(idTermino) != vectorConsulta->end())
+		//Obtengo el ID termino a traves de las triadas que trae en su lista.
+		if ((*it_terminos)->obtenerCantidadLibros() > 0)
 		{
-			(*vectorConsulta)[idTermino]++;
-		}
-		else
-		{
-			(*vectorConsulta)[idTermino] = 1;
-		}
+			//Si aparece en algun libro, esto si tiene sentido.
+			uint32_t idTermino = (*it_terminos)->obtenerId();
 
+			string idTerminoString = ServiceClass::obtenerString( idTermino );
+			std::cout<<"ID TERMINO STRING = "<< idTerminoString<<std::endl;
+
+			listaIdTerminos = this->indicePesosGlobales->buscarPalabraEnHash(idTerminoString);
+
+			if (listaIdTerminos.size() == 1 )
+			{
+				std::cout<<"Id termino encontrado. ID = "<<idTermino<<std::endl;
+
+				if( vectorConsulta->find(idTermino) != vectorConsulta->end())
+				{
+					(*vectorConsulta)[idTermino]++;
+				}
+				else
+				{
+					(*vectorConsulta)[idTermino] = 1;
+				}
+
+				std::cout<<"Se ingreso termino ID en vector..."<<idTermino<<std::endl;
+				std::cout<<"Apariciones del termino: "<<(*vectorConsulta)[idTermino]<<std::endl;
+			}
+		}
 	}
+
+	std::cout<<"Tamanio Vector Consulta: "<<vectorConsulta->size()<<std::endl;
+	std::cout<<vectorConsulta->begin()->first<<std::endl;
 
 	this->ponderarPesoLocal(vectorConsulta);
 
@@ -403,9 +428,14 @@ void CalculadorDeNormas::generarArchivoDeNormasDeDocumentos()//ControladorBiblio
 
 	std::list<uint32_t>::iterator it_idDocumentos;
 
+	std::string idDocumentoString;
+
 	for (it_idDocumentos = listaIdDocumentos->begin(); it_idDocumentos != listaIdDocumentos->end(); it_idDocumentos++)
 	{
 		uint32_t idDocumento = (*it_idDocumentos);
+
+		idDocumentoString = ServiceClass::obtenerString(idDocumento);
+
 
 		VectorDeDocumento* vectorDocumento = this->cargarVectorDeTerminos(idDocumento);
 
@@ -419,11 +449,12 @@ void CalculadorDeNormas::generarArchivoDeNormasDeDocumentos()//ControladorBiblio
 		std::string idDocumetoStr = ServiceClass::obtenerString(idDocumento);
 		std::pair<std::string, uint32_t> claveNormaDocumentoHash;
 		claveNormaDocumentoHash.first = idDocumetoStr;
-		std::cout<<"idDoc que se guarda en hash: "<< idDocumento<<std::endl;
+		std::cout<<"idDoc que se guarda en hash (lalala): "<< idDocumento<<std::endl;
 		claveNormaDocumentoHash.second = normaDocumento;
 		this->indiceNormasDocumentos->insertarClave(claveNormaDocumentoHash);
 
 		delete vectorDocumento;
+
 	}
 }
 
@@ -439,16 +470,25 @@ void CalculadorDeNormas::ponderarPesoLocal(VectorDeDocumento* vectorDocumento)
 
 		int frecuenciaLocal = it->second;
 
+		//std::cout<<"Frecuencia local de termino..."<<frecuenciaLocal<<std::endl;
+
 		float pesoGlobal = this->obtenerPesoGlobalDeIndice(idTermino);
 
 		float pesoLocalTermino = pesoGlobal * frecuenciaLocal;
 
 		it->second = pesoLocalTermino;
 	}
+
 }
 
 float CalculadorDeNormas::calcularSimilitudConsultaConDocumento(uint32_t idDocumento, std::list<Termino*>* consulta)
 {
+	float  similitudCalculada = 0;
+
+	std::cout<<"Cantidad palabras de consulta..."<<consulta->size()<<std::endl;
+	std::cout<<"Primer palabra consulta..."<<consulta->front()->obtenerNombre()<<std::endl;
+
+	std::cout<<"ID de termino de consulta: "<<consulta->front()->obtenerId()<<std::endl;
 
 	VectorDeDocumento* vectorConsulta = this->cargarVectorDeTerminos(consulta);
 
@@ -456,17 +496,29 @@ float CalculadorDeNormas::calcularSimilitudConsultaConDocumento(uint32_t idDocum
 
 	float productoInterno = this->calcularProductoInterno(vectorDocumento, vectorConsulta);
 
-	//La norma del documento la leemos del indice, para ahorrar accesos a disco.
+	std::cout<<"Producto Interno = "<<productoInterno<<std::endl;
 
+	//La norma del documento la leemos del indice, para ahorrar accesos a disco.
 	float normaDocumento = this->obtenerNormaDocumentoDeIndice(idDocumento);
+
+	std::cout<<"Norma Documento = "<<normaDocumento<<std::endl;
 
 	float normaConsulta = this->calcularNormaVectorDeTerminos(vectorConsulta);
 
+	std::cout<<"Norma Consulta = "<<normaConsulta<<std::endl;
+
 	float productoDeNormas = normaDocumento * normaConsulta;
+
+	std::cout<<"ProductoDeNormas = "<<productoDeNormas<<std::endl;
 
 	delete vectorConsulta;
 	delete vectorDocumento;
 
-	return productoInterno / productoDeNormas;
+	if (productoDeNormas > 0)
+		similitudCalculada = productoInterno / productoDeNormas;
+
+	std::cout<<"Similitud calculada: "<<similitudCalculada<<std::endl;
+
+	return similitudCalculada;
 }
 
