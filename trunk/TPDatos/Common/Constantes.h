@@ -36,7 +36,7 @@
 #define CARACTER_TAB "\t"
 
 /* Define los caracteres que separan una palabra de otra */
-#define SEPARADORES_DE_PALABRAS " .,-;:¿?¡!'<@>)("
+#define SEPARADORES_DE_PALABRAS " .,-;:¿?¡!'<@>)(\""
 
 /* Define los caracteres que separan palabras pero no son signos de puntuación
  * Se usa para obtener títulos de libros o nombres de editoriales con la puntuación original
@@ -76,7 +76,7 @@
 #define CONTROL_LENGTH 256
 
 /* CONSTANTES DEFINIDAS PARA EL ARBOL */
-#define SIZE_BLOQUE 512
+#define SIZE_BLOQUE 1024
 
 #define OVERFLOWDED -10
 
