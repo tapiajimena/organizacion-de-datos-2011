@@ -108,6 +108,7 @@ void ArchivoControlTriadas::eliminarDatoControl(uint32_t idLibro) {
 }
 
 list<uint32_t>* ArchivoControlTriadas::getIdLibrosAlmacenados() {
+	this->idLibrosInsertados->clear();
 	if(!this->datosControl->empty()) {
 		for (it = this->datosControl->begin(); it != this->datosControl->end(); it++) {
 			this->idLibrosInsertados->push_back((*it).first);
