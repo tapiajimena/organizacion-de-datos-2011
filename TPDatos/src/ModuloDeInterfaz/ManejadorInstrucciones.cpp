@@ -153,11 +153,12 @@ string ManejadorInstrucciones::obtenerConsulta() {
 	string rdo = "";
 
 	for (int i = 2; i < MAX_COMANDOS; i++)
-		rdo+=this->comando[i];
+		rdo+=this->comando[i]+" ";
 
 	Logger::log("ManejadorInstrucciones", "obtenerIDInstruccion",
 			"Se codifica.");
 
+	std::cout<<"RDO string en ManejadorInstrucciones: "<<rdo<<std::endl;
 	return rdo;
 }
 
