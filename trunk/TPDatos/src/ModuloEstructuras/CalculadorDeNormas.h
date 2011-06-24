@@ -20,8 +20,6 @@
 #include "../ModuloEstructuras/Configuracion.h"
 #include "../ModuloControladores/ControladorTriadas.h"
 #include "../ModuloControladores/ControladorIndice.h"
-//TODO sacar ControladorBiblioteca y usar a ControladorTriadas para obtener Ids de libros.
-//#include "../ModuloControladores/ControladorBiblioteca.h"
 #include "../ModuloDeTipos/DatoTriada.h"
 #include "../ModuloDeIndices/Hash/Hash.h"
 #include "../ModuloDeTipos/Termino.h"
@@ -51,6 +49,7 @@ private:
 
 	Hash* indiceNormasDocumentos;
 
+
 	std::string nombreArchivoTablaPesos;
 	std::string nombreArchivoCubetasPesos;
 
@@ -61,6 +60,8 @@ private:
 	ArchivoTerminos* archivoTerminos;
 
 	int cantidadTotalDeDocumentos; //Se carga al calcular e indexar pesos globales de terminos
+
+	std::vector<std::pair<std::string, uint32_t> > listaTerminos;
 
 	//METODOS PRIVADOS---------------------------------------------------
 
@@ -87,6 +88,13 @@ private:
 
 	//Consulta el �ndice de normas y devuelve la del documento. Si no est� registrado, devuelve 0
 	float obtenerNormaDocumentoDeIndice(uint32_t idDocumento);
+
+	//Devuelve true si el termino (string) esta en la lista de terminos de los libros y
+	//carga su id cargado en la variable idTermino.
+	//Se asume que en la creacion y destruccion de esta clase no se agregan terminos.
+	bool buscarTerminoEnBiblioteca(string termino, uint32_t &idTermino);
+
+	uint32_t obtenerIdTermino(string termino);
 
 	//PESO LOCAL DE TERMINO
 	//Se usa para las consultas de similitud, con las normas ya calculadas y guardadas en un archivo.
@@ -122,8 +130,8 @@ public:
 	//... un documento y una consulta (la consulta se toma como documento de pocos terminos)
 	float calcularSimilitudConsultaConDocumento(uint32_t idDocumento, std::list<Termino*>* consulta);
 
-	//TODO limpiar encabezado
-	void generarArchivoDeNormasDeDocumentos();//ControladorBiblioteca* controladorBiblioteca);
+
+	void generarArchivoDeNormasDeDocumentos();
 
 	//Busca en el archivo de normas la norma del documento por id. Se debe haber generado el archivo de
 	//normas en una corrida anterior. Si el archivo de normas no existe o el idDocumento no est� en �l, devuelve cero.
