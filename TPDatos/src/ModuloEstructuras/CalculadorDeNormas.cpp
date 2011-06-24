@@ -502,7 +502,7 @@ float CalculadorDeNormas::calcularSimilitudConsultaConDocumento(uint32_t idDocum
 {
 	float  similitudCalculada = 0;
 
-	std::cout<<std::endl<<std::endl<<"Consulta por similitud - Id libro: "<<idDocumento<<std::endl;
+	std::cout<<"Consulta por similitud - Id libro: "<<idDocumento<<" |	";
 
 	VectorDeDocumento* vectorConsulta = this->cargarVectorDeTerminos(consulta);
 
