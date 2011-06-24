@@ -31,6 +31,8 @@ CalculadorDeNormas::CalculadorDeNormas(ControladorIndice* controladorIndice, Arc
 	this->indicePesosGlobales = new Hash(this->nombreArchivoTablaPesos, this->nombreArchivoCubetasPesos);
 	this->indiceNormasDocumentos = new Hash(this->nombreArchivoTablaNormas, this->nombreArchivoCubetasNormas);
 
+	this->listaTerminos = this->archivoTerminos->obtenerTerminos();
+
 }
 
 void CalculadorDeNormas::reiniciarIndices()
@@ -313,6 +315,26 @@ VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(uint32_t idDocumen
 	return listaTerminosEnDocumento;
 }
 
+//TODO si hay tiempo, mover esto a ArchivoTerminos.
+bool CalculadorDeNormas::buscarTerminoEnBiblioteca(string termino, uint32_t &idTermino)
+{
+	bool encontrado = false;
+
+	std::vector<std::pair<string, uint32_t> >::iterator it_terminos;
+
+	for( it_terminos = this->listaTerminos.begin();
+		 it_terminos != this->listaTerminos.end() && !encontrado;
+		 it_terminos++)
+	{
+		if ( termino == (*it_terminos).first)
+		{
+			encontrado = true;
+			idTermino = (*it_terminos).second;
+		}
+	}
+	return encontrado;
+}
+
 VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(std::list<Termino*>* listaTerminos)
 {
 	VectorDeDocumento* vectorConsulta = new VectorDeDocumento(); //se retorna esto.
@@ -324,13 +346,15 @@ VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(std::list<Termino*
 
 	for(it_terminos = listaTerminos->begin(); it_terminos != listaTerminos->end(); it_terminos++)
 	{
-		std::cout<<"El termino de consulta "<<(*it_terminos)->obtenerNombre()<<" tiene "<<(*it_terminos)->obtenerCantidadLibros()<<" libros."<<std::endl;
+		string cadenaTermino = (*it_terminos)->obtenerNombre();
+		std::cout<<"El termino de consulta "<<cadenaTermino<<" tiene "<<(*it_terminos)->obtenerCantidadLibros()<<" libros."<<std::endl;
 
-		//Obtengo el ID termino a traves de las triadas que trae en su lista.
-		if ((*it_terminos)->obtenerCantidadLibros() > 0)
+		idTermino = 0; //Si el termino no existe en la biblioteca se omite este valor.
+
+		//TODO aca consulto mi nueva listaTerminos para ver si el termino de la consulta esta en mi diccionario, y pido su ID.
+		if (this->buscarTerminoEnBiblioteca(cadenaTermino, idTermino))
 		{
-			//Si aparece en algun libro, esto si tiene sentido.
-			uint32_t idTermino = (*it_terminos)->obtenerId();
+			//uint32_t idTermino = this->obtenerIdTermino(); idTermino ya cargado...
 
 			string idTerminoString = ServiceClass::obtenerString( idTermino );
 			std::cout<<"ID TERMINO STRING = "<< idTerminoString<<std::endl;
@@ -353,7 +377,14 @@ VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(std::list<Termino*
 				std::cout<<"Se ingreso termino ID en vector..."<<idTermino<<std::endl;
 				std::cout<<"Apariciones del termino: "<<(*vectorConsulta)[idTermino]<<std::endl;
 			}
+
 		}
+		else
+		{
+			//No aporta nada al vector de terminos...
+			//...no esta en ningun documento y se anula en el producto interno.
+		}
+
 	}
 
 	std::cout<<"Tamanio Vector Consulta: "<<vectorConsulta->size()<<std::endl;
