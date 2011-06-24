@@ -158,7 +158,6 @@ string ManejadorInstrucciones::obtenerConsulta() {
 	Logger::log("ManejadorInstrucciones", "obtenerIDInstruccion",
 			"Se codifica.");
 
-	std::cout<<"RDO string en ManejadorInstrucciones: "<<rdo<<std::endl;
 	return rdo;
 }
 
