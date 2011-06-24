@@ -153,6 +153,7 @@ void ConsultaIndice::consultarTerminosProximos(string consulta)
 
 	Configuracion* conf = Configuracion::GetInstancia();
 	ControladorIndice* control = new ControladorIndice();
+	control->nuevoIndiceOcurrenciaTerminos();
 	ArchivoTerminos* arc = new ArchivoTerminos(
 			conf->getPathCarpetaTrabajo()
 					+ ARCHIVO_TERMINOS
