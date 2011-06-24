@@ -86,15 +86,13 @@ std::list<DatoTriada*>* CalculadorDeNormas::levantarTriadasDeTermino(uint32_t id
 
 void CalculadorDeNormas::generarIndiceDePesosGlobalesDeTerminos()
 {
-	std::vector<std::pair<std::string, uint32_t> > listaTerminos = this->archivoTerminos->obtenerTerminos();
-
 	std::vector<std::pair<std::string, uint32_t> >::iterator it_terminos;
 
 	float pesoGlobalTermino;
 
 	std::pair<std::string, uint32_t> parIdTerminoPesoGlobal;
 
-	for(it_terminos = listaTerminos.begin(); it_terminos != listaTerminos.end(); it_terminos++)
+	for(it_terminos = this->listaTerminos.begin(); it_terminos != this->listaTerminos.end(); it_terminos++)
 	{
 
 		//calculamos el peso global...
@@ -112,7 +110,7 @@ void CalculadorDeNormas::generarIndiceDePesosGlobalesDeTerminos()
 		this->indicePesosGlobales->insertarClave(parIdTerminoPesoGlobal);
 	}
 
-	this->cantidadTotalDeDocumentos = listaTerminos.size();
+	this->cantidadTotalDeDocumentos = this->listaTerminos.size();
 
 }
 
@@ -304,18 +302,11 @@ VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(uint32_t idDocumen
 	//Ahora a la frecuencia local se le pondera el peso global del termino.
 	this->ponderarPesoLocal(listaTerminosEnDocumento);
 
-	//TODO eliminar recursos??
-	//Liberamos recursos
-	/*while( !listaDatoTriadas->empty() )
-	{
-		delete listaDatoTriadas->back();
-		listaDatoTriadas->pop_back();
-	}*/
+	//listaDatoTriadas: de liberar este recurso se ocupa la clase ControladorTriadas.
 
 	return listaTerminosEnDocumento;
 }
 
-//TODO si hay tiempo, mover esto a ArchivoTerminos.
 bool CalculadorDeNormas::buscarTerminoEnBiblioteca(string termino, uint32_t &idTermino)
 {
 	bool encontrado = false;
@@ -347,23 +338,20 @@ VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(std::list<Termino*
 	for(it_terminos = listaTerminos->begin(); it_terminos != listaTerminos->end(); it_terminos++)
 	{
 		string cadenaTermino = (*it_terminos)->obtenerNombre();
-		std::cout<<"El termino de consulta "<<cadenaTermino<<" tiene "<<(*it_terminos)->obtenerCantidadLibros()<<" libros."<<std::endl;
 
 		idTermino = 0; //Si el termino no existe en la biblioteca se omite este valor.
 
-		//TODO aca consulto mi nueva listaTerminos para ver si el termino de la consulta esta en mi diccionario, y pido su ID.
 		if (this->buscarTerminoEnBiblioteca(cadenaTermino, idTermino))
 		{
 			//uint32_t idTermino = this->obtenerIdTermino(); idTermino ya cargado...
 
 			string idTerminoString = ServiceClass::obtenerString( idTermino );
-			std::cout<<"ID TERMINO STRING = "<< idTerminoString<<std::endl;
 
 			listaIdTerminos = this->indicePesosGlobales->buscarPalabraEnHash(idTerminoString);
 
 			if (listaIdTerminos.size() == 1 )
 			{
-				std::cout<<"Id termino encontrado. ID = "<<idTermino<<std::endl;
+				//std::cout<<"Id termino encontrado. ID = "<<idTermino<<std::endl;
 
 				if( vectorConsulta->find(idTermino) != vectorConsulta->end())
 				{
@@ -374,8 +362,8 @@ VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(std::list<Termino*
 					(*vectorConsulta)[idTermino] = 1;
 				}
 
-				std::cout<<"Se ingreso termino ID en vector..."<<idTermino<<std::endl;
-				std::cout<<"Apariciones del termino: "<<(*vectorConsulta)[idTermino]<<std::endl;
+				//std::cout<<"Se ingreso termino ID en vector..."<<idTermino<<std::endl;
+				//std::cout<<"Apariciones del termino: "<<(*vectorConsulta)[idTermino]<<std::endl;
 			}
 
 		}
@@ -387,8 +375,7 @@ VectorDeDocumento* CalculadorDeNormas::cargarVectorDeTerminos(std::list<Termino*
 
 	}
 
-	std::cout<<"Tamanio Vector Consulta: "<<vectorConsulta->size()<<std::endl;
-	std::cout<<vectorConsulta->begin()->first<<std::endl;
+	//std::cout<<"Tamanio Vector Consulta: "<<vectorConsulta->size()<<std::endl;
 
 	this->ponderarPesoLocal(vectorConsulta);
 
@@ -467,7 +454,6 @@ void CalculadorDeNormas::generarArchivoDeNormasDeDocumentos()//ControladorBiblio
 
 		idDocumentoString = ServiceClass::obtenerString(idDocumento);
 
-
 		VectorDeDocumento* vectorDocumento = this->cargarVectorDeTerminos(idDocumento);
 
 		//Esta norma recibe la coma corrida dos lugares a la derecha, para almacenar dos decimales en un entero.
@@ -480,7 +466,7 @@ void CalculadorDeNormas::generarArchivoDeNormasDeDocumentos()//ControladorBiblio
 		std::string idDocumetoStr = ServiceClass::obtenerString(idDocumento);
 		std::pair<std::string, uint32_t> claveNormaDocumentoHash;
 		claveNormaDocumentoHash.first = idDocumetoStr;
-		std::cout<<"idDoc que se guarda en hash (lalala): "<< idDocumento<<std::endl;
+		std::cout<<"idDoc que se guarda en hash de normas de documentos: "<< idDocumento<<std::endl;
 		claveNormaDocumentoHash.second = normaDocumento;
 		this->indiceNormasDocumentos->insertarClave(claveNormaDocumentoHash);
 
@@ -516,10 +502,7 @@ float CalculadorDeNormas::calcularSimilitudConsultaConDocumento(uint32_t idDocum
 {
 	float  similitudCalculada = 0;
 
-	std::cout<<"Cantidad palabras de consulta..."<<consulta->size()<<std::endl;
-	std::cout<<"Primer palabra consulta..."<<consulta->front()->obtenerNombre()<<std::endl;
-
-	std::cout<<"ID de termino de consulta: "<<consulta->front()->obtenerId()<<std::endl;
+	std::cout<<std::endl<<std::endl<<"Consulta por similitud - Id libro: "<<idDocumento<<std::endl;
 
 	VectorDeDocumento* vectorConsulta = this->cargarVectorDeTerminos(consulta);
 
@@ -527,20 +510,20 @@ float CalculadorDeNormas::calcularSimilitudConsultaConDocumento(uint32_t idDocum
 
 	float productoInterno = this->calcularProductoInterno(vectorDocumento, vectorConsulta);
 
-	std::cout<<"Producto Interno = "<<productoInterno<<std::endl;
+	//std::cout<<"Producto Interno = "<<productoInterno<<std::endl;
 
 	//La norma del documento la leemos del indice, para ahorrar accesos a disco.
 	float normaDocumento = this->obtenerNormaDocumentoDeIndice(idDocumento);
 
-	std::cout<<"Norma Documento = "<<normaDocumento<<std::endl;
+	//std::cout<<"Norma Documento = "<<normaDocumento<<std::endl;
 
 	float normaConsulta = this->calcularNormaVectorDeTerminos(vectorConsulta);
 
-	std::cout<<"Norma Consulta = "<<normaConsulta<<std::endl;
+	//std::cout<<"Norma Consulta = "<<normaConsulta<<std::endl;
 
 	float productoDeNormas = normaDocumento * normaConsulta;
 
-	std::cout<<"ProductoDeNormas = "<<productoDeNormas<<std::endl;
+	//std::cout<<"ProductoDeNormas = "<<productoDeNormas<<std::endl;
 
 	delete vectorConsulta;
 	delete vectorDocumento;
