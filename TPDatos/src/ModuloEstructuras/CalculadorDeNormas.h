@@ -15,6 +15,8 @@
 #include <stdint.h>
 #include <string>
 #include <math.h>
+#include "../../Common/Constantes.h"
+#include "../../Common/Utilitarios/Logger.h"
 #include "../../Common/Utilitarios/ServiceClass.h"
 #include "../ModuloDeArchivos/ManejadorArchivo.h"
 #include "../ModuloEstructuras/Configuracion.h"
@@ -135,7 +137,9 @@ public:
 
 	//Busca en el archivo de normas la norma del documento por id. Se debe haber generado el archivo de
 	//normas en una corrida anterior. Si el archivo de normas no existe o el idDocumento no est� en �l, devuelve cero.
-	float obtenerNormaDocumentoIndexada();
+	//float obtenerNormaDocumentoIndexada();
+
+	void generarReporteDeNormas(std::list<uint32_t> listaDocumentos);
 };
 
 #endif /* CALCULADORDENORMAS_H_ */
