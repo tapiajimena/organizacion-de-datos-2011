@@ -10,6 +10,9 @@
 #include "ManejadorInstrucciones.h"
 
 ManejadorInstrucciones::ManejadorInstrucciones(char* argumentos[], int cantidad) {
+
+	this->cantidadArgumentos = cantidad;
+
 	for (int i = 0; i < cantidad; i++)
 	{
 		string aux = argumentos[i];
@@ -22,6 +25,7 @@ char ManejadorInstrucciones::armarInstruccion() {
 			"Se obtiene la instruccion ingresada como parametro");
 
 	return obtenerIDinstruccion(this->comando[1]);
+
 }
 
 void ManejadorInstrucciones::ejecutarInstruccion(char id) {
@@ -93,12 +97,13 @@ void ManejadorInstrucciones::ejecutarInstruccion(char id) {
 			this->instruccion->ejecutar();
 		break;
 	case (CONSULTA_ARCHIVO_NORMAS):
-			this->instruccion = new Instruccion_ConsultarOcurrenciaPosicional(CONSULTA_ARCHIVO_NORMAS,obtenerConsulta());
+			this->instruccion = new Instruccion_ConsultarNormaInfinito(CONSULTA_ARCHIVO_NORMAS,obtenerConsulta());
 			this->instruccion->ejecutar();
 		break;
 	case (CONSULTA_ARCHIVO_TERMINOS):
 			this->instruccion = new Instruccion_ConsultarArchivoTerminos(CONSULTA_ARCHIVO_TERMINOS,obtenerConsulta());
 			this->instruccion->ejecutar();
+			break;
 	case (CONSULTA_INDICE_TERMINOS):
 			this->instruccion = new Instruccion_ConsultarIndiceTerminos(CONSULTA_INDICE_TERMINOS,obtenerConsulta());
 			this->instruccion->ejecutar();
@@ -130,14 +135,19 @@ char ManejadorInstrucciones::obtenerIDinstruccion(string id) {
 			}
 			else if((idInstruccion == 'v'))
 			{
-				string aux = obtenerConsulta();
-				if(aux == "-at")
+				//string aux = obtenerConsulta();
+				string aux = this->comando[2];
+				vector<string> vectorAux = ServiceClass::obtenerListaPalabras( aux, SEPARADORES_DE_PALABRAS);
+
+				//al pasarlo por el filtro de separadores de palabras pierde el guion "-"
+
+				if(aux == "-at")//vectorAux.at(0) == "at")//aux == "-at")
 					idInstruccion =  CONSULTA_ARCHIVO_TERMINOS;
-				else if(aux == "-ani")
+				else if(aux == "-ani")//vectorAux.at(0) == "ani")//if(aux == "-ani")
 					idInstruccion =  CONSULTA_ARCHIVO_NORMAS;
-				else if(aux == "-aop")
+				else if(aux == "-aop")//vectorAux.at(0) == "aop")//if(aux == "-aop")
 					idInstruccion =  CONSULTA_ARCHIVO_OCURRENCIA;
-				else if(aux == "-li")
+				else if(aux == "-li")//vectorAux.at(0) == "li")//if(aux == "-li")
 					idInstruccion =  CONSULTA_INDICE_TERMINOS;
 			}
 		}
@@ -152,17 +162,40 @@ char ManejadorInstrucciones::obtenerIDinstruccion(string id) {
 string ManejadorInstrucciones::obtenerConsulta() {
 	string rdo = "";
 
+	string tipoConsulta = this->comando[1];
+
 	for (int i = 2; i < MAX_COMANDOS; i++)
 		rdo+=this->comando[i]+" ";
 
+	//Ahora solo nos interesa el ultimo termino (antes traia toda la cadena desde el 2do parametro
+	//en adelante, y traia problemas para 3 parametros).
+	vector<string> listaParametros = ServiceClass::obtenerListaPalabras(rdo, SEPARADORES_DE_PALABRAS);
+
+	//TODO ojo, poner constante si se va a cambiar.
+	if( tipoConsulta == "-qp")
+	{
+		//Nos interesan todods los terminos
+	}
+	else
+	{
+		//si no, salteamos los comandos intermedios y nos quedamos con el parametro nombre de archivo
+		rdo = listaParametros.back();
+	}
+
+
 	Logger::log("ManejadorInstrucciones", "obtenerIDInstruccion",
 			"Se codifica.");
+
 
 	return rdo;
 }
 
 void ManejadorInstrucciones::ejecutarInstruccionElegida() {
+
+	std::cout<<"parametros instruccion = "<< this->cantidadArgumentos;
+
 	ejecutarInstruccion(armarInstruccion());
+
 }
 
 ManejadorInstrucciones::~ManejadorInstrucciones() {

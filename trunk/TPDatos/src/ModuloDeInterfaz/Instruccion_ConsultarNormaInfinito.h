@@ -15,18 +15,28 @@
 #define INSTRUCCION_CONSULTARNORMAINFINITO_H_
 
 #include "Instruccion.h"
-#include "../ModuloDeIndices/ConsultaIndice.h"
+#include "../ModuloControladores/ControladorBiblioteca.h"
+#include "../ModuloEstructuras/CalculadorDeNormas.h"
 
 
-class Instruccion_ConsultaNormaInfinito: public Instruccion {
+class Instruccion_ConsultarNormaInfinito: public Instruccion {
 private:
 	string titulo;
+
+	ControladorBiblioteca* controladorBiblioteca;
+
+	ArchivoTerminos* archivoTerminos;
+
+	ControladorIndice* controladorIndice;
+
+	CalculadorDeNormas* calculadorDeNormas;
+
 public:
-	Instruccion_ConsultaNormaInfinito(char id, string consulta);
+	Instruccion_ConsultarNormaInfinito(char id, string consulta);
 
 	virtual void ejecutar();
 
-	virtual ~Instruccion_ConsultaNormaInfinito();
+	virtual ~Instruccion_ConsultarNormaInfinito();
 };
 
 #endif /* INSTRUCCION_CONSULTARNORMAINFINITO_H_*/

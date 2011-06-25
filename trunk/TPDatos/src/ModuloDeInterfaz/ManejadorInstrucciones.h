@@ -35,12 +35,14 @@
 #include "../ModuloDeInterfaz/Instruccion_ConsultarArchivoTerminos.h"
 #include "../ModuloDeInterfaz/Instruccion_ConsultarIndiceTerminos.h"
 #include "../ModuloDeInterfaz/Instruccion_ConsultarOcurrenciaPosicional.h"
+#include "../ModuloDeInterfaz/Instruccion_ConsultarNormaInfinito.h"
 
 
 using namespace std;
 
 class ManejadorInstrucciones {
 private:
+	int cantidadArgumentos;
 	Instruccion* instruccion;
 	string comando[MAX_COMANDOS];
 public:
@@ -65,6 +67,9 @@ public:
 	 */
 	char obtenerIDinstruccion(string id);
 
+	/*
+	 * Devuelve el ultimo parametro con el que se llamo al programa.
+	 */
 	string obtenerConsulta();
 
 	/**

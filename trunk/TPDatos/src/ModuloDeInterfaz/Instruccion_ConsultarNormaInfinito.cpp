@@ -10,23 +10,42 @@
 #include "Instruccion_ConsultarNormaInfinito.h"
 
 
-Instruccion_ConsultaNormaInfinito::Instruccion_ConsultaNormaInfinito(char id, string consulta):Instruccion(id)
+Instruccion_ConsultarNormaInfinito::Instruccion_ConsultarNormaInfinito(char id, string consulta)
+																	:Instruccion(id)
 {
 	this->titulo = consulta;
 }
 
 
-void Instruccion_ConsultaNormaInfinito::ejecutar()
+void Instruccion_ConsultarNormaInfinito::ejecutar()
 {
 	Configuracion* conf = Configuracion::GetInstancia();
-	ControladorIndice* control = new ControladorIndice();
 
-	control->nuevoIndiceOcurrenciaTerminos();
-	control->generarReporte(CONSULTA_INDICE_TERMINOS,"IndiceTerminos");
+	this->controladorBiblioteca = new ControladorBiblioteca(
+				conf->getPathCarpetaTrabajo() + ARCHIVO_BIBLIOTECA + EXTENSION_ARCHIVO_INDICE,
+				conf->getPathCarpetaTrabajo() + ARCHIVO_CONTROL_BIBLIOTECA);
 
-	cout<<"Se genero el archivo de consulta de Normas Infinitas"<<endl;
+	this->controladorIndice = new ControladorIndice();
+
+	this->archivoTerminos = new ArchivoTerminos(conf->getPathCarpetaTrabajo()
+												+ ARCHIVO_TERMINOS
+												+ EXTENSION_ARCHIVO_INDICE);
+
+
+	std::list<uint32_t> listaDocumentos = this->controladorBiblioteca->recuperarLibrosDeBiblioteca();
+
+	this->calculadorDeNormas = new CalculadorDeNormas(this->controladorIndice, this->archivoTerminos);
+
+	this->calculadorDeNormas->generarReporteDeNormas(listaDocumentos, this->titulo);
+
+	delete (this->calculadorDeNormas);
+	delete (this->archivoTerminos);
+	delete (this->controladorIndice);
+	delete(this->controladorBiblioteca);
+
+	cout<<"Se genero el archivo de consulta de Normas Infinito"<<endl;
 }
 
-Instruccion_ConsultaNormaInfinito::~Instruccion_ConsultaNormaInfinito() {
+Instruccion_ConsultarNormaInfinito::~Instruccion_ConsultarNormaInfinito() {
 
 }
