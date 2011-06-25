@@ -189,9 +189,9 @@ void ControladorIndice::eliminarIndexadoPorTipo(char tipo, Libro* libroRemover,
 
 
 
-void ControladorIndice::mostrarTriadas()
+void ControladorIndice::mostrarTriadas(string parametroNombre)
 {
-	this->controlTriadas->mostrarContendioArchivoTriadas();
+	this->controlTriadas->mostrarContendioArchivoTriadas(parametroNombre);
 
 }
 

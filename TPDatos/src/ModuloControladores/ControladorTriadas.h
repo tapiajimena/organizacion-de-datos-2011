@@ -94,7 +94,7 @@ public:
 	/**
 	 * Muestra por pantalla las triadas
 	 */
-	void mostrarContendioArchivoTriadas();
+	void mostrarContendioArchivoTriadas(string parametroNombre);
 
 
 	uint32_t getSiguienteIdTriada();
