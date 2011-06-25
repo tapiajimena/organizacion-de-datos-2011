@@ -106,14 +106,14 @@ bool ControladorTriadas::eliminarLibro(uint32_t offset) {
 
 }
 
-void ControladorTriadas::mostrarContendioArchivoTriadas() {
+void ControladorTriadas::mostrarContendioArchivoTriadas(string parametroNombre) {
 	Configuracion* conf = Configuracion::GetInstancia();
 	uint32_t offset = 0;
 	DatoTriada* d;
 	fstream  fs;
 	stringstream  ss;
 
-	string aux = conf->getPathCarpetaReportes()+ARCHIVO_OCURRENCIA_POSICIONAL+EXTENSION_ARCHIVO_REPORTE;
+	string aux = conf->getPathCarpetaReportes()+ parametroNombre + " " + ARCHIVO_OCURRENCIA_POSICIONAL+EXTENSION_ARCHIVO_REPORTE;
 	Crear(aux.c_str(),fs,true);
 
 	while (offset < getSizeArchivoTriadas()) {

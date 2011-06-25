@@ -92,7 +92,7 @@ public:
 
 	void generarReporte(char tipo, string nombreArchivo);
 
-	void mostrarTriadas();
+	void mostrarTriadas(string parametroNombre);
 
 	/*
 	 * Devuelve las triadas asociadas a la palabra termino
