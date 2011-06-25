@@ -21,8 +21,9 @@ void Instruccion_ConsultarOcurrenciaPosicional::ejecutar()
 	Configuracion* conf = Configuracion::GetInstancia();
 	ControladorIndice* control = new ControladorIndice();
 
-	cout <<this->titulo<<endl;
-	control->mostrarTriadas();
+	//cout <<this->titulo<<endl;
+	cout << "Procesando ocurrencias de terminos, esto puede demorar unos pocos minutos, aguarde por favor..."<<endl;
+	control->mostrarTriadas( this->titulo );
 	delete(control);
 
 }

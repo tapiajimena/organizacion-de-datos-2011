@@ -20,10 +20,12 @@ void Instruccion_ConsultarArchivoTerminos::ejecutar()
 {
 	Configuracion* conf = Configuracion::GetInstancia();
 	string origen = conf->getPathCarpetaTrabajo() + ARCHIVO_TERMINOS + EXTENSION_ARCHIVO_INDICE;
-	string destino= conf->getPathCarpetaReportes() + ARCHIVO_TERMINOS + EXTENSION_ARCHIVO_REPORTE;
+
+	//string destino= conf->getPathCarpetaReportes() + ARCHIVO_TERMINOS + EXTENSION_ARCHIVO_REPORTE;
+	string destino= conf->getPathCarpetaReportes() + this->titulo + "_" + ARCHIVO_TERMINOS + EXTENSION_ARCHIVO_REPORTE;
 
 	ManejadorArchivo::CopiarArchivo(origen, destino);
-	cout<<"Se genero el archivo de terminos"<<endl;
+	cout<<"Se genero el archivo de terminos en "<<destino<<endl;
 }
 
 Instruccion_ConsultarArchivoTerminos::~Instruccion_ConsultarArchivoTerminos() {
