@@ -77,6 +77,9 @@ public:
     void setOffset(uint32_t offset);
     void setPalabrasClave(EstructuraPalabrasClave *_palabrasClave);
 
+    //Toma las palabras clave de un libro y se las carga para sí
+    void copiarEstructuraDePalabrasClave(Libro* libro);
+
     //Devuelve una COPIA de la lista de ocurrencias de términos.
     std::vector<std::string> getOcurrenciasDeTerminos();
 
