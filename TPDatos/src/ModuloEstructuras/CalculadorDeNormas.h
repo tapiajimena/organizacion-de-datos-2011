@@ -139,7 +139,7 @@ public:
 	//normas en una corrida anterior. Si el archivo de normas no existe o el idDocumento no est� en �l, devuelve cero.
 	//float obtenerNormaDocumentoIndexada();
 
-	void generarReporteDeNormas(std::list<uint32_t> listaDocumentos);
+	void generarReporteDeNormas(std::list<uint32_t> listaDocumentos, string nombreArchivo);
 };
 
 #endif /* CALCULADORDENORMAS_H_ */

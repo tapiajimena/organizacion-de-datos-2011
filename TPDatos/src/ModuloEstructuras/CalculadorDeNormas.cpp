@@ -536,11 +536,11 @@ float CalculadorDeNormas::calcularSimilitudConsultaConDocumento(uint32_t idDocum
 	return similitudCalculada;
 }
 
-void CalculadorDeNormas::generarReporteDeNormas(std::list<uint32_t> listaDocumentos)
+void CalculadorDeNormas::generarReporteDeNormas(std::list<uint32_t> listaDocumentos, string nombreArchivo)
 {
 	Configuracion* conf = Configuracion::GetInstancia();
 
-	string pathArchivoReporte = conf->getPathCarpetaReportes()+"Reporte_NormaInfinito.txt";
+	string pathArchivoReporte = conf->getPathCarpetaReportes()+ nombreArchivo+"_NormaInfinito.txt";
 
 	fstream archivoReporte;
 
@@ -548,8 +548,8 @@ void CalculadorDeNormas::generarReporteDeNormas(std::list<uint32_t> listaDocumen
 
 	ManejadorArchivo::Crear(pathArchivoReporte.c_str(), archivoReporte, false);
 
-	archivoReporte << "REPORTE DE NORMAS DE DOCUMENTOS INDEXADOS" << std::endl;
-	archivoReporte << "******* ** ****** ** ********** *********" <<std::endl << std::endl;
+	archivoReporte << "REPORTE DE NORMAS INFINITO DE DOCUMENTOS INDEXADOS" << std::endl;
+	archivoReporte << "******* ** ****** ******** ** ********** *********" <<std::endl << std::endl;
 
 	while (!listaDocumentos.empty())
 	{
