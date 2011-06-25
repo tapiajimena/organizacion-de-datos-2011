@@ -23,7 +23,7 @@ void Libro::setPalabrasClave(EstructuraPalabrasClave *_palabrasClave)
 
 Libro::~Libro()
 {
-	//delete this->_palabrasClave;
+	delete this->_palabrasClave;
 };
 
 std::string Libro::getTitulo()
@@ -95,6 +95,24 @@ void Libro::agregarPalabraClave(std::string palabra)
 		(*this->_palabrasClave)[palabra]++; // Se incrementa en uno el contador de apariciones de la palabra
 	}
 };
+
+void Libro::copiarEstructuraDePalabrasClave(Libro* libroACopiar)
+{
+	EstructuraPalabrasClave* palabrasACopiar = libroACopiar->getPalabrasClave();
+
+	EstructuraPalabrasClave::iterator it_palabras;
+
+	std::string palabra;
+	int ocurrenciasEnLibro;
+
+	for (it_palabras = palabrasACopiar->begin(); it_palabras != palabrasACopiar->end(); it_palabras++)
+	{
+		palabra = (*it_palabras).first;
+		ocurrenciasEnLibro = (*it_palabras).second;
+
+		(*this->_palabrasClave)[palabra] = ocurrenciasEnLibro;
+	}
+}
 
 std::vector<std::string> Libro::getOcurrenciasDeTerminos()
 {
