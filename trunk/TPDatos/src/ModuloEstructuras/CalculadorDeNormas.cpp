@@ -546,10 +546,10 @@ void CalculadorDeNormas::generarReporteDeNormas(std::list<uint32_t> listaDocumen
 
 	uint32_t normaDocumento = 0;
 
-	archivoReporte << "REPORTE DE NORMAS DE DOCUMENTOS INDEXADOS" << std::endl;
-	archivoReporte << "*****************************************" <<std::endl << std::endl;
-
 	ManejadorArchivo::Crear(pathArchivoReporte.c_str(), archivoReporte, false);
+
+	archivoReporte << "REPORTE DE NORMAS DE DOCUMENTOS INDEXADOS" << std::endl;
+	archivoReporte << "******* ** ****** ** ********** *********" <<std::endl << std::endl;
 
 	while (!listaDocumentos.empty())
 	{
@@ -560,8 +560,8 @@ void CalculadorDeNormas::generarReporteDeNormas(std::list<uint32_t> listaDocumen
 		listaDocumentos.pop_front();
 	}
 
-	archivoReporte << "FIN REPORTE" << std::endl;
-	archivoReporte << "*** *******" <<std::endl << std::endl;
+	archivoReporte << std::endl <<  "FIN REPORTE" << std::endl;
+	archivoReporte << 				"*** *******" <<std::endl << std::endl;
 
 	ManejadorArchivo::Cerrar(archivoReporte);
 }
