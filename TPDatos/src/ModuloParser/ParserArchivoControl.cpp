@@ -108,12 +108,10 @@ int ParserArchivoControl::getOffsetArchivo() {
 ParserArchivoControl::~ParserArchivoControl() {
 	delete (this->datoNuevo);
 
-	Logger::log("ParserArchivoControl", "~ParserArchivoControl",
-			"Se elimina el ParserArchivoControl.");
-
-	if ((this->libros) && (!this->libros->empty())) {
-	for (it = this->libros->begin(); it != this->libros->end(); it++)
-		delete ((DatoControlLibro*)(*it).second);
-		delete(this->libros);
+	if ((this->libros) && (!this->libros->empty()))
+	{
+		for (it = this->libros->begin(); it != this->libros->end(); it++)
+			delete ((*it).second);
+		delete (this->libros);
 	}
 }
