@@ -24,6 +24,7 @@ void Instruccion_ConsultarOcurrenciaPosicional::ejecutar()
 	//cout <<this->titulo<<endl;
 	cout << "Procesando ocurrencias de terminos, esto puede demorar unos pocos minutos, aguarde por favor..."<<endl;
 	control->mostrarTriadas( this->titulo );
+	cout<<"Se genera el reporte de Ocurrencias Posicionales en "<< conf->getPathCarpetaReportes()<<endl;
 	delete(control);
 
 }

@@ -61,7 +61,6 @@ void Instruccion_VerEstructura::ejecutar()
 	//se arman los archivos.
 	crearArchivos();
 
-
 	cout<<"Se generan reportes en la carpeta de resultados."<<endl;
 	Logger::log("Instruccion_VerEstructura", "ejecutar",
 			"Se muestra la estructura.");

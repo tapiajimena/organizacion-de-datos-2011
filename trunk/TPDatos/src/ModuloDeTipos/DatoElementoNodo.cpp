@@ -93,17 +93,12 @@ void DatoElementoNodo::hidratar(iostream* stream) {
 }
 
 DatoElementoNodo* DatoElementoNodo::clonar() {
-	DatoElementoNodo* aux;
+	DatoElementoNodo* aux = NULL;
 	if (this != NULL)
 		aux = new DatoElementoNodo(this->clave, this->idLibros);
 	else
-	{
-		cout<<"**************ESTO ES NULLL !!!! ZAPALLO!!!"<<endl;
-
-		list<uint32_t> libros;
-		libros.push_back(6666);
-		aux = new DatoElementoNodo("CLAVE HARCODEADA", libros);
-	}
+		Logger::log("DatoElementoNodo","clonar",
+				"El dato que fue buscado no se encuentra en el arbol");
 	return aux;
 }
 

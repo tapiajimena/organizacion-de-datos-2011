@@ -74,7 +74,6 @@ public:
 	 */
 	void consultarPorAutorOEditorial(string consulta);
 	void consultarPorTitulo(string consulta);
-	void consultarPorPalabras(string consulta);
 
 	/*
 	 * Indexan en un indice Arbol el autor o editorial

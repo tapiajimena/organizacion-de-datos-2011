@@ -392,13 +392,16 @@ uint32_t ArchivoControlLibro::registrarLibro(uint32_t size,
 
 		this->it= this->libros->find(id_Libro);
 		this->it++;
-		uint32_t espacioSobrante = it->first - id_Libro - METADATA_SIZE_BOOK;
+		if(it != this->libros->end())
+		{
+			uint32_t espacioSobrante = it->first - id_Libro - METADATA_SIZE_BOOK;
 
-		if(espacioSobrante != 0) {
-			vacio->setId_Libro(id_Libro + size + METADATA_SIZE_BOOK);
-			vacio->setEspacioLibre(espacioSobrante - size - METADATA_SIZE_BOOK);
-			this->libros->insert(pair<uint32_t, DatoControlLibro*> (
-				(vacio->getId_Libro()), vacio));
+			if(espacioSobrante != 0) {
+				vacio->setId_Libro(id_Libro + size + METADATA_SIZE_BOOK);
+				vacio->setEspacioLibre(espacioSobrante - size - METADATA_SIZE_BOOK);
+				this->libros->insert(pair<uint32_t, DatoControlLibro*> (
+					(vacio->getId_Libro()), vacio));
+			}
 		}
 
 		nuevoOffset = id_Libro;

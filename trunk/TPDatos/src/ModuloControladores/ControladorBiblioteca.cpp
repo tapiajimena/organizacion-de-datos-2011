@@ -139,7 +139,6 @@ Libro* ControladorBiblioteca::cargarNuevoLibroParseado(uint32_t idLibro) {
 
 	//se parsea para obtener la clave y luego eliminarla del indice
 	parserAutor = new ParserDeAutor();
-	libroAutor = new Libro();
 	libroAutor = parserAutor->parsear(dLibro);
 
 	libroNuevo->setAutor(libroAutor->getAutor());
@@ -148,7 +147,6 @@ Libro* ControladorBiblioteca::cargarNuevoLibroParseado(uint32_t idLibro) {
 
 	//se parsea para obtener la clave y luego eliminarla del indice
 	parserEditorial = new ParserDeEditorial();
-	libroEditorial = new Libro();
 	libroEditorial = parserEditorial->parsear(dLibro);
 
 	libroNuevo->setEditorial(libroEditorial->getEditorial());
@@ -156,7 +154,6 @@ Libro* ControladorBiblioteca::cargarNuevoLibroParseado(uint32_t idLibro) {
 	delete (parserEditorial);
 
 	parserTitulo = new ParserDeTitulo();
-	libroTitulo = new Libro();
 	libroTitulo = parserTitulo->parsear(dLibro);
 
 	libroNuevo->setTitulo(libroTitulo->getTitulo());
@@ -164,12 +161,12 @@ Libro* ControladorBiblioteca::cargarNuevoLibroParseado(uint32_t idLibro) {
 	delete (parserTitulo);
 
 	parserPalabras = new ParserDePalabras(ARCHIVO_STOPWORDS);
-	libroPalabras = new Libro();
 	libroPalabras = parserPalabras->parsear(dLibro);
 
 	libroNuevo->setPalabrasClave(libroPalabras->getPalabrasClave());
 	delete (libroPalabras);
 	delete (parserPalabras);
+	delete (dLibro);
 
 	return libroNuevo;
 }

@@ -5,6 +5,8 @@
  *	Catedra	: SERVETTO-FERRER-FERNANDEZ
  *	Materia	: Organizacion de Datos (75.06) - FIUBA
  *
+ * instruccion -li
+ *
  */
 
 #include "Instruccion_ConsultarIndiceTerminos.h"
@@ -21,10 +23,13 @@ void Instruccion_ConsultarIndiceTerminos::ejecutar()
 	Configuracion* conf = Configuracion::GetInstancia();
 	ControladorIndice* control = new ControladorIndice();
 
-	control->nuevoIndiceOcurrenciaTerminos();
-	control->generarReporte(CONSULTA_INDICE_TERMINOS,"IndiceTerminos");
+	string destino=  this->titulo + "_" + ARCHIVO_INDICE_OCURRENCIA_TERMINOS;
 
-	cout<<"Se genera el reporte de Listas invertidas"<<endl;
+	CrearDirectorios(conf->getPathCarpetaReportes());
+	control->nuevoIndiceOcurrenciaTerminos();
+	control->generarReporte(CONSULTA_INDICE_TERMINOS,destino);
+
+	cout<<"Se genera el reporte de Listas invertidas en "<< conf->getPathCarpetaReportes()<<endl;
 
 	delete(control);
 }

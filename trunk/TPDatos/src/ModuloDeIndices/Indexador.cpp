@@ -14,6 +14,7 @@
 
 Indexador::Indexador()
 {
+	parser = NULL;
 	Configuracion* conf = Configuracion::GetInstancia();
 	pathCarpeta = conf->getPathCarpetaTrabajo();
 	controlIndice = new ControladorIndice(pathCarpeta);
@@ -24,6 +25,7 @@ Indexador::Indexador()
 
 Indexador::Indexador(string pathCarpeta)
 {
+	parser = NULL;
 	pathCarpeta = pathCarpeta;
 	CrearDirectorios(pathCarpeta);
 	controlIndice = new ControladorIndice(pathCarpeta);
@@ -93,16 +95,13 @@ void Indexador::indexar(char tipoIndice)
 	else
 		Logger::log("Indexador","indexar","Todos los libros ya han sido indexados.");
 
-	delete(parser);
+	//delete(parser);
 }
 
 void Indexador::generarReporte(char tipoIndice, string nombreArchivo)
 {
 	crearTipoIndice(tipoIndice);
 	this->controlIndice->generarReporte(tipoIndice, nombreArchivo);
-
-	delete (parser);
-
 }
 
 void Indexador::eliminarIndexado(uint32_t idLibro)
@@ -122,6 +121,8 @@ Indexador::~Indexador()
 {
 	delete(controlBiblioteca);
 	delete(controlIndice);
+	if (parser)
+		delete(parser);
 }
 
 

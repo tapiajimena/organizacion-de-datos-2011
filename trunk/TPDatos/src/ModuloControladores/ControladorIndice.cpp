@@ -253,6 +253,7 @@ void ControladorIndice::consultarPorAutorOEditorial(string consulta) {
 void ControladorIndice::consultarPorTitulo(string consulta) {
 	Logger::log("ControladorIndice", "consultarPorTitulo",
 			"Se realiza una consulta por titulo");
+
 	vector<uint32_t> aux = this->indiceHash->buscarPalabraEnHash(consulta);
 
 	if (!aux.empty()) {
@@ -267,27 +268,6 @@ void ControladorIndice::consultarPorTitulo(string consulta) {
 				"No se obtuvieron resultados");
 		cout << "No se obtuvieron resultados" << endl;
 	}
-}
-
-void ControladorIndice::consultarPorPalabras(string consulta) {
-	/*
-	 string 	aux;
-	 pair<string,uint32_t> 				registroHash;
-	 EstructuraPalabrasClave::iterator 	it;
-
-	 for(it =parLibroOffset.first->getPalabrasClave()->begin();it!=parLibroOffset.first->getPalabrasClave()->end();++it)
-	 {
-	 aux = ServiceClass::normalizarString((*it).first);
-
-	 registroHash.first = aux;
-	 registroHash.second= parLibroOffset.second;
-
-	 //cout<<"Se envia Clave: "<<aux<<endl;
-	 //cout<<"Se envia id: "<<parLibroOffset.second<<endl;
-
-	 this->indiceHash->insertarClave(registroHash);
-
-	 }*/
 }
 
 
@@ -334,25 +314,22 @@ void ControladorIndice::indexarPorPalabras(
 
 list<DatoTriada*>* ControladorIndice::recuperarTriadas(string termino)
 {
-	std::cout<<"ESTOY ADENTRO DE CONTROLADORINDICE, en el metodo RECUPERARTRIADAS"<<std::endl;
 	Logger::log("ControladorIndice", "recuperarTriadas","se busca un termino");
 	DatoTriada triada;
+	list<DatoTriada*>* triadas = NULL;
 	DatoElementoNodo* nodoEncontrado = NULL;
 
 	DatoElementoNodo* nodoBusqueda = new DatoElementoNodo(termino);
 
-	std::cout<<"Creando el arbol"<<std::endl;
-
-	std::cout<<"Buscando nodo"<<std::endl;
-	nodoEncontrado = indiceArbol->find(new DatoElementoNodo(termino, 0));
-
-	std::cout<<"Saliendo del arbol"<<std::endl;
-
-	list<uint32_t> idTriadas = nodoEncontrado->getLibros();
-	list<DatoTriada*>* triadas = controlTriadas->getTriadas(idTriadas);
-
-	delete(nodoBusqueda);
-	std::cout<<"Estoy SALIENDO DE CONTROLADORINDICE::RECUPERARTRIADAS...."<<std::endl;
+	//std::cout<<"Buscando nodo"<<termino<<std::endl;
+	nodoEncontrado = indiceArbol->find(nodoBusqueda);
+	if ((nodoEncontrado != NULL)&&(!nodoEncontrado->getLibros().empty()))
+	{
+		list<uint32_t> idTriadas = nodoEncontrado->getLibros();
+		triadas = controlTriadas->getTriadas(idTriadas);
+		delete(nodoEncontrado);
+	}
+	delete nodoBusqueda;
 
 	return triadas;
 }
