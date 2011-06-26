@@ -26,6 +26,7 @@ void Instruccion_ConsultarAutor::ejecutar()
 	Logger::log("Instruccion_ConsultarAutor", "ejecutar",
 			"Se ejecuta la consulta.");
 
+	cout<<"Se ejecuta la consulta de autor "<< this->autor<<": "<<endl;
 	if(consulta->esConsultable())
 	{
 		if (consulta->consultarAutor(caseFold.caseFoldWord(autor)))

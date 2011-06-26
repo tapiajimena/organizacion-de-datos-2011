@@ -29,8 +29,8 @@ void Instruccion_ConsultarEditorial::ejecutar()
 	if(consulta->esConsultable()
 			&& (consulta->consultarEditorial(caseFold.caseFoldWord(editorial))))
 		cout<<MENSAJE_CONSULTA_EXITOSA<<endl;
-	else
-		cout<<MENSAJE_INDICE_NO_CONSULTABLE<<endl;
+	//else
+		//cout<<MENSAJE_INDICE_NO_CONSULTABLE<<endl;
 
 
 
