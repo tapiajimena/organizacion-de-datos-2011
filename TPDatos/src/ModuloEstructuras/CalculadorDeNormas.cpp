@@ -69,17 +69,11 @@ CalculadorDeNormas::~CalculadorDeNormas()
 std::list<DatoTriada*>* CalculadorDeNormas::levantarTriadasDeTermino(uint32_t idTermino)
 {
 
-	//std::cout<<"levantando idTermino"<<std::endl;
 	//Esto es un acceso directo al archivo a traves de su offset-Id.
 	std::string palabra = this->archivoTerminos->obtenerTermino(idTermino);
 
-	//std::cout<<"Palabra de Termino: "<<palabra<<std::endl;
-
-	//std::cout<<"Llamo a... this->controladorIndice->recuperarTriadas(palabra)..."<<std::endl;
 	//Carga posta de triadas:
 	std::list<DatoTriada*>* listaTriadas = this->controladorIndice->recuperarTriadas(palabra);
-
-	//std::cout<<"Recupero listaTriadas..."<<std::endl;
 
 	return listaTriadas;
 }
@@ -118,43 +112,46 @@ int CalculadorDeNormas::calcularDocumentosQueContienenTermino(uint32_t idTermino
 {
 	int documentosQueContienenTermino = 0;
 
-	//std::cout<<" entrando a levantarTriadasDeTermino..."<<std::endl;
 	std::list<DatoTriada*>* ocurrenciasDeTermino = this->levantarTriadasDeTermino(idTermino);
-	//std::cout<<"Salio de levantarTriadasDeTermino"<<std::endl;
 
-	//En este vector se guardan los libros en que aparece el t�rmino. La idea es no contar
-	//dos ocurrencias si son del mismo documento, ya que interesa la cantidad de DOCUMENTOS
-	//que contienen alguna vez al t�rmino.
-	std::vector<uint32_t> documentosYaVisitados;
-
-	std::list<DatoTriada*>::iterator it_triadas;
-
-	std::vector<uint32_t>::iterator it_documentos;
-
-	bool documentoYaVisitado = false;
-
-	for(it_triadas = ocurrenciasDeTermino->begin();
-		it_triadas != ocurrenciasDeTermino->end();
-		it_triadas++)
+	if(ocurrenciasDeTermino)
 	{
-		documentoYaVisitado = false;
+		//std::cout<<"Salio de levantarTriadasDeTermino"<<std::endl;
 
-		//Si el documento de la ocurrencia no fue ya visitado, se cuenta la ocurrencia y
-		//se agrega el documento como visitado, si no, se ignora la ocurrencia.
-		for(it_documentos = documentosYaVisitados.begin();
-			it_documentos != documentosYaVisitados.end() && !documentoYaVisitado;
-			it_documentos++)
+		//En este vector se guardan los libros en que aparece el t�rmino. La idea es no contar
+		//dos ocurrencias si son del mismo documento, ya que interesa la cantidad de DOCUMENTOS
+		//que contienen alguna vez al t�rmino.
+		std::vector<uint32_t> documentosYaVisitados;
+
+		std::list<DatoTriada*>::iterator it_triadas;
+
+		std::vector<uint32_t>::iterator it_documentos;
+
+		bool documentoYaVisitado = false;
+
+		for(it_triadas = ocurrenciasDeTermino->begin();
+			it_triadas != ocurrenciasDeTermino->end();
+			it_triadas++)
 		{
-			if((*it_triadas)->getIdLibro() == *it_documentos)
+			documentoYaVisitado = false;
+
+			//Si el documento de la ocurrencia no fue ya visitado, se cuenta la ocurrencia y
+			//se agrega el documento como visitado, si no, se ignora la ocurrencia.
+			for(it_documentos = documentosYaVisitados.begin();
+				it_documentos != documentosYaVisitados.end() && !documentoYaVisitado;
+				it_documentos++)
 			{
-				documentoYaVisitado = true;
+				if((*it_triadas)->getIdLibro() == *it_documentos)
+				{
+					documentoYaVisitado = true;
+				}
 			}
-		}
 
-		if(!documentoYaVisitado)
-		{
-			documentosQueContienenTermino++;
-			documentosYaVisitados.push_back((*it_triadas)->getIdLibro());
+			if(!documentoYaVisitado)
+			{
+				documentosQueContienenTermino++;
+				documentosYaVisitados.push_back((*it_triadas)->getIdLibro());
+			}
 		}
 	}
 
@@ -176,7 +173,7 @@ float CalculadorDeNormas::calcularPesoGlobalDeTermino(uint32_t idTermino)
 		pesoGlobal = log10( (float)(this->cantidadTotalDeDocumentos) / frecuenciaGlobalDeTermino);
 	}
 
-	std::cout<<"Peso Global: "<< pesoGlobal<<std::endl;
+	//std::cout<<"Peso Global: "<< pesoGlobal<<std::endl;
 
 	return pesoGlobal;
 }
@@ -235,7 +232,7 @@ float CalculadorDeNormas::obtenerPesoGlobalDeIndice(uint32_t idTermino)
 		}
 		else
 		{
-			std::cout<<"ERROR: multiples pesos globales para el termino"<<idTermino;
+			std::cerr<<"Atencion multiples pesos globales para el termino"<<idTermino;
 			//throw??
 		}
 	}
@@ -466,7 +463,7 @@ void CalculadorDeNormas::generarArchivoDeNormasDeDocumentos()//ControladorBiblio
 		std::string idDocumetoStr = ServiceClass::obtenerString(idDocumento);
 		std::pair<std::string, uint32_t> claveNormaDocumentoHash;
 		claveNormaDocumentoHash.first = idDocumetoStr;
-		std::cout<<"idDoc que se guarda en hash de normas de documentos: "<< idDocumento<<std::endl;
+		//std::cout<<"idDoc que se guarda en hash de normas de documentos: "<< idDocumento<<std::endl;
 		claveNormaDocumentoHash.second = normaDocumento;
 		this->indiceNormasDocumentos->insertarClave(claveNormaDocumentoHash);
 
@@ -531,7 +528,7 @@ float CalculadorDeNormas::calcularSimilitudConsultaConDocumento(uint32_t idDocum
 	if (productoDeNormas > 0)
 		similitudCalculada = productoInterno / productoDeNormas;
 
-	std::cout<<"Similitud calculada: "<<similitudCalculada<<std::endl;
+	//std::cout<<"Similitud calculada: "<<similitudCalculada<<std::endl;
 
 	return similitudCalculada;
 }
