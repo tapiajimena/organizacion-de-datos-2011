@@ -43,7 +43,7 @@ void Instruccion_ConsultarNormaInfinito::ejecutar()
 	delete (this->controladorIndice);
 	delete(this->controladorBiblioteca);
 
-	cout<<"Se genero el archivo de consulta de Normas Infinito en "<< conf->getPathCarpetaTrabajo()<<endl;
+	cout<<"Se genero el archivo de consulta de Normas Infinito en "<< conf->getPathCarpetaReportes()<<endl;
 }
 
 Instruccion_ConsultarNormaInfinito::~Instruccion_ConsultarNormaInfinito() {
