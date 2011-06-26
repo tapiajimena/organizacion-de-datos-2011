@@ -28,6 +28,10 @@ private:
 	ArchivoControlLibro* arcControl;
 
 public:
+	bool existeLibro;
+
+public:
+
 	ControladorBiblioteca();
 
 	/**

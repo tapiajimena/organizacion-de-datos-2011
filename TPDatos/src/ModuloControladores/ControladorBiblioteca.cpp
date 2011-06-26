@@ -10,6 +10,7 @@
 #include "ControladorBiblioteca.h"
 
 ControladorBiblioteca::ControladorBiblioteca() {
+	existeLibro= true;
 
 }
 
@@ -21,6 +22,7 @@ ControladorBiblioteca::ControladorBiblioteca(string pathBiblioteca,
 
 	Logger::log("ControladorBiblioteca", "ControladorBiblioteca",
 			"Se cargan los libros.");
+	existeLibro= true;
 }
 
 uint32_t ControladorBiblioteca::ingresarLibro(string pathLibro) {
@@ -51,9 +53,10 @@ uint32_t ControladorBiblioteca::ingresarLibro(string pathLibro) {
 		cout << "Se ingresó el libro correctamente. Se le asigna id "
 				<< nuevoOffset << "." << endl;
 	} else {
+		existeLibro= false;
 		Logger::log("ControladorBiblioteca", "ingresarLibro",
 				"El libro a ingresar no existe, verifique.");
-		cout << "El libro a ingresar no existe, verifique. " << endl;
+		cout << MENSAJE_LIBRO_NO_EXISTE << endl;
 	}
 
 	return nuevoOffset;
