@@ -72,4 +72,6 @@ ArchivoTriadas::~ArchivoTriadas() {
 			&& (archivoTriadas.is_open()))
 		Cerrar(archivoTriadas);
 
+	delete(this->parser);
+
 }
