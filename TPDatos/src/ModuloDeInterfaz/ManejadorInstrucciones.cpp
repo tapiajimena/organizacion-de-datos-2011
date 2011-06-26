@@ -168,13 +168,26 @@ string ManejadorInstrucciones::obtenerConsulta() {
 		|| (tipoConsulta == "-qe")
 		|| (tipoConsulta == "-qa"))
 	{
-		for (int i = 2; i < MAX_COMANDOS; i++)
-			rdo+=this->comando[i];
+		for (int i = 2; i < this->cantidadArgumentos; i++)//MAX_COMANDOS; i++)
+			rdo+=this->comando[i]+" ";
+
+		//este moco es para remover el espacio final que queda.
+		vector<string> listaPalabras = ServiceClass::obtenerListaPalabras(rdo, SEPARADORES_DE_PALABRAS);
+		rdo = "";
+		for( int x = 0; x < listaPalabras.size(); x++)
+		{
+			rdo = rdo + listaPalabras.at(x);
+			if(x < listaPalabras.size()-1)
+				rdo = rdo+ " ";
+		}
+
 	}
 	else
 	{
-		for (int i = 2; i < MAX_COMANDOS; i++)
+		for (int i = 2; i < this->cantidadArgumentos; i++)//MAX_COMANDOS; i++)
 			rdo+=this->comando[i]+" ";
+
+		//TODO revisar si esto trae problemas, no lo he tocado.
 
 		//Ahora solo nos interesa el ultimo termino (antes traia toda la cadena desde el 2do parametro
 		//en adelante, y traia problemas para 3 parametros).
