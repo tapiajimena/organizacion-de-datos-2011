@@ -166,7 +166,8 @@ Libro* ControladorBiblioteca::cargarNuevoLibroParseado(uint32_t idLibro) {
 	parserPalabras = new ParserDePalabras(ARCHIVO_STOPWORDS);
 	libroPalabras = parserPalabras->parsear(dLibro);
 
-	libroNuevo->setPalabrasClave(libroPalabras->getPalabrasClave());
+	libroNuevo->copiarEstructuraDePalabrasClave(libroPalabras);
+
 	delete (libroPalabras);
 	delete (parserPalabras);
 	delete (dLibro);
