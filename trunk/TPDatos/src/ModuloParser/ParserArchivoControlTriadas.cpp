@@ -88,28 +88,9 @@ ParserArchivoControlTriadas::~ParserArchivoControlTriadas() {
 	Logger::log("ParserArchivoControlTriadas", "~ParserArchivoControlTriadas",
 			"Se elimina el ParserArchivoControlTriadas.");
 
-	/*
-	//TODO eliminar map
-	if(!datosControl->empty())
-	{
-		//elimina cada datoControl dentro de datosControl
-		for(it = datosControl->begin(); it != datosControl->end();it++)
-		{
-			delete((*it).second);
-			datosControl->erase(it);
-		}
-		delete(datosControl);
-	}
-	*/
 
+	for (it = this->datosControl->begin(); it != this->datosControl->end(); it++)
+		delete ((*it).second);
 
-
+	delete(this->datosControl);
 }
-
-
-
-
-
-
-
-
