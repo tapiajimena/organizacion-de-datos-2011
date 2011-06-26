@@ -161,23 +161,26 @@ char ManejadorInstrucciones::obtenerIDinstruccion(string id) {
 
 string ManejadorInstrucciones::obtenerConsulta() {
 	string rdo = "";
-
 	string tipoConsulta = this->comando[1];
-
-	for (int i = 2; i < MAX_COMANDOS; i++)
-		rdo+=this->comando[i]+" ";
 
 	//Ahora solo nos interesa el ultimo termino (antes traia toda la cadena desde el 2do parametro
 	//en adelante, y traia problemas para 3 parametros).
 	vector<string> listaParametros = ServiceClass::obtenerListaPalabras(rdo, SEPARADORES_DE_PALABRAS);
 
 	//TODO ojo, poner constante si se va a cambiar.
-	if( tipoConsulta == "-qp")
+	if (( tipoConsulta == "-qp")
+		|| (tipoConsulta == "-qt")
+		|| (tipoConsulta == "-qe")
+		|| (tipoConsulta == "-qa"))
 	{
-		//Nos interesan todods los terminos
+		for (int i = 2; i < MAX_COMANDOS; i++)
+			rdo+=this->comando[i];
 	}
 	else
 	{
+		for (int i = 2; i < MAX_COMANDOS; i++)
+			rdo+=this->comando[i]+" ";
+
 		//si no, salteamos los comandos intermedios y nos quedamos con el parametro nombre de archivo
 		rdo = listaParametros.back();
 	}
@@ -191,8 +194,6 @@ string ManejadorInstrucciones::obtenerConsulta() {
 }
 
 void ManejadorInstrucciones::ejecutarInstruccionElegida() {
-
-	std::cout<<"parametros instruccion = "<< this->cantidadArgumentos;
 
 	ejecutarInstruccion(armarInstruccion());
 
