@@ -254,6 +254,9 @@ void ControladorIndice::consultarPorTitulo(string consulta) {
 	Logger::log("ControladorIndice", "consultarPorTitulo",
 			"Se realiza una consulta por titulo");
 
+	consulta = ServiceClass::toUppercase(consulta);
+	std::cout<<"Consulta: "<<consulta<<"."<<std::endl;
+
 	vector<uint32_t> aux = this->indiceHash->buscarPalabraEnHash(consulta);
 
 	if (!aux.empty()) {
