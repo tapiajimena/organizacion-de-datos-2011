@@ -12,6 +12,8 @@
 #include "ModuloDeInterfaz/ManejadorInstrucciones.h"
 #include "ModuloControladores/ControladorIndice.h"
 #include "ModuloEstructuras/Configuracion.h"
+#include "ModuloDeIndices/ArbolBMas/BPlusTree.h"
+#include "ModuloDeTipos/DatoElementoNodo.h"
 #include "../Common/Constantes.h"
 
 
