@@ -1,3 +1,15 @@
+ #
+ #
+ # test.sh
+ # dar permisos de ejecucion con: chmod x+a test.sh
+ #
+ #	Autor	: GRUPO 1 - Fernandez, Gallinal, Maraggi, Tapia
+ #	Catedra	: SERVETTO-FERRER-FERNANDEZ
+ #	Materia	: Organizacion de Datos (75.06) - FIUBA
+ #
+ #
+ #
+
 rm Indices/*.* 2> /dev/null
 rm reportes/*.* 2> /dev/null
 mkdir Indices 2> /dev/null
@@ -57,9 +69,11 @@ echo ""
 echo "Se generan los indices por autor"
 ./TPDatos -a
 read -p "Pulse una tecla para continuar...."
+echo ""
 echo "Se generan los indices por editorial"
 ./TPDatos -e
 read -p "Pulse una tecla para continuar...."
+echo ""
 echo "Se generan los indices por titulo"
 ./TPDatos -t
 echo ""
@@ -72,11 +86,18 @@ echo ""
 echo "Prueba indice por autor"
 ./TPDatos -qa "Asimoov"
 read -p "Pulse una tecla para continuar...."
+echo ""
 echo "Prueba indice por editorial"
 ./TPDatos -qe "Samsung"
 read -p "Pulse una tecla para continuar...."
+echo ""
 echo "Prueba indice por titulo"
 ./TPDatos -qt "La torre Oscura"
+read -p "Pulse una tecla para continuar...."
+echo ""
+echo "Prueba por terminos proximos"
+./TPDatos -qp "hola como estas"
+read -p "Pulse una tecla para continuar...."
 echo ""
 echo ""
 echo "Fin de las consultas"
@@ -99,6 +120,4 @@ echo ""
 echo ""
 echo "Fin de las pruebas automatizadas"
 read -p "Pulse una tecla para continuar...."
-
-
 clear
