@@ -31,39 +31,42 @@ void Instruccion_TomarTexto::ejecutar() {
 
 	idLibroAsignado = this->controladorBiblioteca->ingresarLibro(this->libroNuevo);
 
+	if (controladorBiblioteca->existeLibro)
+	{
+		DatoLibro* datoUltimoLibro = new DatoLibro(this->controladorBiblioteca->recuperarLibro(idLibroAsignado));
 
-	DatoLibro* datoUltimoLibro = new DatoLibro(this->controladorBiblioteca->recuperarLibro(idLibroAsignado));
+		Logger::log("Instruccion_TomarTexto", "ejecutar",
+				"Se toma el archivo correspondiente.");
 
-	Logger::log("Instruccion_TomarTexto", "ejecutar",
-			"Se toma el archivo correspondiente.");
+		Libro* libroUltimo = new Libro();
+		ParserDeOcurrenciasDeTerminos* parser = new ParserDeOcurrenciasDeTerminos(conf->getPathArchivoStopWords());
+		libroUltimo = parser->parsear(datoUltimoLibro);
 
-	Libro* libroUltimo = new Libro();
-	ParserDeOcurrenciasDeTerminos* parser = new ParserDeOcurrenciasDeTerminos(conf->getPathArchivoStopWords());
-	libroUltimo = parser->parsear(datoUltimoLibro);
+		pair<Libro*,uint32_t> parLibroOffset;
+		parLibroOffset.first	= libroUltimo;
+		parLibroOffset.second	= idLibroAsignado;
+		controladorIndice->nuevoIndiceOcurrenciaTerminos();
+		controladorIndice->indexar(parLibroOffset,INDICE_OCURRENCIA_TERMINOS);
 
-	pair<Libro*,uint32_t> parLibroOffset;
-	parLibroOffset.first	= libroUltimo;
-	parLibroOffset.second	= idLibroAsignado;
-	controladorIndice->nuevoIndiceOcurrenciaTerminos();
-	controladorIndice->indexar(parLibroOffset,INDICE_OCURRENCIA_TERMINOS);
+		cout<<"Por favor espere, el procedimiento puede demorar."<<endl;
+
+		ControladorIndice* controlIndiceAux = new ControladorIndice(conf->getPathCarpetaTrabajo());
+		ArchivoTerminos* archivoTerminos = new ArchivoTerminos(conf->getPathCarpetaTrabajo()
+																+ ARCHIVO_TERMINOS
+																+ EXTENSION_ARCHIVO_INDICE);
+
+		controlIndiceAux->nuevoIndiceOcurrenciaTerminos();
+		CalculadorDeNormas* calculadorDeNormas = new CalculadorDeNormas(controlIndiceAux,archivoTerminos);
+		calculadorDeNormas->generarArchivoDeNormasDeDocumentos();
+
+		delete controlIndiceAux;
+		delete(archivoTerminos);
+		delete(calculadorDeNormas);
+	}
 
 	delete(controladorIndice);
 	delete(controladorBiblioteca);
 
-	cout<<"Por favor espere, el procedimiento puede demorar."<<endl;
-
-	ControladorIndice* controlIndiceAux = new ControladorIndice(conf->getPathCarpetaTrabajo());
-	ArchivoTerminos* archivoTerminos = new ArchivoTerminos(conf->getPathCarpetaTrabajo()
-															+ ARCHIVO_TERMINOS
-															+ EXTENSION_ARCHIVO_INDICE);
-
-	controlIndiceAux->nuevoIndiceOcurrenciaTerminos();
-	CalculadorDeNormas* calculadorDeNormas = new CalculadorDeNormas(controlIndiceAux,archivoTerminos);
-	calculadorDeNormas->generarArchivoDeNormasDeDocumentos();
-
-	delete controlIndiceAux;
-	delete(archivoTerminos);
-	delete(calculadorDeNormas);
 }
 
 Instruccion_TomarTexto::~Instruccion_TomarTexto() {
