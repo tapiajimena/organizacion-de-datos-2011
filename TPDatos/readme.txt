@@ -15,7 +15,16 @@ Instalacion:
 	make.
 	Ej:
 		grupo1@grupo1-laptop:~/workspace/ make
-		grupo1@grupo1-laptop:~/workspace/ ./TPDatos
+		grupo1@grupo1-laptop:~/workspace/ ./TPDatos [-comando]
+
+Configuracion:
+-------------
+	+ Cambiar el archivo conf.ini y setearlo bien. 
+	Ej:
+		#CARPETA_TRABAJO=Indices/
+		#CARPETA_REPORTES=/home/NOMBRE_USUARIO/Escritorio/reportes/
+		#ARCHIVO_STOPWORDS=doc/stopwordstest.txt
+
 COMANDOS:
 =========
 
@@ -24,26 +33,26 @@ COMANDOS:
 
     Archivo de configuración (con directorio de almacenamiento)
     * Tomar Texto: 
-	  ./ejecutable -i "archivo de texto"
+	  ./TPDatos -i "archivo de texto"
     * Procesar Editorial: 
-	  ./ejecutable -e (procesa los no procesados)
+	  ./TPDatos -e (procesa los no procesados)
     * Procesar Autor: 
-	  ./ejecutable –a
+	  ./TPDatos –a
     * Procesa Título: 
-	  ./ejecutable –t
+	  ./TPDatos –t
     * Procesa Palabras: 
-	  ./ejecutable –p
+	  ./TPDatos –p
     * Listar Archivos Tomados: 
-	  ./ejecutable –l (muestra identificador, Título, Autor,
+	  ./TPDatos –l (muestra identificador, Título, Autor,
 
     * Obtener Archivo: 
-	  ./ejecutable -o ID_Archivo
+	  ./TPDatos -o ID_Archivo
     * Quita Archivo: 
-	  ./ejecutable -q ID_Archivo (se elminan las entradas en los otros índices)
+	  ./TPDatos -q ID_Archivo (se elminan las entradas en los otros índices)
 
     * Ver Estructura: Genera archivos en forma de texto plano, que describen las estructuras y contenidos de los archivos de almacenamiento 
     y control del sistema.
-	./ejecutable -v [-e árbol de Editorial, -a árbol de Autor, -t hash de Título, -p hash de Palabra] "Nombre Archivo"
+	./TPDatos -v [-e árbol de Editorial, -a árbol de Autor, -t hash de Título, -p hash de Palabra] "Nombre Archivo"
 
     * Nombre y estructuras para los archivos generados:
       Archivo de Estructura de control: "Nombre Archivo"_Índice,"Nombre Archivo"_tabla.
@@ -54,14 +63,14 @@ COMANDOS:
     Comandos 2da Etapa
     ------------------
 
-    * Consultar Editorial: ./ejecutable -qe “Editorial”
-    * Consultar Autor: ./ejecutable –qa “Autor”
-    * Consultar Título: ./ejecutable –qt “Título”
-    * Consultar Palabras: ./ejecutable –qp “Palabras para búsqueda por cercania y rankeada”
+    * Consultar Editorial: ./TPDatos -qe “Editorial”
+    * Consultar Autor: ./TPDatos –qa “Autor”
+    * Consultar Título: ./TPDatos –qt “Título”
+    * Consultar Palabras: ./TPDatos –qp “Palabras para búsqueda por cercania y rankeada”
     * Ver Estructura: Genera archivos en forma de texto plano, que describen las
     estructuras y contenidos de los archivos de almacenamiento y control del
     sistema.
-      ./ejecutable -v [-at Archivo de Términos, -ani Archivo de Norma Infinito, -aop Archivo de ocurrencia posicional, -li Listas Invertidas]
+      ./TPDatos -v [-at Archivo de Términos, -ani Archivo de Norma Infinito, -aop Archivo de ocurrencia posicional, -li Listas Invertidas]
     "Nombre Archivo" Nombre y estructuras para los archivos generados:
     * Archivo de Términos: "Nombre Archivo"_Terminos
     * Archivo de Norma Infinito: "Nombre Archivo"_NormaInfinito.
