@@ -25,6 +25,14 @@ Configuracion:
 		#CARPETA_REPORTES=/home/NOMBRE_USUARIO/Escritorio/reportes/
 		#ARCHIVO_STOPWORDS=doc/stopwordstest.txt
 
+
+TESTS AUTOMATIZADOS:
+====================
+
+	+ Darle permisos de ejecucion al archivo test.sh mediante chmod a+x test.sh
+	+ Correr test automatizados ejecutando el comando ./test.sh
+
+
 COMANDOS:
 =========
 
