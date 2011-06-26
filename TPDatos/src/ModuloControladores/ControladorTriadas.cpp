@@ -157,4 +157,10 @@ ControladorTriadas::~ControladorTriadas() {
 
 	delete (arcControl);
 	delete (arcTriadas);
+
+	list<DatoTriada*>::iterator it;
+	for (it = this->triadas->begin(); it != this->triadas->end(); it++)
+		   delete ((*it));
+
+	delete (this->triadas);
 }
