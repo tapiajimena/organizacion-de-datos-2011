@@ -874,13 +874,13 @@ void Hash::escribirArchivosTablaDatosYEspaciosLibres(
 				archivoSalidaEspaciosLibres << ssLibre.str();
 			}
 
-			delete datoCubeta;
-
 			archivoSalidaDatos << ssCubetas.str();
 			archivoSalidaDatos << "\n";
 			quedanCubetas = (offsetCubeta != 0);
 			offsetCubeta = datoCubeta->getOffsetCubetaContinuacion();
 			numeroDeCubetaSucesiva++;
+
+			delete datoCubeta;
 		}
 		archivoSalidaDatos << "\n\n";
 

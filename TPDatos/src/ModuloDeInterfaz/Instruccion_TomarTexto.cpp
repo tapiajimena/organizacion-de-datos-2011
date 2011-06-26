@@ -50,6 +50,7 @@ void Instruccion_TomarTexto::ejecutar() {
 	delete(controladorIndice);
 	delete(controladorBiblioteca);
 
+	cout<<"Por favor espere, el procedimiento puede demorar."<<endl;
 
 	ControladorIndice* controlIndiceAux = new ControladorIndice(conf->getPathCarpetaTrabajo());
 	ArchivoTerminos* archivoTerminos = new ArchivoTerminos(conf->getPathCarpetaTrabajo()

@@ -108,5 +108,4 @@ void Configuracion::setPathCarpetaReportes(string pathCarpetaReportes)
 
 Configuracion::~Configuracion()
 {
-
 }

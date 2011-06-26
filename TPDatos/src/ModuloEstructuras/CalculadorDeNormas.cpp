@@ -68,12 +68,13 @@ CalculadorDeNormas::~CalculadorDeNormas()
 
 std::list<DatoTriada*>* CalculadorDeNormas::levantarTriadasDeTermino(uint32_t idTermino)
 {
+	std::list<DatoTriada*>*  listaTriadas = NULL;
 
 	//Esto es un acceso directo al archivo a traves de su offset-Id.
 	std::string palabra = this->archivoTerminos->obtenerTermino(idTermino);
 
 	//Carga posta de triadas:
-	std::list<DatoTriada*>* listaTriadas = this->controladorIndice->recuperarTriadas(palabra);
+	listaTriadas = this->controladorIndice->recuperarTriadas(palabra);
 
 	return listaTriadas;
 }
@@ -186,27 +187,30 @@ int CalculadorDeNormas::calcularAparicionesDeTerminoEnDocumento(uint32_t idDocum
 	//(salvo que se carguen millones de libros y que haya m�s ocurrencias del t�rmino que palabras en el libro)
 
 	std::list<DatoTriada*>* ocurrenciasDeTermino = this->levantarTriadasDeTermino(idTermino);
-
-	std::list<DatoTriada*>::iterator it_ocurrencias;
-
-	for(it_ocurrencias = ocurrenciasDeTermino->begin();
-		it_ocurrencias != ocurrenciasDeTermino->end();
-		it_ocurrencias++)
+	if(ocurrenciasDeTermino)
 	{
-		if((*it_ocurrencias)->getIdLibro() == idDocumento)
+
+		std::list<DatoTriada*>::iterator it_ocurrencias;
+
+		for(it_ocurrencias = ocurrenciasDeTermino->begin();
+			it_ocurrencias != ocurrenciasDeTermino->end();
+			it_ocurrencias++)
 		{
-			ocurrenciasDeTerminoEnDocumento++;
+			if((*it_ocurrencias)->getIdLibro() == idDocumento)
+			{
+				ocurrenciasDeTerminoEnDocumento++;
+			}
 		}
-	}
 
-	/*while (!ocurrenciasDeTermino->empty())
-	{
-		delete ocurrenciasDeTermino->back();
-		ocurrenciasDeTermino->pop_back();
+		/*while (!ocurrenciasDeTermino->empty())
+		{
+			delete ocurrenciasDeTermino->back();
+			ocurrenciasDeTermino->pop_back();
+		}
+		delete ocurrenciasDeTermino;
+	*/
+		return ocurrenciasDeTerminoEnDocumento;
 	}
-	delete ocurrenciasDeTermino;
-*/
-	return ocurrenciasDeTerminoEnDocumento;
 }
 
 float CalculadorDeNormas::obtenerPesoGlobalDeIndice(uint32_t idTermino)
@@ -499,7 +503,7 @@ float CalculadorDeNormas::calcularSimilitudConsultaConDocumento(uint32_t idDocum
 {
 	float  similitudCalculada = 0;
 
-	std::cout<<"Consulta por similitud - Id libro: "<<idDocumento<<" |	";
+	//std::cout<<"Consulta por similitud - Id libro: "<<idDocumento<<" |	";
 
 	VectorDeDocumento* vectorConsulta = this->cargarVectorDeTerminos(consulta);
 

@@ -30,7 +30,7 @@ private:
 	void nodesToString(iostream* ios, int rootLevel, int sizeOffset, fstream* fs);
 	void nodesToStringXML(iostream* ios, int rootLevel, int sizeOffset, fstream* fs);
     	void synchronizeOnRemove(Node* node, unsigned int* freeNodeCounter, fstream* fs);
-    	
+
     	/*
     	* front coding
     	*/
