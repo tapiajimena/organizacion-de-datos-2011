@@ -157,6 +157,7 @@
 #define MENSAJE_INDICE_NO_CONSULTABLE_BIBLIOTECA_VACIA "\n\t No apto para consulta.\n"
 #define MENSAJE_INDICE_NO_CONSULTABLE "\n\t NO HAY RESULTADOS.\n"
 #define MENSAJE_CONSULTA_EXITOSA "\n\t Se devuelven los datos consultados.\n "
+#define MENSAJE_LIBRO_NO_EXISTE "\n \t El libro a ingresar no existe, verifique.\n "
 
 
 #endif /* CONSTANTES_H_ */
